@@ -32,6 +32,8 @@ public class Estudante implements UserDetails {
 
     private String nome;
 
+    private String cpf;
+
     @Column(unique = true)
     private String user;
 

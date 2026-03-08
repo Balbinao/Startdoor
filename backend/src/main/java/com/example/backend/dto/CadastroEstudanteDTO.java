@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Email;
 
 public record CadastroEstudanteDTO(
         @NotBlank
-        String name,
+        String nome,
 
         @NotBlank
         @Size(min = 11, max = 11)
