@@ -1,0 +1,48 @@
+{
+	"info": {
+		"_postman_id": "8697e199-6dcc-49cc-995e-c7afc5f11cd2",
+		"name": "Startdoor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39152392"
+	},
+	"item": [
+		{
+			"name": "Cadastro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Gustavao Balbinao\",\r\n  \"cpf\": \"12345678921\",\r\n  \"user\": \"balbinao02\",\r\n  \"email\": \"gusb@gft.com\",\r\n  \"senha\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/cadastrar/estudante",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"cadastrar",
+						"estudante"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
