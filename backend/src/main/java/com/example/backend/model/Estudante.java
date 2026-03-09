@@ -61,7 +61,7 @@ public class Estudante implements UserDetails {
     @Column(name = "estado_atuacao")
     private String estadoAtuacao;
 
-    @Column(name = "setor_interesse", nullable = false)
+    @Column(name = "setor_interesse")
     private String setorInteresse;
 
     @Column(name = "habilidades_principais")

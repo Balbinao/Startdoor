@@ -9,10 +9,10 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: startdoor
-      MYSQL_ROOT_PASSWORD: 0000
+      MYSQL_ROOT_PASSWORD: "0000"
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3307:3306"
-
   app:
     build:
       context: ./backend
@@ -24,6 +24,4 @@ services:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/startdoor?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 0000
+      - SPRING_PROFILES_ACTIVE=docker

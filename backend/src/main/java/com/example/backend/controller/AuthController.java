@@ -17,7 +17,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -41,7 +45,7 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
-    @PostMapping("/register/estudante")
+    @PostMapping("/cadastrar/estudante")
     public ResponseEntity registerEstudante(@RequestBody @Valid CadastroEstudanteDTO data) {
         if (this.estudanteRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().body("E-mail já cadastrado");
         if (this.estudanteRepository.existsByCpf(data.cpf())) return ResponseEntity.badRequest().body("CPF já cadastrado");
@@ -60,7 +64,7 @@ public class AuthController {
         return ResponseEntity.ok("Estudante cadastrado com sucesso!");
     }
 
-    @PostMapping("/register/empresa")
+    @PostMapping("/cadastrar/empresa")
     public ResponseEntity registerEmpresa(@RequestBody @Valid CadastroEmpresaDTO data) {
         if (this.empresaRepository.findByEmail(data.email()) != null) {
             return ResponseEntity.badRequest().body("E-mail corporativo já cadastrado");
