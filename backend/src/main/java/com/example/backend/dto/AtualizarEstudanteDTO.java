@@ -2,7 +2,7 @@ package com.example.backend.dto;
 
 import jakarta.validation.constraints.Email;
 
-public record AlterarEstudante (
+public record AtualizarEstudanteDTO (
       String nome,
       String user,
       @Email
