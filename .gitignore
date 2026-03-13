@@ -35,3 +35,38 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### REACT / VITE (FRONTEND) ###
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependências
+**/node_modules
+**/dist
+**/dist-ssr
+**/*.local
+
+# Environment variables
+**.env
+**.env.local
+**.env.production
+**.env.development
+
+# Arquivos do frontend
+frontend/node_modules/
+frontend/dist/
+frontend/*.local
+
+### MAC OS ###
+.DS_Store
+
+### WINDOWS ###
+Thumbs.db
+ehthumbs.db
+Desktop.ini
