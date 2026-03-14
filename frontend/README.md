@@ -1,16 +1,108 @@
-# React + Vite
+## 📘 **README.md - Frontend Services e Utils**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+```markdown
+# 📁 Frontend - Services e Utils
 
-Currently, two official plugins are available:
+Este documento descreve os arquivos JavaScript responsáveis pela comunicação com o backend e utilitários do projeto.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📦 Estrutura de Arquivos
 
-## React Compiler
+```
+src/
+├── services/
+│   ├── api.js           # Configuração do axios e interceptors
+│   ├── authService.js   # Autenticação (login e cadastros)
+│   ├── empresaService.js # Operações com empresas
+│   └── estudanteService.js # Operações com estudantes
+└── utils/
+    └── constants.js     # Endpoints e constantes do sistema
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🔧 Services
 
-## Expanding the ESLint configuration
+### `api.js`
+Configuração base do axios com:
+- Base URL definida via `import.meta.env.VITE_API_URL` (fallback para `http://localhost:8080`)
+  > ⚠️ **Nota:** O arquivo `.env` é opcional. Se não existir, será usado `http://localhost:8080` automaticamente
+- Timeout de 10 segundos
+- Interceptor para adicionar token JWT no header Authorization
+- Interceptor para tratar erros (401 redireciona para login)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### `authService.js`
+Responsável por autenticação e cadastros:
+- `login(email, senha)` → Autentica usuário e retorna token
+- `registerEstudante(dados)` → Cadastra novo estudante
+- `registerEmpresa(dados)` → Cadastra nova empresa
+- `logout()` → Remove dados da sessão
+
+### `empresaService.js`
+Operações CRUD para empresas:
+- `listarTodas()` → GET /empresas
+- `buscarPorId(id)` → GET /empresas/{id}
+- `atualizar(id, dados)` → PUT /empresas/{id}
+- `deletar(id)` → DELETE /empresas/{id}
+
+### `estudanteService.js`
+Operações CRUD para estudantes:
+- `listarTodos()` → GET /estudantes
+- `buscarPorId(id)` → GET /estudantes/{id}
+- `atualizar(id, dados)` → PUT /estudantes/{id}
+- `deletar(id)` → DELETE /estudantes/{id}
+
+## 🧰 Utils
+
+### `constants.js`
+Armazena constantes do sistema:
+- `API_ENDPOINTS` → Todos os endpoints da API organizados por módulo
+- `ERROR_MESSAGES` → Mensagens de erro padronizadas
+
+## 🌐 Endpoints da API
+
+| Método | Rota | Descrição | Service |
+|--------|------|-----------|---------|
+| POST | `/auth/login` | Login | authService |
+| POST | `/auth/cadastrar/estudante` | Cadastro estudante | authService |
+| POST | `/auth/cadastrar/empresa` | Cadastro empresa | authService |
+| GET | `/empresas` | Lista empresas | empresaService |
+| GET | `/empresas/{id}` | Busca empresa por ID | empresaService |
+| PUT | `/empresas/{id}` | Atualiza empresa | empresaService |
+| DELETE | `/empresas/{id}` | Deleta empresa | empresaService |
+| GET | `/estudantes` | Lista estudantes | estudanteService |
+| GET | `/estudantes/{id}` | Busca estudante por ID | estudanteService |
+| PUT | `/estudantes/{id}` | Atualiza estudante | estudanteService |
+| DELETE | `/estudantes/{id}` | Deleta estudante | estudanteService |
+
+## 🔐 Autenticação
+
+- O token JWT é armazenado no `localStorage` com a chave `@App:token`
+- Todas as requisições (exceto login e cadastros) enviam o token no header: `Authorization: Bearer {token}`
+- Em caso de erro 401, o usuário é redirecionado para a página de login
+
+## 📥 Como usar nos componentes
+
+```javascript
+import authService from '../services/authService';
+import empresaService from '../services/empresaService';
+
+// Exemplo de login
+const handleLogin = async (email, senha) => {
+  const result = await authService.login(email, senha);
+  if (result.success) {
+    localStorage.setItem('@App:token', result.token);
+    // redirecionar...
+  }
+};
+
+// Exemplo de listar empresas
+const carregarEmpresas = async () => {
+  const result = await empresaService.listarTodas();
+  if (result.success) {
+    setEmpresas(result.data);
+  }
+};
+```
+
+
+
+**Próximos passos:** Desenvolver as telas utilizando estes services para integração com o backend.
+```
