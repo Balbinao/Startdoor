@@ -42,12 +42,6 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
       <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
         <img alt="JavaScript" src="https://img.shields.io/badge/javascript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black"/>
       </a>
-      <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">
-        <img alt="HTML5" src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white"/>
-      </a>
-      <a href="https://developer.mozilla.org/en-US/docs/Web/CSS">
-        <img alt="CSS3" src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white"/>
-      </a>
     </td>
     <td>
       <a href="https://www.java.com/">
