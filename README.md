@@ -1,141 +1,127 @@
-# startdoor
+# 🚪 Startdoor
 
+<p align="center">
+  <img src="https://img.shields.io/badge/status-em%20desenvolvimento-green?style=for-the-badge&logo=progress"/>
+</p>
 
-Cenário atual- Anotações
+Plataforma web colaborativa dedicada à avaliação e ao compartilhamento de experiências de estágio.
 
-## 📚 **README - STARTDOOR BACKEND**
+## 🎯 **Sobre o Projeto**
 
-```markdown
-# Startdoor Backend
+A função principal do sistema é atuar como um **repositório centralizado** onde estudantes e estagiários podem registrar relatos detalhados e notas sobre as organizações onde atuam, transformando experiências individuais em informações acessíveis e estruturadas para outros alunos.
 
-Backend da plataforma Startdoor, desenvolvido com Spring Boot e JWT para autenticação.
+### ✨ **O que o sistema permite:**
+- 🔍 Pesquisar empresas
+- ⭐ Acessar avaliações sobre diferentes dimensões do ambiente de trabalho
+- 📊 Visualizar gráficos que facilitam a comparação entre oportunidades
+- 💬 Compartilhar feedback sobre competências específicas:
+  - Cultura organizacional
+  - Remuneração
+  - Chances de efetivação
+  - E muito mais
 
-## 📋 **VISÃO GERAL**
+### 🎓 **Objetivo**
 
-O backend atualmente possui **apenas sistema de autenticação** implementado:
-- Cadastro de Estudante
-- Cadastro de Empresa  
-- Login (gera token JWT)
-
-
-## 📦 **COMANDOS DOCKER**
-
-### Subir aplicação
-```bash
-# Build e start
-docker-compose up --build
-
-
-
-
-## 🔐 **ENDPOINTS**
-
-> Base URL: `http://localhost:8080`
-
-### 1. Cadastrar Estudante
-`POST /auth/cadastrar/estudante`
-
-```json
-{
-  "nome": "João Silva",
-  "cpf": "12345678901",
-  "user": "joaosilva",
-  "email": "joao@email.com",
-  "senha": "123456"
-}
-```
-
-**Regras:**
-- CPF: 11 dígitos, único
-- Email: único
-- User: único
-
-**Respostas:**
-- `200`: "Estudante cadastrado com sucesso!"
-- `400`: Erro de validação
+Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudante identifique as empresas que melhor se alinham às suas expectativas profissionais antes de se candidatar a uma vaga.
 
 ---
 
-### 2. Cadastrar Empresa
-`POST /auth/cadastrar/empresa`
-
-```json
-{
-  "nome_fantasia": "Tech Solutions",
-  "cnpj": "12345678000199",
-  "email": "contato@tech.com",
-  "senha": "123456"
-}
-```
-
-**Regras:**
-- CNPJ: 14 dígitos, único
-- Email: único
-
-**Respostas:**
-- `200`: "Empresa cadastrada com sucesso!"
-- `400`: Erro de validação
-
----
-
-### 3. Login
-`POST /auth/login`
-
-```json
-{
-  "email": "joao@email.com",
-  "senha": "123456"
-}
-```
-
-**Resposta:**
-```json
-{
-  "toker": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-> ⚠️ **Nota:** O campo retornado é `toker` (typo). Use como token JWT.
-
-## 🔑 **SOBRE O TOKEN**
-
-- Expira em **2 horas**
-- Enviar no header: `Authorization: Bearer {token}`
+## 🛠️ **Tecnologias Utilizadas**
 
 
+<table align="center">
+  <tr>
+    <th></th>
+    <th>Frontend</th>
+    <th>Backend</th>
+  </tr>
 
-## 📝 **COLEÇÃO POSTMAN**
+  <tr>
+    <th>Linguagens</th>
+    <td>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
+        <img alt="JavaScript" src="https://img.shields.io/badge/javascript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black"/>
+      </a>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">
+        <img alt="HTML5" src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white"/>
+      </a>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/CSS">
+        <img alt="CSS3" src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white"/>
+      </a>
+    </td>
+    <td>
+      <a href="https://www.java.com/">
+        <img alt="Java" src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white"/>
+      </a>
+    </td>
+  </tr>
 
-```json
-{
-  "Cadastro Estudante": {
-    "method": "POST",
-    "url": "http://localhost:8080/auth/cadastrar/estudante",
-    "body": {
-      "nome": "João Silva",
-      "cpf": "12345678901",
-      "user": "joaosilva",
-      "email": "joao@email.com",
-      "senha": "123456"
-    }
-  },
-  "Cadastro Empresa": {
-    "method": "POST",
-    "url": "http://localhost:8080/auth/cadastrar/empresa",
-    "body": {
-      "nome_fantasia": "Tech Solutions",
-      "cnpj": "12345678000199",
-      "email": "contato@tech.com",
-      "senha": "123456"
-    }
-  },
-  "Login": {
-    "method": "POST",
-    "url": "http://localhost:8080/auth/login",
-    "body": {
-      "email": "joao@email.com",
-      "senha": "123456"
-    }
-  }
-}
-```
+  <tr>
+    <th>Frameworks / Bibliotecas</th>
+    <td>
+      <a href="https://react.dev/">
+        <img alt="React" src="https://img.shields.io/badge/react-%2361DAFB.svg?style=for-the-badge&logo=react&logoColor=black"/>
+      </a>
+      <a href="https://vitejs.dev/">
+        <img alt="Vite" src="https://img.shields.io/badge/vite-646CFF.svg?style=for-the-badge&logo=vite&logoColor=white"/>
+      </a>
+      <a href="https://axios-http.com/">
+        <img alt="Axios" src="https://img.shields.io/badge/axios-5A29E4.svg?style=for-the-badge&logo=axios&logoColor=white"/>
+      </a>
+      <a href="https://reactrouter.com/">
+        <img alt="React Router" src="https://img.shields.io/badge/react%20router-CA4245.svg?style=for-the-badge&logo=react-router&logoColor=white"/>
+      </a>
+    </td>
+    <td>
+      <a href="https://spring.io/projects/spring-boot">
+        <img alt="Spring Boot" src="https://img.shields.io/badge/spring%20boot-6DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white"/>
+      </a>
+      <a href="https://spring.io/projects/spring-security">
+        <img alt="Spring Security" src="https://img.shields.io/badge/spring%20security-6DB33F.svg?style=for-the-badge&logo=springsecurity&logoColor=white"/>
+      </a>
+      <a href="https://jwt.io/">
+        <img alt="JWT" src="https://img.shields.io/badge/jwt-000000.svg?style=for-the-badge&logo=jsonwebtokens&logoColor=white"/>
+      </a>
+      <a href="https://hibernate.org/">
+        <img alt="Hibernate" src="https://img.shields.io/badge/hibernate-59666C.svg?style=for-the-badge&logo=hibernate&logoColor=white"/>
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <th>Banco de Dados</th>
+    <td align="center">—</td>
+    <td>
+      <a href="https://www.mysql.com/">
+        <img alt="MySQL" src="https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white"/>
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <th>DevOps / Infra</th>
+    <td colspan="2" align="center">
+      <a href="https://www.docker.com/">
+        <img alt="Docker" src="https://img.shields.io/badge/docker-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white"/>
+      </a>
+      <a href="https://git-scm.com/">
+        <img alt="Git" src="https://img.shields.io/badge/git-F05032.svg?style=for-the-badge&logo=git&logoColor=white"/>
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <th>IDE / Editor</th>
+    <td>
+      <a href="https://code.visualstudio.com/">
+        <img alt="VS Code" src="https://img.shields.io/badge/VS%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white"/>
+      </a>
+    </td>
+    <td>
+      <a href="https://www.jetbrains.com/idea/">
+        <img alt="IntelliJ IDEA" src="https://img.shields.io/badge/intellij%20idea-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white"/>
+      </a>
+    </td>
+  </tr>
+</table>
+
