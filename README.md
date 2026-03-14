@@ -94,7 +94,15 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
 
   <tr>
     <th>DevOps / Infra</th>
-    <td colspan="2" align="center">
+    <td>
+      <a href="https://www.docker.com/">
+        <img alt="Docker" src="https://img.shields.io/badge/docker-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white"/>
+      </a>
+      <a href="https://git-scm.com/">
+        <img alt="Git" src="https://img.shields.io/badge/git-F05032.svg?style=for-the-badge&logo=git&logoColor=white"/>
+      </a>
+    </td>
+    <td>
       <a href="https://www.docker.com/">
         <img alt="Docker" src="https://img.shields.io/badge/docker-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white"/>
       </a>
@@ -118,4 +126,3 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
     </td>
   </tr>
 </table>
-
