@@ -7,16 +7,6 @@ Este documento descreve os arquivos JavaScript responsáveis pela comunicação 
 
 ## 📦 Estrutura de Arquivos
 
-```
-src/
-├── services/
-│   ├── api.js           # Configuração do axios e interceptors
-│   ├── authService.js   # Autenticação (login e cadastros)
-│   ├── empresaService.js # Operações com empresas
-│   └── estudanteService.js # Operações com estudantes
-└── utils/
-    └── constants.js     # Endpoints e constantes do sistema
-```
 
 ## 🔧 Services
 
