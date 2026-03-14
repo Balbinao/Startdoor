@@ -1,3 +1,4 @@
+import { ModeloTrabalho, ReceitaAnual, TamanhoEmpresa, UserRole, EnumUtils } from './enums';
 export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: '/auth/login',
@@ -17,4 +18,12 @@ export const API_ENDPOINTS = {
 export const ERROR_MESSAGES = {
   GENERIC: 'Ocorreu um erro. Tente novamente.',
   UNAUTHORIZED: 'Sessão expirada. Faça login novamente.'
+};
+
+export {
+  ModeloTrabalho,
+  ReceitaAnual, 
+  TamanhoEmpresa,
+  UserRole,
+  EnumUtils
 };
