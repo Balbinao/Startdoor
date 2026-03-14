@@ -91,7 +91,35 @@ const carregarEmpresas = async () => {
   }
 };
 ```
+## 🏷️ **ENUMS**
 
+O projeto possui enums que espelham as do backend, facilitando a consistência dos dados:
+
+### `enums.js`
+
+`ModeloTrabalho` Presencial, Híbrido, Remoto 
+`ReceitaAnual` Faixas de faturamento 
+`TamanhoEmpresa`  Porte da empresa  
+`UserRole` Perfis de usuário 
+
+### Utilitários (`EnumUtils`)
+- `getValues(enumObj)` → Retorna array com todos os valores
+- `getKeys(enumObj)` → Retorna array com todas as chaves
+- `getLabel(enumObj, key)` → Retorna o label amigável
+- `getSelectOptions(enumObj)` → Gera opções para componente select
+
+### Exemplo de uso
+```jsx
+import { ModeloTrabalho, EnumUtils } from '../utils/enums';
+
+// Em um select
+<select>
+  {EnumUtils.getSelectOptions(ModeloTrabalho).map(option => (
+    <option key={option.value} value={option.value}>
+      {option.label}
+    </option>
+  ))}
+</select>
 
 
 **Próximos passos:** Desenvolver as telas utilizando estes services para integração com o backend.
