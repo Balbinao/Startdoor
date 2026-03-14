@@ -67,7 +67,7 @@ src/main/java/com/example/backend/
 - Spring Security
 - JWT (Auth0)
 - JPA / Hibernate
-- PostgreSQL
+- Mysql
 - Maven
 - Docker
 
