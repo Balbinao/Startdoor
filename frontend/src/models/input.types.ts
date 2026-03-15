@@ -24,6 +24,12 @@ export type ITextField<T extends FieldValues> = IBaseField<T> & {
   iconRightOnClick?: () => void;
 };
 
+export type ITextareaField<T extends FieldValues> = IBaseField<T> & {
+  type: 'textarea';
+  placeholder?: string;
+  maxLength?: number;
+};
+
 export type IRadioField<T extends FieldValues> = IBaseField<T> & {
   type: 'radio';
   options: IInputOption[];
@@ -40,6 +46,7 @@ export type ICheckboxField<T extends FieldValues> = IBaseField<T> & {
 
 export type FieldConfig<T extends FieldValues> =
   | ITextField<T>
+  | ITextareaField<T>
   | IRadioField<T>
   | ISelectField<T>
   | ICheckboxField<T>;

@@ -114,3 +114,12 @@ body {
   background-color: var(--purple-400);
   color: var(--grey-100);
 }
+
+.input-disabled {
+  opacity: 50%;
+  cursor: not-allowed;
+}
+
+.input-readonly {
+  background-color: var(--grey-900);
+}

@@ -20,3 +20,9 @@ export interface IUserLogin {
   email: string;
   senha: string;
 }
+
+export interface IUserLoginResponse {
+  token: string;
+  id: number;
+  tipo: string;
+}

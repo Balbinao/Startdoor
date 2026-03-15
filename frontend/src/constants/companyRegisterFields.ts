@@ -7,6 +7,7 @@ export const companyRegisterFields: FieldConfig<CompanyRegisterFormData>[] = [
     name: 'nome_fantasia',
     label: 'Nome Fantasia',
     placeholder: 'Digite o nome fantasia',
+    maxLength: 60,
   },
   // {
   //   type: 'text',
@@ -19,6 +20,7 @@ export const companyRegisterFields: FieldConfig<CompanyRegisterFormData>[] = [
     name: 'email',
     label: 'Email',
     placeholder: 'estudante@email.com',
+    maxLength: 50,
   },
   {
     type: 'password',
