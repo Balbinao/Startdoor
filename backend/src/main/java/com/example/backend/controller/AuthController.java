@@ -9,19 +9,24 @@ import com.example.backend.model.Estudante;
 import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
 import com.example.backend.security.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
+@Tag(name = "🔐 Autenticação", description = "Endpoints para login e cadastro de usuários na plataforma")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -37,6 +42,39 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(
+        summary = "Realizar login na plataforma",
+        description = """
+            Autentica um usuário (estudante ou empresa) e retorna um token JWT.
+            
+            **Regras:**
+            * Email e senha são obrigatórios
+            * O email deve ser válido
+            * O token expira em 2 horas
+            * Use o token no header: `Authorization: Bearer {token}`
+            """
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Login realizado com sucesso",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = LoginResponseDTO.class),
+                examples = @ExampleObject(value = "{\"toker\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}")
+            )
+        ),
+        @ApiResponse(
+            responseCode = "401", 
+            description = "Credenciais inválidas (email ou senha incorretos)",
+            content = @Content
+        ),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Dados de entrada inválidos",
+            content = @Content
+        )
+    })
     public ResponseEntity login(@RequestBody @Valid LoginDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -46,10 +84,48 @@ public class AuthController {
     }
 
     @PostMapping("/cadastrar/estudante")
+    @Operation(
+        summary = "Cadastrar novo estudante",
+        description = """
+            Registra um novo estudante na plataforma.
+            
+            **Campos obrigatórios:**
+            * `nome` - Nome completo
+            * `cpf` - 11 dígitos (apenas números)
+            * `user` - Nome de usuário único
+            * `email` - Email válido e único
+            * `senha` - Senha de acesso
+            
+            **Regras de validação:**
+            * CPF deve ter 11 dígitos
+            * Email deve ser único no sistema
+            * Username deve ser único
+            """
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Estudante cadastrado com sucesso",
+            content = @Content(examples = @ExampleObject(value = "Estudante cadastrado com sucesso!"))
+        ),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Erro de validação - retorna a mensagem específica",
+            content = @Content(examples = {
+                @ExampleObject(name = "Email duplicado", value = "E-mail já cadastrado"),
+                @ExampleObject(name = "CPF duplicado", value = "CPF já cadastrado"),
+                @ExampleObject(name = "Username duplicado", value = "Username já em uso")
+            })
+        )
+    })
     public ResponseEntity registerEstudante(@RequestBody @Valid CadastroEstudanteDTO data) {
-        if (this.estudanteRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().body("E-mail já cadastrado");
-        if (this.estudanteRepository.existsByCpf(data.cpf())) return ResponseEntity.badRequest().body("CPF já cadastrado");
-        if (this.estudanteRepository.existsByUser(data.user())) return ResponseEntity.badRequest().body("Username já em uso");
+        if (this.estudanteRepository.findByEmail(data.email()) != null) 
+            return ResponseEntity.badRequest().body("E-mail já cadastrado");
+        if (this.estudanteRepository.existsByCpf(data.cpf())) 
+            return ResponseEntity.badRequest().body("CPF já cadastrado");
+        if (this.estudanteRepository.existsByUser(data.user())) 
+            return ResponseEntity.badRequest().body("Username já em uso");
+        
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
 
         Estudante newEstudante = new Estudante();
@@ -60,16 +136,48 @@ public class AuthController {
         newEstudante.setSenha(encryptedPassword);
 
         this.estudanteRepository.save(newEstudante);
-
         return ResponseEntity.ok("Estudante cadastrado com sucesso!");
     }
 
     @PostMapping("/cadastrar/empresa")
+    @Operation(
+        summary = "Cadastrar nova empresa",
+        description = """
+            Registra uma nova empresa na plataforma.
+            
+            **Campos obrigatórios:**
+            * `nome_fantasia` - Nome fantasia da empresa
+            * `cnpj` - 14 dígitos (apenas números)
+            * `email` - Email corporativo válido e único
+            * `senha` - Senha de acesso
+            
+            **Regras de validação:**
+            * CNPJ deve ter 14 dígitos
+            * Email deve ser único no sistema
+            * O campo 'user' é automaticamente definido como o email
+            """
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Empresa cadastrada com sucesso",
+            content = @Content(examples = @ExampleObject(value = "Empresa cadastrada com sucesso!"))
+        ),
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Erro de validação - retorna a mensagem específica",
+            content = @Content(examples = {
+                @ExampleObject(name = "Email duplicado", value = "E-mail corporativo já cadastrado"),
+                @ExampleObject(name = "CNPJ duplicado", value = "CNPJ já cadastrado")
+            })
+        )
+    })
     public ResponseEntity registerEmpresa(@RequestBody @Valid CadastroEmpresaDTO data) {
         if (this.empresaRepository.findByEmail(data.email()) != null) {
             return ResponseEntity.badRequest().body("E-mail corporativo já cadastrado");
         }
-        if (this.empresaRepository.existsByCnpj(data.cnpj())) return ResponseEntity.badRequest().body("CNPJ já cadastrado");
+        if (this.empresaRepository.existsByCnpj(data.cnpj())) 
+            return ResponseEntity.badRequest().body("CNPJ já cadastrado");
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
 
@@ -81,7 +189,6 @@ public class AuthController {
         newEmpresa.setSenha(encryptedPassword);
 
         this.empresaRepository.save(newEmpresa);
-
         return ResponseEntity.ok("Empresa cadastrada com sucesso!");
     }
 }
