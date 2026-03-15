@@ -4,12 +4,14 @@ import type {
   ICompanyRegister,
   IStudentRegister,
   IUserLogin,
+  IUserLoginResponse,
 } from '@models/registerLogin.types';
 
 export const authService = {
-  login: async (data: IUserLogin) => {
+  login: async (data: IUserLogin): Promise<IUserLoginResponse> => {
     const response = await api.post(API_CONST.AUTH.LOGIN_URL, data);
-    return response;
+    console.log(response);
+    return response.data;
   },
 
   studentRegister: async (data: IStudentRegister) => {

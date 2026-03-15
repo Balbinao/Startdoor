@@ -7,18 +7,21 @@ export const studentRegisterFields: FieldConfig<StudentRegisterFormData>[] = [
     name: 'nome',
     label: 'Nome',
     placeholder: 'Digite seu nome completo',
+    maxLength: 60,
   },
   {
     type: 'text',
     name: 'user',
     label: 'User',
     placeholder: 'Estudante123',
+    maxLength: 30,
   },
   {
     type: 'email',
     name: 'email',
     label: 'Email',
     placeholder: 'estudante@email.com',
+    maxLength: 50,
   },
   {
     type: 'password',

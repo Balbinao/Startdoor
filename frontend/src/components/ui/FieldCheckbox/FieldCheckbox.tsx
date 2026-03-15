@@ -10,6 +10,7 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
   name,
   label,
   disabled,
+  readOnly,
 }: ICheckboxField<TFormValues>) => {
   const { control } = useFormContext<TFormValues>();
   const {
@@ -21,7 +22,7 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
   return (
     <div className="flex flex-col gap-1.5">
       <div
-        className={`flex items-start gap-2 ${disabled ? 'input-disabled' : 'cursor-text'}`}
+        className={`flex items-start gap-2 ${disabled ? 'input-disabled' : 'cursor-text'} ${readOnly ? 'input-readonly' : ''}`}
       >
         <Controller
           name={name}
@@ -31,6 +32,7 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
               id={name}
               type="checkbox"
               disabled={disabled}
+              readOnly={readOnly}
               checked={field.value}
               onChange={e => field.onChange(e.target.checked)}
               style={{ marginTop: 4 }}
@@ -39,10 +41,7 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
         />
 
         {label && (
-          <label
-            htmlFor={name}
-            className="text-(--grey-300)"
-          >
+          <label htmlFor={name} className="text-(--grey-300)">
             {label}
           </label>
         )}

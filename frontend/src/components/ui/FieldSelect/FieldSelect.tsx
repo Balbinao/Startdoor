@@ -15,6 +15,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
   name,
   label,
   disabled,
+  readOnly,
   options,
 }: ISelectField<TFormValues>) => {
   const { control } = useFormContext<TFormValues>();
@@ -57,25 +58,27 @@ export const FieldSelect = <TFormValues extends FieldValues>({
               type="button"
               ref={refs.setReference}
               disabled={disabled}
-              onClick={() => !disabled && setOpen(!open)}
-              className={`flex h-10 w-full items-center justify-between rounded-lg border border-(--grey-900) bg-(--grey-1100) pr-3 pl-3 text-3xl focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${disabled ? 'input-disabled' : 'cursor-text'}`}
+              onClick={() => !disabled && !readOnly && setOpen(!open)}
+              className={`flex h-10 w-full items-center justify-between rounded-lg border border-(--grey-900) bg-(--grey-1100) pr-3 pl-3 text-3xl focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${disabled ? 'input-disabled' : 'cursor-text'} ${readOnly ? 'input-readonly' : ''}`}
             >
               {options.find(o => o.value === field.value)?.label ||
                 'Selecione...'}
-              <ChevronUp
-                width={24}
-                height={24}
-                className={`transition-transform duration-200 ${
-                  open ? 'rotate-180' : 'rotate-0'
-                }`}
-              />{' '}
-            </button>
 
+              {!disabled && !readOnly && (
+                <ChevronUp
+                  width={24}
+                  height={24}
+                  className={`transition-transform duration-200 ${
+                    open ? 'rotate-180' : 'rotate-0'
+                  }`}
+                />
+              )}
+            </button>
             {open && (
               <ul
                 ref={refs.setFloating}
                 style={{ top: y ?? 0, left: x ?? 0, position: strategy }}
-                className="z-10 w-full rounded-lg"
+                className="z-10 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-700 bg-(--grey-1100) shadow-md"
               >
                 {options.map((option, index) => (
                   <li
@@ -84,7 +87,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
                       field.onChange(option.value);
                       setOpen(false);
                     }}
-                    className={`cursor-pointer bg-(--grey-1100) px-3 py-2 hover:bg-(--grey-900) ${
+                    className={`cursor-pointer px-3 py-2 hover:bg-(--grey-900) ${
                       index === 0 ? 'rounded-t-lg' : ''
                     } ${index === options.length - 1 ? 'rounded-b-lg' : ''}`}
                   >

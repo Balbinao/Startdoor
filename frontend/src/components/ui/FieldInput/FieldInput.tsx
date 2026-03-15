@@ -6,7 +6,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const FieldInput = forwardRef<HTMLInputElement, InputProps>(
-  ({ iconLeft, iconRight, style, disabled, ...props }, ref) => (
+  ({ iconLeft, iconRight, style, disabled, readOnly, ...props }, ref) => (
     <div
       style={{
         position: 'relative',
@@ -22,7 +22,8 @@ export const FieldInput = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         {...props}
         disabled={disabled}
-        className={`h-10 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) text-3xl focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${disabled ? 'input-disabled' : 'cursor-text'}`}
+        readOnly={readOnly}
+        className={`h-10 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) text-3xl focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${disabled ? 'input-disabled' : 'cursor-text'} ${readOnly ? 'input-readonly' : ''}`}
         style={{
           paddingLeft: iconLeft ? 44 : 12,
           paddingRight: iconRight ? 44 : 12,

@@ -1,12 +1,10 @@
 import { STORAGEKEYS_CONST } from '@constants';
-import type { IStudentData } from '@models/studentData.types';
+import type { IUserLoginResponse } from '@models/registerLogin.types';
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';
 
 export class AuthStore {
   root: RootStore;
-
-  user: IStudentData | null = null;
 
   constructor(root: RootStore) {
     this.root = root;
@@ -14,19 +12,30 @@ export class AuthStore {
   }
 
   get isAuthenticated() {
-    return !!this.user;
+    const token = localStorage.getItem(STORAGEKEYS_CONST.ACCESS_TOKEN);
+
+    if (
+      token &&
+      typeof token === 'string' &&
+      token !== 'undefined' &&
+      token !== 'null' &&
+      token !== '[object Object]'
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
-  login(token: string) {
-    localStorage.setItem(STORAGEKEYS_CONST.ACCESS_TOKEN, token);
+  login(response: IUserLoginResponse) {
+    localStorage.setItem(STORAGEKEYS_CONST.ACCESS_TOKEN, response.token);
+    localStorage.setItem(STORAGEKEYS_CONST.USER_ROLE, response.tipo);
+    localStorage.setItem(STORAGEKEYS_CONST.USER_ID, response.id.toString());
   }
 
   logout() {
     localStorage.removeItem(STORAGEKEYS_CONST.ACCESS_TOKEN);
-    this.user = null;
-  }
-
-  setUser(userData: IStudentData) {
-    this.user = userData;
+    localStorage.removeItem(STORAGEKEYS_CONST.USER_ROLE);
+    localStorage.removeItem(STORAGEKEYS_CONST.USER_ID);
   }
 }

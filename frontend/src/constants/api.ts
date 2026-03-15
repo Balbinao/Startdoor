@@ -8,7 +8,7 @@ export const API_CONST = {
     REGISTER_COMPANY_URL: '/auth/cadastrar/empresa',
   },
   STUDENT: {
-    BY_ID: (id: number) => `/estudante/${id}`,
+    STUDENT_BY_ID: (id: number) => `/estudantes/${id}`,
   },
   COMPANY: {
     BY_ID: (id: number) => `/empresas/${id}`,

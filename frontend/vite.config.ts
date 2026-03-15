@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       '@app': path.resolve(__dirname, './src/app'),
       '@assets/icons': path.resolve(__dirname, './src/assets/icons'),
+      '@assets/images': path.resolve(__dirname, './src/assets/images'),
       '@components': path.resolve(__dirname, './src/components'),
       '@config': path.resolve(__dirname, './src/config'),
       '@constants': path.resolve(__dirname, './src/constants'),

@@ -24,7 +24,7 @@ export const FormFieldWrapper = <TFormValues extends FieldValues>({
   const error = errors[name] as FieldError | undefined;
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5 w-full">
       {label && (
         <label htmlFor={name} className="text-(--grey-300)">
           {label}

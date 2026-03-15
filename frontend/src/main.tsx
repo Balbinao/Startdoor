@@ -1,5 +1,4 @@
 import { StoreProvider } from '@contexts/store/StoreProvider.tsx';
-import '@styles/common-classes.css';
 import '@styles/global.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';

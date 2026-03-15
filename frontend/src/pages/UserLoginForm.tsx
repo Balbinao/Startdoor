@@ -6,7 +6,7 @@ import { FormWrapper } from '@components/layout/FormWrapper';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
-import { userLoginFields } from '@constants';
+import { ROUTES_CONST, userLoginFields } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import {
   userLoginSchema,
@@ -34,8 +34,10 @@ export const UserLoginForm = () => {
 
   const onSubmit = async (data: UserLoginFormData) => {
     try {
-      await login(data);
-      navigate('/perfil');
+      const { id } = await login(data);
+      if (id) {
+        navigate(ROUTES_CONST.STUDENT_PROFILE(id));
+      }
     } catch (error: unknown) {
       let message = 'Erro ao processar login. Tente novamente!';
 
@@ -83,14 +85,14 @@ export const UserLoginForm = () => {
               <div className="flex gap-1 text-center text-sm text-(--grey-300)">
                 Cadastre-se como
                 <Link
-                  to="/cadastro-estudante"
+                  to={ROUTES_CONST.STUDENT_REGISTER}
                   className="font-bold text-(--blue-200)"
                 >
                   Estudante
                 </Link>
                 ou
                 <Link
-                  to="/cadastro-empresa"
+                  to={ROUTES_CONST.COMPANY_REGISTER}
                   className="font-bold text-(--blue-200)"
                 >
                   Empresa
