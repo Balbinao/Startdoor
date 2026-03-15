@@ -29,6 +29,12 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
 ## 🛠️ **Tecnologias Utilizadas**
 
 
+## ✅ **SIM! Deve colocar Swagger UI na tabela de tecnologias!**
+
+Aqui está a tabela atualizada:
+
+## 🛠️ **Tecnologias Utilizadas**
+
 <table align="center">
   <tr>
     <th></th>
@@ -79,6 +85,10 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
       <a href="https://hibernate.org/">
         <img alt="Hibernate" src="https://img.shields.io/badge/hibernate-59666C.svg?style=for-the-badge&logo=hibernate&logoColor=white"/>
       </a>
+      <br>
+      <a href="https://swagger.io/">
+        <img alt="Swagger" src="https://img.shields.io/badge/swagger-85EA2D.svg?style=for-the-badge&logo=swagger&logoColor=black"/>
+      </a>
     </td>
   </tr>
 
@@ -109,6 +119,18 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
       <a href="https://git-scm.com/">
         <img alt="Git" src="https://img.shields.io/badge/git-F05032.svg?style=for-the-badge&logo=git&logoColor=white"/>
       </a>
+    </td>
+  </tr>
+
+  <tr>
+    <th>Documentação</th>
+    <td align="center">—</td>
+    <td>
+      <a href="https://swagger.io/">
+        <img alt="Swagger UI" src="https://img.shields.io/badge/swagger%20ui-85EA2D.svg?style=for-the-badge&logo=swagger&logoColor=black"/>
+      </a>
+      <br>
+      <small>http://localhost:8080/swagger-ui.html</small>
     </td>
   </tr>
 
