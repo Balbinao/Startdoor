@@ -42,47 +42,85 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    @Operation(
-        summary = "Realizar login na plataforma",
-        description = """
-            Autentica um usuário (estudante ou empresa) e retorna um token JWT.
-            
-            **Regras:**
-            * Email e senha são obrigatórios
-            * O email deve ser válido
-            * O token expira em 2 horas
-            * Use o token no header: `Authorization: Bearer {token}`
-            """
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Login realizado com sucesso",
-            content = @Content(
-                mediaType = "application/json",
-                schema = @Schema(implementation = LoginResponseDTO.class),
-                examples = @ExampleObject(value = "{\"toker\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}")
+@Operation(
+    summary = "Realizar login na plataforma",
+    description = """
+        Autentica um usuário (estudante ou empresa) e retorna:
+        * **token** - JWT para autenticação
+        * **id** - ID do usuário no banco de dados
+        * **tipo** - Tipo de usuário (estudante ou empresa)
+        
+        **Regras:**
+        * Email e senha são obrigatórios
+        * O token expira em 2 horas
+        * Use o token no header: `Authorization: Bearer {token}`
+        """
+)
+@ApiResponses(value = {
+    @ApiResponse(
+        responseCode = "200", 
+        description = "Login realizado com sucesso",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = LoginResponseDTO.class),
+            examples = @ExampleObject(
+                value = """
+                {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    "id": 1,
+                    "tipo": "estudante"
+                }
+                """
             )
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Credenciais inválidas (email ou senha incorretos)",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "400", 
-            description = "Dados de entrada inválidos",
-            content = @Content
         )
-    })
-    public ResponseEntity login(@RequestBody @Valid LoginDTO data) {
+    ),
+    @ApiResponse(
+        responseCode = "401", 
+        description = "Credenciais inválidas (email ou senha incorretos)",
+        content = @Content
+    ),
+    @ApiResponse(
+        responseCode = "400", 
+        description = "Dados de entrada inválidos",
+        content = @Content
+    )
+})
+public ResponseEntity<?> login(@RequestBody @Valid LoginDTO data) {
+    try {
+        // 1. Autenticar o usuário
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-
-        var token = tokenService.gerarToken((UserDetails) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        
+        // 2. Gerar o token JWT
+        var userDetails = (UserDetails) auth.getPrincipal();
+        var token = tokenService.gerarToken(userDetails);
+        
+        // 3. Buscar o usuário no banco para pegar ID e tipo
+        Long userId = null;
+        String userType = null;
+        
+        // Tenta encontrar como estudante
+        var estudante = estudanteRepository.findByEmail(data.email());
+        if (estudante != null) {
+            userId = ((Estudante) estudante).getId();
+            userType = "estudante";
+        } 
+        // Se não for estudante, tenta como empresa
+        else {
+            var empresa = empresaRepository.findByEmail(data.email());
+            if (empresa != null) {
+                userId = ((Empresa) empresa).getId();
+                userType = "empresa";
+            }
+        }
+        
+        // 4. Retornar o DTO completo
+        return ResponseEntity.ok(new LoginResponseDTO(token, userId, userType));
+        
+    } catch (Exception e) {
+        return ResponseEntity.status(401).body("Credenciais inválidas");
     }
-
+}
     @PostMapping("/cadastrar/estudante")
     @Operation(
         summary = "Cadastrar novo estudante",
