@@ -1,126 +1,73 @@
-## 📘 **README.md - Frontend Services e Utils**
+# React + TypeScript + Vite
 
-```markdown
-# 📁 Frontend - Services e Utils
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Este documento descreve os arquivos JavaScript responsáveis pela comunicação com o backend e utilitários do projeto.
+Currently, two official plugins are available:
 
-## 📦 Estrutura de Arquivos
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
+## React Compiler
 
-## 🔧 Services
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-### `api.js`
-Configuração base do axios com:
-- Base URL definida via `import.meta.env.VITE_API_URL` (fallback para `http://localhost:8080`)
-  > ⚠️ **Nota:** O arquivo `.env` é opcional. Se não existir, será usado `http://localhost:8080` automaticamente
-- Timeout de 10 segundos
-- Interceptor para adicionar token JWT no header Authorization
-- Interceptor para tratar erros (401 redireciona para login)
+## Expanding the ESLint configuration
 
-### `authService.js`
-Responsável por autenticação e cadastros:
-- `login(email, senha)` → Autentica usuário e retorna token
-- `registerEstudante(dados)` → Cadastra novo estudante
-- `registerEmpresa(dados)` → Cadastra nova empresa
-- `logout()` → Remove dados da sessão
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### `empresaService.js`
-Operações CRUD para empresas:
-- `listarTodas()` → GET /empresas
-- `buscarPorId(id)` → GET /empresas/{id}
-- `atualizar(id, dados)` → PUT /empresas/{id}
-- `deletar(id)` → DELETE /empresas/{id}
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-### `estudanteService.js`
-Operações CRUD para estudantes:
-- `listarTodos()` → GET /estudantes
-- `buscarPorId(id)` → GET /estudantes/{id}
-- `atualizar(id, dados)` → PUT /estudantes/{id}
-- `deletar(id)` → DELETE /estudantes/{id}
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-## 🧰 Utils
-
-### `constants.js`
-Armazena constantes do sistema:
-- `API_ENDPOINTS` → Todos os endpoints da API organizados por módulo
-- `ERROR_MESSAGES` → Mensagens de erro padronizadas
-
-## 🌐 Endpoints da API
-
-| Método | Rota | Descrição | Service |
-|--------|------|-----------|---------|
-| POST | `/auth/login` | Login | authService |
-| POST | `/auth/cadastrar/estudante` | Cadastro estudante | authService |
-| POST | `/auth/cadastrar/empresa` | Cadastro empresa | authService |
-| GET | `/empresas` | Lista empresas | empresaService |
-| GET | `/empresas/{id}` | Busca empresa por ID | empresaService |
-| PUT | `/empresas/{id}` | Atualiza empresa | empresaService |
-| DELETE | `/empresas/{id}` | Deleta empresa | empresaService |
-| GET | `/estudantes` | Lista estudantes | estudanteService |
-| GET | `/estudantes/{id}` | Busca estudante por ID | estudanteService |
-| PUT | `/estudantes/{id}` | Atualiza estudante | estudanteService |
-| DELETE | `/estudantes/{id}` | Deleta estudante | estudanteService |
-
-## 🔐 Autenticação
-
-- O token JWT é armazenado no `localStorage` com a chave `@App:token`
-- Todas as requisições (exceto login e cadastros) enviam o token no header: `Authorization: Bearer {token}`
-- Em caso de erro 401, o usuário é redirecionado para a página de login
-
-## 📥 Como usar nos componentes
-
-```javascript
-import authService from '../services/authService';
-import empresaService from '../services/empresaService';
-
-// Exemplo de login
-const handleLogin = async (email, senha) => {
-  const result = await authService.login(email, senha);
-  if (result.success) {
-    localStorage.setItem('@App:token', result.token);
-    // redirecionar...
-  }
-};
-
-// Exemplo de listar empresas
-const carregarEmpresas = async () => {
-  const result = await empresaService.listarTodas();
-  if (result.success) {
-    setEmpresas(result.data);
-  }
-};
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-## 🏷️ **ENUMS**
 
-O projeto possui enums que espelham as do backend, facilitando a consistência dos dados:
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-### `enums.js`
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-`ModeloTrabalho` Presencial, Híbrido, Remoto 
-`ReceitaAnual` Faixas de faturamento 
-`TamanhoEmpresa`  Porte da empresa  
-`UserRole` Perfis de usuário 
-
-### Utilitários (`EnumUtils`)
-- `getValues(enumObj)` → Retorna array com todos os valores
-- `getKeys(enumObj)` → Retorna array com todas as chaves
-- `getLabel(enumObj, key)` → Retorna o label amigável
-- `getSelectOptions(enumObj)` → Gera opções para componente select
-
-### Exemplo de uso
-```jsx
-import { ModeloTrabalho, EnumUtils } from '../utils/enums';
-
-// Em um select
-<select>
-  {EnumUtils.getSelectOptions(ModeloTrabalho).map(option => (
-    <option key={option.value} value={option.value}>
-      {option.label}
-    </option>
-  ))}
-</select>
-
-
-**Próximos passos:** Desenvolver as telas utilizando estes services para integração com o backend.
-
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
