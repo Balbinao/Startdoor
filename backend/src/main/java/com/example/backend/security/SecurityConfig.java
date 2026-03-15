@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // Endpoints públicos (sem autenticação)
+                        // ========== ENDPOINTS PÚBLICOS ==========
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/cadastrar/**").permitAll()
                         
@@ -47,10 +47,32 @@ public class SecurityConfig {
                             "/api-docs/**"
                         ).permitAll()
                         
-                        // Endpoints protegidos (exigem token)
-                        .requestMatchers("/estudantes/**").authenticated()
-                        .requestMatchers("/empresas/**").authenticated()
+                        // ========== EMPRESAS ==========
+                        // GET - todos podem ver (estudantes precisam consultar empresas)
+                        .requestMatchers(HttpMethod.GET, "/empresas/**").permitAll()
                         
+                        // PUT - apenas a própria empresa ou admin
+                        .requestMatchers(HttpMethod.PUT, "/empresas/**").hasAnyRole("EMPRESA", "ADMIN")
+                        
+                        // DELETE - apenas admin
+                        .requestMatchers(HttpMethod.DELETE, "/empresas/**").hasRole("ADMIN")
+                        
+                        // ========== ESTUDANTES ==========
+                        // GET /estudantes (lista) - apenas admin (dados sensíveis)
+                        .requestMatchers(HttpMethod.GET, "/estudantes").hasRole("ADMIN")
+                        
+                        // GET /estudantes/{id} - próprio estudante ou admin
+                        .requestMatchers(HttpMethod.GET, "/estudantes/{id}").hasAnyRole("ESTUDANTE", "ADMIN")
+                        
+                        // PUT /estudantes/{id} - próprio estudante ou admin
+                        .requestMatchers(HttpMethod.PUT, "/estudantes/{id}").hasAnyRole("ESTUDANTE", "ADMIN")
+                        
+                        // DELETE /estudantes/{id} - apenas admin
+                        .requestMatchers(HttpMethod.DELETE, "/estudantes/**").hasRole("ADMIN")
+                        
+                        // ========== ADMIN ==========
+                        // ADMIN
+                        .requestMatchers("/admin/**").hasRole("ADMIN") 
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -72,14 +94,11 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        
-       
         configuration.setAllowedHeaders(Arrays.asList(
             "Authorization", 
             "Content-Type", 
             "X-Requested-With"
         ));
-        
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         

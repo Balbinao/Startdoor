@@ -29,15 +29,35 @@ public class OpenAPIConfig {
                                 
                                 **Como autenticar:**
                                 1. Faça login no endpoint `/auth/login` com email e senha
-                                2. Copie o token retornado (campo "toker")
-                                3. Clique no botão **Authorize** abaixo
-                                4. Insira: `Bearer {seu-token}`
-                                5. Agora você pode testar os endpoints protegidos
+                                2. A resposta conterá:
+                                    - **token**: JWT para autenticação
+                                    - **id**: ID do usuário no banco
+                                    - **tipo**: "ADMIN", "ESTUDANTE" ou "EMPRESA"
+                                3. Copie o token
+                                4. Clique no botão **Authorize** abaixo
+                                5. Insira: `Bearer {seu-token}`
+                                6. Agora você pode testar os endpoints protegidos
+                                
+                                ## 👥 Tipos de Usuário
+                                * **👨‍🎓 Estudante**: Pode avaliar empresas, comentar e favoritar
+                                * **🏢 Empresa**: Pode visualizar seu perfil e avaliações
+                                * **👑 Administrador**: Acesso total ao sistema (gerenciar usuários, empresas, etc)
+                                
+                                ## 📋 Permissões por Endpoint
+                                * **GET /empresas/** → Público (todos podem ver)
+                                * **PUT /empresas/{id}** → Apenas a própria empresa ou ADMIN
+                                * **DELETE /empresas/{id}** → Apenas ADMIN
+                                * **GET /estudantes** → Apenas ADMIN
+                                * **GET /estudantes/{id}** → Próprio estudante ou ADMIN
+                                * **PUT /estudantes/{id}** → Próprio estudante ou ADMIN
+                                * **DELETE /estudantes/{id}** → Apenas ADMIN
+                                * **/admin/** → Apenas ADMIN
                                 
                                 ## Funcionalidades
-                                * 🔐 Autenticação com JWT
+                                * 🔐 Autenticação com JWT (retorna ID e tipo do usuário)
                                 * 👨‍🎓 Cadastro e gerenciamento de estudantes
                                 * 🏢 Cadastro e gerenciamento de empresas
+                                * 👑 Gerenciamento de administradores
                                 * ⭐ Futuro: Avaliações e notas
                                 """)
                         .version("1.0.0")
