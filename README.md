@@ -28,13 +28,6 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
 
 ## 🛠️ **Tecnologias Utilizadas**
 
-
-## ✅ **SIM! Deve colocar Swagger UI na tabela de tecnologias!**
-
-Aqui está a tabela atualizada:
-
-## 🛠️ **Tecnologias Utilizadas**
-
 <table align="center">
   <tr>
     <th></th>
@@ -86,9 +79,6 @@ Aqui está a tabela atualizada:
         <img alt="Hibernate" src="https://img.shields.io/badge/hibernate-59666C.svg?style=for-the-badge&logo=hibernate&logoColor=white"/>
       </a>
       <br>
-      <a href="https://swagger.io/">
-        <img alt="Swagger" src="https://img.shields.io/badge/swagger-85EA2D.svg?style=for-the-badge&logo=swagger&logoColor=black"/>
-      </a>
     </td>
   </tr>
 
@@ -123,14 +113,13 @@ Aqui está a tabela atualizada:
   </tr>
 
   <tr>
-    <th>Documentação</th>
+    <th>Outras Ferramentas</th>
     <td align="center">—</td>
     <td>
       <a href="https://swagger.io/">
         <img alt="Swagger UI" src="https://img.shields.io/badge/swagger%20ui-85EA2D.svg?style=for-the-badge&logo=swagger&logoColor=black"/>
       </a>
       <br>
-      <small>http://localhost:8080/swagger-ui.html</small>
     </td>
   </tr>
 
