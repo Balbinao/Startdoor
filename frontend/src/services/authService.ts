@@ -1,26 +1,31 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
 import type {
-  ICompanyRegister,
-  IStudentRegister,
+  ICompanyRegistration,
+  IStudentRegistration,
   IUserLogin,
   IUserLoginResponse,
-} from '@models/registerLogin.types';
+} from '@models/registrationLogin.types';
 
 export const authService = {
   login: async (data: IUserLogin): Promise<IUserLoginResponse> => {
     const response = await api.post(API_CONST.AUTH.LOGIN_URL, data);
-    console.log(response);
     return response.data;
   },
 
-  studentRegister: async (data: IStudentRegister) => {
-    const response = await api.post(API_CONST.AUTH.REGISTER_STUDENT_URL, data);
+  studentRegistration: async (data: IStudentRegistration) => {
+    const response = await api.post(
+      API_CONST.AUTH.REGISTRATION_STUDENT_URL,
+      data,
+    );
     return response.data;
   },
 
-  companyRegister: async (data: ICompanyRegister) => {
-    const response = await api.post(API_CONST.AUTH.REGISTER_COMPANY_URL, data);
+  companyRegistration: async (data: ICompanyRegistration) => {
+    const response = await api.post(
+      API_CONST.AUTH.REGISTRATION_COMPANY_URL,
+      data,
+    );
     return response.data;
   },
 };

@@ -1,1 +1,0 @@
-export { StudentBanner } from './StudentBanner';

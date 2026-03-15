@@ -6,17 +6,18 @@ import { FormWrapper } from '@components/layout/FormWrapper';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
-import { ROUTES_CONST, userLoginFields } from '@constants';
+import { ROUTES_CONST, USER_ROLES_CONST, userLoginFields } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import {
   userLoginSchema,
   type UserLoginFormData,
 } from '@schemas/userLoginSchema';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const UserLoginForm = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
 
   const form = useForm<UserLoginFormData>({
     resolver: zodResolver(userLoginSchema),
@@ -32,11 +33,17 @@ export const UserLoginForm = () => {
     formState: { isSubmitting },
   } = form;
 
+  useEffect(() => {
+    logout();
+  }, []);
+
   const onSubmit = async (data: UserLoginFormData) => {
     try {
-      const { id } = await login(data);
-      if (id) {
-        navigate(ROUTES_CONST.STUDENT_PROFILE(id));
+      const { id, tipo } = await login(data);
+      if (tipo === USER_ROLES_CONST.ESTUDANTE) {
+        navigate(ROUTES_CONST.STUDENT.PROFILE(id));
+      } else if (tipo === USER_ROLES_CONST.EMPRESA) {
+        navigate(ROUTES_CONST.COMPANY.PROFILE(id));
       }
     } catch (error: unknown) {
       let message = 'Erro ao processar login. Tente novamente!';
@@ -85,14 +92,14 @@ export const UserLoginForm = () => {
               <div className="flex gap-1 text-center text-sm text-(--grey-300)">
                 Cadastre-se como
                 <Link
-                  to={ROUTES_CONST.STUDENT_REGISTER}
+                  to={ROUTES_CONST.STUDENT.REGISTRATION}
                   className="font-bold text-(--blue-200)"
                 >
                   Estudante
                 </Link>
                 ou
                 <Link
-                  to={ROUTES_CONST.COMPANY_REGISTER}
+                  to={ROUTES_CONST.COMPANY.REGISTRATION}
                   className="font-bold text-(--blue-200)"
                 >
                   Empresa

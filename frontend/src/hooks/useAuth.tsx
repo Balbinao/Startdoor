@@ -1,10 +1,10 @@
 import { STORAGEKEYS_CONST } from '@constants';
 import { useStore } from '@contexts/store/useStore';
 import type {
-  ICompanyRegister,
-  IStudentRegister,
+  ICompanyRegistration,
+  IStudentRegistration,
   IUserLogin,
-} from '@models/registerLogin.types';
+} from '@models/registrationLogin.types';
 import { authService } from '../services/authService';
 
 export const useAuth = () => {
@@ -50,9 +50,13 @@ export const useAuth = () => {
     authStore.logout();
   };
 
-  const studentRegister = async (studentRegisterData: IStudentRegister) => {
+  const studentRegistration = async (
+    studentRegistrationData: IStudentRegistration,
+  ) => {
     try {
-      const response = await authService.studentRegister(studentRegisterData);
+      const response = await authService.studentRegistration(
+        studentRegistrationData,
+      );
 
       return response;
     } catch (error) {
@@ -61,9 +65,13 @@ export const useAuth = () => {
     }
   };
 
-  const companyRegister = async (companyRegisterData: ICompanyRegister) => {
+  const companyRegistration = async (
+    companyRegistrationData: ICompanyRegistration,
+  ) => {
     try {
-      const response = await authService.companyRegister(companyRegisterData);
+      const response = await authService.companyRegistration(
+        companyRegistrationData,
+      );
 
       return response;
     } catch (error) {
@@ -77,7 +85,7 @@ export const useAuth = () => {
     getUserId,
     getUserRole,
     logout,
-    studentRegister,
-    companyRegister,
+    studentRegistration,
+    companyRegistration,
   };
 };

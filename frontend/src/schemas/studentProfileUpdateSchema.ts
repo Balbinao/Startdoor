@@ -9,14 +9,21 @@ export const studentProfileUpdateSchema = z.object({
 
   user: z
     .string()
-    .min(8, 'Username precisa ter pelo menos 8 caracteres')
-    .max(30, 'Username não pode ter mais de 30 caracteres'),
+    .min(8, 'User precisa ter pelo menos 8 caracteres')
+    .max(30, 'User não pode ter mais de 30 caracteres'),
 
   email: z
     .email({ message: 'Email inválido' })
     .max(50, { message: 'O email deve ter no máximo 50 caracteres' }),
 
   senha: z.string().min(6, 'Senha precisa ter pelo menos 6 caracteres'),
+
+  dataNascimento: z
+    .string()
+    .optional()
+    .refine(val => !val || !isNaN(new Date(val).getTime()), {
+      message: 'Data inválida',
+    }),
 
   biografia: z.string().optional(),
 

@@ -4,26 +4,27 @@ import { useForm } from 'react-hook-form';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
-import { studentRegisterFields } from '@constants';
+import { companyRegistrationFields } from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
 import {
-  studentRegisterSchema,
-  type StudentRegisterFormData,
-} from '@schemas/studentRegisterSchema';
+  companyRegistrationSchema,
+  type CompanyRegistrationFormData,
+} from '@schemas/companyRegistrationSchema';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-export const StudentRegisterForm = () => {
+export const CompanyRegistrationForm = () => {
   const navigate = useNavigate();
-  const { studentRegister } = useAuth();
+  const { companyRegistration, logout } = useAuth();
 
-  const form = useForm<StudentRegisterFormData>({
-    resolver: zodResolver(studentRegisterSchema),
+  const form = useForm<CompanyRegistrationFormData>({
+    resolver: zodResolver(companyRegistrationSchema),
     defaultValues: {
-      nome: '',
-      cpf: '',
-      user: '',
+      nome_fantasia: '',
+      cnpj: '',
+      // user: '',
       email: '',
       senha: '',
       acordo: false,
@@ -36,10 +37,14 @@ export const StudentRegisterForm = () => {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (data: StudentRegisterFormData) => {
+  useEffect(() => {
+    logout();
+  }, []);
+
+  const onSubmit = async (data: CompanyRegistrationFormData) => {
     try {
-      const { acordo: _, ...studentData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
-      await studentRegister(studentData);
+      const { acordo: _, ...companyData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
+      await companyRegistration(companyData);
       navigate('/login');
     } catch (error: unknown) {
       console.error(error);
@@ -71,7 +76,7 @@ export const StudentRegisterForm = () => {
             className="flex flex-col gap-8"
           >
             <div className="flex flex-col gap-5">
-              {studentRegisterFields.map(field => (
+              {companyRegistrationFields.map(field => (
                 <FormField key={field.name} {...field} />
               ))}
             </div>

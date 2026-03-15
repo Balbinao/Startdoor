@@ -7,23 +7,23 @@ import {
   Pin,
   Star,
 } from '@assets/icons';
-import { UserAttribute } from '@components/ui/UserAttribute/UserAttribute';
+import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
-import { useStudentRegistrations } from '@hooks/useStudentRegistration';
-import type { IStudent } from '@models/studentData.types';
+import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import type { ICompany } from '@models/companyData.types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const ICON_SIZE = 44;
 const STROKE_WIDTH = 1.5;
 
-export const StudentProfile = () => {
+export const CompanyProfile = () => {
   const { id: userId } = useParams<{ id: string }>();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [searchedStudent, setSearchedStudent] = useState<IStudent | null>(null);
+  const [searchedCompany, setSearchedCompany] = useState<ICompany | null>(null);
 
-  const { getStudent } = useStudentRegistrations();
+  const { getCompany } = useCompanyRegistrations();
 
   useEffect(() => {
     const fetch = async () => {
@@ -31,7 +31,7 @@ export const StudentProfile = () => {
         setIsLoading(true);
 
         if (userId) {
-          setSearchedStudent(await getStudent(Number(userId)));
+          setSearchedCompany(await getCompany(Number(userId)));
         }
       } catch (error: unknown) {
         console.error(error);
@@ -56,7 +56,7 @@ export const StudentProfile = () => {
       <UserBanner />
       <div className="flex w-full max-w-3xl flex-col gap-3">
         <div className="flex w-full gap-3">
-          {searchedStudent?.paisOrigem && (
+          {searchedCompany?.paisOrigem && (
             <UserAttribute
               icon={
                 <Flag
@@ -66,11 +66,11 @@ export const StudentProfile = () => {
                 />
               }
               title="Pais de Origem"
-              value={searchedStudent.paisOrigem}
+              value={searchedCompany.paisOrigem}
             />
           )}
 
-          {searchedStudent?.mediaNotaGeral && (
+          {searchedCompany?.receitaAnual && (
             <UserAttribute
               icon={
                 <Star
@@ -79,14 +79,14 @@ export const StudentProfile = () => {
                   strokeWidth={STROKE_WIDTH}
                 />
               }
-              title="Média da Nota Geral"
-              value={searchedStudent.mediaNotaGeral}
+              title="Receita Anual"
+              value={searchedCompany.receitaAnual}
             />
           )}
         </div>
 
         <div className="flex w-full gap-3">
-          {searchedStudent?.dataNascimento && (
+          {searchedCompany?.dataFundacao && (
             <UserAttribute
               icon={
                 <Hourglass
@@ -95,12 +95,12 @@ export const StudentProfile = () => {
                   strokeWidth={STROKE_WIDTH}
                 />
               }
-              title="Data de Nascimento"
-              value={searchedStudent.dataNascimento}
+              title="Data de Fundação"
+              value={searchedCompany.dataFundacao}
             />
           )}
 
-          {searchedStudent?.modeloTrabalho && (
+          {searchedCompany?.tamanhoEmpresa && (
             <UserAttribute
               icon={
                 <Building
@@ -109,13 +109,13 @@ export const StudentProfile = () => {
                   strokeWidth={STROKE_WIDTH}
                 />
               }
-              title="Modelo de Trabalho"
-              value={searchedStudent.modeloTrabalho}
+              title="Taamnho da Empresa"
+              value={searchedCompany.tamanhoEmpresa}
             />
           )}
         </div>
 
-        {searchedStudent?.estadoAtuacao && (
+        {searchedCompany?.estadoSede && (
           <UserAttribute
             icon={
               <Pin
@@ -124,12 +124,12 @@ export const StudentProfile = () => {
                 strokeWidth={STROKE_WIDTH}
               />
             }
-            title="Estado de Atuação"
-            value={searchedStudent.estadoAtuacao}
+            title="Sede no Brasil"
+            value={searchedCompany.estadoSede}
           />
         )}
 
-        {searchedStudent?.setorInteresse && (
+        {searchedCompany?.mediaSalarial && (
           <UserAttribute
             icon={
               <Focus
@@ -138,12 +138,12 @@ export const StudentProfile = () => {
                 strokeWidth={STROKE_WIDTH}
               />
             }
-            title="Setor de Interesse"
-            value={searchedStudent.setorInteresse}
+            title="Média Salarial"
+            value={searchedCompany.mediaSalarial}
           />
         )}
 
-        {searchedStudent?.habilidadesPrincipais && (
+        {searchedCompany?.areaAtuacao && (
           <UserAttribute
             icon={
               <Category
@@ -152,8 +152,8 @@ export const StudentProfile = () => {
                 strokeWidth={STROKE_WIDTH}
               />
             }
-            title="Habilidades Principais"
-            value={searchedStudent.habilidadesPrincipais}
+            title="Área de Atuação"
+            value={searchedCompany.areaAtuacao}
           />
         )}
       </div>
