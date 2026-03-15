@@ -1,9 +1,15 @@
 ## 📚 **README.md - Backend Startdoor** (atualizado)
 
-```markdown
+
 # 🚪 Startdoor Backend
 
 Backend da plataforma Startdoor, desenvolvido com **Spring Boot** e **JWT** para autenticação.
+
+## 📚 Swagger UI
+o Projeto Backend possui um swagger, para interagir com o swagger basta acessar:
+ ```bash
+ http://localhost:8080/swagger-ui.html
+```
 
 ## 📋 **VISÃO GERAL**
 
@@ -59,18 +65,6 @@ src/main/java/com/example/backend/
     ├── GlobalExceptionHandler.java
     └── ResourceNotFoundException.java
 ```
-
-## 🚀 **TECNOLOGIAS**
-
-- Java 17
-- Spring Boot 3.x
-- Spring Security
-- JWT (Auth0)
-- JPA / Hibernate
-- Mysql
-- Maven
-- Docker
-
 ## 📦 **COMANDOS DOCKER**
 
 ### Subir aplicação com Docker
