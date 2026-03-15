@@ -6,6 +6,7 @@ import com.example.backend.dto.LoginDTO;
 import com.example.backend.dto.LoginResponseDTO;
 import com.example.backend.model.Empresa;
 import com.example.backend.model.Estudante;
+import com.example.backend.model.enums.UserRole;
 import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
 import com.example.backend.security.TokenService;
@@ -48,7 +49,7 @@ public class AuthController {
         Autentica um usuário (estudante ou empresa) e retorna:
         * **token** - JWT para autenticação
         * **id** - ID do usuário no banco de dados
-        * **tipo** - Tipo de usuário (estudante ou empresa)
+        * **tipo** - Tipo de usuário (admin, estudante ou empresa)
         
         **Regras:**
         * Email e senha são obrigatórios
@@ -68,7 +69,7 @@ public class AuthController {
                 {
                     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
                     "id": 1,
-                    "tipo": "estudante"
+                    "tipo": "ESTUDANTE"
                 }
                 """
             )
@@ -95,27 +96,27 @@ public ResponseEntity<?> login(@RequestBody @Valid LoginDTO data) {
         var userDetails = (UserDetails) auth.getPrincipal();
         var token = tokenService.gerarToken(userDetails);
         
-        // 3. Buscar o usuário no banco para pegar ID e tipo
+        // 3. Buscar o usuário no banco para pegar ID e tipo (usando Enum)
         Long userId = null;
-        String userType = null;
+        UserRole userRole = null;  
         
         // Tenta encontrar como estudante
         var estudante = estudanteRepository.findByEmail(data.email());
         if (estudante != null) {
             userId = ((Estudante) estudante).getId();
-            userType = "estudante";
+            userRole = UserRole.ESTUDANTE;  
         } 
         // Se não for estudante, tenta como empresa
         else {
             var empresa = empresaRepository.findByEmail(data.email());
             if (empresa != null) {
                 userId = ((Empresa) empresa).getId();
-                userType = "empresa";
+                userRole = UserRole.EMPRESA;  
             }
         }
         
-        // 4. Retornar o DTO completo
-        return ResponseEntity.ok(new LoginResponseDTO(token, userId, userType));
+        // 4. Retornar o DTO completo com o Enum
+        return ResponseEntity.ok(new LoginResponseDTO(token, userId, userRole));
         
     } catch (Exception e) {
         return ResponseEntity.status(401).body("Credenciais inválidas");
