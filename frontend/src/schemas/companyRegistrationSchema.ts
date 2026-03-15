@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const companyRegisterSchema = z.object({
+export const companyRegistrationSchema = z.object({
   nome_fantasia: z
     .string()
     .min(5, 'Nome Fantasia precisa ter pelo menos 5 caracteres')
@@ -26,4 +26,6 @@ export const companyRegisterSchema = z.object({
   }),
 });
 
-export type CompanyRegisterFormData = z.infer<typeof companyRegisterSchema>;
+export type CompanyRegistrationFormData = z.infer<
+  typeof companyRegistrationSchema
+>;

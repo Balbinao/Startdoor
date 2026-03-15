@@ -1,5 +1,5 @@
 import { STORAGEKEYS_CONST } from '@constants';
-import type { IUserLoginResponse } from '@models/registerLogin.types';
+import type { IUserLoginResponse } from '@models/registrationLogin.types';
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';
 

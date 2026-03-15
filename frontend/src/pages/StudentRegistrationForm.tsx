@@ -4,26 +4,27 @@ import { useForm } from 'react-hook-form';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
-import { companyRegisterFields } from '@constants';
+import { studentRegistrationFields } from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
 import {
-  companyRegisterSchema,
-  type CompanyRegisterFormData,
-} from '@schemas/companyRegisterSchema';
+  studentRegistrationSchema,
+  type StudentRegistrationFormData,
+} from '@schemas/studentRegistrationSchema';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-export const CompanyRegisterForm = () => {
+export const StudentRegistrationForm = () => {
   const navigate = useNavigate();
-  const { companyRegister } = useAuth();
+  const { studentRegistration, logout } = useAuth();
 
-  const form = useForm<CompanyRegisterFormData>({
-    resolver: zodResolver(companyRegisterSchema),
+  const form = useForm<StudentRegistrationFormData>({
+    resolver: zodResolver(studentRegistrationSchema),
     defaultValues: {
-      nome_fantasia: '',
-      cnpj: '',
-      // user: '',
+      nome: '',
+      cpf: '',
+      user: '',
       email: '',
       senha: '',
       acordo: false,
@@ -36,10 +37,14 @@ export const CompanyRegisterForm = () => {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (data: CompanyRegisterFormData) => {
+  useEffect(() => {
+    logout();
+  }, []);
+
+  const onSubmit = async (data: StudentRegistrationFormData) => {
     try {
-      const { acordo: _, ...companyData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
-      await companyRegister(companyData);
+      const { acordo: _, ...studentData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
+      await studentRegistration(studentData);
       navigate('/login');
     } catch (error: unknown) {
       console.error(error);
@@ -67,13 +72,11 @@ export const CompanyRegisterForm = () => {
       <div className="w-full max-w-md">
         <FormWrapper form={form}>
           <form
-            onSubmit={handleSubmit(onSubmit, errors =>
-              console.log('Erros do Zod:', errors),
-            )}
+            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-8"
           >
             <div className="flex flex-col gap-5">
-              {companyRegisterFields.map(field => (
+              {studentRegistrationFields.map(field => (
                 <FormField key={field.name} {...field} />
               ))}
             </div>

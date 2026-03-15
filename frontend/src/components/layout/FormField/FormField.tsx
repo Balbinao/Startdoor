@@ -1,4 +1,5 @@
 import { FieldCheckbox } from '@components/ui/FieldCheckbox';
+import { FieldDate } from '@components/ui/FieldDate/FieldDate';
 import { FieldRadio } from '@components/ui/FieldRadio';
 import { FieldSelect } from '@components/ui/FieldSelect';
 import { FieldText } from '@components/ui/FieldText';
@@ -14,19 +15,22 @@ export const FormField = <TFormValues extends FieldValues>(
     case 'email':
     case 'password':
     case 'number':
-      return <FieldText {...field} />;
+      return <FieldText<TFormValues> {...field} />;
 
     case 'textarea':
-      return <FieldTextarea {...field} />;
+      return <FieldTextarea<TFormValues> {...field} />;
 
     case 'radio':
-      return <FieldRadio {...field} />;
+      return <FieldRadio<TFormValues> {...field} />;
 
     case 'select':
-      return <FieldSelect {...field} />;
+      return <FieldSelect<TFormValues> {...field} />;
 
     case 'checkbox':
-      return <FieldCheckbox {...field} />;
+      return <FieldCheckbox<TFormValues> {...field} />;
+
+    case 'date':
+      return <FieldDate<TFormValues> {...field} />;
 
     default:
       return null;

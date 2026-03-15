@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const studentRegisterSchema = z.object({
+export const studentRegistrationSchema = z.object({
   nome: z
     .string()
     .min(5, 'Nome precisa ter pelo menos 5 caracteres')
@@ -42,4 +42,6 @@ export const studentRegisterSchema = z.object({
   // }),
 });
 
-export type StudentRegisterFormData = z.infer<typeof studentRegisterSchema>;
+export type StudentRegistrationFormData = z.infer<
+  typeof studentRegistrationSchema
+>;

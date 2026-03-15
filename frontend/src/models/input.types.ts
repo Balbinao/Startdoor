@@ -44,9 +44,16 @@ export type ICheckboxField<T extends FieldValues> = IBaseField<T> & {
   type: 'checkbox';
 };
 
+export type IInputDate<T extends FieldValues> = IBaseField<T> & {
+  type: 'date';
+  min?: string;
+  max?: string;
+};
+
 export type FieldConfig<T extends FieldValues> =
   | ITextField<T>
   | ITextareaField<T>
   | IRadioField<T>
   | ISelectField<T>
-  | ICheckboxField<T>;
+  | ICheckboxField<T>
+  | IInputDate<T>;

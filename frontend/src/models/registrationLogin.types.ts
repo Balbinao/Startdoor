@@ -1,15 +1,15 @@
-interface IBaseRegister {
+interface IBaseRegistrations {
   user: string;
   email: string;
   senha: string;
 }
 
-export interface IStudentRegister extends IBaseRegister {
+export interface IStudentRegistration extends IBaseRegistrations {
   nome: string;
   cpf: string;
 }
 
-export interface ICompanyRegister {
+export interface ICompanyRegistration {
   email: string;
   senha: string;
   nome_fantasia: string;
