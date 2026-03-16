@@ -22,7 +22,7 @@ export const CompanyRegistrationForm = () => {
   const form = useForm<CompanyRegistrationFormData>({
     resolver: zodResolver(companyRegistrationSchema),
     defaultValues: {
-      nome_fantasia: '',
+      nomeFantasia: '',
       cnpj: '',
       // user: '',
       email: '',

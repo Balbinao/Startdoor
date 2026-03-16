@@ -34,9 +34,20 @@ export const useCompanyRegistrations = () => {
     }
   };
 
+  const deleteCompany = async (id: number) => {
+    try {
+      const response = await companyRegistrationService.deleteCompany(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     company,
     getCompany,
     updateCompany,
+    deleteCompany,
   };
 };

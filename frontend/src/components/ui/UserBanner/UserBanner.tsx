@@ -11,8 +11,8 @@ export const UserBanner = () => {
   const location = useLocation();
 
   const { getUserId, logout } = useAuth();
-  const { student } = useStudentRegistrations();
-  const { company } = useCompanyRegistrations();
+  const { student, deleteStudent } = useStudentRegistrations();
+  const { company, deleteCompany } = useCompanyRegistrations();
 
   const userId = getUserId();
 
@@ -49,11 +49,25 @@ export const UserBanner = () => {
     navigate(ROUTES_CONST.LOGIN, { replace: true });
   };
 
-  const handleDeleteAccount = () => {
-    if (isStudentProfile) {
-      console.log('Excluir conta de Estudante');
+  const handleDeleteAccount = async () => {
+    if (userId && isStudentProfile) {
+      try {
+        await deleteStudent(Number(userId));
+        handleLogout();
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     } else if (isCompanyProfile) {
-      console.log('Excluir conta de Empresa');
+      try {
+        await deleteCompany (Number(userId));
+        handleLogout();
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    } else {
+      console.error('UserId ou Role inválido!');
     }
   };
 

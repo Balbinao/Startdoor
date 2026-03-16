@@ -34,9 +34,20 @@ export const useStudentRegistrations = () => {
     }
   };
 
+  const deleteStudent = async (id: number) => {
+    try {
+      const response = await studentRegistrationService.deleteStudent(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     student,
     getStudent,
     updateStudent,
+    deleteStudent,
   };
 };
