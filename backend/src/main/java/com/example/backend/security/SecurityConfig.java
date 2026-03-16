@@ -70,7 +70,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // ========== ENDPOINTS PÚBLICOS ==========
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/cadastrar/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/estudantes/cadastrar/estudante").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/empresas/cadastrar/empresa").permitAll()
                         
                         // Swagger - público
                         .requestMatchers(
