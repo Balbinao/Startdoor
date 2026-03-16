@@ -111,7 +111,7 @@ public class EmpresaController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar dados de uma empresa")
-    @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
+    @PreAuthorize("hasAuthority('ADMIN') or @empresaSecurity.isOwner(#id)")
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", 
@@ -139,16 +139,16 @@ public class EmpresaController {
             content = @Content
         )
     })
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarEmpresaDTO data) {
-        empresaService.atualizar(id, data);
-        
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now().toString());
-        response.put("status", 200);
-        response.put("message", "Dados da empresa atualizados com sucesso!");
-        
-        return ResponseEntity.ok(response);
-    }
+        public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarEmpresaDTO data) {
+            empresaService.atualizar(id, data);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("timestamp", LocalDateTime.now().toString());
+            response.put("status", 200);
+            response.put("message", "Dados da empresa atualizados com sucesso!");
+
+            return ResponseEntity.ok(response);
+        }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Deletar empresa")

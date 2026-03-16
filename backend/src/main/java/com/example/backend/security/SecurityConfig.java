@@ -83,7 +83,7 @@ public class SecurityConfig {
                         
                         // ========== EMPRESAS ==========
                         .requestMatchers(HttpMethod.GET, "/empresas/**").permitAll()  // Público
-                        .requestMatchers(HttpMethod.PUT, "/empresas/**").hasAnyRole("EMPRESA", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/empresas/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/empresas/**").authenticated()  // @PreAuthorize cuida
                         
                         // ========== ESTUDANTES ==========
