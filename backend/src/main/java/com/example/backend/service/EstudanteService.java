@@ -61,8 +61,18 @@ public class EstudanteService {
         Estudante estudante = buscarPorId(id);
 
         if (dto.nome() != null) estudante.setNome(dto.nome());
-        if (dto.user() != null) estudante.setUser(dto.user());
-        if (dto.email() != null) estudante.setEmail(dto.email());
+        if (dto.user() != null && !dto.user().equals(estudante.getUser())) {
+            if (estudanteRepository.existsByUser(dto.user())) {
+                throw new RuntimeException("Este nome de usuário já está em uso.");
+            }
+            estudante.setUser(dto.user());
+        }
+        if (dto.email() != null && !dto.email().equals(estudante.getEmail())) {
+            if (emailJaExiste(dto.email())) {
+                throw new RuntimeException("Este e-mail já está em uso por outro usuário.");
+            }
+            estudante.setEmail(dto.email());
+        }
 
         estudanteRepository.save(estudante);
     }

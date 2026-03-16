@@ -67,8 +67,12 @@ public class EmpresaService {
         Empresa empresa = buscarPorId(id);
 
         if (dto.nomeFantasia() != null) empresa.setNomeFantasia(dto.nomeFantasia());
-        if (dto.email() != null) empresa.setEmail(dto.email());
-
+        if (dto.email() != null && !dto.email().equals(empresa.getEmail())) {
+            if (emailJaExiste(dto.email())) {
+                throw new RuntimeException("Este e-mail já está em uso por outro no sistema.");
+            }
+            empresa.setEmail(dto.email());
+        }
         empresaRepository.save(empresa);
     }
 
