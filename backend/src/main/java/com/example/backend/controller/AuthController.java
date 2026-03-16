@@ -237,7 +237,7 @@ public class AuthController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
         Empresa newEmpresa = new Empresa();
-        newEmpresa.setNomeFantasia(data.nome_fantasia());
+        newEmpresa.setNomeFantasia(data.nomeFantasia());
         newEmpresa.setCnpj(data.cnpj());
         newEmpresa.setEmail(data.email());
         newEmpresa.setUser(data.email());

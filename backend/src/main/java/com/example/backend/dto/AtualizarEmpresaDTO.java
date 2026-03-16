@@ -9,7 +9,7 @@ public record AtualizarEmpresaDTO(
         description = "Novo nome fantasia da empresa", 
         example = "Tech Solutions Atualizada"
     )
-    String nome_fantasia,
+    String nomeFantasia,
 
     @Schema(
         description = "Novo email corporativo", 
