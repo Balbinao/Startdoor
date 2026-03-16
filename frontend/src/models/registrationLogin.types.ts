@@ -12,7 +12,7 @@ export interface IStudentRegistration extends IBaseRegistrations {
 export interface ICompanyRegistration {
   email: string;
   senha: string;
-  nome_fantasia: string;
+  nomeFantasia: string;
   cnpj: string;
 }
 

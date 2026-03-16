@@ -5,7 +5,7 @@ export const companyRegistrationFields: FieldConfig<CompanyRegistrationFormData>
   [
     {
       type: 'text',
-      name: 'nome_fantasia',
+      name: 'nomeFantasia',
       label: 'Nome Fantasia',
       placeholder: 'Digite o nome fantasia',
       maxLength: 60,

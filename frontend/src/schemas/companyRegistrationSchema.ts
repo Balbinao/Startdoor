@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const companyRegistrationSchema = z.object({
-  nome_fantasia: z
+  nomeFantasia: z
     .string()
     .min(5, 'Nome Fantasia precisa ter pelo menos 5 caracteres')
     .max(60, 'O Nome Fantasia não pode ter mais de 60 caracteres'),

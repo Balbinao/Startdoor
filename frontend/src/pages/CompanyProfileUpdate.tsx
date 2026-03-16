@@ -77,7 +77,8 @@ export const CompanyProfileUpdate = () => {
     try {
       if (userId) {
         await updateCompany(Number(userId), data);
-        navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+        // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+        navigate(ROUTES_CONST.LOGIN);
       }
     } catch (error: unknown) {
       let message = 'Erro ao processar alteração de dados. Tente novamente!';

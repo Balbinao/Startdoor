@@ -77,7 +77,8 @@ export const StudentProfileUpdate = () => {
     try {
       if (userId) {
         await updateStudent(Number(userId), data);
-        navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+        // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+        navigate(ROUTES_CONST.LOGIN);
       }
     } catch (error: unknown) {
       let message = 'Erro ao processar alteração de dados. Tente novamente!';

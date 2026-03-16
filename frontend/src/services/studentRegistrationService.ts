@@ -13,4 +13,9 @@ export const studentRegistrationService = {
     const response = await api.put(API_CONST.STUDENT.BY_ID(id), student);
     return response.data;
   },
+
+  deleteStudent: async (id: number) => {
+    const response = await api.delete(API_CONST.STUDENT.BY_ID(id));
+    return response.data;
+  },
 };

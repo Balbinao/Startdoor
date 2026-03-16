@@ -13,4 +13,9 @@ export const companyRegistrationService = {
     const response = await api.put(API_CONST.COMPANY.BY_ID(id), company);
     return response.data;
   },
+
+  deleteCompany: async (id: number) => {
+    const response = await api.delete(API_CONST.COMPANY.BY_ID(id));
+    return response.data;
+  },
 };
