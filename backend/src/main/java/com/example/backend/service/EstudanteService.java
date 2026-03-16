@@ -2,8 +2,11 @@ package com.example.backend.service;
 
 import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEstudanteDTO;
+import com.example.backend.dto.CadastroEstudanteDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Estudante;
+import com.example.backend.repository.AdminRepository;
+import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,11 +17,36 @@ import java.util.List;
 public class EstudanteService {
 
     private final EstudanteRepository estudanteRepository;
+    private final EmpresaRepository empresaRepository;
+    private final AdminRepository adminRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public EstudanteService(EstudanteRepository estudanteRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public EstudanteService(EstudanteRepository estudanteRepository, BCryptPasswordEncoder bCryptPasswordEncoder, EmpresaRepository empresaRepository, AdminRepository adminRepository) {
         this.estudanteRepository = estudanteRepository;
+        this.empresaRepository = empresaRepository;
+        this.adminRepository = adminRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    public void cadastrar(CadastroEstudanteDTO data) {
+        if (emailJaExiste(data.email())) throw new RuntimeException("E-mail já cadastrado no sistema");
+        if (estudanteRepository.existsByCpf(data.cpf())) throw new RuntimeException("CPF já cadastrado");
+        if (estudanteRepository.existsByUser(data.user())) throw new RuntimeException("Username já em uso");
+
+        Estudante estudante = new Estudante();
+        estudante.setNome(data.nome());
+        estudante.setCpf(data.cpf());
+        estudante.setUser(data.user());
+        estudante.setEmail(data.email());
+        estudante.setSenha(bCryptPasswordEncoder.encode(data.senha()));
+
+        estudanteRepository.save(estudante);
+    }
+
+    private boolean emailJaExiste(String email) {
+        return estudanteRepository.existsByEmail(email) ||
+                empresaRepository.existsByEmail(email) ||
+                adminRepository.existsByEmail(email);
     }
 
     public List<Estudante> listarTodos(){

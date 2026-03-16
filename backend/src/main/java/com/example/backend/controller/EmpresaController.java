@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEmpresaDTO;
+import com.example.backend.dto.CadastroEmpresaDTO;
 import com.example.backend.model.Empresa;
 import com.example.backend.service.EmpresaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +33,39 @@ public class EmpresaController {
 
     public EmpresaController(EmpresaService empresaService) {
         this.empresaService = empresaService;
+    }
+    @PostMapping("/cadastrar/empresa")
+    @Operation(summary = "Cadastrar nova empresa")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Empresa cadastrada com sucesso",
+                    content = @Content(
+                            examples = @ExampleObject(
+                                    value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":200,\"message\":\"Empresa cadastrada com sucesso!\"}"
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Erro de validação",
+                    content = @Content(
+                            examples = {
+                                    @ExampleObject(name = "Email duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"E-mail corporativo já cadastrado\"}"),
+                                    @ExampleObject(name = "CNPJ duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"CNPJ já cadastrado\"}")
+                            }
+                    )
+            )
+    })
+    public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEmpresaDTO data) {
+        empresaService.cadastrar(data);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now().toString());
+        response.put("status", 200);
+        response.put("message", "Empresa cadastrada com sucesso!");
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEstudanteDTO;
+import com.example.backend.dto.CadastroEstudanteDTO;
 import com.example.backend.model.Estudante;
 import com.example.backend.service.EstudanteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +33,39 @@ public class EstudanteController {
 
     public EstudanteController(EstudanteService service) {
         this.estudanteService = service;
+    }
+
+    @PostMapping("/cadastrar/estudante")
+    @Operation(summary = "Cadastrar novo estudante")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Estudante cadastrado com sucesso",
+                    content = @Content(
+                            examples = @ExampleObject(
+                                    value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":200,\"message\":\"Estudante cadastrado com sucesso!\"}"
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Erro de validação ou e-mail já cadastrado",
+                    content = @Content(
+                            examples = @ExampleObject(
+                                    value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"E-mail já cadastrado\"}"
+                            )
+                    )
+            )
+    })
+    public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEstudanteDTO data) {
+        estudanteService.cadastrar(data);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now().toString());
+        response.put("status", 200);
+        response.put("message", "Estudante cadastrado com sucesso!");
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
