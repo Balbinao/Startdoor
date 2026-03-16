@@ -29,7 +29,7 @@ public class EmpresaService {
     public void atualizar(Long id, AtualizarEmpresaDTO dto) {
         Empresa empresa = buscarPorId(id);
 
-        if (dto.nome_fantasia() != null) empresa.setNomeFantasia(dto.nome_fantasia());
+        if (dto.nomeFantasia() != null) empresa.setNomeFantasia(dto.nomeFantasia());
         if (dto.email() != null) empresa.setEmail(dto.email());
 
         empresaRepository.save(empresa);

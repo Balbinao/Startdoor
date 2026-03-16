@@ -1,0 +1,13 @@
+export { default as Building } from './building.svg?react';
+export { default as Category } from './category.svg?react';
+export { default as ChevronUp } from './chevron-up.svg?react';
+export { default as Coin } from './coin.svg';
+export { default as EyeOff } from './eye-off.svg?react';
+export { default as Eye } from './eye.svg?react';
+export { default as Flag } from './flag.svg?react';
+export { default as Focus } from './focus.svg?react';
+export { default as Hourglass } from './hourglass.svg?react';
+export { default as Pig } from './pig.svg?react';
+export { default as Pin } from './pin.svg?react';
+export { default as Star } from './star.svg?react';
+export { default as User } from './user.svg?react';
