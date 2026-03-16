@@ -1,0 +1,242 @@
+{
+  "info": {
+    "_postman_id": "8697e199-6dcc-49cc-995e-c7afc5f11cd2",
+    "name": "Startdoor",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "39152392"
+  },
+  "item": [
+    {
+      "name": "CadastroEstudante",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome\": \"Gustavao Balbinao\",\r\n  \"cpf\": \"12345678925\",\r\n  \"user\": \"balbinao03\",\r\n  \"email\": \"gusa@gft.com\",\r\n  \"senha\": \"123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/auth/cadastrar/estudante",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "auth",
+            "cadastrar",
+            "estudante"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CadastroEmpresa",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome_fantasia\": \"tonhao1\",\r\n  \"cnpj\": \"12345678921125\",\r\n  \"email\": \"gusb@gft.com\",\r\n  \"senha\": \"123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/auth/cadastrar/empresa",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "auth",
+            "cadastrar",
+            "empresa"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"gus@gft.com\",\r\n    \"senha\": \"123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AtualizarEstudante",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\"nome\": \"Gustavo Balbino\",\r\n\"email\": \"gouu@gft.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/estudantes/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "estudantes",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeletarEstudante",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/estudantes/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "estudantes",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ListarEstudantes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/estudantes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "estudantes"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "BuscarEstudante",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/estudantes/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "estudantes",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AtualizarEmpresa",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "DeletarEmpresa",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "ListarEmpresas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/empresas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "empresas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "BuscarEmpresa",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/empresas/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "empresas",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

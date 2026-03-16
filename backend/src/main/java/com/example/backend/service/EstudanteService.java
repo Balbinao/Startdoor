@@ -1,9 +1,11 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEstudanteDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Estudante;
 import com.example.backend.repository.EstudanteRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +14,11 @@ import java.util.List;
 public class EstudanteService {
 
     private final EstudanteRepository estudanteRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public EstudanteService(EstudanteRepository estudanteRepository) {
+    public EstudanteService(EstudanteRepository estudanteRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.estudanteRepository = estudanteRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<Estudante> listarTodos(){
@@ -38,5 +42,17 @@ public class EstudanteService {
     public void deletar(Long id) {
         Estudante estudante = buscarPorId(id);
         estudanteRepository.delete(estudante);
+    }
+
+    public void alterarSenha(Long id, AlterarSenhaDTO dto) {
+        Estudante estudante = estudanteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
+
+        if (!bCryptPasswordEncoder.matches(dto.senhaAtual(), estudante.getSenha())) {
+            throw new RuntimeException("Senha atual incorreta!");
+        }
+
+        estudante.setSenha(bCryptPasswordEncoder.encode(dto.novaSenha()));
+        estudanteRepository.save(estudante);
     }
 }
