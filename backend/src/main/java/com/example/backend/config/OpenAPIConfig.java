@@ -45,12 +45,12 @@ public class OpenAPIConfig {
                                 
                                 ## 📋 Permissões por Endpoint
                                 * **GET /empresas/** → Público (todos podem ver)
-                                * **PUT /empresas/{id}** → Apenas a própria empresa ou ADMIN
-                                * **DELETE /empresas/{id}** → Apenas ADMIN
+                                * **PUT /empresas/{id}** → Própria empresa ou ADMIN
+                                * **DELETE /empresas/{id}** → Própria empresa ou ADMIN
                                 * **GET /estudantes** → Apenas ADMIN
                                 * **GET /estudantes/{id}** → Próprio estudante ou ADMIN
                                 * **PUT /estudantes/{id}** → Próprio estudante ou ADMIN
-                                * **DELETE /estudantes/{id}** → Apenas ADMIN
+                                * **DELETE /estudantes/{id}** → Próprio estudante ou  ADMIN
                                 * **/admin/** → Apenas ADMIN
                                 
                                 ## Funcionalidades
