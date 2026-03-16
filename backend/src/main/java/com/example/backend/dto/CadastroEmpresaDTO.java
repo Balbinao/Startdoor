@@ -12,7 +12,7 @@ public record CadastroEmpresaDTO(
         example = "Tech Solutions Ltda"
     )
     @NotBlank
-    String nome_fantasia,
+    String nomeFantasia,
 
     @Schema(
         description = "CNPJ da empresa (14 dígitos, apenas números)", 
