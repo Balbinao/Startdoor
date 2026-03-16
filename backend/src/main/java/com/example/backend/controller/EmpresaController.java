@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEmpresaDTO;
 import com.example.backend.model.Empresa;
 import com.example.backend.service.EmpresaService;
@@ -143,5 +144,46 @@ public class EmpresaController {
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         empresaService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/senha")
+    @Operation(summary = "Alterar senha da empresa")
+    @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Senha da empresa alterada com sucesso",
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":200,\"message\":\"Senha da empresa alterada com sucesso\"}"))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Dados inválidos ou senha atual incorreta",
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":400,\"message\":\"Senha atual incorreta ou nova senha inválida\"}"))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Empresa não encontrada",
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":404,\"message\":\"Empresa não encontrada com o ID: 1\"}"))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Token JWT ausente ou inválido",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Acesso negado - apenas a própria empresa ou ADMIN pode alterar a senha",
+                    content = @Content
+            )
+    })
+    public ResponseEntity<?> alterarSenha(@PathVariable Long id, @RequestBody @Valid AlterarSenhaDTO data) {
+        empresaService.alterarSenha(id, data);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now().toString());
+        response.put("status", 200);
+        response.put("message", "Senha da empresa alterada com sucesso");
+
+        return ResponseEntity.ok(response);
     }
 }
