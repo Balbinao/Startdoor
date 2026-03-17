@@ -85,12 +85,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/empresas/**").permitAll()  // Público
                         .requestMatchers(HttpMethod.PUT, "/empresas/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/empresas/**").authenticated()  // @PreAuthorize cuida
+                        .requestMatchers(HttpMethod.PATCH, "/empresas/**").authenticated()
                         
                         // ========== ESTUDANTES ==========
                         .requestMatchers(HttpMethod.GET, "/estudantes").hasRole("ADMIN")  // Só admin vê lista
                         .requestMatchers(HttpMethod.GET, "/estudantes/**").authenticated()  // @PreAuthorize cuida
                         .requestMatchers(HttpMethod.PUT, "/estudantes/**").authenticated()  // @PreAuthorize cuida
                         .requestMatchers(HttpMethod.DELETE, "/estudantes/**").authenticated()  // @PreAuthorize cuida
+                        .requestMatchers(HttpMethod.PATCH, "/estudantes/**").authenticated()
                         
                         // ========== ADMIN ==========
                         .requestMatchers("/admin/**").hasRole("ADMIN") 
@@ -114,7 +116,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList(
             "Authorization", 
             "Content-Type", 
