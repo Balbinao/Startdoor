@@ -15,3 +15,8 @@ export interface IStudent {
   linkSite?: string;
   linkLinkedin?: string;
 }
+
+export interface IUpdateStudentPassword {
+  senhaAtual: string;
+  novaSenha: string;
+}

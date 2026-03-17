@@ -1,4 +1,6 @@
 import { useStore } from '@contexts/store/useStore';
+import type { IUpdateCompanyPassword } from '@models/companyData.types';
+import type { ICompanyRegistration } from '@models/registrationLogin.types';
 import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
 import { companyRegistrationService } from '@services/companyRegistrationService';
 
@@ -11,6 +13,21 @@ export const useCompanyRegistrations = () => {
     try {
       const response = await companyRegistrationService.getCompany(id);
       companyRegistrationStore.setCompany(response);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const companyRegistration = async (
+    companyRegistrationData: ICompanyRegistration,
+  ) => {
+    try {
+      const response = await companyRegistrationService.companyRegistration(
+        companyRegistrationData,
+      );
+
       return response;
     } catch (error) {
       console.error(error);
@@ -34,6 +51,22 @@ export const useCompanyRegistrations = () => {
     }
   };
 
+  const updateCompanyPassword = async (
+    id: number,
+    passwordData: IUpdateCompanyPassword,
+  ) => {
+    try {
+      const response = await companyRegistrationService.updateCompanyPassword(
+        id,
+        passwordData,
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const deleteCompany = async (id: number) => {
     try {
       const response = await companyRegistrationService.deleteCompany(id);
@@ -47,7 +80,9 @@ export const useCompanyRegistrations = () => {
   return {
     company,
     getCompany,
+    companyRegistration,
     updateCompany,
+    updateCompanyPassword,
     deleteCompany,
   };
 };

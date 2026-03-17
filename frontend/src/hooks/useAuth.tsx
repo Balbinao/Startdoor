@@ -1,10 +1,6 @@
 import { STORAGEKEYS_CONST } from '@constants';
 import { useStore } from '@contexts/store/useStore';
-import type {
-  ICompanyRegistration,
-  IStudentRegistration,
-  IUserLogin,
-} from '@models/registrationLogin.types';
+import type { IUserLogin } from '@models/registrationLogin.types';
 import { authService } from '../services/authService';
 
 export const useAuth = () => {
@@ -50,42 +46,10 @@ export const useAuth = () => {
     authStore.logout();
   };
 
-  const studentRegistration = async (
-    studentRegistrationData: IStudentRegistration,
-  ) => {
-    try {
-      const response = await authService.studentRegistration(
-        studentRegistrationData,
-      );
-
-      return response;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
-
-  const companyRegistration = async (
-    companyRegistrationData: ICompanyRegistration,
-  ) => {
-    try {
-      const response = await authService.companyRegistration(
-        companyRegistrationData,
-      );
-
-      return response;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
-
   return {
     login,
     getUserId,
     getUserRole,
     logout,
-    studentRegistration,
-    companyRegistration,
   };
 };
