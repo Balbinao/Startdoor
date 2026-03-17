@@ -6,12 +6,12 @@ import jakarta.validation.constraints.Size;
 
 @Schema(description = "Dados para alteração de senha do usuário")
 public record AlterarSenhaDTO(
-        @Schema(
-                description = "Senha atual do usuário para validação de segurança",
-                example = "SenhaAtusl123"
-        )
-        @NotBlank(message = "A senha atual é obrigatória para prosseguir")
-        String senhaAtual,
+//        @Schema(
+//                description = "Senha atual do usuário para validação de segurança",
+//                example = "SenhaAtusl123"
+//        )
+//        @NotBlank(message = "A senha atual é obrigatória para prosseguir")
+//        String senhaAtual,
 
         @Schema(
                 description = "Nova senha de acesso (mínimo de 6 caracteres)",
