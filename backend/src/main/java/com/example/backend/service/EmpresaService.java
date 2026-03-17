@@ -84,10 +84,10 @@ public class EmpresaService {
     public void alterarSenha(Long id, AlterarSenhaDTO dto) {
         Empresa empresa = empresaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada"));
-
-        if (!bCryptPasswordEncoder.matches(dto.senhaAtual(), empresa.getSenha())) {
-            throw new RuntimeException("Senha atual incorreta!");
-        }
+//
+//        if (!bCryptPasswordEncoder.matches(dto.senhaAtual(), empresa.getSenha())) {
+//            throw new RuntimeException("Senha atual incorreta!");
+//        }
 
         empresa.setSenha(bCryptPasswordEncoder.encode(dto.novaSenha()));
         empresaRepository.save(empresa);

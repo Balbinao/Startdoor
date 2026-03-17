@@ -86,9 +86,9 @@ public class EstudanteService {
         Estudante estudante = estudanteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
 
-        if (!bCryptPasswordEncoder.matches(dto.senhaAtual(), estudante.getSenha())) {
-            throw new RuntimeException("Senha atual incorreta!");
-        }
+//        if (!bCryptPasswordEncoder.matches(dto.senhaAtual(), estudante.getSenha())) {
+//            throw new RuntimeException("Senha atual incorreta!");
+//        }
 
         estudante.setSenha(bCryptPasswordEncoder.encode(dto.novaSenha()));
         estudanteRepository.save(estudante);
