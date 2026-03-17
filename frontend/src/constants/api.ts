@@ -4,13 +4,15 @@ export const API_CONST = {
   },
   AUTH: {
     LOGIN_URL: '/auth/login',
-    REGISTRATION_STUDENT_URL: '/estudantes/cadastrar/estudante',
-    REGISTRATION_COMPANY_URL: '/empresas/cadastrar/empresa',
   },
   STUDENT: {
+    REGISTRATION: '/estudantes/cadastrar/estudante',
     BY_ID: (id: number) => `/estudantes/${id}`,
+    BY_ID_PASSWORD: (id: number) => `/estudantes/${id}/senha`,
   },
   COMPANY: {
+    REGISTRATION: '/empresas/cadastrar/empresa',
     BY_ID: (id: number) => `/empresas/${id}`,
+    BY_ID_PASSWORD: (id: number) => `/empresas/${id}/senha`,
   },
 };

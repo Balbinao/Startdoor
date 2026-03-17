@@ -8,6 +8,7 @@ import { companyRegistrationFields } from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
+import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import {
   companyRegistrationSchema,
   type CompanyRegistrationFormData,
@@ -17,7 +18,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const CompanyRegistrationForm = () => {
   const navigate = useNavigate();
-  const { companyRegistration, logout } = useAuth();
+  const { logout } = useAuth();
+  const { companyRegistration } = useCompanyRegistrations();
 
   const form = useForm<CompanyRegistrationFormData>({
     resolver: zodResolver(companyRegistrationSchema),

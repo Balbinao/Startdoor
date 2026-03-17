@@ -8,6 +8,7 @@ import { studentRegistrationFields } from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
+import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import {
   studentRegistrationSchema,
   type StudentRegistrationFormData,
@@ -17,7 +18,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const StudentRegistrationForm = () => {
   const navigate = useNavigate();
-  const { studentRegistration, logout } = useAuth();
+  const { logout } = useAuth();
+  const { studentRegistration } = useStudentRegistrations();
 
   const form = useForm<StudentRegistrationFormData>({
     resolver: zodResolver(studentRegistrationSchema),

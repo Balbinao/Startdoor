@@ -1,6 +1,10 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
-import type { IStudent } from '@models/studentData.types';
+import type { IStudentRegistration } from '@models/registrationLogin.types';
+import type {
+  IStudent,
+  IUpdateStudentPassword,
+} from '@models/studentData.types';
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
 
 export const studentRegistrationService = {
@@ -9,8 +13,24 @@ export const studentRegistrationService = {
     return response.data;
   },
 
+  studentRegistration: async (data: IStudentRegistration) => {
+    const response = await api.post(API_CONST.STUDENT.REGISTRATION, data);
+    return response.data;
+  },
+
   updateStudent: async (id: number, student: StudentProfileUpdateData) => {
     const response = await api.put(API_CONST.STUDENT.BY_ID(id), student);
+    return response.data;
+  },
+
+  updateStudentPassword: async (
+    id: number,
+    passwordData: IUpdateStudentPassword,
+  ) => {
+    const response = await api.patch(
+      API_CONST.STUDENT.BY_ID_PASSWORD(id),
+      passwordData,
+    );
     return response.data;
   },
 
