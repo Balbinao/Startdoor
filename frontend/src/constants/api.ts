@@ -4,8 +4,8 @@ export const API_CONST = {
   },
   AUTH: {
     LOGIN_URL: '/auth/login',
-    REGISTRATION_STUDENT_URL: '/auth/cadastrar/estudante',
-    REGISTRATION_COMPANY_URL: '/auth/cadastrar/empresa',
+    REGISTRATION_STUDENT_URL: '/estudantes/cadastrar/estudante',
+    REGISTRATION_COMPANY_URL: '/empresas/cadastrar/empresa',
   },
   STUDENT: {
     BY_ID: (id: number) => `/estudantes/${id}`,
