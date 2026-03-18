@@ -1,6 +1,5 @@
 import { useStore } from '@contexts/store/useStore';
 import type { IStudentRegistration } from '@models/registrationLogin.types';
-import type { IUpdateStudentPassword } from '@models/studentData.types';
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
 import { studentRegistrationService } from '../services/studentRegistrationService';
 
@@ -51,14 +50,11 @@ export const useStudentRegistrations = () => {
     }
   };
 
-  const updateStudentPassword = async (
-    id: number,
-    passwordData: IUpdateStudentPassword,
-  ) => {
+  const updateStudentPassword = async (id: number, novaSenha: string) => {
     try {
       const response = await studentRegistrationService.updateStudentPassword(
         id,
-        passwordData,
+        novaSenha,
       );
       return response;
     } catch (error) {

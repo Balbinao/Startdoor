@@ -18,8 +18,3 @@ export interface ICompany {
   linkLinkedin?: string;
   linkGupy?: string;
 }
-
-export interface IUpdateCompanyPassword {
-  senhaAtual: string;
-  novaSenha: string;
-}

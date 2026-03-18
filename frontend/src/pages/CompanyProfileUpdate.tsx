@@ -7,7 +7,6 @@ import { DROPDOWN_VALUES_CONST, ROUTES_CONST } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
-import type { IUpdateCompanyPassword } from '@models/companyData.types';
 import {
   companyProfileUpdateSchema,
   type CompanyProfileUpdateData,
@@ -22,7 +21,7 @@ export const CompanyProfileUpdate = () => {
   const navigate = useNavigate();
 
   const { getUserId } = useAuth();
-  const { company, getCompany, updateCompany, updateCompanyPassword } =
+  const { getCompany, updateCompany, updateCompanyPassword } =
     useCompanyRegistrations();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -78,13 +77,12 @@ export const CompanyProfileUpdate = () => {
   const onSubmit = async (data: CompanyProfileUpdateData) => {
     try {
       if (userId) {
-        // const passwordData: IUpdateCompanyPassword = {
-        //   senhaAtual: company?.senha ?? '',
-        //   novaSenha: data.senha,
-        // };
+        const password = data.senha;
+        if (password) {
+          await updateCompanyPassword(Number(userId), password);
+        }
 
         await updateCompany(Number(userId), data);
-        // await updateCompanyPassword(Number(userId), passwordData);
         // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
       }
