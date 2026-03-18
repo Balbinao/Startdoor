@@ -1,9 +1,6 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
-import type {
-  ICompany,
-  IUpdateCompanyPassword,
-} from '@models/companyData.types';
+import type { ICompany } from '@models/companyData.types';
 import type { ICompanyRegistration } from '@models/registrationLogin.types';
 import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
 
@@ -23,14 +20,10 @@ export const companyRegistrationService = {
     return response.data;
   },
 
-  updateCompanyPassword: async (
-    id: number,
-    passwordData: IUpdateCompanyPassword,
-  ) => {
-    const response = await api.patch(
-      API_CONST.COMPANY.BY_ID_PASSWORD(id),
-      passwordData,
-    );
+  updateCompanyPassword: async (id: number, novaSenha: string) => {
+    const response = await api.patch(API_CONST.COMPANY.BY_ID_PASSWORD(id), {
+      novaSenha,
+    });
     return response.data;
   },
 

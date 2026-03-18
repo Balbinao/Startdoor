@@ -1,5 +1,4 @@
 import { useStore } from '@contexts/store/useStore';
-import type { IUpdateCompanyPassword } from '@models/companyData.types';
 import type { ICompanyRegistration } from '@models/registrationLogin.types';
 import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
 import { companyRegistrationService } from '@services/companyRegistrationService';
@@ -51,14 +50,11 @@ export const useCompanyRegistrations = () => {
     }
   };
 
-  const updateCompanyPassword = async (
-    id: number,
-    passwordData: IUpdateCompanyPassword,
-  ) => {
+  const updateCompanyPassword = async (id: number, novaSenha: string) => {
     try {
       const response = await companyRegistrationService.updateCompanyPassword(
         id,
-        passwordData,
+        novaSenha,
       );
       return response;
     } catch (error) {

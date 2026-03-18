@@ -10,7 +10,7 @@ export const normalizeStudentData = (
   nome: data.nome ?? '',
   user: data.user ?? '',
   email: data.email ?? '',
-  senha: data.senha ?? '',
+  senha: '',
   dataNascimento: data.dataNascimento ?? '',
   biografia: data.biografia ?? '',
   paisOrigem:
@@ -39,7 +39,7 @@ export const normalizeCompanyData = (
 ): CompanyProfileUpdateData => ({
   nomeFantasia: data.nomeFantasia ?? '',
   email: data.email ?? '',
-  senha: data.senha ?? '',
+  senha: '',
   cnpj: data.cnpj ?? '',
   dataFundacao: data.dataFundacao ?? '',
   biografia: data.biografia ?? '',

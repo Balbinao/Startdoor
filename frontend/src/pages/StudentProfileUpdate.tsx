@@ -7,7 +7,6 @@ import { DROPDOWN_VALUES_CONST, ROUTES_CONST } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
-import type { IUpdateStudentPassword } from '@models/studentData.types';
 import {
   studentProfileUpdateSchema,
   type StudentProfileUpdateData,
@@ -22,7 +21,8 @@ export const StudentProfileUpdate = () => {
   const navigate = useNavigate();
 
   const { getUserId } = useAuth();
-  const { student, getStudent, updateStudent, updateStudentPassword } = useStudentRegistrations();
+  const { getStudent, updateStudent, updateStudentPassword } =
+    useStudentRegistrations();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,6 +49,7 @@ export const StudentProfileUpdate = () => {
       linkLinkedin: '',
     },
   });
+
   const {
     handleSubmit,
     reset,
@@ -77,13 +78,12 @@ export const StudentProfileUpdate = () => {
   const onSubmit = async (data: StudentProfileUpdateData) => {
     try {
       if (userId) {
-        // const passwordData: IUpdateStudentPassword = {
-        //   senhaAtual: student?.senha ?? '',
-        //   novaSenha: data.senha,
-        // };
+        const password = data.senha;
+        if (password) {
+          await updateStudentPassword(Number(userId), password);
+        }
 
         await updateStudent(Number(userId), data);
-        // await updateStudentPassword(Number(userId), passwordData);
         // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
       }
