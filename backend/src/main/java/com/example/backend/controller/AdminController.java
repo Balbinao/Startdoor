@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.CadastroAdminDTO;
 import com.example.backend.model.Admin;
+import com.example.backend.openapi.AdminControllerOpenApi;
 import com.example.backend.repository.AdminRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,8 +23,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
-@Tag(name = "👑 Administradores", description = "Operações exclusivas para administradores (requer role ADMIN)")
-public class AdminController {
+
+public class AdminController implements AdminControllerOpenApi {
 
     private final AdminRepository adminRepository;
 
@@ -32,37 +33,6 @@ public class AdminController {
     }
 
     @PostMapping
-    @Operation(summary = "Criar novo administrador")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Administrador criado com sucesso",
-            content = @Content(
-                examples = @ExampleObject(
-                    value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":200,\"message\":\"Administrador criado com sucesso!\"}"
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "400", 
-            description = "E-mail já cadastrado",
-            content = @Content(
-                examples = @ExampleObject(
-                    value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"E-mail já cadastrado\"}"
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Não autorizado",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<?> criarAdmin(@RequestBody @Valid CadastroAdminDTO data) {
         if (adminRepository.findByEmail(data.email()) != null) {
             Map<String, Object> error = new HashMap<>();
@@ -89,52 +59,11 @@ public class AdminController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar todos os administradores")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Lista retornada com sucesso",
-            content = @Content(schema = @Schema(implementation = Admin.class))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Não autorizado",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<List<Admin>> listarAdmins() {
         return ResponseEntity.ok(adminRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Buscar administrador por ID")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Administrador encontrado",
-            content = @Content(schema = @Schema(implementation = Admin.class))
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Administrador não encontrado",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Não autorizado",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<?> buscarAdmin(@PathVariable Long id) {
         return adminRepository.findById(id)
                 .map(ResponseEntity::ok)
@@ -142,42 +71,6 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualizar administrador")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Administrador atualizado com sucesso",
-            content = @Content(
-                examples = @ExampleObject(
-                    value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":200,\"message\":\"Administrador atualizado com sucesso!\"}"
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "400", 
-            description = "E-mail já cadastrado",
-            content = @Content(
-                examples = @ExampleObject(
-                    value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"E-mail já cadastrado\"}"
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Administrador não encontrado",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Não autorizado",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<?> atualizarAdmin(@PathVariable Long id, @RequestBody @Valid CadastroAdminDTO data) {
         Admin admin = adminRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Admin não encontrado"));
@@ -206,37 +99,6 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletar administrador")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Administrador deletado com sucesso",
-            content = @Content(
-                examples = @ExampleObject(
-                    value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":200,\"message\":\"Administrador deletado com sucesso!\"}"
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "400", 
-            description = "Não é possível deletar o último administrador",
-            content = @Content(
-                examples = @ExampleObject(
-                    value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"Não é possível deletar o último administrador\"}"
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Não autorizado",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<?> deletarAdmin(@PathVariable Long id) {
         if (adminRepository.count() <= 1) {
             Map<String, Object> error = new HashMap<>();
