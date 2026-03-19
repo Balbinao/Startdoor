@@ -59,39 +59,6 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Realizar login na plataforma")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Login realizado com sucesso",
-            content = @Content(
-                schema = @Schema(implementation = LoginResponseDTO.class),
-                examples = @ExampleObject(
-                    value = """
-                    {
-                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                        "id": 1,
-                        "tipo": "ESTUDANTE"
-                    }
-                    """
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Credenciais inválidas",
-            content = @Content(
-                examples = @ExampleObject(
-                    value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":401,\"message\":\"Credenciais inválidas\"}"
-                )
-            )
-        ),
-        @ApiResponse(
-            responseCode = "400", 
-            description = "Dados de entrada inválidos",
-            content = @Content
-        )
-    })
     public ResponseEntity<?> login(@RequestBody @Valid LoginDTO data) {
         try {
             var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());

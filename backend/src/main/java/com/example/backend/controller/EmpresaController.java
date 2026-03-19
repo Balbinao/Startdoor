@@ -4,6 +4,7 @@ import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEmpresaDTO;
 import com.example.backend.dto.CadastroEmpresaDTO;
 import com.example.backend.model.Empresa;
+import com.example.backend.openapi.EmpresaControllerOpenApi;
 import com.example.backend.service.EmpresaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,9 +26,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("empresas")
-@Tag(name = "🏢 Empresas", description = "Operações de CRUD para gerenciamento de empresas")
-@SecurityRequirement(name = "Bearer Authentication")
-public class EmpresaController {
+
+public class EmpresaController implements EmpresaControllerOpenApi {
 
     private final EmpresaService empresaService;
 
@@ -35,28 +35,6 @@ public class EmpresaController {
         this.empresaService = empresaService;
     }
     @PostMapping("/cadastrar/empresa")
-    @Operation(summary = "Cadastrar nova empresa")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Empresa cadastrada com sucesso",
-                    content = @Content(
-                            examples = @ExampleObject(
-                                    value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":200,\"message\":\"Empresa cadastrada com sucesso!\"}"
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Erro de validação",
-                    content = @Content(
-                            examples = {
-                                    @ExampleObject(name = "Email duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"E-mail corporativo já cadastrado\"}"),
-                                    @ExampleObject(name = "CNPJ duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"CNPJ já cadastrado\"}")
-                            }
-                    )
-            )
-    })
     public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEmpresaDTO data) {
         empresaService.cadastrar(data);
 
@@ -69,76 +47,17 @@ public class EmpresaController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar todas as empresas")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Lista retornada com sucesso",
-            content = @Content(schema = @Schema(implementation = Empresa.class))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Token JWT ausente ou inválido",
-            content = @Content
-        )
-    })
     public ResponseEntity<List<Empresa>> listar() {
         return ResponseEntity.ok(empresaService.listarTodas());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Buscar empresa por ID")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Empresa encontrada com sucesso",
-            content = @Content(schema = @Schema(implementation = Empresa.class))
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Empresa não encontrada",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Empresa não encontrada com o ID: 1\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Token JWT ausente ou inválido",
-            content = @Content
-        )
-    })
     public ResponseEntity<Empresa> buscar(@PathVariable Long id) {
         return ResponseEntity.ok(empresaService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualizar dados de uma empresa")
     @PreAuthorize("hasAuthority('ADMIN') or @empresaSecurity.isOwner(#id)")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Empresa atualizada com sucesso",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":200,\"message\":\"Dados da empresa atualizados com sucesso!\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Empresa não encontrada",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Empresa não encontrada com o ID: 1\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "400", 
-            description = "Dados inválidos",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"Erro de validação\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Token JWT ausente ou inválido",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas própria empresa ou ADMIN",
-            content = @Content
-        )
-    })
         public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarEmpresaDTO data) {
             empresaService.atualizar(id, data);
 
@@ -151,65 +70,14 @@ public class EmpresaController {
         }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletar empresa")
     @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "204", 
-            description = "Empresa deletada com sucesso (sem conteúdo)",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Empresa não encontrada",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Empresa não encontrada com o ID: 1\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Token JWT ausente ou inválido",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas própria empresa ou ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         empresaService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/senha")
-    @Operation(summary = "Alterar senha da empresa")
     @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Senha da empresa alterada com sucesso",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":200,\"message\":\"Senha da empresa alterada com sucesso\"}"))
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Dados inválidos ou senha atual incorreta",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":400,\"message\":\"Senha atual incorreta ou nova senha inválida\"}"))
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Empresa não encontrada",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":404,\"message\":\"Empresa não encontrada com o ID: 1\"}"))
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Acesso negado - apenas a própria empresa ou ADMIN pode alterar a senha",
-                    content = @Content
-            )
-    })
     public ResponseEntity<?> alterarSenha(@PathVariable Long id, @RequestBody @Valid AlterarSenhaDTO data) {
         empresaService.alterarSenha(id, data);
 

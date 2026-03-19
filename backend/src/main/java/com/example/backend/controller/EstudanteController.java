@@ -4,6 +4,7 @@ import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEstudanteDTO;
 import com.example.backend.dto.CadastroEstudanteDTO;
 import com.example.backend.model.Estudante;
+import com.example.backend.openapi.EstudanteControllerOpenApi;
 import com.example.backend.service.EstudanteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,9 +26,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("estudantes")
-@Tag(name = "👨‍🎓 Estudantes", description = "Operações de CRUD para gerenciamento de estudantes")
-@SecurityRequirement(name = "Bearer Authentication")
-public class EstudanteController {
+
+public class EstudanteController implements EstudanteControllerOpenApi {
 
     private final EstudanteService estudanteService;
 
@@ -36,27 +36,6 @@ public class EstudanteController {
     }
 
     @PostMapping("/cadastrar/estudante")
-    @Operation(summary = "Cadastrar novo estudante")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Estudante cadastrado com sucesso",
-                    content = @Content(
-                            examples = @ExampleObject(
-                                    value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":200,\"message\":\"Estudante cadastrado com sucesso!\"}"
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Erro de validação ou e-mail já cadastrado",
-                    content = @Content(
-                            examples = @ExampleObject(
-                                    value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"E-mail já cadastrado\"}"
-                            )
-                    )
-            )
-    })
     public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEstudanteDTO data) {
         estudanteService.cadastrar(data);
 
@@ -69,87 +48,18 @@ public class EstudanteController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar todos os estudantes")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Lista retornada com sucesso",
-            content = @Content(schema = @Schema(implementation = Estudante.class))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Token JWT ausente ou inválido",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<List<Estudante>> listar() {
         return ResponseEntity.ok(estudanteService.listarTodos());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Buscar estudante por ID")
     @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Estudante encontrado com sucesso",
-            content = @Content(schema = @Schema(implementation = Estudante.class))
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Estudante não encontrado",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com o ID: 1\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Token JWT ausente ou inválido",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas próprio estudante ou ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<Estudante> buscar(@PathVariable Long id) {
        return ResponseEntity.ok(estudanteService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualizar dados de um estudante")
     @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Dados atualizados com sucesso",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":200,\"message\":\"Dados atualizados com sucesso\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Estudante não encontrado",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com o ID: 1\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "400", 
-            description = "Dados inválidos",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"Erro de validação\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Token JWT ausente ou inválido",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas próprio estudante ou ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AtualizarEstudanteDTO data) {
         estudanteService.atualizar(id, data);
         
@@ -162,65 +72,14 @@ public class EstudanteController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletar estudante")
     @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "204", 
-            description = "Estudante deletado com sucesso (sem conteúdo)",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Estudante não encontrado",
-            content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com o ID: 1\"}"))
-        ),
-        @ApiResponse(
-            responseCode = "401", 
-            description = "Token JWT ausente ou inválido",
-            content = @Content
-        ),
-        @ApiResponse(
-            responseCode = "403", 
-            description = "Acesso negado - apenas próprio estudante ou ADMIN",
-            content = @Content
-        )
-    })
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         estudanteService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/senha")
-    @Operation(summary = "Alterar senha do estudante")
     @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Senha alterada com sucesso",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":200,\"message\":\"Senha alterada com sucesso\"}"))
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Dados inválidos ou senha atual incorreta",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":400,\"message\":\"Senha atual incorreta ou nova senha inválida\"}"))
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Estudante não encontrado",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com o ID: 1\"}"))
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Acesso negado - apenas o próprio estudante ou ADMIN pode alterar a senha",
-                    content = @Content
-            )
-    })
     public ResponseEntity<?> alterarSenha(@PathVariable Long id, @RequestBody @Valid AlterarSenhaDTO data) {
         estudanteService.alterarSenha(id, data);
 
