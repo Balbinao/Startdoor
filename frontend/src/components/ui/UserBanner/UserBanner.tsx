@@ -1,9 +1,11 @@
 import { StudentBannerIMG, StudentPfp } from '@assets/images';
-import { ROUTES_CONST } from '@constants';
+import { RESPONSE_MESSAGE, ROUTES_CONST } from '@constants';
+import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
+import { showModalMessageErrorDefault } from '@utils/defaultModal';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export const UserBanner = () => {
@@ -12,6 +14,7 @@ export const UserBanner = () => {
   const location = useLocation();
 
   const modalLoadingAuto = useModalLoadingAuto();
+  const { showMessageModal } = useModalMessage();
   const { getUserId, logout } = useAuth();
   const { student, deleteStudent } = useStudentRegistrations();
   const { company, deleteCompany } = useCompanyRegistrations();
@@ -52,30 +55,39 @@ export const UserBanner = () => {
   };
 
   const handleDeleteAccount = async () => {
-    if (userId && isStudentProfile) {
-      try {
-        await modalLoadingAuto(
-          async () => deleteStudent(Number(userId)),
-          'Deletando dados do usuário...',
-        );
-        handleLogout();
-      } catch (error) {
-        console.error(error);
-        throw error;
+    try {
+      let message = RESPONSE_MESSAGE.SUCCESS.DELETE;
+
+      if (!userId) {
+        throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
       }
-    } else if (isCompanyProfile) {
-      try {
-        await modalLoadingAuto(
-          async () => deleteCompany(Number(userId)),
-          'Deletando dados do usuário...',
-        );
-        handleLogout();
-      } catch (error) {
-        console.error(error);
-        throw error;
+
+      const action = isStudentProfile
+        ? deleteStudent
+        : isCompanyProfile
+          ? deleteCompany
+          : null;
+
+      if (!action) {
+        throw new Error(RESPONSE_MESSAGE.WARNING.USER_ROLE_NOT_FOUND);
       }
-    } else {
-      console.error('UserId ou Role inválido!');
+
+      const response = await modalLoadingAuto(
+        () => action(Number(userId)),
+        'Deletando dados do usuário...',
+      );
+
+      message = response?.message ?? message;
+
+      await showMessageModal({
+        type: 'success',
+        message,
+        shouldBlockProcess: false,
+      });
+
+      handleLogout();
+    } catch (error) {
+      await showModalMessageErrorDefault(error, showMessageModal);
     }
   };
 

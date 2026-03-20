@@ -1,6 +1,6 @@
 import { ModalLoading } from '@components/layout/ModalLoading/ModalLoading';
+import { ModalLoadingContext } from '@contexts/modalLoading/ModalLoadingContext';
 import { useState, type ReactNode } from 'react';
-import { ModalLoadingContext } from './ModalLoadingContext';
 
 export const ModalLoadingProvider = ({ children }: { children: ReactNode }) => {
   const [loadingCount, setLoadingCount] = useState(0);

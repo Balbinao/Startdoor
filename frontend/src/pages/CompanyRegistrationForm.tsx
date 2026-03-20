@@ -4,9 +4,10 @@ import { useForm } from 'react-hook-form';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
-import { companyRegistrationFields } from '@constants';
+import { companyRegistrationFields, RESPONSE_MESSAGE } from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
+import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -20,6 +21,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export const CompanyRegistrationForm = () => {
   const navigate = useNavigate();
   const modalLoadingAuto = useModalLoadingAuto();
+  const { showMessageModal } = useModalMessage();
   const { logout } = useAuth();
   const { companyRegistration } = useCompanyRegistrations();
 
@@ -48,19 +50,24 @@ export const CompanyRegistrationForm = () => {
   const onSubmit = async (data: CompanyRegistrationFormData) => {
     try {
       const { acordo: _, ...companyData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
-      await modalLoadingAuto(
+      const response = await modalLoadingAuto(
         () => companyRegistration(companyData),
         'Processando dados de cadastro...',
       );
+
+      const message =
+        response?.message ?? RESPONSE_MESSAGE.SUCCESS.REGISTRATION;
+
+      await showMessageModal({
+        type: 'success',
+        message,
+        shouldBlockProcess: false,
+      });
+
       navigate('/login');
     } catch (error: unknown) {
-      console.error(error);
-      let message = 'Erro ao processar login. Tente novamente!';
-
-      if (error instanceof Error) {
-        message = error.message;
-      }
-
+      const message =
+        error instanceof Error ? error.message : RESPONSE_MESSAGE.ERROR.SERVER;
       setError('root.serverError', {
         type: 'server',
         message,

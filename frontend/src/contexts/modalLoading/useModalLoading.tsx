@@ -1,5 +1,5 @@
+import { ModalLoadingContext } from '@contexts/modalLoading/ModalLoadingContext';
 import { useContext } from 'react';
-import { ModalLoadingContext } from './ModalLoadingContext';
 
 export const useModalLoading = () => {
   const context = useContext(ModalLoadingContext);

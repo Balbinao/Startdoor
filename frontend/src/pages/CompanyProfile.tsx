@@ -9,9 +9,12 @@ import {
 } from '@assets/icons';
 import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
+import { RESPONSE_MESSAGE } from '@constants';
+import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import type { ICompany } from '@models/companyData.types';
+import { showModalMessageErrorDefault } from '@utils/defaultModal';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -22,6 +25,7 @@ export const CompanyProfile = () => {
   const { id: userId } = useParams<{ id: string }>();
 
   const modalLoadingAuto = useModalLoadingAuto();
+  const { showMessageModal } = useModalMessage();
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchedCompany, setSearchedCompany] = useState<ICompany | null>(null);
@@ -37,9 +41,11 @@ export const CompanyProfile = () => {
             async () => setSearchedCompany(await getCompany(Number(userId))),
             'Buscando dados do usuário...',
           );
+        } else {
+          throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
-        console.error(error);
+        await showModalMessageErrorDefault(error, showMessageModal);
       } finally {
         setIsLoading(false);
       }

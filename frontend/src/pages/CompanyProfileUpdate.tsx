@@ -3,7 +3,12 @@ import { FormWrapper } from '@components/layout/FormWrapper';
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { UserBanner } from '@components/ui/UserBanner';
-import { DROPDOWN_VALUES_CONST, ROUTES_CONST } from '@constants';
+import {
+  DROPDOWN_VALUES_CONST,
+  RESPONSE_MESSAGE,
+  ROUTES_CONST,
+} from '@constants';
+import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
@@ -12,6 +17,7 @@ import {
   companyProfileUpdateSchema,
   type CompanyProfileUpdateData,
 } from '@schemas/companyProfileUpdateSchema';
+import { showModalMessageErrorDefault } from '@utils/defaultModal';
 import { normalizeCompanyData } from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -22,6 +28,7 @@ export const CompanyProfileUpdate = () => {
   const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
+  const { showMessageModal } = useModalMessage();
   const { getUserId } = useAuth();
   const { getCompany, updateCompany, updateCompanyPassword } =
     useCompanyRegistrations();
@@ -68,9 +75,11 @@ export const CompanyProfileUpdate = () => {
             'Buscando dados do usuário...',
           );
           reset(normalizeCompanyData(response));
+        } else {
+          throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
-        console.error(error);
+        await showModalMessageErrorDefault(error, showMessageModal);
       } finally {
         setIsLoading(false);
       }
@@ -90,25 +99,34 @@ export const CompanyProfileUpdate = () => {
           );
         }
 
-        await modalLoadingAuto(
+        const response = await modalLoadingAuto(
           async () => await updateCompany(Number(userId), data),
           'Atualizando dados...',
         );
 
+        const message = response?.message ?? RESPONSE_MESSAGE.SUCCESS.UPDATE;
+
+        await showMessageModal({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
+
         // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
+      } else {
+        throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
       }
     } catch (error: unknown) {
-      let message = 'Erro ao processar alteração de dados. Tente novamente!';
-
-      if (error instanceof Error) {
-        message = error.message;
-      }
+      const message =
+        error instanceof Error ? error.message : RESPONSE_MESSAGE.ERROR.SERVER;
 
       setError('root.serverError', {
         type: 'server',
         message,
       });
+
+      await showModalMessageErrorDefault(error, showMessageModal);
     }
   };
 

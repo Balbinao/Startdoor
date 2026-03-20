@@ -6,7 +6,12 @@ import { FormWrapper } from '@components/layout/FormWrapper';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
-import { ROUTES_CONST, USER_ROLES_CONST, userLoginFields } from '@constants';
+import {
+  RESPONSE_MESSAGE,
+  ROUTES_CONST,
+  USER_ROLES_CONST,
+  userLoginFields,
+} from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import {
@@ -51,12 +56,8 @@ export const UserLoginForm = () => {
         navigate(ROUTES_CONST.COMPANY.PROFILE(id));
       }
     } catch (error: unknown) {
-      let message = 'Erro ao processar login. Tente novamente!';
-
-      if (error instanceof Error) {
-        message = error.message;
-      }
-
+      const message =
+        error instanceof Error ? error.message : RESPONSE_MESSAGE.ERROR.SERVER;
       setError('root.serverError', {
         type: 'server',
         message,
