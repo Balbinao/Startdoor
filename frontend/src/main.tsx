@@ -1,3 +1,4 @@
+import { ModalLoadingProvider } from '@contexts/modalLoading/ModalLoadingProvider.tsx';
 import { StoreProvider } from '@contexts/store/StoreProvider.tsx';
 import '@styles/global.css';
 import { StrictMode } from 'react';
@@ -6,8 +7,10 @@ import App from './app/App.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <StoreProvider>
-      <App />
-    </StoreProvider>
+    <ModalLoadingProvider>
+      <StoreProvider>
+        <App />
+      </StoreProvider>
+    </ModalLoadingProvider>
   </StrictMode>,
 );

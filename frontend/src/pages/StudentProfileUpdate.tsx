@@ -6,6 +6,7 @@ import { UserBanner } from '@components/ui/UserBanner';
 import { DROPDOWN_VALUES_CONST, ROUTES_CONST } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import {
   studentProfileUpdateSchema,
@@ -20,6 +21,7 @@ export const StudentProfileUpdate = () => {
   const { id: userId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
+  const modalLoadingAuto = useModalLoadingAuto();
   const { getUserId } = useAuth();
   const { getStudent, updateStudent, updateStudentPassword } =
     useStudentRegistrations();
@@ -62,7 +64,10 @@ export const StudentProfileUpdate = () => {
       try {
         setIsLoading(true);
         if (userId) {
-          const response = await getStudent(Number(userId));
+          const response = await modalLoadingAuto(
+            () => getStudent(Number(userId)),
+            'Buscando dados do usuário...',
+          );
           reset(normalizeStudentData(response));
         }
       } catch (error: unknown) {
@@ -80,10 +85,17 @@ export const StudentProfileUpdate = () => {
       if (userId) {
         const password = data.senha;
         if (password) {
-          await updateStudentPassword(Number(userId), password);
+          await modalLoadingAuto(
+            () => updateStudentPassword(Number(userId), password),
+            'Atualizando dados...',
+          );
         }
 
-        await updateStudent(Number(userId), data);
+        await modalLoadingAuto(
+          () => updateStudent(Number(userId), data),
+          'Atualizando dados...',
+        );
+
         // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
       }
@@ -102,11 +114,7 @@ export const StudentProfileUpdate = () => {
   };
 
   if (isLoading) {
-    return (
-      <div>
-        <p>Carregando...</p>
-      </div>
-    );
+    return <></>;
   }
 
   return (

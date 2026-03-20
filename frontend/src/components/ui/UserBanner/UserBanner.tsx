@@ -2,6 +2,7 @@ import { StudentBannerIMG, StudentPfp } from '@assets/images';
 import { ROUTES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ export const UserBanner = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const modalLoadingAuto = useModalLoadingAuto();
   const { getUserId, logout } = useAuth();
   const { student, deleteStudent } = useStudentRegistrations();
   const { company, deleteCompany } = useCompanyRegistrations();
@@ -52,7 +54,10 @@ export const UserBanner = () => {
   const handleDeleteAccount = async () => {
     if (userId && isStudentProfile) {
       try {
-        await deleteStudent(Number(userId));
+        await modalLoadingAuto(
+          async () => deleteStudent(Number(userId)),
+          'Deletando dados do usuário...',
+        );
         handleLogout();
       } catch (error) {
         console.error(error);
@@ -60,7 +65,10 @@ export const UserBanner = () => {
       }
     } else if (isCompanyProfile) {
       try {
-        await deleteCompany (Number(userId));
+        await modalLoadingAuto(
+          async () => deleteCompany(Number(userId)),
+          'Deletando dados do usuário...',
+        );
         handleLogout();
       } catch (error) {
         console.error(error);

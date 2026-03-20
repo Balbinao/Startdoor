@@ -9,6 +9,7 @@ import { companyRegistrationFields } from '@constants';
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import {
   companyRegistrationSchema,
   type CompanyRegistrationFormData,
@@ -18,6 +19,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const CompanyRegistrationForm = () => {
   const navigate = useNavigate();
+  const modalLoadingAuto = useModalLoadingAuto();
   const { logout } = useAuth();
   const { companyRegistration } = useCompanyRegistrations();
 
@@ -46,7 +48,10 @@ export const CompanyRegistrationForm = () => {
   const onSubmit = async (data: CompanyRegistrationFormData) => {
     try {
       const { acordo: _, ...companyData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
-      await companyRegistration(companyData);
+      await modalLoadingAuto(
+        () => companyRegistration(companyData),
+        'Processando dados de cadastro...',
+      );
       navigate('/login');
     } catch (error: unknown) {
       console.error(error);

@@ -8,6 +8,7 @@ import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { ROUTES_CONST, USER_ROLES_CONST, userLoginFields } from '@constants';
 import { useAuth } from '@hooks/useAuth';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import {
   userLoginSchema,
   type UserLoginFormData,
@@ -17,6 +18,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const UserLoginForm = () => {
   const navigate = useNavigate();
+  const modalLoadingAuto = useModalLoadingAuto();
   const { login, logout } = useAuth();
 
   const form = useForm<UserLoginFormData>({
@@ -39,7 +41,10 @@ export const UserLoginForm = () => {
 
   const onSubmit = async (data: UserLoginFormData) => {
     try {
-      const { id, tipo } = await login(data);
+      const { id, tipo } = await modalLoadingAuto(
+        () => login(data),
+        'Processando credenciais...',
+      );
       if (tipo === USER_ROLES_CONST.ESTUDANTE) {
         navigate(ROUTES_CONST.STUDENT.PROFILE(id));
       } else if (tipo === USER_ROLES_CONST.EMPRESA) {

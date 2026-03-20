@@ -10,6 +10,7 @@ import {
 import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import type { ICompany } from '@models/companyData.types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -20,6 +21,8 @@ const STROKE_WIDTH = 1.5;
 export const CompanyProfile = () => {
   const { id: userId } = useParams<{ id: string }>();
 
+  const modalLoadingAuto = useModalLoadingAuto();
+
   const [isLoading, setIsLoading] = useState(true);
   const [searchedCompany, setSearchedCompany] = useState<ICompany | null>(null);
 
@@ -29,9 +32,11 @@ export const CompanyProfile = () => {
     const fetch = async () => {
       try {
         setIsLoading(true);
-
         if (userId) {
-          setSearchedCompany(await getCompany(Number(userId)));
+          await modalLoadingAuto(
+            async () => setSearchedCompany(await getCompany(Number(userId))),
+            'Buscando dados do usuário...',
+          );
         }
       } catch (error: unknown) {
         console.error(error);
@@ -44,11 +49,7 @@ export const CompanyProfile = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div>
-        <p>Carregando...</p>
-      </div>
-    );
+    return <></>;
   }
 
   return (

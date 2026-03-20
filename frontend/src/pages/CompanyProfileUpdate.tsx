@@ -7,6 +7,7 @@ import { DROPDOWN_VALUES_CONST, ROUTES_CONST } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import {
   companyProfileUpdateSchema,
   type CompanyProfileUpdateData,
@@ -20,6 +21,7 @@ export const CompanyProfileUpdate = () => {
   const { id: userId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
+  const modalLoadingAuto = useModalLoadingAuto();
   const { getUserId } = useAuth();
   const { getCompany, updateCompany, updateCompanyPassword } =
     useCompanyRegistrations();
@@ -61,7 +63,10 @@ export const CompanyProfileUpdate = () => {
       try {
         setIsLoading(true);
         if (userId) {
-          const response = await getCompany(Number(userId));
+          const response = await modalLoadingAuto(
+            () => getCompany(Number(userId)),
+            'Buscando dados do usuário...',
+          );
           reset(normalizeCompanyData(response));
         }
       } catch (error: unknown) {
@@ -79,10 +84,17 @@ export const CompanyProfileUpdate = () => {
       if (userId) {
         const password = data.senha;
         if (password) {
-          await updateCompanyPassword(Number(userId), password);
+          await modalLoadingAuto(
+            () => updateCompanyPassword(Number(userId), password),
+            'Atualizando dados...',
+          );
         }
 
-        await updateCompany(Number(userId), data);
+        await modalLoadingAuto(
+          async () => await updateCompany(Number(userId), data),
+          'Atualizando dados...',
+        );
+
         // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
       }
