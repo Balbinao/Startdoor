@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.backend.openapi.AuthControllerOpenApi; 
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -36,8 +37,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("auth")
-@Tag(name = "🔐 Autenticação", description = "Endpoints para login e cadastro de usuários na plataforma")
-public class AuthController {
+
+public class AuthController implements AuthControllerOpenApi  {
 
     private final AuthenticationManager authenticationManager;
     private final EstudanteRepository estudanteRepository;
