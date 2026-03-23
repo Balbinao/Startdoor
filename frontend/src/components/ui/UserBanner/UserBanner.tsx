@@ -1,11 +1,10 @@
 import { StudentBannerIMG, StudentPfp } from '@assets/images';
 import { RESPONSE_MESSAGE, ROUTES_CONST } from '@constants';
-import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
-import { showModalMessageErrorDefault } from '@utils/defaultModal';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export const UserBanner = () => {
@@ -14,7 +13,7 @@ export const UserBanner = () => {
   const location = useLocation();
 
   const modalLoadingAuto = useModalLoadingAuto();
-  const { showMessageModal } = useModalMessage();
+  const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
   const { getUserId, logout } = useAuth();
   const { student, deleteStudent } = useStudentRegistrations();
   const { company, deleteCompany } = useCompanyRegistrations();
@@ -56,8 +55,6 @@ export const UserBanner = () => {
 
   const handleDeleteAccount = async () => {
     try {
-      let message = RESPONSE_MESSAGE.SUCCESS.DELETE;
-
       if (!userId) {
         throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
       }
@@ -72,22 +69,31 @@ export const UserBanner = () => {
         throw new Error(RESPONSE_MESSAGE.WARNING.USER_ROLE_NOT_FOUND);
       }
 
+      const messageAcknowledge = RESPONSE_MESSAGE.WARNING.USER_DELETE_ACCOUNT;
+      const confirmedAcknowledge = await modalMessageSafe({
+        type: 'warning',
+        message: messageAcknowledge,
+        shouldAcknowledge: true,
+      });
+      if (!confirmedAcknowledge) return;
+
       const response = await modalLoadingAuto(
         () => action(Number(userId)),
         'Deletando dados do usuário...',
       );
 
-      message = response?.message ?? message;
-
-      await showMessageModal({
+      const messageSuccess =
+        response?.message ?? RESPONSE_MESSAGE.SUCCESS.DELETE;
+      const confirmedSuccess = await modalMessageSafe({
         type: 'success',
-        message,
+        message: messageSuccess,
         shouldBlockProcess: false,
       });
+      if (!confirmedSuccess) return;
 
       handleLogout();
     } catch (error) {
-      await showModalMessageErrorDefault(error, showMessageModal);
+      await modalMessageError(error);
     }
   };
 

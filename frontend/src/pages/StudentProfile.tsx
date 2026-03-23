@@ -10,11 +10,10 @@ import {
 import { UserAttribute } from '@components/ui/UserAttribute/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
 import { RESPONSE_MESSAGE } from '@constants';
-import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import type { IStudent } from '@models/studentData.types';
-import { showModalMessageErrorDefault } from '@utils/defaultModal';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -25,7 +24,7 @@ export const StudentProfile = () => {
   const { id: userId } = useParams<{ id: string }>();
 
   const modalLoadingAuto = useModalLoadingAuto();
-  const { showMessageModal } = useModalMessage();
+  const { modalMessageError } = useModalMessageDefault();
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchedStudent, setSearchedStudent] = useState<IStudent | null>(null);
@@ -46,7 +45,7 @@ export const StudentProfile = () => {
           throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
-        await showModalMessageErrorDefault(error, showMessageModal);
+        await modalMessageError(error);
       } finally {
         setIsLoading(false);
       }

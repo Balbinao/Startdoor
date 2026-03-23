@@ -3,10 +3,10 @@ import { ModalMessageContext } from '@contexts/modalMessage/ModalMessageContext'
 import type { ModalMessageOptions } from '@models/modal.types';
 import { useState, type ReactNode } from 'react';
 
-interface ModalMessageStateProps extends ModalMessageOptions {
+type ModalMessageStateProps = ModalMessageOptions & {
   resolve?: () => void;
   reject?: () => void;
-}
+};
 
 export const ModalMessageProvider = ({ children }: { children: ReactNode }) => {
   const [modal, setModal] = useState<ModalMessageStateProps | null>(null);
@@ -24,12 +24,23 @@ export const ModalMessageProvider = ({ children }: { children: ReactNode }) => {
   const handleClose = () => {
     if (!modal) return;
 
-    if (modal.shouldBlockProcess) {
+    if (modal.shouldAcknowledge) {
       modal.reject?.();
     } else {
-      modal.resolve?.();
+      if (modal.shouldBlockProcess) {
+        modal.reject?.();
+      } else {
+        modal.resolve?.();
+      }
     }
 
+    setModal(null);
+  };
+
+  const handleConfirm = () => {
+    if (!modal) return;
+
+    modal.resolve?.();
     setModal(null);
   };
 
@@ -42,6 +53,8 @@ export const ModalMessageProvider = ({ children }: { children: ReactNode }) => {
           type={modal.type}
           message={modal.message}
           onClose={handleClose}
+          onConfirm={handleConfirm}
+          shouldAcknowledge={modal.shouldAcknowledge}
         />
       )}
     </ModalMessageContext.Provider>

@@ -7,9 +7,9 @@ import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { companyRegistrationFields, RESPONSE_MESSAGE } from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
-import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import {
   companyRegistrationSchema,
@@ -20,8 +20,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const CompanyRegistrationForm = () => {
   const navigate = useNavigate();
+
   const modalLoadingAuto = useModalLoadingAuto();
-  const { showMessageModal } = useModalMessage();
+  const { modalMessageSafe } = useModalMessageDefault();
+
   const { logout } = useAuth();
   const { companyRegistration } = useCompanyRegistrations();
 
@@ -57,12 +59,12 @@ export const CompanyRegistrationForm = () => {
 
       const message =
         response?.message ?? RESPONSE_MESSAGE.SUCCESS.REGISTRATION;
-
-      await showMessageModal({
+      const confirmedSuccess = await modalMessageSafe({
         type: 'success',
         message,
         shouldBlockProcess: false,
       });
+      if (!confirmedSuccess) return;
 
       navigate('/login');
     } catch (error: unknown) {

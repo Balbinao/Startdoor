@@ -7,6 +7,7 @@ export const RESPONSE_MESSAGE = {
   WARNING: {
     USER_ID_NOT_FOUND: 'Nenhum userId encontrado!',
     USER_ROLE_NOT_FOUND: 'Nenhum userRole encontrado!',
+    USER_DELETE_ACCOUNT: 'Deseja realmente deletar a conta?',
   },
   ERROR: {
     SERVER: 'Parece que houve um erro no servidor!',

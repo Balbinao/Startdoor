@@ -8,16 +8,15 @@ import {
   RESPONSE_MESSAGE,
   ROUTES_CONST,
 } from '@constants';
-import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import {
   companyProfileUpdateSchema,
   type CompanyProfileUpdateData,
 } from '@schemas/companyProfileUpdateSchema';
-import { showModalMessageErrorDefault } from '@utils/defaultModal';
 import { normalizeCompanyData } from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -28,7 +27,9 @@ export const CompanyProfileUpdate = () => {
   const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
-  const { showMessageModal } = useModalMessage();
+  const { modalMessageError, modalMessageSafe } =
+    useModalMessageDefault();
+
   const { getUserId } = useAuth();
   const { getCompany, updateCompany, updateCompanyPassword } =
     useCompanyRegistrations();
@@ -79,7 +80,7 @@ export const CompanyProfileUpdate = () => {
           throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
-        await showModalMessageErrorDefault(error, showMessageModal);
+        await modalMessageError(error);
       } finally {
         setIsLoading(false);
       }
@@ -105,12 +106,12 @@ export const CompanyProfileUpdate = () => {
         );
 
         const message = response?.message ?? RESPONSE_MESSAGE.SUCCESS.UPDATE;
-
-        await showMessageModal({
+        const confirmedSuccess = await modalMessageSafe({
           type: 'success',
           message,
           shouldBlockProcess: false,
         });
+        if (!confirmedSuccess) return;
 
         // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
@@ -126,16 +127,12 @@ export const CompanyProfileUpdate = () => {
         message,
       });
 
-      await showModalMessageErrorDefault(error, showMessageModal);
+      await modalMessageError(error);
     }
   };
 
   if (isLoading) {
-    return (
-      <div>
-        <p>Carregando...</p>
-      </div>
-    );
+    return <></>;
   }
 
   return (
