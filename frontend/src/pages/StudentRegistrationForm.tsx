@@ -7,8 +7,8 @@ import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { RESPONSE_MESSAGE, studentRegistrationFields } from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
-import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { useAuth } from '@hooks/useAuth';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import {
@@ -20,8 +20,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const StudentRegistrationForm = () => {
   const navigate = useNavigate();
+
   const modalLoadingAuto = useModalLoadingAuto();
-  const { showMessageModal } = useModalMessage();
+  const { modalMessageSafe } = useModalMessageDefault();
+
   const { logout } = useAuth();
   const { studentRegistration } = useStudentRegistrations();
 
@@ -57,12 +59,12 @@ export const StudentRegistrationForm = () => {
 
       const message =
         response?.message ?? RESPONSE_MESSAGE.SUCCESS.REGISTRATION;
-
-      await showMessageModal({
+      const confirmedSuccess = await modalMessageSafe({
         type: 'success',
         message,
         shouldBlockProcess: false,
       });
+      if (!confirmedSuccess) return;
 
       navigate('/login');
     } catch (error: unknown) {

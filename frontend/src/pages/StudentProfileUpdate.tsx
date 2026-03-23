@@ -8,16 +8,15 @@ import {
   RESPONSE_MESSAGE,
   ROUTES_CONST,
 } from '@constants';
-import { useModalMessage } from '@contexts/modalMessage/useModalMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import {
   studentProfileUpdateSchema,
   type StudentProfileUpdateData,
 } from '@schemas/studentProfileUpdateSchema';
-import { showModalMessageErrorDefault } from '@utils/defaultModal';
 import { normalizeStudentData } from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -28,7 +27,9 @@ export const StudentProfileUpdate = () => {
   const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
-  const { showMessageModal } = useModalMessage();
+  const { modalMessageError, modalMessageSafe } =
+    useModalMessageDefault();
+
   const { getUserId } = useAuth();
   const { getStudent, updateStudent, updateStudentPassword } =
     useStudentRegistrations();
@@ -80,7 +81,7 @@ export const StudentProfileUpdate = () => {
           throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
-        await showModalMessageErrorDefault(error, showMessageModal);
+        await modalMessageError(error);
       } finally {
         setIsLoading(false);
       }
@@ -106,12 +107,12 @@ export const StudentProfileUpdate = () => {
         );
 
         const message = response?.message ?? RESPONSE_MESSAGE.SUCCESS.UPDATE;
-
-        await showMessageModal({
+        const confirmedSuccess = await modalMessageSafe({
           type: 'success',
           message,
           shouldBlockProcess: false,
         });
+        if (!confirmedSuccess) return;
 
         // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
@@ -127,7 +128,7 @@ export const StudentProfileUpdate = () => {
         message,
       });
 
-      await showModalMessageErrorDefault(error, showMessageModal);
+      await modalMessageError(error);
     }
   };
 
