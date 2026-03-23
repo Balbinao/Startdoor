@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import {
+  get,
   useFormContext,
   type FieldError,
   type FieldValues,
@@ -21,10 +22,10 @@ export const FormFieldWrapper = <TFormValues extends FieldValues>({
     formState: { errors },
   } = useFormContext<TFormValues>();
 
-  const error = errors[name] as FieldError | undefined;
+  const error = get(errors, name) as FieldError | undefined;
 
   return (
-    <div className="flex flex-col gap-1.5 w-full">
+    <div className="flex w-full flex-col gap-1.5">
       {label && (
         <label htmlFor={name} className="text-(--grey-300)">
           {label}
@@ -34,7 +35,7 @@ export const FormFieldWrapper = <TFormValues extends FieldValues>({
       {children}
 
       {error?.message && (
-        <span className="text-sm text-red-400">{error.message}</span>
+        <span className="text-sm text-red-400">{String(error.message)}</span>
       )}
     </div>
   );

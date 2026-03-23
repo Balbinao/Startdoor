@@ -1,5 +1,12 @@
 import { z } from 'zod';
 
+// const notaCondiField = z
+//   .union([z.string(), z.number()])
+//   .transform(val => (val === '' ? undefined : Number(val)))
+//   .refine(val => val !== undefined, 'Campo obrigatório')
+//   .refine(val => !Number.isNaN(val), 'Valor inválido')
+//   .refine(val => val >= 0 && val <= 5, 'Valor deve ser entre 0 e 5');
+
 export const studentRegistrationSchema = z.object({
   nome: z
     .string()
@@ -20,28 +27,29 @@ export const studentRegistrationSchema = z.object({
     .max(50, { message: 'O email deve ter no máximo 50 caracteres' }),
 
   senha: z.string().min(6, 'Senha precisa ter pelo menos 6 caracteres'),
+
   // setor_interesse: z.string().min(1, 'Setor de interesse é obrigatório'),
+
+  // nota_condi: z.object({
+  //   ambiente: notaCondiField,
+  //   aprendizado: notaCondiField,
+  //   beneficios: notaCondiField,
+  //   cultura: notaCondiField,
+  //   efetivacao: notaCondiField,
+  //   entrevista: notaCondiField,
+  //   feedback: notaCondiField,
+  //   infraestrutura: notaCondiField,
+  //   integracao: notaCondiField,
+  //   remuneracao: notaCondiField,
+  //   rotina: notaCondiField,
+  //   lideranca: notaCondiField,
+  // }),
 
   acordo: z.boolean().refine(value => value === true, {
     message: 'Aceite os termos para continuar!',
   }),
-
-  // nota_condi: z.object({
-  //   ambiente: z.number().min(0).max(5),
-  //   aprendizado: z.number().min(0).max(5),
-  //   beneficios: z.number().min(0).max(5),
-  //   cultura: z.number().min(0).max(5),
-  //   efetivacao: z.number().min(0).max(5),
-  //   entrevista: z.number().min(0).max(5),
-  //   feedback: z.number().min(0).max(5),
-  //   infraestrutura: z.number().min(0).max(5),
-  //   integracao: z.number().min(0).max(5),
-  //   remuneracao: z.number().min(0).max(5),
-  //   rotina: z.number().min(0).max(5),
-  //   lideranca: z.number().min(0).max(5),
-  // }),
 });
 
-export type StudentRegistrationFormData = z.infer<
+export type StudentRegistrationFormData = z.input<
   typeof studentRegistrationSchema
 >;

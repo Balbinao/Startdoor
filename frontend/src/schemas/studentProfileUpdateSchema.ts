@@ -1,6 +1,13 @@
 import { DROPDOWN_VALUES_CONST } from '@constants';
 import { z } from 'zod';
 
+// const notaCondiField = z
+//   .union([z.string(), z.number()])
+//   .transform(val => (val === '' ? undefined : Number(val)))
+//   .refine(val => val !== undefined, 'Campo obrigatório')
+//   .refine(val => !Number.isNaN(val), 'Valor inválido')
+//   .refine(val => val >= 0 && val <= 5, 'Valor deve ser entre 0 e 5');
+
 export const studentProfileUpdateSchema = z.object({
   nome: z
     .string()
@@ -75,8 +82,23 @@ export const studentProfileUpdateSchema = z.object({
       message: 'Deve ser um link do LinkedIn',
     })
     .optional(),
+
+  // nota_condi: z.object({
+  //   ambiente: notaCondiField,
+  //   aprendizado: notaCondiField,
+  //   beneficios: notaCondiField,
+  //   cultura: notaCondiField,
+  //   efetivacao: notaCondiField,
+  //   entrevista: notaCondiField,
+  //   feedback: notaCondiField,
+  //   infraestrutura: notaCondiField,
+  //   integracao: notaCondiField,
+  //   remuneracao: notaCondiField,
+  //   rotina: notaCondiField,
+  //   lideranca: notaCondiField,
+  // }),
 });
 
-export type StudentProfileUpdateData = z.infer<
+export type StudentProfileUpdateData = z.input<
   typeof studentProfileUpdateSchema
 >;

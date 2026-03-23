@@ -10,19 +10,19 @@ import {
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
+import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import {
-  studentProfileUpdateSchema,
-  type StudentProfileUpdateData,
-} from '@schemas/studentProfileUpdateSchema';
-import { normalizeStudentData } from '@utils/normalizeData';
+  companyProfileUpdateSchema,
+  type CompanyProfileUpdateData,
+} from '@schemas/companyProfileUpdateSchema';
+import { normalizeCompanyData } from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export const StudentProfileUpdate = () => {
+export const CompanyProfileUpdateForm = () => {
   const { id: userId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -31,35 +31,34 @@ export const StudentProfileUpdate = () => {
     useModalMessageDefault();
 
   const { getUserId } = useAuth();
-  const { getStudent, updateStudent, updateStudentPassword } =
-    useStudentRegistrations();
+  const { getCompany, updateCompany, updateCompanyPassword } =
+    useCompanyRegistrations();
 
   const [isLoading, setIsLoading] = useState(true);
 
   const currentUserId = getUserId();
   if (currentUserId && currentUserId !== userId) {
-    navigate(ROUTES_CONST.STUDENT.PROFILE(currentUserId));
+    navigate(ROUTES_CONST.COMPANY.PROFILE(currentUserId));
   }
 
-  const form = useForm<StudentProfileUpdateData>({
-    resolver: zodResolver(studentProfileUpdateSchema),
+  const form = useForm<CompanyProfileUpdateData>({
+    resolver: zodResolver(companyProfileUpdateSchema),
     defaultValues: {
-      nome: '',
-      user: '',
+      nomeFantasia: '',
       email: '',
       senha: '',
-      dataNascimento: '',
       biografia: '',
       paisOrigem: '',
-      modeloTrabalho: '',
-      estadoAtuacao: '',
-      setorInteresse: '',
-      habilidadesPrincipais: '',
+      receitaAnual: '',
+      dataFundacao: '',
+      tamanhoEmpresa: '',
+      estadoSede: '',
+      areaAtuacao: '',
       linkSite: '',
       linkLinkedin: '',
+      linkGupy: '',
     },
   });
-
   const {
     handleSubmit,
     reset,
@@ -73,10 +72,10 @@ export const StudentProfileUpdate = () => {
         setIsLoading(true);
         if (userId) {
           const response = await modalLoadingAuto(
-            () => getStudent(Number(userId)),
+            () => getCompany(Number(userId)),
             'Buscando dados do usuário...',
           );
-          reset(normalizeStudentData(response));
+          reset(normalizeCompanyData(response));
         } else {
           throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
         }
@@ -90,19 +89,19 @@ export const StudentProfileUpdate = () => {
     fetch();
   }, []);
 
-  const onSubmit = async (data: StudentProfileUpdateData) => {
+  const onSubmit = async (data: CompanyProfileUpdateData) => {
     try {
       if (userId) {
         const password = data.senha;
         if (password) {
           await modalLoadingAuto(
-            () => updateStudentPassword(Number(userId), password),
+            () => updateCompanyPassword(Number(userId), password),
             'Atualizando dados...',
           );
         }
 
         const response = await modalLoadingAuto(
-          () => updateStudent(Number(userId), data),
+          async () => await updateCompany(Number(userId), data),
           'Atualizando dados...',
         );
 
@@ -114,7 +113,7 @@ export const StudentProfileUpdate = () => {
         });
         if (!confirmedSuccess) return;
 
-        // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+        // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
       } else {
         throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
@@ -147,26 +146,16 @@ export const StudentProfileUpdate = () => {
         >
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-5">
-              <div className="flex w-full gap-6">
-                <FormField<StudentProfileUpdateData>
-                  type="text"
-                  name="nome"
-                  label="Nome completo"
-                  placeholder="Digite seu nome"
-                  maxLength={60}
-                />
-
-                <FormField<StudentProfileUpdateData>
-                  type="text"
-                  name="user"
-                  label="Username"
-                  placeholder="Digite seu username"
-                  maxLength={30}
-                />
-              </div>
+              <FormField<CompanyProfileUpdateData>
+                type="text"
+                name="nomeFantasia"
+                label="Nome Fantasia"
+                placeholder="Digite seu nome"
+                maxLength={60}
+              />
 
               <div className="flex w-full gap-6">
-                <FormField<StudentProfileUpdateData>
+                <FormField<CompanyProfileUpdateData>
                   type="email"
                   name="email"
                   label="Email"
@@ -174,7 +163,7 @@ export const StudentProfileUpdate = () => {
                   maxLength={50}
                 />
 
-                <FormField<StudentProfileUpdateData>
+                <FormField<CompanyProfileUpdateData>
                   type="password"
                   name="senha"
                   label="Senha"
@@ -183,13 +172,13 @@ export const StudentProfileUpdate = () => {
               </div>
             </div>
 
-            <FormField<StudentProfileUpdateData>
+            <FormField<CompanyProfileUpdateData>
               type="date"
-              name="dataNascimento"
-              label="Data de Nascimento"
+              name="dataFundacao"
+              label="Data da Fundação"
             />
 
-            <FormField<StudentProfileUpdateData>
+            <FormField<CompanyProfileUpdateData>
               type="textarea"
               name="biografia"
               label="Biografia"
@@ -198,7 +187,7 @@ export const StudentProfileUpdate = () => {
 
             <div className="flex flex-col gap-5">
               <div className="flex w-full gap-6">
-                <FormField<StudentProfileUpdateData>
+                <FormField<CompanyProfileUpdateData>
                   type="select"
                   name="paisOrigem"
                   label="País de Origem"
@@ -207,59 +196,66 @@ export const StudentProfileUpdate = () => {
                   }))}
                 />
 
-                <FormField<StudentProfileUpdateData>
+                <FormField<CompanyProfileUpdateData>
                   type="select"
-                  name="modeloTrabalho"
-                  label="Modelo de Trabalho"
-                  options={DROPDOWN_VALUES_CONST.MODELO_TRABALHO.map(
-                    option => ({ ...option }),
-                  )}
+                  name="receitaAnual"
+                  label="Receita Anual"
+                  options={DROPDOWN_VALUES_CONST.RECEITA_ANUAL.map(option => ({
+                    ...option,
+                  }))}
                 />
               </div>
 
               <div className="flex w-full gap-6">
-                <FormField<StudentProfileUpdateData>
+                <FormField<CompanyProfileUpdateData>
                   type="select"
-                  name="estadoAtuacao"
-                  label="Estado de Atuação"
-                  options={DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => ({
-                    ...option,
-                  }))}
-                />
-
-                <FormField<StudentProfileUpdateData>
-                  type="select"
-                  name="setorInteresse"
-                  label="Setor de Interesse"
-                  options={DROPDOWN_VALUES_CONST.SETOR_INTERESSE.map(
+                  name="tamanhoEmpresa"
+                  label="Número de Funcionários"
+                  options={DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA.map(
                     option => ({
                       ...option,
                     }),
                   )}
                 />
+
+                <FormField<CompanyProfileUpdateData>
+                  type="select"
+                  name="estadoSede"
+                  label="Sede no Brasil"
+                  options={DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => ({
+                    ...option,
+                  }))}
+                />
               </div>
 
-              <FormField<StudentProfileUpdateData>
+              <FormField<CompanyProfileUpdateData>
                 type="textarea"
-                name="habilidadesPrincipais"
-                label="Habilidades Principais"
-                placeholder="Descreva suas melhores habilidades..."
+                name="areaAtuacao"
+                label="Área de Atuação"
+                placeholder="Descreva os pricipais setores de atuação da empresa..."
               />
             </div>
 
             <div className="flex flex-col gap-5">
-              <FormField<StudentProfileUpdateData>
+              <FormField<CompanyProfileUpdateData>
                 type="text"
                 name="linkSite"
                 label="Site / Portfólio"
                 placeholder="https://meusite.com"
               />
 
-              <FormField<StudentProfileUpdateData>
+              <FormField<CompanyProfileUpdateData>
                 type="text"
                 name="linkLinkedin"
                 label="LinkedIn"
                 placeholder="https://linkedin.com/in/seuusuario"
+              />
+
+              <FormField<CompanyProfileUpdateData>
+                type="text"
+                name="linkGupy"
+                label="Gupy"
+                placeholder="https://empresa.gupy.io"
               />
             </div>
           </div>
