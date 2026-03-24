@@ -315,4 +315,13 @@ export const DROPDOWN_VALUES_CONST = {
     { label: '50001-100000', value: '50001-100000' },
     { label: '+100000', value: '+100000' },
   ] as const,
+
+  NOTA_CONDI: [
+    { label: 'Selecione...', value: '' },
+    { label: '1', value: 1 },
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+    { label: '5', value: 5 },
+  ],
 };

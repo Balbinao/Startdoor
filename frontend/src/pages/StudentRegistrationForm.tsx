@@ -35,6 +35,21 @@ export const StudentRegistrationForm = () => {
       user: '',
       email: '',
       senha: '',
+      // setor_interesse: '',
+      // nota_condi: {
+      //   ambiente: '',
+      //   aprendizado: '',
+      //   beneficios: '',
+      //   cultura: '',
+      //   efetivacao: '',
+      //   entrevista: '',
+      //   feedback: '',
+      //   infraestrutura: '',
+      //   integracao: '',
+      //   remuneracao: '',
+      //   rotina: '',
+      //   lideranca: '',
+      // },
       acordo: false,
     },
   });
@@ -50,6 +65,8 @@ export const StudentRegistrationForm = () => {
   }, []);
 
   const onSubmit = async (data: StudentRegistrationFormData) => {
+    console.log('FORM DATA (raw):', data);
+
     try {
       const { acordo: _, ...studentData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
       const response = await modalLoadingAuto(
@@ -96,6 +113,18 @@ export const StudentRegistrationForm = () => {
                 <FormField key={field.name} {...field} />
               ))}
             </div>
+
+            {/* <div className="grid grid-cols-3 gap-5">
+              {studentNotaCondiFields.map(field => (
+                <FormField key={field.name} {...field} />
+              ))}
+            </div> */}
+
+            {/* <FormField
+              type="checkbox"
+              name="acordo"
+              label="Confirmo, conforme Art. 299 do Código Penal (Decreto-Lei nº 2.848/1940), a veracidade das informações fornecidas."
+            /> */}
 
             <FormErrorMessage />
 

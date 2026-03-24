@@ -5,33 +5,48 @@ import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSche
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
 
 export const normalizeStudentData = (
-  data: IStudent,
+  studentData: IStudent,
+  // notaCondiData: IStudentNotaCondi,
 ): StudentProfileUpdateData => ({
-  nome: data.nome ?? '',
-  user: data.user ?? '',
-  email: data.email ?? '',
+  nome: studentData.nome ?? '',
+  user: studentData.user ?? '',
+  email: studentData.email ?? '',
   senha: '',
-  dataNascimento: data.dataNascimento ?? '',
-  biografia: data.biografia ?? '',
+  dataNascimento: studentData.dataNascimento ?? '',
+  biografia: studentData.biografia ?? '',
   paisOrigem:
     DROPDOWN_VALUES_CONST.PAIS_ORIGEM.find(
-      option => option.value === data.paisOrigem,
+      option => option.value === studentData.paisOrigem,
     )?.value ?? '',
   modeloTrabalho:
     DROPDOWN_VALUES_CONST.MODELO_TRABALHO.find(
-      option => option.value === data.modeloTrabalho,
+      option => option.value === studentData.modeloTrabalho,
     )?.value ?? '',
   estadoAtuacao:
     DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
-      option => option.value === data.estadoAtuacao,
+      option => option.value === studentData.estadoAtuacao,
     )?.value ?? '',
   setorInteresse:
     DROPDOWN_VALUES_CONST.SETOR_INTERESSE.find(
-      option => option.value === data.estadoAtuacao,
+      option => option.value === studentData.estadoAtuacao,
     )?.value ?? '',
-  habilidadesPrincipais: data.habilidadesPrincipais ?? '',
-  linkSite: data.linkSite ?? undefined,
-  linkLinkedin: data.linkLinkedin ?? undefined,
+  habilidadesPrincipais: studentData.habilidadesPrincipais ?? '',
+  linkSite: studentData.linkSite ?? undefined,
+  linkLinkedin: studentData.linkLinkedin ?? undefined,
+  // nota_condi: {
+  //   ambiente: notaCondiData.ambiente ?? '',
+  //   aprendizado: notaCondiData.aprendizado ?? '',
+  //   beneficios: notaCondiData.beneficios ?? '',
+  //   cultura: notaCondiData.cultura ?? '',
+  //   efetivacao: notaCondiData.efetivacao ?? '',
+  //   entrevista: notaCondiData.entrevista ?? '',
+  //   feedback: notaCondiData.feedback ?? '',
+  //   infraestrutura: notaCondiData.infraestrutura ?? '',
+  //   integracao: notaCondiData.integracao ?? '',
+  //   remuneracao: notaCondiData.remuneracao ?? '',
+  //   rotina: notaCondiData.rotina ?? '',
+  //   lideranca: notaCondiData.lideranca ?? '',
+  // },
 });
 
 export const normalizeCompanyData = (

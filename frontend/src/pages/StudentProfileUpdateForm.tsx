@@ -10,55 +10,69 @@ import {
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
-import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import {
-  companyProfileUpdateSchema,
-  type CompanyProfileUpdateData,
-} from '@schemas/companyProfileUpdateSchema';
-import { normalizeCompanyData } from '@utils/normalizeData';
+  studentProfileUpdateSchema,
+  type StudentProfileUpdateData,
+} from '@schemas/studentProfileUpdateSchema';
+import { normalizeStudentData } from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export const CompanyProfileUpdate = () => {
+export const StudentProfileUpdateForm = () => {
   const { id: userId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
-  const { modalMessageError, modalMessageSafe } =
-    useModalMessageDefault();
+  const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
   const { getUserId } = useAuth();
-  const { getCompany, updateCompany, updateCompanyPassword } =
-    useCompanyRegistrations();
+  const { getStudent, updateStudent, updateStudentPassword } =
+    useStudentRegistrations();
 
   const [isLoading, setIsLoading] = useState(true);
 
   const currentUserId = getUserId();
   if (currentUserId && currentUserId !== userId) {
-    navigate(ROUTES_CONST.COMPANY.PROFILE(currentUserId));
+    navigate(ROUTES_CONST.STUDENT.PROFILE(currentUserId));
   }
 
-  const form = useForm<CompanyProfileUpdateData>({
-    resolver: zodResolver(companyProfileUpdateSchema),
+  const form = useForm<StudentProfileUpdateData>({
+    resolver: zodResolver(studentProfileUpdateSchema),
     defaultValues: {
-      nomeFantasia: '',
+      nome: '',
+      user: '',
       email: '',
       senha: '',
+      dataNascimento: '',
       biografia: '',
       paisOrigem: '',
-      receitaAnual: '',
-      dataFundacao: '',
-      tamanhoEmpresa: '',
-      estadoSede: '',
-      areaAtuacao: '',
+      modeloTrabalho: '',
+      estadoAtuacao: '',
+      setorInteresse: '',
+      habilidadesPrincipais: '',
+      // nota_condi: {
+      //   ambiente: '',
+      //   aprendizado: '',
+      //   beneficios: '',
+      //   cultura: '',
+      //   efetivacao: '',
+      //   entrevista: '',
+      //   feedback: '',
+      //   infraestrutura: '',
+      //   integracao: '',
+      //   remuneracao: '',
+      //   rotina: '',
+      //   lideranca: '',
+      // },
       linkSite: '',
       linkLinkedin: '',
-      linkGupy: '',
     },
   });
+
   const {
     handleSubmit,
     reset,
@@ -72,10 +86,11 @@ export const CompanyProfileUpdate = () => {
         setIsLoading(true);
         if (userId) {
           const response = await modalLoadingAuto(
-            () => getCompany(Number(userId)),
+            () => getStudent(Number(userId)),
             'Buscando dados do usuário...',
           );
-          reset(normalizeCompanyData(response));
+          reset(normalizeStudentData(response));
+          // reset(normalizeStudentData(studentData, notaCondiData));
         } else {
           throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
         }
@@ -89,19 +104,19 @@ export const CompanyProfileUpdate = () => {
     fetch();
   }, []);
 
-  const onSubmit = async (data: CompanyProfileUpdateData) => {
+  const onSubmit = async (data: StudentProfileUpdateData) => {
     try {
       if (userId) {
         const password = data.senha;
         if (password) {
           await modalLoadingAuto(
-            () => updateCompanyPassword(Number(userId), password),
+            () => updateStudentPassword(Number(userId), password),
             'Atualizando dados...',
           );
         }
 
         const response = await modalLoadingAuto(
-          async () => await updateCompany(Number(userId), data),
+          () => updateStudent(Number(userId), data),
           'Atualizando dados...',
         );
 
@@ -113,7 +128,7 @@ export const CompanyProfileUpdate = () => {
         });
         if (!confirmedSuccess) return;
 
-        // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+        // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
       } else {
         throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
@@ -146,16 +161,26 @@ export const CompanyProfileUpdate = () => {
         >
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-5">
-              <FormField<CompanyProfileUpdateData>
-                type="text"
-                name="nomeFantasia"
-                label="Nome Fantasia"
-                placeholder="Digite seu nome"
-                maxLength={60}
-              />
+              <div className="flex w-full gap-6">
+                <FormField<StudentProfileUpdateData>
+                  type="text"
+                  name="nome"
+                  label="Nome completo"
+                  placeholder="Digite seu nome"
+                  maxLength={60}
+                />
+
+                <FormField<StudentProfileUpdateData>
+                  type="text"
+                  name="user"
+                  label="Username"
+                  placeholder="Digite seu username"
+                  maxLength={30}
+                />
+              </div>
 
               <div className="flex w-full gap-6">
-                <FormField<CompanyProfileUpdateData>
+                <FormField<StudentProfileUpdateData>
                   type="email"
                   name="email"
                   label="Email"
@@ -163,7 +188,7 @@ export const CompanyProfileUpdate = () => {
                   maxLength={50}
                 />
 
-                <FormField<CompanyProfileUpdateData>
+                <FormField<StudentProfileUpdateData>
                   type="password"
                   name="senha"
                   label="Senha"
@@ -172,13 +197,13 @@ export const CompanyProfileUpdate = () => {
               </div>
             </div>
 
-            <FormField<CompanyProfileUpdateData>
+            <FormField<StudentProfileUpdateData>
               type="date"
-              name="dataFundacao"
-              label="Data da Fundação"
+              name="dataNascimento"
+              label="Data de Nascimento"
             />
 
-            <FormField<CompanyProfileUpdateData>
+            <FormField<StudentProfileUpdateData>
               type="textarea"
               name="biografia"
               label="Biografia"
@@ -187,7 +212,7 @@ export const CompanyProfileUpdate = () => {
 
             <div className="flex flex-col gap-5">
               <div className="flex w-full gap-6">
-                <FormField<CompanyProfileUpdateData>
+                <FormField<StudentProfileUpdateData>
                   type="select"
                   name="paisOrigem"
                   label="País de Origem"
@@ -196,68 +221,67 @@ export const CompanyProfileUpdate = () => {
                   }))}
                 />
 
-                <FormField<CompanyProfileUpdateData>
+                <FormField<StudentProfileUpdateData>
                   type="select"
-                  name="receitaAnual"
-                  label="Receita Anual"
-                  options={DROPDOWN_VALUES_CONST.RECEITA_ANUAL.map(option => ({
-                    ...option,
-                  }))}
+                  name="modeloTrabalho"
+                  label="Modelo de Trabalho"
+                  options={DROPDOWN_VALUES_CONST.MODELO_TRABALHO.map(
+                    option => ({ ...option }),
+                  )}
                 />
               </div>
 
               <div className="flex w-full gap-6">
-                <FormField<CompanyProfileUpdateData>
+                <FormField<StudentProfileUpdateData>
                   type="select"
-                  name="tamanhoEmpresa"
-                  label="Número de Funcionários"
-                  options={DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA.map(
+                  name="estadoAtuacao"
+                  label="Estado de Atuação"
+                  options={DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => ({
+                    ...option,
+                  }))}
+                />
+
+                <FormField<StudentProfileUpdateData>
+                  type="select"
+                  name="setorInteresse"
+                  label="Setor de Interesse"
+                  options={DROPDOWN_VALUES_CONST.SETOR_INTERESSE.map(
                     option => ({
                       ...option,
                     }),
                   )}
                 />
-
-                <FormField<CompanyProfileUpdateData>
-                  type="select"
-                  name="estadoSede"
-                  label="Sede no Brasil"
-                  options={DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => ({
-                    ...option,
-                  }))}
-                />
               </div>
 
-              <FormField<CompanyProfileUpdateData>
+              <FormField<StudentProfileUpdateData>
                 type="textarea"
-                name="areaAtuacao"
-                label="Área de Atuação"
-                placeholder="Descreva os pricipais setores de atuação da empresa..."
+                name="habilidadesPrincipais"
+                label="Habilidades Principais"
+                placeholder="Descreva suas melhores habilidades..."
               />
             </div>
 
             <div className="flex flex-col gap-5">
-              <FormField<CompanyProfileUpdateData>
+              <FormField<StudentProfileUpdateData>
                 type="text"
                 name="linkSite"
                 label="Site / Portfólio"
                 placeholder="https://meusite.com"
               />
 
-              <FormField<CompanyProfileUpdateData>
+              <FormField<StudentProfileUpdateData>
                 type="text"
                 name="linkLinkedin"
                 label="LinkedIn"
                 placeholder="https://linkedin.com/in/seuusuario"
               />
-
-              <FormField<CompanyProfileUpdateData>
-                type="text"
-                name="linkGupy"
-                label="Gupy"
-                placeholder="https://empresa.gupy.io"
-              />
             </div>
+
+            {/* <div className="grid grid-cols-3 gap-5">
+              {studentNotaCondiFields.map(field => (
+                <FormField key={field.name} {...field} />
+              ))}
+            </div> */}
           </div>
 
           <FormErrorMessage />

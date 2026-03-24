@@ -3,10 +3,10 @@ import { PrivateRoute } from '@components/layout/PrivateRoute';
 import { PublicMainLayout } from '@components/layout/PublicMainLayout';
 import { ROUTES_CONST } from '@constants';
 import { CompanyProfile } from '@pages/CompanyProfile';
-import { CompanyProfileUpdate } from '@pages/CompanyProfileUpdate';
+import { CompanyProfileUpdateForm } from '@pages/CompanyProfileUpdateForm';
 import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
 import { StudentProfile } from '@pages/StudentProfile';
-import { StudentProfileUpdate } from '@pages/StudentProfileUpdate';
+import { StudentProfileUpdateForm } from '@pages/StudentProfileUpdateForm';
 import { StudentRegistrationForm } from '@pages/StudentRegistrationForm';
 import { UserLoginForm } from '@pages/UserLoginForm';
 import {
@@ -58,11 +58,11 @@ function App() {
 
             <Route
               path="/perfil-estudante-alterar/:id"
-              element={<StudentProfileUpdate />}
+              element={<StudentProfileUpdateForm />}
             />
             <Route
               path="/perfil-empresa-alterar/:id"
-              element={<CompanyProfileUpdate />}
+              element={<CompanyProfileUpdateForm />}
             />
           </Route>
 
