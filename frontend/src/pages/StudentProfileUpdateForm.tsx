@@ -161,40 +161,36 @@ export const StudentProfileUpdateForm = () => {
         >
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-5">
-              <div className="flex w-full gap-6">
-                <FormField<StudentProfileUpdateData>
-                  type="text"
-                  name="nome"
-                  label="Nome completo"
-                  placeholder="Digite seu nome"
-                  maxLength={60}
-                />
+              <FormField<StudentProfileUpdateData>
+                type="text"
+                name="nome"
+                label="Nome completo"
+                placeholder="Digite seu nome"
+                maxLength={60}
+              />
 
-                <FormField<StudentProfileUpdateData>
-                  type="text"
-                  name="user"
-                  label="Username"
-                  placeholder="Digite seu username"
-                  maxLength={30}
-                />
-              </div>
+              <FormField<StudentProfileUpdateData>
+                type="text"
+                name="user"
+                label="Username"
+                placeholder="Digite seu username"
+                maxLength={30}
+              />
 
-              <div className="flex w-full gap-6">
-                <FormField<StudentProfileUpdateData>
-                  type="email"
-                  name="email"
-                  label="Email"
-                  placeholder="Digite seu email"
-                  maxLength={50}
-                />
+              <FormField<StudentProfileUpdateData>
+                type="email"
+                name="email"
+                label="Email"
+                placeholder="Digite seu email"
+                maxLength={50}
+              />
 
-                <FormField<StudentProfileUpdateData>
-                  type="password"
-                  name="senha"
-                  label="Senha"
-                  placeholder="Digite sua senha"
-                />
-              </div>
+              <FormField<StudentProfileUpdateData>
+                type="password"
+                name="senha"
+                label="Senha"
+                placeholder="Digite sua senha"
+              />
             </div>
 
             <FormField<StudentProfileUpdateData>
@@ -210,7 +206,7 @@ export const StudentProfileUpdateForm = () => {
               placeholder="Conte um pouco sobre você"
             />
 
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-12">
               <div className="flex w-full gap-6">
                 <FormField<StudentProfileUpdateData>
                   type="select"
