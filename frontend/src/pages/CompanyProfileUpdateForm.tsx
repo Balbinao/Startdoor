@@ -27,8 +27,7 @@ export const CompanyProfileUpdateForm = () => {
   const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
-  const { modalMessageError, modalMessageSafe } =
-    useModalMessageDefault();
+  const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
   const { getUserId } = useAuth();
   const { getCompany, updateCompany, updateCompanyPassword } =
@@ -145,7 +144,7 @@ export const CompanyProfileUpdateForm = () => {
           className="flex w-full max-w-3xl flex-col gap-14"
         >
           <div className="flex flex-col gap-12">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-6">
               <FormField<CompanyProfileUpdateData>
                 type="text"
                 name="nomeFantasia"
@@ -154,22 +153,20 @@ export const CompanyProfileUpdateForm = () => {
                 maxLength={60}
               />
 
-              <div className="flex w-full gap-6">
-                <FormField<CompanyProfileUpdateData>
-                  type="email"
-                  name="email"
-                  label="Email"
-                  placeholder="Digite seu email"
-                  maxLength={50}
-                />
+              <FormField<CompanyProfileUpdateData>
+                type="email"
+                name="email"
+                label="Email"
+                placeholder="Digite seu email"
+                maxLength={50}
+              />
 
-                <FormField<CompanyProfileUpdateData>
-                  type="password"
-                  name="senha"
-                  label="Senha"
-                  placeholder="Digite sua senha"
-                />
-              </div>
+              <FormField<CompanyProfileUpdateData>
+                type="password"
+                name="senha"
+                label="Senha"
+                placeholder="Digite sua senha"
+              />
             </div>
 
             <FormField<CompanyProfileUpdateData>
