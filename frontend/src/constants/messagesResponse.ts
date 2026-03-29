@@ -1,4 +1,4 @@
-export const RESPONSE_MESSAGE = {
+export const MESSAGES_RESPONSE = {
   SUCCESS: {
     CREATE: 'Item criado com sucesso!',
     REGISTRATION: 'Cadastro efetuado com sucesso!',

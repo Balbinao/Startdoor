@@ -1,4 +1,5 @@
 import { Check, ExclamationMark, Sparkles, XClose } from '@assets/icons';
+import { SupportButton } from '@components/ui/SupportButton';
 import type { MessageType } from '@models/modal.types';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -101,19 +102,14 @@ export const ModalMessage = ({
           </button>
         ) : (
           <div className="flex gap-3">
-            <button
-              className="w-26 cursor-pointer rounded-md border border-rose-800/20 bg-rose-900/40 py-1.5 transition-colors hover:bg-rose-900/70"
+            <SupportButton
+              type="button"
+              variant="deny"
+              text="Cancelar"
               onClick={onClose}
-            >
-              Cancelar
-            </button>
+            />
 
-            <button
-              className="w-26 cursor-pointer rounded-md border border-green-800/30 bg-green-900/50 py-1.5 transition-colors hover:bg-green-900/80"
-              onClick={onConfirm}
-            >
-              Confirmar
-            </button>
+            <SupportButton type="submit" text="Confirmar" onClick={onConfirm} />
           </div>
         )}
       </div>

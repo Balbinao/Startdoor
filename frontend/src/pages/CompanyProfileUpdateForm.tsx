@@ -5,7 +5,8 @@ import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { UserBanner } from '@components/ui/UserBanner';
 import {
   DROPDOWN_VALUES_CONST,
-  RESPONSE_MESSAGE,
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
   ROUTES_CONST,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -34,6 +35,7 @@ export const CompanyProfileUpdateForm = () => {
     useCompanyRegistrations();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(true);
 
   const currentUserId = getUserId();
   if (currentUserId && currentUserId !== userId) {
@@ -72,11 +74,13 @@ export const CompanyProfileUpdateForm = () => {
         if (userId) {
           const response = await modalLoadingAuto(
             () => getCompany(Number(userId)),
-            'Buscando dados do usuário...',
+            MESSAGES_LOADING.GET,
           );
           reset(normalizeCompanyData(response));
+
+          setIsError(false);
         } else {
-          throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
+          throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
         await modalMessageError(error);
@@ -95,16 +99,16 @@ export const CompanyProfileUpdateForm = () => {
         if (password) {
           await modalLoadingAuto(
             () => updateCompanyPassword(Number(userId), password),
-            'Atualizando dados...',
+            MESSAGES_LOADING.GET,
           );
         }
 
         const response = await modalLoadingAuto(
           async () => await updateCompany(Number(userId), data),
-          'Atualizando dados...',
+          MESSAGES_LOADING.GET,
         );
 
-        const message = response?.message ?? RESPONSE_MESSAGE.SUCCESS.UPDATE;
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
         const confirmedSuccess = await modalMessageSafe({
           type: 'success',
           message,
@@ -115,11 +119,11 @@ export const CompanyProfileUpdateForm = () => {
         // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
       } else {
-        throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
+        throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : RESPONSE_MESSAGE.ERROR.SERVER;
+        error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
 
       setError('root.serverError', {
         type: 'server',
@@ -130,9 +134,8 @@ export const CompanyProfileUpdateForm = () => {
     }
   };
 
-  if (isLoading) {
-    return <></>;
-  }
+  if (isLoading) return <></>;
+  if (isError) return <></>;
 
   return (
     <div className="flex h-full flex-col items-center gap-32">

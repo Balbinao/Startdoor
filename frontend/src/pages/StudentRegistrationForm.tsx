@@ -4,7 +4,11 @@ import { useForm } from 'react-hook-form';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
-import { fieldsStudentRegistration, RESPONSE_MESSAGE } from '@constants';
+import {
+  fieldsStudentRegistration,
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
+} from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
@@ -24,7 +28,7 @@ export const StudentRegistrationForm = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageSafe } = useModalMessageDefault();
 
-  const { logout } = useAuth();
+  const { clearFullLocalStorage } = useAuth();
   const { studentRegistration } = useStudentRegistrations();
 
   const form = useForm<StudentRegistrationFormData>({
@@ -61,7 +65,7 @@ export const StudentRegistrationForm = () => {
   } = form;
 
   useEffect(() => {
-    logout();
+    clearFullLocalStorage();
   }, []);
 
   const onSubmit = async (data: StudentRegistrationFormData) => {
@@ -71,11 +75,11 @@ export const StudentRegistrationForm = () => {
       const { acordo: _, ...studentData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
       const response = await modalLoadingAuto(
         () => studentRegistration(studentData),
-        'Processando dados de cadastro...',
+        MESSAGES_LOADING.CREATE,
       );
 
       const message =
-        response?.message ?? RESPONSE_MESSAGE.SUCCESS.REGISTRATION;
+        response?.message ?? MESSAGES_RESPONSE.SUCCESS.REGISTRATION;
       const confirmedSuccess = await modalMessageSafe({
         type: 'success',
         message,
@@ -86,7 +90,7 @@ export const StudentRegistrationForm = () => {
       navigate('/login');
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : RESPONSE_MESSAGE.ERROR.SERVER;
+        error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
       setError('root.serverError', {
         type: 'server',
         message,

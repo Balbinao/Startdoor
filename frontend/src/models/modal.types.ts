@@ -9,7 +9,9 @@ export type ModalMessageOptions =
   | (Base & {
       shouldAcknowledge?: false;
       shouldBlockProcess?: boolean;
+      onClose?: () => void;
     })
   | (Base & {
       shouldAcknowledge: true;
+      onClose?: () => void;
     });

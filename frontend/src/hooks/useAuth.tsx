@@ -1,10 +1,12 @@
-import { STORAGEKEYS_CONST } from '@constants';
+import { ROUTES_CONST, STORAGEKEYS_CONST } from '@constants';
 import { useStore } from '@contexts/store/useStore';
 import type { IUserLogin } from '@models/registrationLogin.types';
+import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 
 export const useAuth = () => {
   const { authStore } = useStore();
+  const navigate = useNavigate();
 
   const login = async (data: IUserLogin) => {
     try {
@@ -42,14 +44,20 @@ export const useAuth = () => {
     return null;
   };
 
+  const clearFullLocalStorage = () => {
+    authStore.clear();
+  };
+
   const logout = () => {
-    authStore.logout();
+    clearFullLocalStorage();
+    navigate(ROUTES_CONST.LOGIN, { replace: true });
   };
 
   return {
     login,
     getUserId,
     getUserRole,
+    clearFullLocalStorage,
     logout,
   };
 };

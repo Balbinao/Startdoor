@@ -33,7 +33,7 @@ export class AuthStore {
     localStorage.setItem(STORAGEKEYS_CONST.USER_ID, response.id.toString());
   }
 
-  logout() {
+  clear() {
     localStorage.removeItem(STORAGEKEYS_CONST.ACCESS_TOKEN);
     localStorage.removeItem(STORAGEKEYS_CONST.USER_ROLE);
     localStorage.removeItem(STORAGEKEYS_CONST.USER_ID);

@@ -1,5 +1,5 @@
 import { DROPDOWN_VALUES_CONST, REGEX_CONST } from '@constants';
-import { extractValues } from '@utils/normalizeData';
+import { extractSelectOptionValue } from '@utils/normalizeData';
 import { z } from 'zod';
 
 export const academicExperienceCardSchema = z
@@ -19,7 +19,9 @@ export const academicExperienceCardSchema = z
     ),
 
     modeloEnsino: z
-      .enum(extractValues(DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO))
+      .enum(
+        extractSelectOptionValue(DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO),
+      )
       .refine(val => val !== '', {
         message: 'Campo obrigatório',
       }),

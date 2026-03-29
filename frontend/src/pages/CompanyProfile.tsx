@@ -9,7 +9,7 @@ import {
 } from '@assets/icons';
 import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
-import { RESPONSE_MESSAGE } from '@constants';
+import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -27,6 +27,8 @@ export const CompanyProfile = () => {
   const { modalMessageError } = useModalMessageDefault();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(true);
+
   const [searchedCompany, setSearchedCompany] = useState<ICompany | null>(null);
 
   const { getCompany } = useCompanyRegistrations();
@@ -38,10 +40,11 @@ export const CompanyProfile = () => {
         if (userId) {
           await modalLoadingAuto(
             async () => setSearchedCompany(await getCompany(Number(userId))),
-            'Buscando dados do usuário...',
+            MESSAGES_LOADING.GET,
           );
+          setIsError(false);
         } else {
-          throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
+          throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
         await modalMessageError(error);
@@ -53,9 +56,8 @@ export const CompanyProfile = () => {
     fetch();
   }, []);
 
-  if (isLoading) {
-    return <></>;
-  }
+  if (isLoading) return <></>;
+  if (isError) return <></>;
 
   return (
     <div className="flex h-full flex-col items-center gap-32">

@@ -8,7 +8,8 @@ import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { UserBanner } from '@components/ui/UserBanner';
 import {
   DROPDOWN_VALUES_CONST,
-  RESPONSE_MESSAGE,
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
   ROUTES_CONST,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,6 +42,7 @@ export const StudentProfileUpdateForm = () => {
     useStudentRegistrations();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(true);
   const [newAcademicExperienceCards, setNewAcademicExperienceCards] = useState<
     IAcademicExperience[]
   >([]);
@@ -97,17 +99,19 @@ export const StudentProfileUpdateForm = () => {
         if (userId) {
           const response = await modalLoadingAuto(
             () => getStudent(Number(userId)),
-            'Buscando dados do usuário...',
+            MESSAGES_LOADING.GET,
           );
           await modalLoadingAuto(
             () => getAcademicExperienceCards(Number(userId)),
-            'Buscando dados do usuário...',
+            MESSAGES_LOADING.GET,
           );
 
           reset(normalizeStudentData(response));
           // reset(normalizeStudentData(studentData, notaCondiData));
+
+          setIsError(false);
         } else {
-          throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
+          throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
         await modalMessageError(error);
@@ -146,31 +150,30 @@ export const StudentProfileUpdateForm = () => {
         if (password) {
           await modalLoadingAuto(
             () => updateStudentPassword(Number(userId), password),
-            'Atualizando dados...',
+            MESSAGES_LOADING.UPDATE,
           );
         }
 
         const response = await modalLoadingAuto(
           () => updateStudent(Number(userId), data),
-          'Atualizando dados...',
+          MESSAGES_LOADING.UPDATE,
         );
 
-        const message = response?.message ?? RESPONSE_MESSAGE.SUCCESS.UPDATE;
-        const confirmedSuccess = await modalMessageSafe({
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
+        await modalMessageSafe({
           type: 'success',
           message,
           shouldBlockProcess: false,
         });
-        if (!confirmedSuccess) return;
 
         // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
         navigate(ROUTES_CONST.LOGIN);
       } else {
-        throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
+        throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : RESPONSE_MESSAGE.ERROR.SERVER;
+        error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
 
       setError('root.serverError', {
         type: 'server',
@@ -181,9 +184,8 @@ export const StudentProfileUpdateForm = () => {
     }
   };
 
-  if (isLoading) {
-    return <></>;
-  }
+  if (isLoading) return <></>;
+  if (isError) return <></>;
 
   return (
     <div className="flex h-full flex-col items-center gap-32">
