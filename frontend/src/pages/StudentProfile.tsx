@@ -9,7 +9,7 @@ import {
 } from '@assets/icons';
 import { UserAttribute } from '@components/ui/UserAttribute/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
-import { RESPONSE_MESSAGE } from '@constants';
+import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
@@ -27,6 +27,8 @@ export const StudentProfile = () => {
   const { modalMessageError } = useModalMessageDefault();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(true);
+
   const [searchedStudent, setSearchedStudent] = useState<IStudent | null>(null);
 
   const { getStudent } = useStudentRegistrations();
@@ -39,10 +41,11 @@ export const StudentProfile = () => {
         if (userId) {
           await modalLoadingAuto(
             async () => setSearchedStudent(await getStudent(Number(userId))),
-            'Buscando dados do usuário...',
+            MESSAGES_LOADING.GET,
           );
+          setIsError(false);
         } else {
-          throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
+          throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
       } catch (error: unknown) {
         await modalMessageError(error);
@@ -54,9 +57,8 @@ export const StudentProfile = () => {
     fetch();
   }, []);
 
-  if (isLoading) {
-    return <></>;
-  }
+  if (isLoading) return <></>;
+  if (isError) return <></>;
 
   return (
     <div className="flex h-full flex-col items-center gap-32">

@@ -1,15 +1,14 @@
 import { StudentBannerIMG, StudentPfp } from '@assets/images';
-import { RESPONSE_MESSAGE, ROUTES_CONST } from '@constants';
+import { MESSAGES_LOADING, MESSAGES_RESPONSE, ROUTES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 export const UserBanner = () => {
   const { id: paramId } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const modalLoadingAuto = useModalLoadingAuto();
@@ -50,13 +49,12 @@ export const UserBanner = () => {
 
   const handleLogout = () => {
     logout();
-    navigate(ROUTES_CONST.LOGIN, { replace: true });
   };
 
   const handleDeleteAccount = async () => {
     try {
       if (!userId) {
-        throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
+        throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
 
       const action = isStudentProfile
@@ -66,10 +64,10 @@ export const UserBanner = () => {
           : null;
 
       if (!action) {
-        throw new Error(RESPONSE_MESSAGE.WARNING.USER_ROLE_NOT_FOUND);
+        throw new Error(MESSAGES_RESPONSE.WARNING.USER_ROLE_NOT_FOUND);
       }
 
-      const messageAcknowledge = RESPONSE_MESSAGE.WARNING.USER_DELETE_ACCOUNT;
+      const messageAcknowledge = MESSAGES_RESPONSE.WARNING.USER_DELETE_ACCOUNT;
       const confirmedAcknowledge = await modalMessageSafe({
         type: 'warning',
         message: messageAcknowledge,
@@ -79,17 +77,16 @@ export const UserBanner = () => {
 
       const response = await modalLoadingAuto(
         () => action(Number(userId)),
-        'Deletando dados do usuário...',
+        MESSAGES_LOADING.DELETE,
       );
 
       const messageSuccess =
-        response?.message ?? RESPONSE_MESSAGE.SUCCESS.DELETE;
-      const confirmedSuccess = await modalMessageSafe({
+        response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE;
+      await modalMessageSafe({
         type: 'success',
         message: messageSuccess,
         shouldBlockProcess: false,
       });
-      if (!confirmedSuccess) return;
 
       handleLogout();
     } catch (error) {

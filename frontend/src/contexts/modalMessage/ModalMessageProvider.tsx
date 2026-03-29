@@ -21,7 +21,7 @@ export const ModalMessageProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     if (!modal) return;
 
     if (modal.shouldAcknowledge) {
@@ -33,6 +33,8 @@ export const ModalMessageProvider = ({ children }: { children: ReactNode }) => {
         modal.resolve?.();
       }
     }
+
+    modal.onClose?.();
 
     setModal(null);
   };

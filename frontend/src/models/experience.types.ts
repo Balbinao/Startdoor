@@ -21,7 +21,3 @@ export interface IAcademicExperiencePayload {
   dataFim: string | null;
   descricao: string | null;
 }
-
-export type INewAcademicExperience = IAcademicExperiencePayload & {
-  tempId: string;
-};

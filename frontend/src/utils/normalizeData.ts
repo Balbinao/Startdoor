@@ -4,7 +4,7 @@ import type { IStudent } from '@models/studentData.types';
 import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
 
-export const extractValues = <T extends readonly { value: string }[]>(arr: T) =>
+export const extractSelectOptionValue = <T extends readonly { value: string }[]>(arr: T) =>
   arr.map(item => item.value) as [T[number]['value'], ...T[number]['value'][]];
 
 export const normalizeStudentData = (

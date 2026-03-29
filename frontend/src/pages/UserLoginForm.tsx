@@ -7,7 +7,8 @@ import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
 import {
-  RESPONSE_MESSAGE,
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
   ROUTES_CONST,
   USER_ROLES_CONST,
   userLoginFields,
@@ -24,7 +25,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export const UserLoginForm = () => {
   const navigate = useNavigate();
   const modalLoadingAuto = useModalLoadingAuto();
-  const { login, logout } = useAuth();
+  const { login, clearFullLocalStorage } = useAuth();
 
   const form = useForm<UserLoginFormData>({
     resolver: zodResolver(userLoginSchema),
@@ -41,14 +42,14 @@ export const UserLoginForm = () => {
   } = form;
 
   useEffect(() => {
-    logout();
+    clearFullLocalStorage();
   }, []);
 
   const onSubmit = async (data: UserLoginFormData) => {
     try {
       const { id, tipo } = await modalLoadingAuto(
         () => login(data),
-        'Processando credenciais...',
+        MESSAGES_LOADING.LOGIN,
       );
       if (tipo === USER_ROLES_CONST.ESTUDANTE) {
         navigate(ROUTES_CONST.STUDENT.PROFILE(id));
@@ -57,7 +58,7 @@ export const UserLoginForm = () => {
       }
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : RESPONSE_MESSAGE.ERROR.SERVER;
+        error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
       setError('root.serverError', {
         type: 'server',
         message,

@@ -1,6 +1,10 @@
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
-import { DROPDOWN_VALUES_CONST, RESPONSE_MESSAGE } from '@constants';
+import {
+  DROPDOWN_VALUES_CONST,
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
+} from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
@@ -60,16 +64,16 @@ export const AcademicExperienceCardEdit = ({
   const onSubmit = async (data: AcademicExperienceCardData) => {
     try {
       if (!userId) {
-        throw new Error(RESPONSE_MESSAGE.WARNING.USER_ID_NOT_FOUND);
+        throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
 
       // Cadastrar experiencia academica
       if (isNew) {
         const response = await modalLoadingAuto(
           () => createAcademicExperienceCard(Number(userId), data),
-          'Atualizando dados...',
+          MESSAGES_LOADING.CREATE,
         );
-        const message = response?.message ?? RESPONSE_MESSAGE.SUCCESS.CREATE;
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.CREATE;
         await modalMessageSafe({
           type: 'success',
           message,
@@ -77,7 +81,7 @@ export const AcademicExperienceCardEdit = ({
         });
         await modalLoadingAuto(
           () => getAcademicExperienceCards(Number(userId)),
-          'Buscando dados do usuário...',
+          MESSAGES_LOADING.GET,
         );
         return;
       }
@@ -85,9 +89,9 @@ export const AcademicExperienceCardEdit = ({
       // Alterar experiencia academica
       const response = await modalLoadingAuto(
         () => updateAcademicExperienceCard(Number(userId), data),
-        'Atualizando dados...',
+        MESSAGES_LOADING.UPDATE,
       );
-      const message = response?.message ?? RESPONSE_MESSAGE.SUCCESS.UPDATE;
+      const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
       await modalMessageSafe({
         type: 'success',
         message,
@@ -95,11 +99,11 @@ export const AcademicExperienceCardEdit = ({
       });
       await modalLoadingAuto(
         () => getAcademicExperienceCards(Number(userId)),
-        'Buscando dados do usuário...',
+        MESSAGES_LOADING.GET,
       );
     } catch (error: unknown) {
       const message =
-        error instanceof Error ? error.message : RESPONSE_MESSAGE.ERROR.SERVER;
+        error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
 
       setError('root.serverError', {
         type: 'server',

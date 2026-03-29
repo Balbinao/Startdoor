@@ -1,5 +1,5 @@
 import { DROPDOWN_VALUES_CONST, REGEX_CONST } from '@constants';
-import { extractValues } from '@utils/normalizeData';
+import { extractSelectOptionValue } from '@utils/normalizeData';
 import { z } from 'zod';
 
 // const notaCondiField = z
@@ -44,19 +44,19 @@ export const studentProfileUpdateSchema = z.object({
   biografia: z.string().optional(),
 
   paisOrigem: z
-    .enum(extractValues(DROPDOWN_VALUES_CONST.PAIS_ORIGEM))
+    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.PAIS_ORIGEM))
     .optional(),
 
   modeloTrabalho: z
-    .enum(extractValues(DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO))
+    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO))
     .optional(),
 
   estadoAtuacao: z
-    .enum(extractValues(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
+    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
     .optional(),
 
   setorInteresse: z
-    .enum(extractValues(DROPDOWN_VALUES_CONST.SETOR_INTERESSE))
+    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.SETOR_INTERESSE))
     .optional(),
 
   habilidadesPrincipais: z.string(),
