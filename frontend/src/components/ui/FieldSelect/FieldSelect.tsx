@@ -78,7 +78,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
               <ul
                 ref={refs.setFloating}
                 style={{ top: y ?? 0, left: x ?? 0, position: strategy }}
-                className="z-10 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-700 bg-(--grey-1100) shadow-md"
+                className="scrollbar-custom z-10 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-700 bg-(--grey-1100) shadow-md"
               >
                 {options.map((option, index) => (
                   <li

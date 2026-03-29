@@ -17,4 +17,4 @@ export const ROUTES_CONST = {
 
   ROOT_PRIVATE: '/',
   ROOT_PUBLIC: '/',
-};
+} as const;

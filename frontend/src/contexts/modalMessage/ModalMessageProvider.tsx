@@ -1,4 +1,4 @@
-import { ModalMessage } from '@components/layout/ModalMessage/ModalMessage';
+import { ModalMessage } from '@components/layout/ModalMessage';
 import { ModalMessageContext } from '@contexts/modalMessage/ModalMessageContext';
 import type { ModalMessageOptions } from '@models/modal.types';
 import { useState, type ReactNode } from 'react';

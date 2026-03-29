@@ -1,6 +1,9 @@
+import { Plus } from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
+import { AcademicExperienceCard } from '@components/ui/AcademicExperienceCard';
 import { ButtonPill } from '@components/ui/ButtonPill';
+import { ButtonSquare } from '@components/ui/ButtonSquare';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { UserBanner } from '@components/ui/UserBanner';
 import {
@@ -10,9 +13,11 @@ import {
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
+import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
+import type { IAcademicExperience } from '@models/experience.types';
 import {
   studentProfileUpdateSchema,
   type StudentProfileUpdateData,
@@ -29,11 +34,16 @@ export const StudentProfileUpdateForm = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
+  const { academicExperienceCards, getAcademicExperienceCards } =
+    useExperience();
   const { getUserId } = useAuth();
   const { getStudent, updateStudent, updateStudentPassword } =
     useStudentRegistrations();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [newAcademicExperienceCards, setNewAcademicExperienceCards] = useState<
+    IAcademicExperience[]
+  >([]);
 
   const currentUserId = getUserId();
   if (currentUserId && currentUserId !== userId) {
@@ -89,6 +99,11 @@ export const StudentProfileUpdateForm = () => {
             () => getStudent(Number(userId)),
             'Buscando dados do usuário...',
           );
+          await modalLoadingAuto(
+            () => getAcademicExperienceCards(Number(userId)),
+            'Buscando dados do usuário...',
+          );
+
           reset(normalizeStudentData(response));
           // reset(normalizeStudentData(studentData, notaCondiData));
         } else {
@@ -103,6 +118,26 @@ export const StudentProfileUpdateForm = () => {
 
     fetch();
   }, []);
+
+  const handleAddCard = () => {
+    const newCard: IAcademicExperience = {
+      id: Date.now(),
+      idEstudante: Number(userId),
+      tituloEnsino: '',
+      nomeEscola: '',
+      estadoAtuacao: '',
+      modeloEnsino: '',
+      dataInicio: '',
+      dataFim: '',
+      descricao: '',
+    };
+
+    setNewAcademicExperienceCards(prev => [...prev, newCard]);
+  };
+
+  const handleRemoveNewCard = (id: number) => {
+    setNewAcademicExperienceCards(prev => prev.filter(card => card.id !== id));
+  };
 
   const onSubmit = async (data: StudentProfileUpdateData) => {
     try {
@@ -221,7 +256,7 @@ export const StudentProfileUpdateForm = () => {
                   type="select"
                   name="modeloTrabalho"
                   label="Modelo de Trabalho"
-                  options={DROPDOWN_VALUES_CONST.MODELO_TRABALHO.map(
+                  options={DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.map(
                     option => ({ ...option }),
                   )}
                 />
@@ -292,6 +327,36 @@ export const StudentProfileUpdateForm = () => {
           </div>
         </form>
       </FormWrapper>
+
+      <div className="flex w-full justify-center">
+        <div className="flex w-full max-w-xl flex-col gap-4">
+          {academicExperienceCards.map(item => (
+            <AcademicExperienceCard key={item.id} item={item} />
+          ))}
+
+          {newAcademicExperienceCards.map(item => (
+            <AcademicExperienceCard
+              key={item.id}
+              item={item}
+              isNew
+              onRemove={() => handleRemoveNewCard(item.id)}
+            />
+          ))}
+
+          {academicExperienceCards.length <= 5 &&
+            newAcademicExperienceCards.length === 0 && (
+              <div className="flex justify-end">
+                <ButtonSquare
+                  type="button"
+                  text="Adicionar"
+                  isSubmitting={isSubmitting}
+                  iconLeft={<Plus width={22} height={22} />}
+                  onClick={handleAddCard}
+                />
+              </div>
+            )}
+        </div>
+      </div>
     </div>
   );
 };

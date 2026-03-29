@@ -2,6 +2,7 @@ import { ModalLoadingProvider } from '@contexts/modalLoading/ModalLoadingProvide
 import { ModalMessageProvider } from '@contexts/modalMessage/ModalMessageProvider.tsx';
 import { StoreProvider } from '@contexts/store/StoreProvider.tsx';
 import '@styles/global.css';
+import '@styles/reset.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './app/App.tsx';

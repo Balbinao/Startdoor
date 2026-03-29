@@ -1,0 +1,1 @@
+export { ButtonSquare } from './ButtonSquare';

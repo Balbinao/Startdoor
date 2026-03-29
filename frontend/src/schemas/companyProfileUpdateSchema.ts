@@ -1,95 +1,56 @@
-import { DROPDOWN_VALUES_CONST } from '@constants';
+import { DROPDOWN_VALUES_CONST, REGEX_CONST } from '@constants';
 import { z } from 'zod';
 
+const extractValues = <T extends readonly { value: string }[]>(arr: T) =>
+  arr.map(item => item.value) as [T[number]['value'], ...T[number]['value'][]];
+
 export const companyProfileUpdateSchema = z.object({
-  nomeFantasia: z
-    .string()
-    .min(5, 'Nome fantasia precisa ter pelo menos 5 caracteres')
-    .max(60, 'Nome fantasia não pode ter mais de 60 caracteres'),
+  nomeFantasia: z.string().min(5).max(60),
 
-  // user: z
-  //   .string()
-  //   .min(8, 'User precisa ter pelo menos 5 caracteres')
-  //   .max(30, 'User não pode ter mais de 30 caracteres'),
+  email: z.email().max(50),
 
-  email: z
-    .email({ message: 'Email inválido' })
-    .max(50, { message: 'O email deve ter no máximo 50 caracteres' }),
+  senha: z.string().min(6).optional().or(z.literal('')),
 
-  senha: z
-    .string()
-    .min(6, 'Senha precisa ter pelo menos 6 caracteres')
-    .optional()
-    .or(z.literal('')),
-
-  cnpj: z.string().length(14, 'CNPJ deve conter exatamente 14 caracteres'),
+  cnpj: z.string().length(14),
 
   biografia: z.string().optional(),
 
   paisOrigem: z
-    .enum(
-      DROPDOWN_VALUES_CONST.PAIS_ORIGEM.map(option => option.value),
-      {
-        message: 'País de origem inválido',
-      },
-    )
+    .enum(extractValues(DROPDOWN_VALUES_CONST.PAIS_ORIGEM))
     .optional(),
 
   receitaAnual: z
-    .enum(
-      DROPDOWN_VALUES_CONST.RECEITA_ANUAL.map(option => option.value),
-      {
-        message: 'Receita anual inválida',
-      },
-    )
+    .enum(extractValues(DROPDOWN_VALUES_CONST.RECEITA_ANUAL))
     .optional(),
 
   dataFundacao: z
     .string()
     .optional()
+    .refine(val => !val || REGEX_CONST.DATE.test(val), 'Data inválida')
     .refine(val => !val || !isNaN(new Date(val).getTime()), {
       message: 'Data inválida',
     }),
 
   tamanhoEmpresa: z
-    .enum(
-      DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA.map(option => option.value),
-      {
-        message: 'Tamanho da empresa inválido',
-      },
-    )
+    .enum(extractValues(DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA))
     .optional(),
 
   estadoSede: z
-    .enum(
-      DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => option.value),
-      {
-        message: 'Estado inválido',
-      },
-    )
+    .enum(extractValues(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
     .optional(),
 
-  // mediaSalarial: z.number().optional(),
+  areaAtuacao: z.string().max(150).optional(),
 
-  areaAtuacao: z
-    .string()
-    .max(150, 'Área de atuação deve ter no máximo 150 caracteres')
-    .optional(),
-
-  linkSite: z.url('URL inválida').optional(),
+  linkSite: z.url().optional(),
 
   linkLinkedin: z
-    .url({ message: 'URL inválida' })
-    .refine(url => url.includes('linkedin.com'), {
-      message: 'Deve ser um link do LinkedIn',
-    })
+    .url()
+    .refine(url => url.includes('linkedin.com'))
     .optional(),
 
   linkGupy: z
-    .url({ message: 'URL inválida' })
-    .refine(url => url.includes('gupy.io'), {
-      message: 'Deve ser um link do Gupy',
-    })
+    .url()
+    .refine(url => url.includes('gupy.io'))
     .optional(),
 });
 

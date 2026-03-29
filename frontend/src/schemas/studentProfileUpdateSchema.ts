@@ -1,4 +1,5 @@
-import { DROPDOWN_VALUES_CONST } from '@constants';
+import { DROPDOWN_VALUES_CONST, REGEX_CONST } from '@constants';
+import { extractValues } from '@utils/normalizeData';
 import { z } from 'zod';
 
 // const notaCondiField = z
@@ -32,6 +33,10 @@ export const studentProfileUpdateSchema = z.object({
   dataNascimento: z
     .string()
     .optional()
+    .refine(
+      val => !val || REGEX_CONST.DATE.test(val),
+      'Data inválida',
+    )
     .refine(val => !val || !isNaN(new Date(val).getTime()), {
       message: 'Data inválida',
     }),
@@ -39,38 +44,20 @@ export const studentProfileUpdateSchema = z.object({
   biografia: z.string().optional(),
 
   paisOrigem: z
-    .enum(
-      DROPDOWN_VALUES_CONST.PAIS_ORIGEM.map(option => option.value),
-      {
-        message: 'País de origem inválido',
-      },
-    )
+    .enum(extractValues(DROPDOWN_VALUES_CONST.PAIS_ORIGEM))
     .optional(),
 
   modeloTrabalho: z
-    .enum(
-      DROPDOWN_VALUES_CONST.MODELO_TRABALHO.map(option => option.value),
-      {
-        message: 'Modelo de trabalho inválido',
-      },
-    )
+    .enum(extractValues(DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO))
     .optional(),
 
   estadoAtuacao: z
-    .enum(
-      DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => option.value),
-      {
-        message: 'Estado inválido',
-      },
-    )
+    .enum(extractValues(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
     .optional(),
 
-  setorInteresse: z.enum(
-    DROPDOWN_VALUES_CONST.SETOR_INTERESSE.map(option => option.value),
-    {
-      message: 'Setor de interesse inválido',
-    },
-  ),
+  setorInteresse: z
+    .enum(extractValues(DROPDOWN_VALUES_CONST.SETOR_INTERESSE))
+    .optional(),
 
   habilidadesPrincipais: z.string(),
 

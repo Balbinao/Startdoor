@@ -1,1 +1,1 @@
-import { ModalLoading } from './ModalLoading';
+export { ModalLoading } from './ModalLoading';

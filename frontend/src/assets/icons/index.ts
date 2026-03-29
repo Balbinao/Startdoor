@@ -1,4 +1,5 @@
 export { default as Building } from './building.svg?react';
+export { default as CalendarEvent } from './calendar-event.svg?react';
 export { default as Category } from './category.svg?react';
 export { default as Check } from './check.svg?react';
 export { default as ChevronUp } from './chevron-up.svg?react';
@@ -9,8 +10,11 @@ export { default as Eye } from './eye.svg?react';
 export { default as Flag } from './flag.svg?react';
 export { default as Focus } from './focus.svg?react';
 export { default as Hourglass } from './hourglass.svg?react';
+export { default as Pencil } from './pencil.svg?react';
 export { default as Pig } from './pig.svg?react';
 export { default as Pin } from './pin.svg?react';
+export { default as Plus } from './plus.svg?react';
+export { default as SchoolFilled } from './school-filled.svg?react';
 export { default as Sparkles } from './sparkles.svg?react';
 export { default as Star } from './star.svg?react';
 export { default as User } from './user.svg?react';

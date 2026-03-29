@@ -48,62 +48,6 @@
   --yellow-100: #fed42e;
 }
 
-/* RESET */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-*:not(dialog) {
-  margin: 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    interpolate-size: allow-keywords;
-  }
-}
-
-body {
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
-}
-
-p {
-  text-wrap: pretty;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  text-wrap: balance;
-}
-
-#root,
-#__next {
-  isolation: isolate;
-}
-
 /* GLOBAL STYLES */
 body {
   background-color: var(--grey-1300);
@@ -113,6 +57,14 @@ body {
 ::selection {
   background-color: var(--purple-400);
   color: var(--grey-100);
+}
+
+.scrollbar-custom {
+  scrollbar-color: var(--purple-500) transparent;
+}
+
+.scrollbar-custom:hover {
+  scrollbar-color: var(--purple-400) var(--grey-1100);
 }
 
 .input-disabled {
