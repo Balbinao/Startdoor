@@ -1,0 +1,1 @@
+export { AcademicExperienceCard } from './AcademicExperienceCard';

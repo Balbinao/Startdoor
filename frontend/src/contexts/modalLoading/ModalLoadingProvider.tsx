@@ -1,4 +1,4 @@
-import { ModalLoading } from '@components/layout/ModalLoading/ModalLoading';
+import { ModalLoading } from '@components/layout/ModalLoading';
 import { ModalLoadingContext } from '@contexts/modalLoading/ModalLoadingContext';
 import { useState, type ReactNode } from 'react';
 

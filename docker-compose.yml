@@ -3,7 +3,7 @@ services:
     image: mysql:8.0
     container_name: mysql_startdoor
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 5s
       retries: 10
     restart: always

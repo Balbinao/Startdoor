@@ -25,7 +25,7 @@ export const FieldTextarea = <TFormValues extends FieldValues>({
             maxLength={maxLength}
             disabled={disabled}
             readOnly={readOnly}
-            className={`h-35 max-h-70 min-h-20 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) p-3 text-3xl focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${disabled ? 'input-disabled' : 'cursor-text'} ${readOnly ? 'input-readonly' : ''}`}
+            className={`scrollbar-custom h-35 max-h-70 min-h-20 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) p-3 text-3xl focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${disabled ? 'input-disabled' : 'cursor-text'} ${readOnly ? 'input-readonly' : ''}`}
           />
         )}
       />

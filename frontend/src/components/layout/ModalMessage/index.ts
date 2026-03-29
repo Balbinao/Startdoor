@@ -1,1 +1,1 @@
-import { ModalMessage } from './ModalMessage';
+export { ModalMessage } from './ModalMessage';

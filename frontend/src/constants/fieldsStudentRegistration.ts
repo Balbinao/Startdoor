@@ -1,7 +1,7 @@
 import type { FieldConfig } from '@models/input.types';
 import type { StudentRegistrationFormData } from '@schemas/studentRegistrationSchema';
 
-export const studentRegistrationFields: FieldConfig<StudentRegistrationFormData>[] =
+export const fieldsStudentRegistration: FieldConfig<StudentRegistrationFormData>[] =
   [
     {
       type: 'text',
@@ -51,7 +51,7 @@ export const studentRegistrationFields: FieldConfig<StudentRegistrationFormData>
       label:
         'Confirmo, conforme Art. 299 do Código Penal (Decreto-Lei nº 2.848/1940), a veracidade das informações fornecidas.',
     },
-  ];
+  ] as const;
 
 // export const studentNotaCondiFields: FieldConfig<StudentRegistrationFormData>[] =
 //   [

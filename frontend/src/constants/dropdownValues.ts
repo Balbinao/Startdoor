@@ -194,10 +194,10 @@ export const DROPDOWN_VALUES_CONST = {
     { label: 'Zimbábue', value: 'Zimbábue' },
   ] as const,
 
-  MODELO_TRABALHO: [
+  MODELO_TRABALHO_ENSINO: [
     { label: 'Selecione...', value: '' },
     { label: 'Presencial', value: 'Presencial' },
-    { label: 'Hibrido', value: 'Hibrido' },
+    { label: 'Híbrido', value: 'Híbrido' },
     { label: 'Remoto', value: 'Remoto' },
   ] as const,
 

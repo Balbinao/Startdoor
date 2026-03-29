@@ -14,4 +14,4 @@ export const userLoginFields: FieldConfig<UserLoginFormData>[] = [
     label: 'Senha',
     placeholder: 'Digite sua senha',
   },
-];
+] as const;

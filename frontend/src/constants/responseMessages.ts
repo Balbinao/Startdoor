@@ -1,5 +1,6 @@
 export const RESPONSE_MESSAGE = {
   SUCCESS: {
+    CREATE: 'Item criado com sucesso!',
     REGISTRATION: 'Cadastro efetuado com sucesso!',
     UPDATE: 'Dados atualizados com sucesso!',
     DELETE: 'Dados deletados com sucesso!',
@@ -12,4 +13,4 @@ export const RESPONSE_MESSAGE = {
   ERROR: {
     SERVER: 'Parece que houve um erro no servidor!',
   },
-};
+} as const;

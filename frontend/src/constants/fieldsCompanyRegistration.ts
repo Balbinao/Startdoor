@@ -1,7 +1,7 @@
 import type { FieldConfig } from '@models/input.types';
 import type { CompanyRegistrationFormData } from '@schemas/companyRegistrationSchema';
 
-export const companyRegistrationFields: FieldConfig<CompanyRegistrationFormData>[] =
+export const fieldsCompanyRegistration: FieldConfig<CompanyRegistrationFormData>[] =
   [
     {
       type: 'text',
@@ -42,4 +42,4 @@ export const companyRegistrationFields: FieldConfig<CompanyRegistrationFormData>
       label:
         'Declaro, na condição de representante legal da pessoa jurídica, sob as penas do Art. 299 do Decreto-Lei nº 2.848/1940, que os dados informados são verídicos.',
     },
-  ];
+  ] as const;

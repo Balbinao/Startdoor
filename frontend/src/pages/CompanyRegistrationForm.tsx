@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
-import { companyRegistrationFields, RESPONSE_MESSAGE } from '@constants';
+import { fieldsCompanyRegistration, RESPONSE_MESSAGE } from '@constants';
 
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
@@ -92,7 +92,7 @@ export const CompanyRegistrationForm = () => {
             className="flex flex-col gap-8"
           >
             <div className="flex flex-col gap-5">
-              {companyRegistrationFields.map(field => (
+              {fieldsCompanyRegistration.map(field => (
                 <FormField key={field.name} {...field} />
               ))}
             </div>
