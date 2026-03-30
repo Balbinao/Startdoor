@@ -96,23 +96,24 @@ export const StudentProfileUpdateForm = () => {
     const fetch = async () => {
       try {
         setIsLoading(true);
-        if (userId) {
-          const response = await modalLoadingAuto(
-            () => getStudent(Number(userId)),
-            MESSAGES_LOADING.GET,
-          );
-          await modalLoadingAuto(
-            () => getAcademicExperienceCards(Number(userId)),
-            MESSAGES_LOADING.GET,
-          );
 
-          reset(normalizeStudentData(response));
-          // reset(normalizeStudentData(studentData, notaCondiData));
-
-          setIsError(false);
-        } else {
+        if (!userId) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
+
+        const response = await modalLoadingAuto(
+          () => getStudent(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
+        await modalLoadingAuto(
+          () => getAcademicExperienceCards(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
+
+        reset(normalizeStudentData(response));
+        // reset(normalizeStudentData(studentData, notaCondiData));
+
+        setIsError(false);
       } catch (error: unknown) {
         await modalMessageError(error);
       } finally {
@@ -331,7 +332,8 @@ export const StudentProfileUpdateForm = () => {
       </FormWrapper>
 
       <div className="flex w-full justify-center">
-        <div className="flex w-full max-w-xl flex-col gap-4">
+        <div className="flex w-full max-w-xl flex-col gap-6">
+          <h2 className="text-2xl font-semibold">Experiência Acadêmica</h2>
           {academicExperienceCards.map(item => (
             <AcademicExperienceCard key={item.id} item={item} />
           ))}
