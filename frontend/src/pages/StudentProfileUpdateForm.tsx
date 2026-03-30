@@ -5,6 +5,7 @@ import { AcademicExperienceCard } from '@components/ui/AcademicExperienceCard';
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { ButtonSquare } from '@components/ui/ButtonSquare';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
+import { ProfessionalExperienceCard } from '@components/ui/ProfessionalExperienceCard';
 import { UserBanner } from '@components/ui/UserBanner';
 import {
   DROPDOWN_VALUES_CONST,
@@ -18,7 +19,10 @@ import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
-import type { IAcademicExperience } from '@models/experience.types';
+import type {
+  IAcademicExperience,
+  IProfessionalExperience,
+} from '@models/experience.types';
 import {
   studentProfileUpdateSchema,
   type StudentProfileUpdateData,
@@ -35,8 +39,12 @@ export const StudentProfileUpdateForm = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
-  const { academicExperienceCards, getAcademicExperienceCards } =
-    useExperience();
+  const {
+    academicExperienceCards,
+    professionalExperienceCards,
+    getAcademicExperienceCards,
+    getProfessionalExperienceCards,
+  } = useExperience();
   const { getUserId } = useAuth();
   const { getStudent, updateStudent, updateStudentPassword } =
     useStudentRegistrations();
@@ -46,6 +54,8 @@ export const StudentProfileUpdateForm = () => {
   const [newAcademicExperienceCards, setNewAcademicExperienceCards] = useState<
     IAcademicExperience[]
   >([]);
+  const [newProfessionalExperienceCards, setNewProfessionalExperienceCards] =
+    useState<IProfessionalExperience[]>([]);
 
   const currentUserId = getUserId();
   if (currentUserId && currentUserId !== userId) {
@@ -105,13 +115,17 @@ export const StudentProfileUpdateForm = () => {
           () => getStudent(Number(userId)),
           MESSAGES_LOADING.GET,
         );
+        reset(normalizeStudentData(response));
+        // reset(normalizeStudentData(studentData, notaCondiData));
+
         await modalLoadingAuto(
           () => getAcademicExperienceCards(Number(userId)),
           MESSAGES_LOADING.GET,
         );
-
-        reset(normalizeStudentData(response));
-        // reset(normalizeStudentData(studentData, notaCondiData));
+        await modalLoadingAuto(
+          () => getProfessionalExperienceCards(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
 
         setIsError(false);
       } catch (error: unknown) {
@@ -124,7 +138,7 @@ export const StudentProfileUpdateForm = () => {
     fetch();
   }, []);
 
-  const handleAddCard = () => {
+  const handleAddNewAcademicExperienceCard = () => {
     const newCard: IAcademicExperience = {
       id: Date.now(),
       idEstudante: Number(userId),
@@ -140,8 +154,31 @@ export const StudentProfileUpdateForm = () => {
     setNewAcademicExperienceCards(prev => [...prev, newCard]);
   };
 
-  const handleRemoveNewCard = (id: number) => {
+  const handleAddNewProfessionalExperienceCard = () => {
+    const newCard: IProfessionalExperience = {
+      id: Date.now(),
+      idEmpresa: 0,
+      idEstudante: Number(userId),
+      tituloCargo: '',
+      nomeEmpresa: '',
+      estadoAtuacao: '',
+      modeloTrabalho: '',
+      dataInicio: '',
+      dataFim: '',
+      descricao: '',
+    };
+
+    setNewProfessionalExperienceCards(prev => [...prev, newCard]);
+  };
+
+  const handleRemoveNewAcademicExperienceCard = (id: number) => {
     setNewAcademicExperienceCards(prev => prev.filter(card => card.id !== id));
+  };
+
+  const handleRemoveNewProfessionalExperienceCard = (id: number) => {
+    setNewProfessionalExperienceCards(prev =>
+      prev.filter(card => card.id !== id),
+    );
   };
 
   const onSubmit = async (data: StudentProfileUpdateData) => {
@@ -343,7 +380,7 @@ export const StudentProfileUpdateForm = () => {
               key={item.id}
               item={item}
               isNew
-              onRemove={() => handleRemoveNewCard(item.id)}
+              onRemove={() => handleRemoveNewAcademicExperienceCard(item.id)}
             />
           ))}
 
@@ -355,7 +392,40 @@ export const StudentProfileUpdateForm = () => {
                   text="Adicionar"
                   isSubmitting={isSubmitting}
                   iconLeft={<Plus width={22} height={22} />}
-                  onClick={handleAddCard}
+                  onClick={handleAddNewAcademicExperienceCard}
+                />
+              </div>
+            )}
+        </div>
+      </div>
+
+      <div className="flex w-full justify-center">
+        <div className="flex w-full max-w-xl flex-col gap-6">
+          <h2 className="text-2xl font-semibold">Experiência Profissional</h2>
+          {professionalExperienceCards.map(item => (
+            <ProfessionalExperienceCard key={item.id} item={item} />
+          ))}
+
+          {newProfessionalExperienceCards.map(item => (
+            <ProfessionalExperienceCard
+              key={item.id}
+              item={item}
+              isNew
+              onRemove={() =>
+                handleRemoveNewProfessionalExperienceCard(item.id)
+              }
+            />
+          ))}
+
+          {professionalExperienceCards.length <= 5 &&
+            newAcademicExperienceCards.length === 0 && (
+              <div className="flex justify-end">
+                <ButtonSquare
+                  type="button"
+                  text="Adicionar"
+                  isSubmitting={isSubmitting}
+                  iconLeft={<Plus width={22} height={22} />}
+                  onClick={handleAddNewProfessionalExperienceCard}
                 />
               </div>
             )}

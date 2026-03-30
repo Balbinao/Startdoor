@@ -1,22 +1,34 @@
-import type { IAcademicExperience } from '@models/experience.types';
+import type {
+  IAcademicExperience,
+  IProfessionalExperience,
+} from '@models/experience.types';
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';
 
 export class ExperienceStore {
   root: RootStore;
 
-  academicExperienceItems: IAcademicExperience[] = [];
+  academicExperienceCards: IAcademicExperience[] = [];
+  academicProfessionalCards: IProfessionalExperience[] = [];
 
   constructor(root: RootStore) {
     this.root = root;
     makeAutoObservable(this);
   }
 
-  setAcademicExperienceItems = (items: IAcademicExperience[]) => {
-    this.academicExperienceItems = items;
+  setAcademicExperienceCards = (items: IAcademicExperience[]) => {
+    this.academicExperienceCards = items;
   };
 
-  get getAcademicExperienceItems() {
-    return this.academicExperienceItems;
+  get getAcademicExperienceCards() {
+    return this.academicExperienceCards;
+  }
+
+  setProfessionalExperienceCards = (items: IProfessionalExperience[]) => {
+    this.academicProfessionalCards = items;
+  };
+
+  get getProfessionalExperienceCards() {
+    return this.academicProfessionalCards;
   }
 }

@@ -1,4 +1,23 @@
 export const DROPDOWN_VALUES_CONST = {
+  MOCK_EMPRESAS: [
+    { label: 'Selecione...', value: '' },
+    { label: 'Banco do Brasil', value: '1' },
+    { label: 'Bradesco', value: '2' },
+    { label: 'Caixa Econômica Federal', value: '3' },
+    { label: 'Itaú Unibanco', value: '4' },
+    { label: 'Santander', value: '5' },
+    { label: 'BTG Pactual', value: '6' },
+    { label: 'Banco Safra', value: '7' },
+    { label: 'Banco Votorantim (BV)', value: '8' },
+    { label: 'Banco Inter', value: '9' },
+    { label: 'Nubank', value: '10' },
+    { label: 'C6 Bank', value: '11' },
+    { label: 'XP (XP Investimentos)', value: '12' },
+    { label: 'PagBank (PagSeguro)', value: '13' },
+    { label: 'Neon', value: '14' },
+    { label: 'Original', value: '15' },
+  ] as const,
+
   PAIS_ORIGEM: [
     { label: 'Selecione...', value: '' },
     { label: 'Afeganistão', value: 'Afeganistão' },
