@@ -1,18 +1,18 @@
-import { Pencil, SchoolFilled } from '@assets/icons';
+import { BriefcaseFilled, Pencil } from '@assets/icons';
 import { HINTS_CONTS, ROUTES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
-import type { IAcademicExperience } from '@models/experience.types';
+import type { IProfessionalExperience } from '@models/experience.types';
 import { formatMMMYYYY } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
 
 interface Props {
-  item: IAcademicExperience;
+  item: IProfessionalExperience;
   onEdit: () => void;
 }
 
-export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
+export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
   const { id } = useParams();
   const location = useLocation();
 
@@ -47,13 +47,17 @@ export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
     <div className="flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
       <div className="flex items-start gap-3">
         <div className="w-fit rounded-lg bg-(--grey-800) p-3">
-          <SchoolFilled width={36} height={36} className="text-(--grey-300)" />
+          <BriefcaseFilled
+            width={36}
+            height={36}
+            className="text-(--grey-300)"
+          />
         </div>
 
         <div className="flex flex-1 flex-col">
-          <span className="text-lg font-semibold">{item.tituloEnsino}</span>
+          <span className="text-lg font-semibold">{item.tituloCargo}</span>
           <span className="font-semibold text-(--grey-300)">
-            {item.nomeEscola}
+            {item.nomeEmpresa}
           </span>
         </div>
 
@@ -72,7 +76,7 @@ export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
         <div className="flex gap-3">
           <span>{item.estadoAtuacao}, Brasil</span>
           <span className="text-(--grey-400)">•</span>
-          <span>{item.modeloEnsino}</span>
+          <span>{item.modeloTrabalho}</span>
         </div>
 
         <div>

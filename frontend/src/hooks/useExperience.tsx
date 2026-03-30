@@ -1,12 +1,18 @@
 import { useStore } from '@contexts/store/useStore';
-import type { IAcademicExperience } from '@models/experience.types';
+import type {
+  IAcademicExperience,
+  IProfessionalExperience,
+} from '@models/experience.types';
 import type { AcademicExperienceCardData } from '@schemas/academicExperienceCardSchema';
+import type { ProfessionalExperienceCardData } from '@schemas/professionalExperienceCardSchema';
 import { experienceService } from '@services/experienceService';
 
 export const useExperience = () => {
   const { experienceStore } = useStore();
 
-  const academicExperienceCards = experienceStore.getAcademicExperienceItems;
+  const academicExperienceCards = experienceStore.getAcademicExperienceCards;
+  const professionalExperienceCards =
+    experienceStore.getProfessionalExperienceCards;
 
   const mockAcademicExperienceItems: IAcademicExperience[] = [
     {
@@ -56,11 +62,65 @@ export const useExperience = () => {
     },
   ];
 
+  const mockProfessionalExperienceItems: IProfessionalExperience[] = [
+    {
+      id: 1,
+      idEstudante: 101,
+      idEmpresa: 4,
+      tituloCargo: 'Desenvolvedor Front-end Júnior',
+      nomeEmpresa: 'Itaú Unibanco',
+      estadoAtuacao: 'São Paulo',
+      modeloTrabalho: 'Presencial',
+      dataInicio: '2021-03-01',
+      dataFim: '2022-08-30',
+      descricao:
+        'Atuação no desenvolvimento de interfaces web utilizando React, com foco em componentização, reutilização de código e boas práticas de UI/UX. Participação ativa em reuniões de planejamento e revisão de código, colaborando com times multidisciplinares. Experiência com integração de APIs REST, versionamento com Git e organização de projetos seguindo padrões de arquitetura front-end.',
+    },
+    {
+      id: 2,
+      idEstudante: 101,
+      idEmpresa: 10,
+      tituloCargo: 'Desenvolvedor Front-end Pleno',
+      nomeEmpresa: 'Nubank',
+      estadoAtuacao: 'Rio de Janeiro',
+      modeloTrabalho: 'Híbrido',
+      dataInicio: '2022-09-01',
+      dataFim: null,
+      descricao:
+        'Responsável pelo desenvolvimento e manutenção de aplicações web escaláveis. Implementação de melhorias de performance, acessibilidade e responsividade. Atuação com TypeScript, gerenciamento de estado e consumo de APIs. Colaboração próxima com designers e back-end para definição de soluções técnicas eficientes.',
+    },
+    {
+      id: 3,
+      idEstudante: 102,
+      idEmpresa: 5,
+      tituloCargo: 'Analista de Suporte Técnico',
+      nomeEmpresa: 'Santander',
+      estadoAtuacao: 'Minas Gerais',
+      modeloTrabalho: 'Remoto',
+      dataInicio: '2020-02-15',
+      dataFim: '2021-12-10',
+      descricao:
+        'Atendimento a usuários para resolução de problemas técnicos relacionados a sistemas internos e infraestrutura. Diagnóstico e solução de falhas, instalação de softwares e suporte remoto. Registro e acompanhamento de chamados, garantindo cumprimento de SLAs.',
+    },
+    {
+      id: 4,
+      idEstudante: 103,
+      idEmpresa: 9,
+      tituloCargo: 'Engenheiro de Software',
+      nomeEmpresa: 'Banco Inter',
+      estadoAtuacao: 'Amapá',
+      modeloTrabalho: 'Remoto',
+      dataInicio: '2023-01-05',
+      dataFim: null,
+      descricao: null,
+    },
+  ];
+
   const getAcademicExperienceCards = async (id: number) => {
     try {
       // const response = await experienceService.getAcademicExperienceCards(id);
       const response = mockAcademicExperienceItems;
-      experienceStore.setAcademicExperienceItems(response);
+      experienceStore.setAcademicExperienceCards(response);
 
       return response;
     } catch (error) {
@@ -101,10 +161,59 @@ export const useExperience = () => {
     }
   };
 
+  const getProfessionalExperienceCards = async (id: number) => {
+    try {
+      // const response = await experienceService.getProfessionalExperienceCards(id);
+      const response = mockProfessionalExperienceItems;
+      experienceStore.setProfessionalExperienceCards(response);
+
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const createProfessionalExperienceCard = async (
+    id: number,
+    company: ProfessionalExperienceCardData,
+  ) => {
+    try {
+      const response = await experienceService.createProfessionalExperienceCard(
+        id,
+        company,
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const updateProfessionalExperienceCard = async (
+    id: number,
+    company: ProfessionalExperienceCardData,
+  ) => {
+    try {
+      const response = await experienceService.updateProfessionalExperienceCard(
+        id,
+        company,
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     academicExperienceCards,
     getAcademicExperienceCards,
     createAcademicExperienceCard,
     updateAcademicExperienceCard,
+    professionalExperienceCards,
+    getProfessionalExperienceCards,
+    createProfessionalExperienceCard,
+    updateProfessionalExperienceCard,
   };
 };

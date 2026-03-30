@@ -8,6 +8,7 @@ import {
   Star,
 } from '@assets/icons';
 import { AcademicExperienceCard } from '@components/ui/AcademicExperienceCard';
+import { ProfessionalExperienceCard } from '@components/ui/ProfessionalExperienceCard';
 import { UserAttribute } from '@components/ui/UserAttribute/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
 import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
@@ -28,8 +29,12 @@ export const StudentProfile = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
 
-  const { academicExperienceCards, getAcademicExperienceCards } =
-    useExperience();
+  const {
+    academicExperienceCards,
+    professionalExperienceCards,
+    getAcademicExperienceCards,
+    getProfessionalExperienceCards,
+  } = useExperience();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -53,6 +58,10 @@ export const StudentProfile = () => {
         );
         await modalLoadingAuto(
           () => getAcademicExperienceCards(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
+        await modalLoadingAuto(
+          () => getProfessionalExperienceCards(Number(userId)),
           MESSAGES_LOADING.GET,
         );
         setIsError(false);
@@ -181,6 +190,15 @@ export const StudentProfile = () => {
           <h2 className="text-2xl font-semibold">Experiência Acadêmica</h2>
           {academicExperienceCards.map(item => (
             <AcademicExperienceCard key={item.id} item={item} />
+          ))}
+        </div>
+      </div>
+
+      <div className="flex w-full justify-center">
+        <div className="flex w-full max-w-xl flex-col gap-6">
+          <h2 className="text-2xl font-semibold">Experiência Profissional</h2>
+          {professionalExperienceCards.map(item => (
+            <ProfessionalExperienceCard key={item.id} item={item} />
           ))}
         </div>
       </div>

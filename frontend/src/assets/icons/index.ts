@@ -1,3 +1,4 @@
+export { default as BriefcaseFilled } from './briefcase-filled.svg?react';
 export { default as Building } from './building.svg?react';
 export { default as CalendarEvent } from './calendar-event.svg?react';
 export { default as Category } from './category.svg?react';
