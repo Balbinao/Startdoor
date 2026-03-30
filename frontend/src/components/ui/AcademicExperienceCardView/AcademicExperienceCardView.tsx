@@ -1,8 +1,10 @@
 import { Pencil, SchoolFilled } from '@assets/icons';
-import { HINTS_CONTS } from '@constants';
+import { HINTS_CONTS, ROUTES_CONST } from '@constants';
+import { useAuth } from '@hooks/useAuth';
 import type { IAcademicExperience } from '@models/experience.types';
 import { formatMMMYYYY } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
 
 interface Props {
@@ -11,11 +13,23 @@ interface Props {
 }
 
 export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
+  const { id } = useParams();
+  const location = useLocation();
+
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const { getUserId } = useAuth();
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState<string>('0px');
   const [shouldCollapse, setShouldCollapse] = useState(false);
+
+  const userId = getUserId();
+  const isEditPage =
+    !!id &&
+    !!userId &&
+    location.pathname === ROUTES_CONST.STUDENT.PROFILE_UPDATE(id) &&
+    id === userId;
 
   const lineHeight = 32;
   const maxLines = 3;
@@ -43,13 +57,15 @@ export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
           </span>
         </div>
 
-        <div
-          title={HINTS_CONTS.EDIT}
-          onClick={() => onEdit()}
-          className="cursor-pointer p-1 text-(--blue-100) opacity-70 transition-opacity hover:opacity-100"
-        >
-          <Pencil width={22} height={22} strokeWidth={1.5} />
-        </div>
+        {isEditPage && (
+          <div
+            title={HINTS_CONTS.EDIT}
+            onClick={() => onEdit()}
+            className="cursor-pointer p-1 text-(--blue-100) opacity-70 transition-opacity hover:opacity-100"
+          >
+            <Pencil width={22} height={22} strokeWidth={1.5} />
+          </div>
+        )}
       </div>
 
       <div className="flex justify-between font-semibold text-(--grey-300)">

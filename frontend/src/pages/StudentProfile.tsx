@@ -7,9 +7,11 @@ import {
   Pin,
   Star,
 } from '@assets/icons';
+import { AcademicExperienceCard } from '@components/ui/AcademicExperienceCard';
 import { UserAttribute } from '@components/ui/UserAttribute/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
 import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
+import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
@@ -26,6 +28,9 @@ export const StudentProfile = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
 
+  const { academicExperienceCards, getAcademicExperienceCards } =
+    useExperience();
+
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
 
@@ -38,15 +43,19 @@ export const StudentProfile = () => {
       try {
         setIsLoading(true);
 
-        if (userId) {
-          await modalLoadingAuto(
-            async () => setSearchedStudent(await getStudent(Number(userId))),
-            MESSAGES_LOADING.GET,
-          );
-          setIsError(false);
-        } else {
+        if (!userId) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
+
+        await modalLoadingAuto(
+          async () => setSearchedStudent(await getStudent(Number(userId))),
+          MESSAGES_LOADING.GET,
+        );
+        await modalLoadingAuto(
+          () => getAcademicExperienceCards(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
+        setIsError(false);
       } catch (error: unknown) {
         await modalMessageError(error);
       } finally {
@@ -165,6 +174,15 @@ export const StudentProfile = () => {
             value={searchedStudent.habilidadesPrincipais}
           />
         )}
+      </div>
+
+      <div className="flex w-full justify-center">
+        <div className="flex w-full max-w-xl flex-col gap-6">
+          <h2 className="text-2xl font-semibold">Experiência Acadêmica</h2>
+          {academicExperienceCards.map(item => (
+            <AcademicExperienceCard key={item.id} item={item} />
+          ))}
+        </div>
       </div>
     </div>
   );
