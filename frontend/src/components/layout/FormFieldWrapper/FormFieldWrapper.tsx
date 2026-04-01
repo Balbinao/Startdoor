@@ -1,28 +1,28 @@
 import type { ReactNode } from 'react';
 import {
   get,
-  useFormContext,
   type FieldError,
   type FieldValues,
   type Path,
+  type UseFormReturn,
 } from 'react-hook-form';
 
 type Props<TFormValues extends FieldValues> = {
   name: Path<TFormValues>;
   children: ReactNode;
   label?: string;
+  form?: UseFormReturn<TFormValues>;
 };
 
 export const FormFieldWrapper = <TFormValues extends FieldValues>({
   name,
   label,
   children,
+  form,
 }: Props<TFormValues>) => {
-  const {
-    formState: { errors },
-  } = useFormContext<TFormValues>();
-
-  const error = get(errors, name) as FieldError | undefined;
+  const error = form
+    ? (get(form.formState.errors, name) as FieldError | undefined)
+    : undefined;
 
   return (
     <div className="flex w-full flex-col gap-1.5">

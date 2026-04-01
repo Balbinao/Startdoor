@@ -122,6 +122,7 @@ export const ProfessionalExperienceCardEdit = ({
           className="flex w-full flex-1 flex-col gap-6"
         >
           <FormField<ProfessionalExperienceCardData>
+            form={form}
             type="text"
             name="tituloCargo"
             label="Título do Ensino"
@@ -130,6 +131,7 @@ export const ProfessionalExperienceCardEdit = ({
           />
 
           <FormField<ProfessionalExperienceCardData>
+            form={form}
             type="select"
             name="idEmpresa"
             label="Empresa"
@@ -141,6 +143,7 @@ export const ProfessionalExperienceCardEdit = ({
 
           <div className="flex w-full gap-6">
             <FormField<ProfessionalExperienceCardData>
+              form={form}
               type="select"
               name="estadoAtuacao"
               label="Estado de Atuação"
@@ -150,6 +153,7 @@ export const ProfessionalExperienceCardEdit = ({
             />
 
             <FormField<ProfessionalExperienceCardData>
+              form={form}
               type="select"
               name="modeloTrabalho"
               label="Modelo de Ensino"
@@ -165,11 +169,13 @@ export const ProfessionalExperienceCardEdit = ({
             <p className="text-(--grey-300)">Período Escolar</p>
             <div className="flex gap-4">
               <FormField<ProfessionalExperienceCardData>
+                form={form}
                 type="date"
                 name="dataInicio"
               />
               <div className="mt-3 text-(--grey-400)">—</div>
               <FormField<ProfessionalExperienceCardData>
+                form={form}
                 type="date"
                 name="dataFim"
               />
@@ -177,6 +183,7 @@ export const ProfessionalExperienceCardEdit = ({
           </div>
 
           <FormField<ProfessionalExperienceCardData>
+            form={form}
             type="textarea"
             name="descricao"
             label="Descrição"

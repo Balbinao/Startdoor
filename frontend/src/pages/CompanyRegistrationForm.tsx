@@ -97,7 +97,7 @@ export const CompanyRegistrationForm = () => {
           >
             <div className="flex flex-col gap-5">
               {fieldsCompanyRegistration.map(field => (
-                <FormField key={field.name} {...field} />
+                <FormField form={form} key={field.name} {...field} />
               ))}
             </div>
 

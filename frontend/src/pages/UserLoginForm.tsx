@@ -82,7 +82,7 @@ export const UserLoginForm = () => {
           >
             <div className="flex flex-col gap-5">
               {userLoginFields.map(field => (
-                <FormField key={field.name} {...field} />
+                <FormField form={form} key={field.name} {...field} />
               ))}
             </div>
 

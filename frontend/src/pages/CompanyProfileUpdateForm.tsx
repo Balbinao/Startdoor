@@ -149,6 +149,7 @@ export const CompanyProfileUpdateForm = () => {
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-6">
               <FormField<CompanyProfileUpdateData>
+                form={form}
                 type="text"
                 name="nomeFantasia"
                 label="Nome Fantasia"
@@ -157,6 +158,7 @@ export const CompanyProfileUpdateForm = () => {
               />
 
               <FormField<CompanyProfileUpdateData>
+                form={form}
                 type="email"
                 name="email"
                 label="Email"
@@ -165,6 +167,7 @@ export const CompanyProfileUpdateForm = () => {
               />
 
               <FormField<CompanyProfileUpdateData>
+                form={form}
                 type="password"
                 name="senha"
                 label="Senha"
@@ -173,12 +176,14 @@ export const CompanyProfileUpdateForm = () => {
             </div>
 
             <FormField<CompanyProfileUpdateData>
+              form={form}
               type="date"
               name="dataFundacao"
               label="Data da Fundação"
             />
 
             <FormField<CompanyProfileUpdateData>
+              form={form}
               type="textarea"
               name="biografia"
               label="Biografia"
@@ -188,6 +193,7 @@ export const CompanyProfileUpdateForm = () => {
             <div className="flex flex-col gap-5">
               <div className="flex w-full gap-6">
                 <FormField<CompanyProfileUpdateData>
+                  form={form}
                   type="select"
                   name="paisOrigem"
                   label="País de Origem"
@@ -197,6 +203,7 @@ export const CompanyProfileUpdateForm = () => {
                 />
 
                 <FormField<CompanyProfileUpdateData>
+                  form={form}
                   type="select"
                   name="receitaAnual"
                   label="Receita Anual"
@@ -208,6 +215,7 @@ export const CompanyProfileUpdateForm = () => {
 
               <div className="flex w-full gap-6">
                 <FormField<CompanyProfileUpdateData>
+                  form={form}
                   type="select"
                   name="tamanhoEmpresa"
                   label="Número de Funcionários"
@@ -219,6 +227,7 @@ export const CompanyProfileUpdateForm = () => {
                 />
 
                 <FormField<CompanyProfileUpdateData>
+                  form={form}
                   type="select"
                   name="estadoSede"
                   label="Sede no Brasil"
@@ -229,6 +238,7 @@ export const CompanyProfileUpdateForm = () => {
               </div>
 
               <FormField<CompanyProfileUpdateData>
+                form={form}
                 type="textarea"
                 name="areaAtuacao"
                 label="Área de Atuação"
@@ -238,6 +248,7 @@ export const CompanyProfileUpdateForm = () => {
 
             <div className="flex flex-col gap-5">
               <FormField<CompanyProfileUpdateData>
+                form={form}
                 type="text"
                 name="linkSite"
                 label="Site / Portfólio"
@@ -245,6 +256,7 @@ export const CompanyProfileUpdateForm = () => {
               />
 
               <FormField<CompanyProfileUpdateData>
+                form={form}
                 type="text"
                 name="linkLinkedin"
                 label="LinkedIn"
@@ -252,6 +264,7 @@ export const CompanyProfileUpdateForm = () => {
               />
 
               <FormField<CompanyProfileUpdateData>
+                form={form}
                 type="text"
                 name="linkGupy"
                 label="Gupy"

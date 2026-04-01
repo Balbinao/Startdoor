@@ -1,55 +1,77 @@
+import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { ICheckboxField } from '@models/input.types';
+import { useState } from 'react';
 import {
   Controller,
-  useFormContext,
-  type FieldError,
   type FieldValues,
+  type UseFormReturn,
 } from 'react-hook-form';
+
+type Props<TFormValues extends FieldValues> = ICheckboxField<TFormValues> & {
+  form?: UseFormReturn<TFormValues>;
+  value?: boolean;
+  onChange?: (value: boolean) => void;
+};
 
 export const FieldCheckbox = <TFormValues extends FieldValues>({
   name,
   label,
   disabled,
   readOnly,
-}: ICheckboxField<TFormValues>) => {
-  const { control } = useFormContext<TFormValues>();
-  const {
-    formState: { errors },
-  } = useFormContext<TFormValues>();
+  form,
+  value,
+  onChange,
+}: Props<TFormValues>) => {
+  const [internalValue, setInternalValue] = useState<boolean>(value ?? false);
 
-  const error = errors[name] as FieldError | undefined;
+  const render = (
+    currentValue: boolean,
+    handleChange?: (value: boolean) => void,
+  ) => (
+    <div
+      className={`flex items-start gap-2 ${
+        disabled ? 'input-disabled' : 'cursor-text'
+      } ${readOnly ? 'input-readonly' : ''}`}
+    >
+      <input
+        id={name}
+        type="checkbox"
+        disabled={disabled}
+        readOnly={readOnly}
+        checked={!!currentValue}
+        onChange={e => {
+          const checked = e.target.checked;
+          handleChange?.(checked);
+          onChange?.(checked);
+        }}
+        style={{ marginTop: 4 }}
+      />
 
-  return (
-    <div className="flex flex-col gap-1.5">
-      <div
-        className={`flex items-start gap-2 ${disabled ? 'input-disabled' : 'cursor-text'} ${readOnly ? 'input-readonly' : ''}`}
-      >
-        <Controller
-          name={name}
-          control={control}
-          render={({ field }) => (
-            <input
-              id={name}
-              type="checkbox"
-              disabled={disabled}
-              readOnly={readOnly}
-              checked={field.value}
-              onChange={e => field.onChange(e.target.checked)}
-              style={{ marginTop: 4 }}
-            />
-          )}
-        />
-
-        {label && (
-          <label htmlFor={name} className="text-(--grey-300)">
-            {label}
-          </label>
-        )}
-      </div>
-
-      {error?.message && (
-        <span className="text-sm text-red-400">{error.message}</span>
+      {label && (
+        <label htmlFor={name} className="text-(--grey-300)">
+          {label}
+        </label>
       )}
     </div>
+  );
+
+  if (form) {
+    return (
+      <FormFieldWrapper<TFormValues> name={name} label={undefined} form={form}>
+        <Controller
+          name={name}
+          control={form.control}
+          render={({ field }) => render(!!field.value, field.onChange)}
+        />
+      </FormFieldWrapper>
+    );
+  }
+
+  return (
+    <FormFieldWrapper<TFormValues> name={name} label={undefined}>
+      {render(internalValue, value => {
+        setInternalValue(value);
+      })}
+    </FormFieldWrapper>
   );
 };

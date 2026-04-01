@@ -114,7 +114,7 @@ export const StudentRegistrationForm = () => {
           >
             <div className="flex flex-col gap-5">
               {fieldsStudentRegistration.map(field => (
-                <FormField key={field.name} {...field} />
+                <FormField form={form} key={field.name} {...field} />
               ))}
             </div>
 

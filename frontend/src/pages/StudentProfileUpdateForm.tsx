@@ -237,6 +237,7 @@ export const StudentProfileUpdateForm = () => {
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-5">
               <FormField<StudentProfileUpdateData>
+                form={form}
                 type="text"
                 name="nome"
                 label="Nome completo"
@@ -245,6 +246,7 @@ export const StudentProfileUpdateForm = () => {
               />
 
               <FormField<StudentProfileUpdateData>
+                form={form}
                 type="text"
                 name="user"
                 label="Username"
@@ -253,6 +255,7 @@ export const StudentProfileUpdateForm = () => {
               />
 
               <FormField<StudentProfileUpdateData>
+                form={form}
                 type="email"
                 name="email"
                 label="Email"
@@ -261,6 +264,7 @@ export const StudentProfileUpdateForm = () => {
               />
 
               <FormField<StudentProfileUpdateData>
+                form={form}
                 type="password"
                 name="senha"
                 label="Senha"
@@ -269,12 +273,14 @@ export const StudentProfileUpdateForm = () => {
             </div>
 
             <FormField<StudentProfileUpdateData>
+              form={form}
               type="date"
               name="dataNascimento"
               label="Data de Nascimento"
             />
 
             <FormField<StudentProfileUpdateData>
+              form={form}
               type="textarea"
               name="biografia"
               label="Biografia"
@@ -284,6 +290,7 @@ export const StudentProfileUpdateForm = () => {
             <div className="flex flex-col gap-12">
               <div className="flex w-full gap-6">
                 <FormField<StudentProfileUpdateData>
+                  form={form}
                   type="select"
                   name="paisOrigem"
                   label="País de Origem"
@@ -293,6 +300,7 @@ export const StudentProfileUpdateForm = () => {
                 />
 
                 <FormField<StudentProfileUpdateData>
+                  form={form}
                   type="select"
                   name="modeloTrabalho"
                   label="Modelo de Trabalho"
@@ -304,6 +312,7 @@ export const StudentProfileUpdateForm = () => {
 
               <div className="flex w-full gap-6">
                 <FormField<StudentProfileUpdateData>
+                  form={form}
                   type="select"
                   name="estadoAtuacao"
                   label="Estado de Atuação"
@@ -313,6 +322,7 @@ export const StudentProfileUpdateForm = () => {
                 />
 
                 <FormField<StudentProfileUpdateData>
+                  form={form}
                   type="select"
                   name="setorInteresse"
                   label="Setor de Interesse"
@@ -325,6 +335,7 @@ export const StudentProfileUpdateForm = () => {
               </div>
 
               <FormField<StudentProfileUpdateData>
+                form={form}
                 type="textarea"
                 name="habilidadesPrincipais"
                 label="Habilidades Principais"
@@ -334,6 +345,7 @@ export const StudentProfileUpdateForm = () => {
 
             <div className="flex flex-col gap-5">
               <FormField<StudentProfileUpdateData>
+                form={form}
                 type="text"
                 name="linkSite"
                 label="Site / Portfólio"
@@ -341,6 +353,7 @@ export const StudentProfileUpdateForm = () => {
               />
 
               <FormField<StudentProfileUpdateData>
+                form={form}
                 type="text"
                 name="linkLinkedin"
                 label="LinkedIn"

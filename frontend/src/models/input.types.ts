@@ -5,6 +5,7 @@ type FieldName<T extends FieldValues> = Path<T>;
 export type IInputOption = {
   label: string;
   value: string | number;
+  desc?: string;
 };
 
 type IBaseField<T extends FieldValues> = {
@@ -16,6 +17,7 @@ type IBaseField<T extends FieldValues> = {
 
 export type ITextField<T extends FieldValues> = IBaseField<T> & {
   type: 'text' | 'email' | 'password' | 'number';
+  value?: string;
   placeholder?: string;
   maxLength?: number;
   iconLeft?: React.ReactNode;
@@ -26,6 +28,7 @@ export type ITextField<T extends FieldValues> = IBaseField<T> & {
 
 export type ITextareaField<T extends FieldValues> = IBaseField<T> & {
   type: 'textarea';
+  value?: string;
   placeholder?: string;
   maxLength?: number;
 };
@@ -33,19 +36,23 @@ export type ITextareaField<T extends FieldValues> = IBaseField<T> & {
 export type IRadioField<T extends FieldValues> = IBaseField<T> & {
   type: 'radio';
   options: IInputOption[];
+  value?: string | number;
 };
 
 export type ISelectField<T extends FieldValues> = IBaseField<T> & {
   type: 'select';
   options: IInputOption[];
+  value?: string | number;
 };
 
 export type ICheckboxField<T extends FieldValues> = IBaseField<T> & {
   type: 'checkbox';
+  value?: boolean;
 };
 
 export type IInputDate<T extends FieldValues> = IBaseField<T> & {
   type: 'date';
+  value?: string;
   min?: string;
   max?: string;
 };
