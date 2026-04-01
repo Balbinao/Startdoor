@@ -34,7 +34,7 @@ public class Estudante implements UserDetails {
 
     private String cpf;
 
-    @Column(unique = true)
+    @Column(unique = true, name = "\"user\"")
     private String user;
 
     @Column(unique = true)
