@@ -122,6 +122,7 @@ export const AcademicExperienceCardEdit = ({
           className="flex w-full flex-1 flex-col gap-6"
         >
           <FormField<AcademicExperienceCardData>
+            form={form}
             type="text"
             name="tituloEnsino"
             label="Título do Ensino"
@@ -130,6 +131,7 @@ export const AcademicExperienceCardEdit = ({
           />
 
           <FormField<AcademicExperienceCardData>
+            form={form}
             type="text"
             name="nomeEscola"
             label="Nome da Escola"
@@ -139,6 +141,7 @@ export const AcademicExperienceCardEdit = ({
 
           <div className="flex w-full gap-6">
             <FormField<AcademicExperienceCardData>
+              form={form}
               type="select"
               name="estadoAtuacao"
               label="Estado de Atuação"
@@ -148,6 +151,7 @@ export const AcademicExperienceCardEdit = ({
             />
 
             <FormField<AcademicExperienceCardData>
+              form={form}
               type="select"
               name="modeloEnsino"
               label="Modelo de Ensino"
@@ -163,11 +167,13 @@ export const AcademicExperienceCardEdit = ({
             <p className="text-(--grey-300)">Período Escolar</p>
             <div className="flex gap-4">
               <FormField<AcademicExperienceCardData>
+                form={form}
                 type="date"
                 name="dataInicio"
               />
               <div className="mt-3 text-(--grey-400)">—</div>
               <FormField<AcademicExperienceCardData>
+                form={form}
                 type="date"
                 name="dataFim"
               />
@@ -175,6 +181,7 @@ export const AcademicExperienceCardEdit = ({
           </div>
 
           <FormField<AcademicExperienceCardData>
+            form={form}
             type="textarea"
             name="descricao"
             label="Descrição"

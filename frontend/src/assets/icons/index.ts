@@ -4,6 +4,7 @@ export { default as CalendarEvent } from './calendar-event.svg?react';
 export { default as Category } from './category.svg?react';
 export { default as Check } from './check.svg?react';
 export { default as ChevronUp } from './chevron-up.svg?react';
+export { default as ChevronsLeft } from './chevrons-left.svg?react';
 export { default as Coin } from './coin.svg?react';
 export { default as ExclamationMark } from './exclamation-mark.svg?react';
 export { default as EyeOff } from './eye-off.svg?react';

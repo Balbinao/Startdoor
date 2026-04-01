@@ -7,11 +7,16 @@ import {
   Pin,
   Star,
 } from '@assets/icons';
+import { FormField } from '@components/layout/FormField/FormField';
 import { AcademicExperienceCard } from '@components/ui/AcademicExperienceCard';
 import { ProfessionalExperienceCard } from '@components/ui/ProfessionalExperienceCard';
 import { UserAttribute } from '@components/ui/UserAttribute/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
-import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
+import {
+  DROPDOWN_VALUES_CONST,
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
+} from '@constants';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -200,6 +205,36 @@ export const StudentProfile = () => {
           {professionalExperienceCards.map(item => (
             <ProfessionalExperienceCard key={item.id} item={item} />
           ))}
+        </div>
+      </div>
+
+      <div className="flex w-full items-center gap-8">
+        <span className="text-lg font-semibold whitespace-nowrap">
+          4 Reviews
+        </span>
+
+        <div className="flex flex-1 gap-4">
+          <span className="flex-1">
+            <FormField
+              type="select"
+              name="sortSetor"
+              options={DROPDOWN_VALUES_CONST.SETOR_INTERESSE.map(option => ({
+                ...option,
+              }))}
+            />
+          </span>
+          <span className="w-56">
+            <FormField
+              type="select"
+              name="sortOrder"
+              options={DROPDOWN_VALUES_CONST.REVIEWS_SORT.map(option => ({
+                ...option,
+              }))}
+              onChange={(selectedValue: string | number) =>
+                console.log(selectedValue)
+              }
+            />
+          </span>
         </div>
       </div>
     </div>

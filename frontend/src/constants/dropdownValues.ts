@@ -343,4 +343,23 @@ export const DROPDOWN_VALUES_CONST = {
     { label: '4', value: 4 },
     { label: '5', value: 5 },
   ],
+
+  REVIEWS_SORT: [
+    { label: 'Ordenado por...', value: '' },
+    {
+      label: 'Mais relevantes',
+      value: 'Mais relevantes',
+      desc: 'Avaliações com mais engajamento',
+    },
+    {
+      label: 'Mais recentes',
+      value: 'Mais recentes',
+      desc: 'Avaliações postadas recentemente',
+    },
+    {
+      label: 'Mais antigas',
+      value: 'Mais antigas',
+      desc: 'Avaliações postadas há mais tempo',
+    },
+  ],
 };

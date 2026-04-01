@@ -1,77 +1,112 @@
 import { CalendarEvent, XClose } from '@assets/icons';
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { IInputDate } from '@models/input.types';
-import { useRef } from 'react';
-import type { FieldValues, PathValue } from 'react-hook-form';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useRef, useState } from 'react';
+import type { FieldValues, PathValue, UseFormReturn } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
+
+type Props<TFormValues extends FieldValues> = IInputDate<TFormValues> & {
+  form?: UseFormReturn<TFormValues>;
+  value?: string;
+  onChange?: (value: string) => void;
+};
 
 export const FieldDate = <TFormValues extends FieldValues>({
   name,
   label,
   disabled,
   readOnly,
-}: IInputDate<TFormValues>) => {
-  const { control, setValue } = useFormContext<TFormValues>();
+  min,
+  max,
+  form,
+  value,
+  onChange,
+}: Props<TFormValues>) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [internalValue, setInternalValue] = useState(value ?? '');
 
   const handleOpenPicker = () => {
-    if (inputRef.current && inputRef.current.showPicker) {
+    if (inputRef.current && 'showPicker' in inputRef.current) {
       inputRef.current.showPicker();
     }
   };
 
-  return (
-    <FormFieldWrapper<TFormValues> name={name} label={label}>
-      <div className="relative w-full">
+  const render = (
+    currentValue?: string,
+    handleChange?: (value: string) => void,
+    handleClear?: () => void,
+  ) => (
+    <div className="relative w-full">
+      <input
+        ref={inputRef}
+        type="date"
+        value={currentValue ?? ''}
+        min={min}
+        max={max}
+        disabled={disabled}
+        readOnly={readOnly}
+        onChange={e => {
+          handleChange?.(e.target.value);
+          onChange?.(e.target.value);
+        }}
+        className={`h-12 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) px-3 text-lg focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${
+          !disabled && !readOnly && currentValue ? 'pr-10' : ''
+        } ${disabled ? 'input-disabled' : 'cursor-text'} ${
+          readOnly ? 'input-readonly' : ''
+        }`}
+      />
+
+      <div
+        className={`absolute top-1/2 -translate-y-1/2 text-(--grey-100) opacity-70 ${
+          !disabled && !readOnly && currentValue ? 'right-11' : 'right-4'
+        } cursor-pointer`}
+        onClick={handleOpenPicker}
+      >
+        <CalendarEvent width={20} height={20} />
+      </div>
+
+      {!disabled && !readOnly && currentValue && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="absolute top-1/2 right-4 -translate-y-4/9 cursor-pointer text-sm text-red-200/70"
+        >
+          <XClose width={22} height={22} />
+        </button>
+      )}
+    </div>
+  );
+
+  if (form) {
+    return (
+      <FormFieldWrapper<TFormValues> name={name} label={label} form={form}>
         <Controller
           name={name}
-          control={control}
-          render={({ field }) => (
-            <>
-              <input
-                {...field}
-                ref={e => {
-                  field.ref(e);
-                  inputRef.current = e;
-                }}
-                type="date"
-                disabled={disabled}
-                readOnly={readOnly}
-                className={`h-12 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) px-3 text-lg focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${
-                  !disabled && !readOnly && field.value ? 'pr-10' : ''
-                } ${disabled ? 'input-disabled' : 'cursor-text'} ${
-                  readOnly ? 'input-readonly' : ''
-                }`}
-              />
-
-              <div
-                className={`absolute top-1/2 -translate-y-1/2 text-(--grey-100) opacity-70 ${
-                  !disabled && !readOnly && field.value ? 'right-11' : 'right-4'
-                } cursor-pointer`}
-                onClick={handleOpenPicker}
-              >
-                <CalendarEvent width={20} height={20} />
-              </div>
-
-              {!disabled && !readOnly && field.value && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    setValue(
-                      name,
-                      '' as unknown as PathValue<TFormValues, typeof name>,
-                      { shouldValidate: true, shouldDirty: true },
-                    )
-                  }
-                  className="absolute top-1/2 right-4 -translate-y-4/9 cursor-pointer text-sm text-red-200/70"
-                >
-                  <XClose width={22} height={22} />
-                </button>
-              )}
-            </>
-          )}
+          control={form.control}
+          render={({ field }) =>
+            render(field.value ?? '', field.onChange, () =>
+              form.setValue(name, '' as PathValue<TFormValues, typeof name>, {
+                shouldValidate: true,
+                shouldDirty: true,
+              }),
+            )
+          }
         />
-      </div>
+      </FormFieldWrapper>
+    );
+  }
+
+  return (
+    <FormFieldWrapper<TFormValues> name={name} label={label}>
+      {render(
+        internalValue,
+        value => {
+          setInternalValue(value);
+        },
+        () => {
+          setInternalValue('');
+        },
+      )}
     </FormFieldWrapper>
   );
 };
