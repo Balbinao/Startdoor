@@ -39,7 +39,7 @@ public class Empresa implements UserDetails {
     @Column(unique = true)
     private String cnpj;
 
-    @Column(unique = true)
+    @Column(unique = true, name = "\"user\"")
     private String user;
 
     @Email

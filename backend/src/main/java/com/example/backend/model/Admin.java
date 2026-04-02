@@ -28,7 +28,7 @@ public class Admin implements UserDetails {
     @Column(nullable = false)
     private String senha;
 
-    @Column(unique = true)
+    @Column(unique = true, name = "\"user\"")
     private String user;
 
     @Override
