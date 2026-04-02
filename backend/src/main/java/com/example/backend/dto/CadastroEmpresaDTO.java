@@ -29,7 +29,7 @@ public record CadastroEmpresaDTO(
         example = "contato@techsolutions.com"
     )
     @NotBlank
-    @Email
+    @Email(message = "Email inválido")
     String email,
 
     @Schema(
