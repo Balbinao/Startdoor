@@ -3,6 +3,7 @@ package com.example.backend.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Schema(description = "Dados para cadastro de um novo estudante")
@@ -12,6 +13,7 @@ public record CadastroEstudanteDTO(
         example = "João da Silva"
     )
     @NotBlank
+    @Size(min = 5, message = "Nome precisa ter pelo menos 5 caracteres")
     String nome,
 
     @Schema(
@@ -21,7 +23,7 @@ public record CadastroEstudanteDTO(
         maxLength = 11
     )
     @NotBlank
-    @Size(min = 11, max = 11)
+    @Pattern(regexp = "\\d{11}", message = "CPF deve ter exatamente 11 dígitos numéricos")
     String cpf,
 
     @Schema(
@@ -29,6 +31,7 @@ public record CadastroEstudanteDTO(
         example = "joaosilva"
     )
     @NotBlank
+    @Size(min = 8, message = "Username precisa ter pelo menos 8 caracteres")
     String user,
 
     @Schema(
@@ -36,7 +39,7 @@ public record CadastroEstudanteDTO(
         example = "joao@email.com"
     )
     @NotBlank
-    @Email
+    @Email(message = "Email inválido")
     String email,
 
     @Schema(
