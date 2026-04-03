@@ -24,6 +24,14 @@ public class OpenAPIConfig {
                         .description("""
                                 API da plataforma Startdoor para avaliação de experiências de estágio.
                                 
+                                ## ⚠️ Credenciais de Teste (Desenvolvimento)
+
+                                **👑 Administrador Padrão**
+                                - Email: admin@startdoor.com
+                                - Senha: 123456
+
+                                ---
+
                                 ## 🔐 Autenticação
                                 Esta API utiliza JWT (JSON Web Token) para autenticação.
                                 
@@ -44,14 +52,18 @@ public class OpenAPIConfig {
                                 * **👑 Administrador**: Acesso total ao sistema (gerenciar usuários, empresas, etc)
                                 
                                 ## 📋 Permissões por Endpoint
-                                * **GET /empresas/** → Público (todos podem ver)
-                                * **PUT /empresas/{id}** → Própria empresa ou ADMIN
-                                * **DELETE /empresas/{id}** → Própria empresa ou ADMIN
-                                * **GET /estudantes** → Apenas ADMIN
-                                * **GET /estudantes/{id}** → Próprio estudante ou ADMIN
-                                * **PUT /estudantes/{id}** → Próprio estudante ou ADMIN
-                                * **DELETE /estudantes/{id}** → Próprio estudante ou  ADMIN
-                                * **/admin/** → Apenas ADMIN
+                                 * **GET /setores/** → Público (todos podem ver)
+                                 * **POST /setores** → Apenas ADMIN
+                                 * **PUT /setores/{id}** → Apenas ADMIN
+                                 * **DELETE /setores/{id}** → Apenas ADMIN
+                                 * **GET /empresas/** → Público (todos podem ver)
+                                 * **PUT /empresas/{id}** → Própria empresa ou ADMIN
+                                 * **DELETE /empresas/{id}** → Própria empresa ou ADMIN
+                                 * **GET /estudantes** → Apenas ADMIN
+                                 * **GET /estudantes/{id}** → Próprio estudante ou ADMIN
+                                 * **PUT /estudantes/{id}** → Próprio estudante ou ADMIN
+                                 * **DELETE /estudantes/{id}** → Próprio estudante ou  ADMIN
+                                 * **/admin/** → Apenas ADMIN
                                 
                                 ## Funcionalidades
                                 * 🔐 Autenticação com JWT (retorna ID e tipo do usuário)

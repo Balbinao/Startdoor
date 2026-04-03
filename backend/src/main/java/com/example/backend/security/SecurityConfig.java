@@ -81,6 +81,12 @@ public class SecurityConfig {
                             "/api-docs/**"
                         ).permitAll()
                         
+                        // ========== SETORES ==========
+                        .requestMatchers(HttpMethod.GET, "/setores/**").permitAll()  // Público - listar e buscar
+                        .requestMatchers(HttpMethod.POST, "/setores/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/setores/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/setores/**").hasRole("ADMIN")
+
                         // ========== EMPRESAS ==========
                         .requestMatchers(HttpMethod.GET, "/empresas/**").permitAll()  // Público
                         .requestMatchers(HttpMethod.PUT, "/empresas/**").authenticated()
