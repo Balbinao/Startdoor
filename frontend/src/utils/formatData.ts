@@ -21,3 +21,23 @@ export const formatMMMYYYY = (dateString: string): string => {
 
   return `${month} ${year}`;
 };
+
+export function formatDDMMMYYYY(dateString: string): string {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) return '';
+
+  const day = date.getDate();
+
+  const formatter = new Intl.DateTimeFormat('pt-BR', {
+    month: 'short',
+    year: 'numeric',
+  });
+
+  const parts = formatter.formatToParts(date);
+
+  const month = parts.find(p => p.type === 'month')?.value ?? '';
+  const year = parts.find(p => p.type === 'year')?.value ?? '';
+
+  return `${day} de ${month} de ${year}`;
+}

@@ -12,12 +12,16 @@ export { default as Eye } from './eye.svg?react';
 export { default as Flag } from './flag.svg?react';
 export { default as Focus } from './focus.svg?react';
 export { default as Hourglass } from './hourglass.svg?react';
+export { default as MessageCircleFilled } from './message-circle-filled.svg?react';
 export { default as Pencil } from './pencil.svg?react';
 export { default as Pig } from './pig.svg?react';
 export { default as Pin } from './pin.svg?react';
 export { default as Plus } from './plus.svg?react';
 export { default as SchoolFilled } from './school-filled.svg?react';
+export { default as ShieldFilled } from './shield-filled.svg?react';
 export { default as Sparkles } from './sparkles.svg?react';
+export { default as StarFilled } from './star-filled.svg?react';
 export { default as Star } from './star.svg?react';
 export { default as User } from './user.svg?react';
 export { default as XClose } from './xclose.svg?react';
+export {default as UserFilled} from './user-filled.svg?react'

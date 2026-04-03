@@ -19,4 +19,7 @@ export const API_CONST = {
     ACADEMIC_BY_ID: (id: number) => `/experiencias/academico/${id}`,
     PROFESSIONAL_BY_ID: (id: number) => `/experiencias/professional/${id}`,
   },
+  REVIEW: {
+    BY_ID: (id: number) => `/avaliacoes/${id}`,
+  },
 } as const;

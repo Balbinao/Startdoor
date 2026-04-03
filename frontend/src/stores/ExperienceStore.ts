@@ -8,13 +8,13 @@ import type { RootStore } from './RootStore';
 export class ExperienceStore {
   root: RootStore;
 
-  academicExperienceCards: IAcademicExperience[] = [];
-  academicProfessionalCards: IProfessionalExperience[] = [];
-
   constructor(root: RootStore) {
     this.root = root;
     makeAutoObservable(this);
   }
+
+  academicExperienceCards: IAcademicExperience[] = [];
+  academicProfessionalCards: IProfessionalExperience[] = [];
 
   setAcademicExperienceCards = (items: IAcademicExperience[]) => {
     this.academicExperienceCards = items;

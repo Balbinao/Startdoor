@@ -54,7 +54,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
           />
         </div>
 
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col gap-1">
           <span className="text-lg font-semibold">{item.tituloCargo}</span>
           <span className="font-semibold text-(--grey-300)">
             {item.nomeEmpresa}
