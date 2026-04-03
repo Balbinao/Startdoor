@@ -73,6 +73,16 @@ public class EstudanteService {
             }
             estudante.setEmail(dto.email());
         }
+        if (dto.biografia() != null)          estudante.setBiografia(dto.biografia());
+        if (dto.paisOrigem() != null)         estudante.setPaisOrigem(dto.paisOrigem());
+        if (dto.mediaNotaGeral() != null)     estudante.setMediaNotaGeral(dto.mediaNotaGeral());
+        if (dto.dataNascimento() != null)     estudante.setDataNascimento(dto.dataNascimento());
+        if (dto.modeloTrabalho() != null)     estudante.setModeloTrabalho(dto.modeloTrabalho());
+        if (dto.estadoAtuacao() != null)      estudante.setEstadoAtuacao(dto.estadoAtuacao());
+        if (dto.setorInteresse() != null)     estudante.setSetorInteresse(dto.setorInteresse());
+        if (dto.habilidadesPrincipais() != null) estudante.setHabilidadesPrincipais(dto.habilidadesPrincipais());
+        if (dto.linkSite() != null)           estudante.setLinkSite(dto.linkSite());
+        if (dto.linkLinkedin() != null)       estudante.setLinkLinkedin(dto.linkLinkedin());
 
         estudanteRepository.save(estudante);
     }

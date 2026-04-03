@@ -1,7 +1,5 @@
 package com.example.backend.model;
 
-import com.example.backend.model.enums.ReceitaAnual;
-import com.example.backend.model.enums.TamanhoEmpresa;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -57,16 +55,14 @@ public class Empresa implements UserDetails {
     @Column(name = "pais_origem")
     private String paisOrigem;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "receita_anual")
-    private ReceitaAnual receitaAnual;
+    private String receitaAnual;
 
     @Column(name = "data_fundacao")
     private LocalDate dataFundacao;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "tamanho_empresa")
-    private TamanhoEmpresa tamanhoEmpresa;
+    private String tamanhoEmpresa;
 
     @Column(name = "estado_sede")
     private String estadoSede;
