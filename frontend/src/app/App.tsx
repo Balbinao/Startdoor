@@ -1,5 +1,7 @@
+import { OwnerRoute } from '@components/layout/OwnerRoute';
 import { PrivateMainLayout } from '@components/layout/PrivateMainLayout';
 import { PrivateRoute } from '@components/layout/PrivateRoute';
+import { ProfileRedirect } from '@components/layout/ProfileRedirect';
 import { PublicMainLayout } from '@components/layout/PublicMainLayout';
 import { ROUTES_CONST } from '@constants';
 import { CompanyProfile } from '@pages/CompanyProfile';
@@ -9,12 +11,7 @@ import { StudentProfile } from '@pages/StudentProfile';
 import { StudentProfileUpdateForm } from '@pages/StudentProfileUpdateForm';
 import { StudentRegistrationForm } from '@pages/StudentRegistrationForm';
 import { UserLoginForm } from '@pages/UserLoginForm';
-import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 function App() {
   return (
@@ -47,30 +44,44 @@ function App() {
             path={ROUTES_CONST.ROOT_PRIVATE}
             element={<PrivateMainLayout />}
           >
+            <Route index element={<ProfileRedirect />} />
             <Route
-              index
+              path={ROUTES_CONST.STUDENT.PROFILE_URL}
               element={
-                <Navigate to={ROUTES_CONST.STUDENT.PROFILE(1)} replace />
+                <OwnerRoute>
+                  <StudentProfile />
+                </OwnerRoute>
               }
             />
-            <Route path="/perfil-estudante/:id" element={<StudentProfile />} />
-            <Route path="/perfil-empresa/:id" element={<CompanyProfile />} />
-
             <Route
-              path="/perfil-estudante-alterar/:id"
-              element={<StudentProfileUpdateForm />}
+              path={ROUTES_CONST.STUDENT.PROFILE_UPDATE_URL}
+              element={
+                <OwnerRoute>
+                  <StudentProfileUpdateForm />
+                </OwnerRoute>
+              }
+            />
+            // PERFIL EMPRESA
+            <Route
+              path={ROUTES_CONST.COMPANY.PROFILE_URL}
+              element={
+                <OwnerRoute>
+                  <CompanyProfile />
+                </OwnerRoute>
+              }
             />
             <Route
-              path="/perfil-empresa-alterar/:id"
-              element={<CompanyProfileUpdateForm />}
+              path={ROUTES_CONST.COMPANY.PROFILE_UPDATE_URL}
+              element={
+                <OwnerRoute>
+                  <CompanyProfileUpdateForm />
+                </OwnerRoute>
+              }
             />
           </Route>
-
-          <Route
-            path="*"
-            element={<Navigate to={ROUTES_CONST.STUDENT.PROFILE(1)} replace />}
-          />
         </Route>
+
+        <Route path="*" element={<ProfileRedirect />} />
       </Routes>
     </Router>
   );
