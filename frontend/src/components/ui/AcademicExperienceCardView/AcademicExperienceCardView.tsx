@@ -50,7 +50,7 @@ export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
           <SchoolFilled width={36} height={36} className="text-(--grey-300)" />
         </div>
 
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col gap-1">
           <span className="text-lg font-semibold">{item.tituloEnsino}</span>
           <span className="font-semibold text-(--grey-300)">
             {item.nomeEscola}

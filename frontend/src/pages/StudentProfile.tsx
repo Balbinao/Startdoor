@@ -10,6 +10,7 @@ import {
 import { FormField } from '@components/layout/FormField/FormField';
 import { AcademicExperienceCard } from '@components/ui/AcademicExperienceCard';
 import { ProfessionalExperienceCard } from '@components/ui/ProfessionalExperienceCard';
+import { ReviewCard } from '@components/ui/ReviewCard';
 import { UserAttribute } from '@components/ui/UserAttribute/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
 import {
@@ -20,6 +21,7 @@ import {
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useReview } from '@hooks/useReview';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import type { IStudent } from '@models/studentData.types';
 import { useEffect, useState } from 'react';
@@ -40,6 +42,8 @@ export const StudentProfile = () => {
     getAcademicExperienceCards,
     getProfessionalExperienceCards,
   } = useExperience();
+
+  const { reviewCards, getReviewCards } = useReview();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -67,6 +71,10 @@ export const StudentProfile = () => {
         );
         await modalLoadingAuto(
           () => getProfessionalExperienceCards(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
+        await modalLoadingAuto(
+          () => getReviewCards(Number(userId)),
           MESSAGES_LOADING.GET,
         );
         setIsError(false);
@@ -208,33 +216,41 @@ export const StudentProfile = () => {
         </div>
       </div>
 
-      <div className="flex w-full items-center gap-8">
-        <span className="text-lg font-semibold whitespace-nowrap">
-          4 Reviews
-        </span>
+      <div className="flex w-full flex-col gap-8">
+        <div className="flex items-center gap-8">
+          <span className="text-lg font-semibold whitespace-nowrap">
+            4 Reviews
+          </span>
 
-        <div className="flex flex-1 gap-4">
-          <span className="flex-1">
-            <FormField
-              type="select"
-              name="sortSetor"
-              options={DROPDOWN_VALUES_CONST.SETOR_INTERESSE.map(option => ({
-                ...option,
-              }))}
-            />
-          </span>
-          <span className="w-56">
-            <FormField
-              type="select"
-              name="sortOrder"
-              options={DROPDOWN_VALUES_CONST.REVIEWS_SORT.map(option => ({
-                ...option,
-              }))}
-              onChange={(selectedValue: string | number) =>
-                console.log(selectedValue)
-              }
-            />
-          </span>
+          <div className="flex flex-1 gap-4">
+            <span className="flex-1">
+              <FormField
+                type="select"
+                name="sortSetor"
+                options={DROPDOWN_VALUES_CONST.SETOR_INTERESSE.map(option => ({
+                  ...option,
+                }))}
+              />
+            </span>
+            <span className="w-56">
+              <FormField
+                type="select"
+                name="sortOrder"
+                options={DROPDOWN_VALUES_CONST.REVIEWS_SORT.map(option => ({
+                  ...option,
+                }))}
+                onChange={(selectedValue: string | number) =>
+                  console.log(selectedValue)
+                }
+              />
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          {reviewCards.map(item => (
+            <ReviewCard item={item} />
+          ))}
         </div>
       </div>
     </div>
