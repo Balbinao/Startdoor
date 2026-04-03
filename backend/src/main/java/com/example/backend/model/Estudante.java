@@ -2,7 +2,6 @@ package com.example.backend.model;
 
 import com.example.backend.model.enums.ModeloTrabalho;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -82,10 +81,10 @@ public class Estudante implements UserDetails {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
-    private List<EstudanteExperienciaAcad> experienciasAcademicas;
+    private List<ExperienciaAcademica> experienciasAcademicas;
 
     @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
-    private List<EstudanteExperienciaProfi> experienciasProfissionais;
+    private List<ExperienciaProfissional> experienciasProfissionais;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
