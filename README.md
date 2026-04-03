@@ -6,6 +6,14 @@
 
 Plataforma web colaborativa dedicada à avaliação e ao compartilhamento de experiências de estágio.
 
+
+## Protótipo Figma
+Clique no botão abaixo para acessar o projeto diretamente no Figma:
+
+[![Figma Prototype](https://img.shields.io/badge/Figma-Prot%C3%B3tipo-blue?logo=figma&style=for-the-badge)](https://www.figma.com/proto/uMYDnHDMyCmws5SYpOI9VS/AvaliarEstagios_Prototipo?node-id=3-3&p=f&t=2pt5tdZCC8aVvnQo-0&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=3%3A3&show-proto-sidebar=1)
+
+<br>
+
 ## 🎯 **Sobre o Projeto**
 
 A função principal do sistema é atuar como um **repositório centralizado** onde estudantes e estagiários podem registrar relatos detalhados e notas sobre as organizações onde atuam, transformando experiências individuais em informações acessíveis e estruturadas para outros alunos.
