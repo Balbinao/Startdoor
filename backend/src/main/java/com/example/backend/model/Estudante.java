@@ -81,6 +81,12 @@ public class Estudante implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
+    private List<EstudanteExperienciaAcad> experienciasAcademicas;
+
+    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
+    private List<EstudanteExperienciaProfi> experienciasProfissionais;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_ESTUDANTE"));
