@@ -73,6 +73,18 @@ public class EmpresaService {
             }
             empresa.setEmail(dto.email());
         }
+        if (dto.biografia() != null)    empresa.setBiografia(dto.biografia());
+        if (dto.paisOrigem() != null)   empresa.setPaisOrigem(dto.paisOrigem());
+        if (dto.estadoSede() != null)    empresa.setEstadoSede(dto.estadoSede());
+        if (dto.areaAtuacao() != null)  empresa.setAreaAtuacao(dto.areaAtuacao());
+        if (dto.mediaSalarial() != null) empresa.setMediaSalarial(dto.mediaSalarial());
+        if (dto.receitaAnual() != null)   empresa.setReceitaAnual(dto.receitaAnual());
+        if (dto.tamanhoEmpresa() != null) empresa.setTamanhoEmpresa(dto.tamanhoEmpresa());
+        if (dto.dataFundacao() != null)   empresa.setDataFundacao(dto.dataFundacao());
+        if (dto.linkSite() != null)      empresa.setLinkSite(dto.linkSite());
+        if (dto.linkLinkedin() != null)  empresa.setLinkLinkedin(dto.linkLinkedin());
+        if (dto.linkGupy() != null)      empresa.setLinkGupy(dto.linkGupy());
+
         empresaRepository.save(empresa);
     }
 
