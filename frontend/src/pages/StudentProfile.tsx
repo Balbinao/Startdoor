@@ -22,6 +22,7 @@ import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useReview } from '@hooks/useReview';
+import { useSector } from '@hooks/useSector';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import type { IStudent } from '@models/studentData.types';
 import { useEffect, useState } from 'react';
@@ -42,6 +43,8 @@ export const StudentProfile = () => {
     getAcademicExperienceCards,
     getProfessionalExperienceCards,
   } = useExperience();
+
+  const { sectorsItems, getSectors } = useSector();
 
   const { reviewCards, getReviewCards } = useReview();
 
@@ -73,6 +76,7 @@ export const StudentProfile = () => {
           () => getProfessionalExperienceCards(Number(userId)),
           MESSAGES_LOADING.GET,
         );
+        await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
           () => getReviewCards(Number(userId)),
           MESSAGES_LOADING.GET,
@@ -227,9 +231,7 @@ export const StudentProfile = () => {
               <FormField
                 type="select"
                 name="sortSetor"
-                options={DROPDOWN_VALUES_CONST.SETOR_INTERESSE.map(option => ({
-                  ...option,
-                }))}
+                options={sectorsItems}
               />
             </span>
             <span className="w-56">

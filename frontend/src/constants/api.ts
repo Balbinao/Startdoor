@@ -5,6 +5,9 @@ export const API_CONST = {
   AUTH: {
     LOGIN_URL: '/auth/login',
   },
+  SECTOR: {
+    BASE: '/setores',
+  },
   STUDENT: {
     REGISTRATION: '/estudantes/cadastrar/estudante',
     BY_ID: (id: number) => `/estudantes/${id}`,

@@ -6,8 +6,8 @@ export const ROUTES_CONST = {
     UNIQUE: 'estudante',
     PROFILE_URL: '/perfil-estudante/:id',
     PROFILE: (id: string | number) => `/perfil-estudante/${id}`,
-    PROFILE_UPDATE_URL: '/perfil-estudante-alterar/:id',
-    PROFILE_UPDATE: (id: string | number) => `/perfil-estudante-alterar/${id}`,
+    PROFILE_UPDATE_URL: '/perfil-estudante/:id/alterar',
+    PROFILE_UPDATE: (id: string | number) => `/perfil-estudante/${id}/alterar`,
   },
 
   COMPANY: {
@@ -15,8 +15,8 @@ export const ROUTES_CONST = {
     UNIQUE: 'empresa',
     PROFILE_URL: '/perfil-empresa/:id',
     PROFILE: (id: string | number) => `/perfil-empresa/${id}`,
-    PROFILE_UPDATE_URL: '/perfil-empresa-alterar/:id',
-    PROFILE_UPDATE: (id: string | number) => `/perfil-empresa-alterar/${id}`,
+    PROFILE_UPDATE_URL: '/perfil-empresa/:id/alterar',
+    PROFILE_UPDATE: (id: string | number) => `/perfil-empresa/${id}/alterar`,
   },
 
   ROOT_PRIVATE: '/',

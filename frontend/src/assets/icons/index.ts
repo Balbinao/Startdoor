@@ -1,3 +1,4 @@
+export { default as Compass } from './brand-safari.svg?react';
 export { default as BriefcaseFilled } from './briefcase-filled.svg?react';
 export { default as Building } from './building.svg?react';
 export { default as CalendarEvent } from './calendar-event.svg?react';
@@ -11,6 +12,8 @@ export { default as EyeOff } from './eye-off.svg?react';
 export { default as Eye } from './eye.svg?react';
 export { default as Flag } from './flag.svg?react';
 export { default as Focus } from './focus.svg?react';
+export { default as Graph } from './graph.svg?react';
+export { default as Home } from './home.svg?react';
 export { default as Hourglass } from './hourglass.svg?react';
 export { default as MessageCircleFilled } from './message-circle-filled.svg?react';
 export { default as Pencil } from './pencil.svg?react';
@@ -18,10 +21,11 @@ export { default as Pig } from './pig.svg?react';
 export { default as Pin } from './pin.svg?react';
 export { default as Plus } from './plus.svg?react';
 export { default as SchoolFilled } from './school-filled.svg?react';
+export { default as Search } from './search.svg?react';
 export { default as ShieldFilled } from './shield-filled.svg?react';
 export { default as Sparkles } from './sparkles.svg?react';
 export { default as StarFilled } from './star-filled.svg?react';
 export { default as Star } from './star.svg?react';
+export { default as UserFilled } from './user-filled.svg?react';
 export { default as User } from './user.svg?react';
 export { default as XClose } from './xclose.svg?react';
-export {default as UserFilled} from './user-filled.svg?react'

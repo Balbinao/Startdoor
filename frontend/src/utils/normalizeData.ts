@@ -4,7 +4,11 @@ import type { IStudent } from '@models/studentData.types';
 import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
 
-export const extractSelectOptionValue = <T extends readonly { value: string }[]>(arr: T) =>
+export const extractSelectOptionValue = <
+  T extends readonly { value: string }[],
+>(
+  arr: T,
+) =>
   arr.map(item => item.value) as [T[number]['value'], ...T[number]['value'][]];
 
 export const normalizeStudentData = (
@@ -29,10 +33,7 @@ export const normalizeStudentData = (
     DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
       option => option.value === studentData.estadoAtuacao,
     )?.value ?? '',
-  setorInteresse:
-    DROPDOWN_VALUES_CONST.SETOR_INTERESSE.find(
-      option => option.value === studentData.estadoAtuacao,
-    )?.value ?? '',
+  setorInteresse: studentData.setorInteresse ?? '',
   habilidadesPrincipais: studentData.habilidadesPrincipais ?? '',
   linkSite: studentData.linkSite ?? undefined,
   linkLinkedin: studentData.linkLinkedin ?? undefined,

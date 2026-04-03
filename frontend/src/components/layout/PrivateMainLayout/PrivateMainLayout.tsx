@@ -1,4 +1,5 @@
 import { ChevronsLeft } from '@assets/icons';
+import { MenuMain } from '@components/ui/MenuMain';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 export const PrivateMainLayout = () => {
@@ -17,6 +18,9 @@ export const PrivateMainLayout = () => {
       </button>
       <div className="flex w-full max-w-2xl flex-1 items-center justify-center">
         <Outlet />
+        <div className="fixed bottom-3.5 flex w-full justify-center">
+          <MenuMain />
+        </div>
       </div>
     </div>
   );

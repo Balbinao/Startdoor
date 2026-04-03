@@ -18,6 +18,7 @@ import { useAuth } from '@hooks/useAuth';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useSector } from '@hooks/useSector';
 import { useStudentRegistrations } from '@hooks/useStudentRegistration';
 import type {
   IAcademicExperience,
@@ -48,6 +49,7 @@ export const StudentProfileUpdateForm = () => {
   const { getUserId } = useAuth();
   const { getStudent, updateStudent, updateStudentPassword } =
     useStudentRegistrations();
+  const { sectorsItems, getSectors } = useSector();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -63,7 +65,7 @@ export const StudentProfileUpdateForm = () => {
   }
 
   const form = useForm<StudentProfileUpdateData>({
-    resolver: zodResolver(studentProfileUpdateSchema),
+    resolver: zodResolver(studentProfileUpdateSchema(sectorsItems)),
     defaultValues: {
       nome: '',
       user: '',
@@ -118,6 +120,7 @@ export const StudentProfileUpdateForm = () => {
         reset(normalizeStudentData(response));
         // reset(normalizeStudentData(studentData, notaCondiData));
 
+        await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
           () => getAcademicExperienceCards(Number(userId)),
           MESSAGES_LOADING.GET,
@@ -326,11 +329,7 @@ export const StudentProfileUpdateForm = () => {
                   type="select"
                   name="setorInteresse"
                   label="Setor de Interesse"
-                  options={DROPDOWN_VALUES_CONST.SETOR_INTERESSE.map(
-                    option => ({
-                      ...option,
-                    }),
-                  )}
+                  options={sectorsItems}
                 />
               </div>
 

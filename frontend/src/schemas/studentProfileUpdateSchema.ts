@@ -1,4 +1,5 @@
 import { DROPDOWN_VALUES_CONST, REGEX_CONST } from '@constants';
+import type { IInputOption } from '@models/input.types';
 import { extractSelectOptionValue } from '@utils/normalizeData';
 import { z } from 'zod';
 
@@ -9,83 +10,93 @@ import { z } from 'zod';
 //   .refine(val => !Number.isNaN(val), 'Valor inválido')
 //   .refine(val => val >= 0 && val <= 5, 'Valor deve ser entre 0 e 5');
 
-export const studentProfileUpdateSchema = z.object({
-  nome: z
-    .string()
-    .min(5, 'Nome precisa ter pelo menos 5 caracteres')
-    .max(60, 'O nome não pode ter mais de 60 caracteres'),
+export const studentProfileUpdateSchema = (sectors: IInputOption[]) =>
+  z.object({
+    nome: z
+      .string()
+      .min(5, 'Nome precisa ter pelo menos 5 caracteres')
+      .max(60, 'O nome não pode ter mais de 60 caracteres'),
 
-  user: z
-    .string()
-    .min(8, 'User precisa ter pelo menos 8 caracteres')
-    .max(30, 'User não pode ter mais de 30 caracteres'),
+    user: z
+      .string()
+      .min(8, 'User precisa ter pelo menos 8 caracteres')
+      .max(30, 'User não pode ter mais de 30 caracteres'),
 
-  email: z
-    .email({ message: 'Email inválido' })
-    .max(50, { message: 'O email deve ter no máximo 50 caracteres' }),
+    email: z
+      .email({ message: 'Email inválido' })
+      .max(50, { message: 'O email deve ter no máximo 50 caracteres' }),
 
-  senha: z
-    .string()
-    .min(6, 'Senha precisa ter pelo menos 6 caracteres')
-    .optional()
-    .or(z.literal('')),
+    senha: z
+      .string()
+      .min(6, 'Senha precisa ter pelo menos 6 caracteres')
+      .optional()
+      .or(z.literal('')),
 
-  dataNascimento: z
-    .string()
-    .optional()
-    .refine(
-      val => !val || REGEX_CONST.DATE.test(val),
-      'Data inválida',
-    )
-    .refine(val => !val || !isNaN(new Date(val).getTime()), {
-      message: 'Data inválida',
-    }),
+    dataNascimento: z
+      .string()
+      .optional()
+      .refine(val => !val || REGEX_CONST.DATE.test(val), 'Data inválida')
+      .refine(val => !val || !isNaN(new Date(val).getTime()), {
+        message: 'Data inválida',
+      }),
 
-  biografia: z.string().optional(),
+    biografia: z.string().optional(),
 
-  paisOrigem: z
-    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.PAIS_ORIGEM))
-    .optional(),
+    paisOrigem: z
+      .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.PAIS_ORIGEM))
+      .optional(),
 
-  modeloTrabalho: z
-    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO))
-    .optional(),
+    modeloTrabalho: z
+      .enum(
+        extractSelectOptionValue(DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO),
+      )
+      .optional(),
 
-  estadoAtuacao: z
-    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
-    .optional(),
+    estadoAtuacao: z
+      .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
+      .optional(),
 
-  setorInteresse: z
-    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.SETOR_INTERESSE))
-    .optional(),
+    setorInteresse: z
+      .union([z.number(), z.literal('')])
+      .optional()
+      .refine(
+        val =>
+          val === undefined || val === '' || sectors.some(s => s.value === val),
+        'Setor inválido',
+      ),
 
-  habilidadesPrincipais: z.string(),
+    // setorInteresse: z
+    //   .union([z.number(), z.literal('')])
+    //   .refine(val => val !== '', 'Setor obrigatório')
+    //   .refine(val => sectors.some(s => s.value === val), 'Setor inválido'),
 
-  linkSite: z.url('URL inválida').optional(),
+    habilidadesPrincipais: z.string(),
 
-  linkLinkedin: z
-    .url({ message: 'URL inválida' })
-    .refine(url => url.includes('linkedin.com'), {
-      message: 'Deve ser um link do LinkedIn',
-    })
-    .optional(),
+    linkSite: z.url('URL inválida').optional(),
 
-  // nota_condi: z.object({
-  //   ambiente: notaCondiField,
-  //   aprendizado: notaCondiField,
-  //   beneficios: notaCondiField,
-  //   cultura: notaCondiField,
-  //   efetivacao: notaCondiField,
-  //   entrevista: notaCondiField,
-  //   feedback: notaCondiField,
-  //   infraestrutura: notaCondiField,
-  //   integracao: notaCondiField,
-  //   remuneracao: notaCondiField,
-  //   rotina: notaCondiField,
-  //   lideranca: notaCondiField,
-  // }),
-});
+    linkLinkedin: z
+      .url({ message: 'URL inválida' })
+      .refine(url => url.includes('linkedin.com'), {
+        message: 'Deve ser um link do LinkedIn',
+      })
+      .optional(),
+
+    // nota_condi: z.object({
+    //   ambiente: notaCondiField,
+    //   aprendizado: notaCondiField,
+    //   beneficios: notaCondiField,
+    //   cultura: notaCondiField,
+    //   efetivacao: notaCondiField,
+    //   entrevista: notaCondiField,
+    //   feedback: notaCondiField,
+    //   infraestrutura: notaCondiField,
+    //   integracao: notaCondiField,
+    //   remuneracao: notaCondiField,
+    //   rotina: notaCondiField,
+    //   lideranca: notaCondiField,
+    // }),
+  });
 
 export type StudentProfileUpdateData = z.input<
-  typeof studentProfileUpdateSchema
+  ReturnType<typeof studentProfileUpdateSchema>
 >;

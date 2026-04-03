@@ -12,7 +12,7 @@ export interface IStudent {
   dataNascimento?: string;
   modeloTrabalho?: (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value'];
   estadoAtuacao?: (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value'];
-  setorInteresse: (typeof DROPDOWN_VALUES_CONST.SETOR_INTERESSE)[number]['value'];
+  setorInteresse: number | '';
   habilidadesPrincipais?: string;
   linkSite?: string;
   linkLinkedin?: string;
