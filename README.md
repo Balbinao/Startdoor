@@ -72,6 +72,21 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
       <a href="https://reactrouter.com/">
         <img alt="React Router" src="https://img.shields.io/badge/react%20router-CA4245.svg?style=for-the-badge&logo=react-router&logoColor=white"/>
       </a>
+       <a href="https://mobx.js.org/">
+        <img alt="MobX" src="https://img.shields.io/badge/mobx-FF9955.svg?style=for-the-badge&logo=mobx&logoColor=white"/>
+      </a>
+      <a href="https://react-hook-form.com/">
+        <img alt="React Hook Form" src="https://img.shields.io/badge/react%20hook%20form-EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white"/>
+      </a>
+      <a href="https://zod.dev/">
+        <img alt="Zod" src="https://img.shields.io/badge/zod-3E67B1.svg?style=for-the-badge&logo=zod&logoColor=white"/>
+      </a>
+      <a href="https://tailwindcss.com/">
+        <img alt="Tailwind CSS" src="https://img.shields.io/badge/tailwind%20css-06B6D4.svg?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
+      </a>
+      <a href="https://github.com/lukeed/clsx">
+        <img alt="clsx" src="https://img.shields.io/badge/clsx-000000.svg?style=for-the-badge&logo=npm&logoColor=white"/>
+      </a>
     </td>
     <td>
       <a href="https://spring.io/projects/spring-boot">
@@ -121,8 +136,11 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
   </tr>
 
   <tr>
-    <th>Outras Ferramentas</th>
-    <td align="center">—</td>
+    <th>Design & Documentação</th>
+    <td align="center">
+      <a href="https://www.figma.com/">
+        <img alt="Figma" src="https://img.shields.io/badge/figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white"/>
+      </a></td>
     <td>
       <a href="https://swagger.io/">
         <img alt="Swagger UI" src="https://img.shields.io/badge/swagger%20ui-85EA2D.svg?style=for-the-badge&logo=swagger&logoColor=black"/>
