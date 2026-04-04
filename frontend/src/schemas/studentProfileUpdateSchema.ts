@@ -74,13 +74,21 @@ export const studentProfileUpdateSchema = (sectors: IInputOption[]) =>
 
     habilidadesPrincipais: z.string(),
 
-    linkSite: z.url('URL inválida').optional(),
+    linkSite: z
+      .string()
+      .refine(url => url === '' || z.url().safeParse(url).success, {
+        message: 'URL inválida',
+      })
+      .optional(),
 
     linkLinkedin: z
-      .url({ message: 'URL inválida' })
-      .refine(url => url.includes('linkedin.com/in/'), {
-        message: 'Deve ser um link do LinkedIn',
-      })
+      .string()
+      .refine(
+        url =>
+          url === '' ||
+          (z.url().safeParse(url).success && url.includes('linkedin.com/in/')),
+        { message: 'Deve ser um link do LinkedIn' },
+      )
       .optional(),
 
     ambiente: scoreField,

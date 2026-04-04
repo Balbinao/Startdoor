@@ -99,6 +99,15 @@ export const CompanyRegistrationForm = () => {
               {fieldsCompanyRegistration.map(field => (
                 <FormField form={form} key={field.name} {...field} />
               ))}
+
+              <span className="text-sm">
+                <FormField
+                  form={form}
+                  type="checkbox"
+                  name="acordo"
+                  label="Declaro, na condição de representante legal da pessoa jurídica, sob as penas do Art. 299 do Decreto-Lei nº 2.848/1940, que os dados informados são verídicos."
+                />
+              </span>
             </div>
 
             <FormErrorMessage />
