@@ -54,9 +54,8 @@ public class Estudante implements UserDetails {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "modelo_trabalho")
-    private ModeloTrabalho modeloTrabalho;
+    private String modeloTrabalho;
 
     @Column(name = "estado_atuacao")
     private String estadoAtuacao;
