@@ -12,7 +12,7 @@ import {
 
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
-import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import {
@@ -29,7 +29,7 @@ export const CompanyRegistrationForm = () => {
   const { modalMessageSafe } = useModalMessageDefault();
 
   const { clearFullLocalStorage } = useAuth();
-  const { companyRegistration } = useCompanyRegistrations();
+  const { companyRegistration } = useCompany();
 
   const form = useForm<CompanyRegistrationFormData>({
     resolver: zodResolver(companyRegistrationSchema),

@@ -11,14 +11,18 @@ import {
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
-import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import {
   companyProfileUpdateSchema,
   type CompanyProfileUpdateData,
 } from '@schemas/companyProfileUpdateSchema';
-import { normalizeCompanyData } from '@utils/normalizeData';
+import {
+  normalizeCompanyData,
+  normalizeCompanyUpdateData,
+  replaceEmptyWithNull,
+} from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -31,8 +35,7 @@ export const CompanyProfileUpdateForm = () => {
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
   const { getUserId } = useAuth();
-  const { getCompany, updateCompany, updateCompanyPassword } =
-    useCompanyRegistrations();
+  const { getCompany, updateCompany, updateCompanyPassword } = useCompany();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -103,8 +106,12 @@ export const CompanyProfileUpdateForm = () => {
           );
         }
 
+        const sanitizedData = replaceEmptyWithNull(data);
+
+        const companyData = normalizeCompanyUpdateData(sanitizedData);
+
         const response = await modalLoadingAuto(
-          async () => await updateCompany(Number(userId), data),
+          async () => await updateCompany(Number(userId), companyData),
           MESSAGES_LOADING.GET,
         );
 

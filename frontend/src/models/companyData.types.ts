@@ -20,3 +20,27 @@ export interface ICompany {
   linkLinkedin?: string;
   linkGupy?: string;
 }
+
+export interface ICompanyUpdatePayload {
+  nomeFantasia: string;
+  cnpj: string;
+  email: string;
+  biografia: string | null;
+  paisOrigem:
+    | (typeof DROPDOWN_VALUES_CONST.PAIS_ORIGEM)[number]['value']
+    | null;
+  receitaAnual:
+    | (typeof DROPDOWN_VALUES_CONST.RECEITA_ANUAL)[number]['value']
+    | null;
+  dataFundacao: string | null;
+  tamanhoEmpresa:
+    | (typeof DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA)[number]['value']
+    | null;
+  estadoSede:
+    | (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value']
+    | null;
+  areaAtuacao: string | null;
+  linkSite: string | null;
+  linkLinkedin: string | null;
+  linkGupy: string | null;
+}

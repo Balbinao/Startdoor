@@ -20,7 +20,7 @@ import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useSector } from '@hooks/useSector';
-import { useStudent } from '@hooks/useStudentRegistration';
+import { useStudent } from '@hooks/useStudent';
 import type {
   IAcademicExperience,
   IProfessionalExperience,

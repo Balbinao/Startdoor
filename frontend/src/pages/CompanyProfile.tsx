@@ -10,10 +10,11 @@ import {
 import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
 import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
-import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import type { ICompany } from '@models/companyData.types';
+import { formatDateWithAge } from '@utils/formatData';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -31,7 +32,7 @@ export const CompanyProfile = () => {
 
   const [searchedCompany, setSearchedCompany] = useState<ICompany | null>(null);
 
-  const { getCompany } = useCompanyRegistrations();
+  const { getCompany } = useCompany();
 
   useEffect(() => {
     const fetch = async () => {
@@ -104,7 +105,7 @@ export const CompanyProfile = () => {
                 />
               }
               title="Data de Fundação"
-              value={searchedCompany.dataFundacao}
+              value={formatDateWithAge(searchedCompany.dataFundacao)}
             />
           )}
 

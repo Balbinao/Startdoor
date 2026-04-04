@@ -10,12 +10,6 @@ export const fieldsCompanyRegistration: FieldConfig<CompanyRegistrationFormData>
       placeholder: 'Digite o nome fantasia',
       maxLength: 60,
     },
-    // {
-    //   type: 'text',
-    //   name: 'user',
-    //   label: 'User',
-    //   placeholder: 'Estudante123',
-    // },
     {
       type: 'email',
       name: 'email',

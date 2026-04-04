@@ -1,26 +1,33 @@
 import { DROPDOWN_VALUES_CONST, REGEX_CONST } from '@constants';
+import { extractSelectOptionValue } from '@utils/normalizeData';
 import { z } from 'zod';
 
-const extractValues = <T extends readonly { value: string }[]>(arr: T) =>
-  arr.map(item => item.value) as [T[number]['value'], ...T[number]['value'][]];
-
 export const companyProfileUpdateSchema = z.object({
-  nomeFantasia: z.string().min(5).max(60),
+  nomeFantasia: z
+    .string()
+    .min(5, 'Precisa ter pelo menos 5 caracteres')
+    .max(60, 'Não pode ter mais de 60 caracteres'),
 
-  email: z.email().max(50),
+  email: z
+    .email({ message: 'Email inválido' })
+    .max(50, { message: 'Deve ter no máximo 50 caracteres' }),
 
-  senha: z.string().min(6).optional().or(z.literal('')),
+  senha: z
+    .string()
+    .min(6, 'Precisa ter pelo menos 6 caracteres')
+    .optional()
+    .or(z.literal('')),
 
-  cnpj: z.string().length(14),
+  cnpj: z.string().length(14, 'CNPJ deve ter 14 caracteres'),
 
   biografia: z.string().optional(),
 
   paisOrigem: z
-    .enum(extractValues(DROPDOWN_VALUES_CONST.PAIS_ORIGEM))
+    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.PAIS_ORIGEM))
     .optional(),
 
   receitaAnual: z
-    .enum(extractValues(DROPDOWN_VALUES_CONST.RECEITA_ANUAL))
+    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.RECEITA_ANUAL))
     .optional(),
 
   dataFundacao: z
@@ -32,25 +39,32 @@ export const companyProfileUpdateSchema = z.object({
     }),
 
   tamanhoEmpresa: z
-    .enum(extractValues(DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA))
+    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA))
     .optional(),
 
   estadoSede: z
-    .enum(extractValues(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
+    .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
     .optional(),
 
-  areaAtuacao: z.string().max(150).optional(),
+  areaAtuacao: z
+    .string()
+    .max(150, 'Não pode ter mais de 150 caracteres')
+    .optional(),
 
-  linkSite: z.url().optional(),
+  linkSite: z.url({ message: 'URL inválida' }).optional(),
 
   linkLinkedin: z
-    .url()
-    .refine(url => url.includes('linkedin.com'))
+    .url({ message: 'URL inválida' })
+    .refine(url => url.includes('linkedin.com'), {
+      message: 'Deve ser um link do LinkedIn',
+    })
     .optional(),
 
   linkGupy: z
-    .url()
-    .refine(url => url.includes('gupy.io'))
+    .url({ message: 'URL inválida' })
+    .refine(url => url.includes('gupy.io'), {
+      message: 'Deve ser um link da Gupy',
+    })
     .optional(),
 });
 

@@ -1,10 +1,12 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
-import type { ICompany } from '@models/companyData.types';
+import type {
+  ICompany,
+  ICompanyUpdatePayload,
+} from '@models/companyData.types';
 import type { ICompanyRegistration } from '@models/registrationLogin.types';
-import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
 
-export const companyRegistrationService = {
+export const companyService = {
   getCompany: async (id: number): Promise<ICompany> => {
     const response = await api.get(API_CONST.COMPANY.BY_ID(id));
     return response.data;
@@ -15,7 +17,7 @@ export const companyRegistrationService = {
     return response.data;
   },
 
-  updateCompany: async (id: number, company: CompanyProfileUpdateData) => {
+  updateCompany: async (id: number, company: ICompanyUpdatePayload) => {
     const response = await api.put(API_CONST.COMPANY.BY_ID(id), company);
     return response.data;
   },

@@ -23,8 +23,9 @@ import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useReview } from '@hooks/useReview';
 import { useSector } from '@hooks/useSector';
-import { useStudent } from '@hooks/useStudentRegistration';
+import { useStudent } from '@hooks/useStudent';
 import type { IStudent } from '@models/studentData.types';
+import { formatDateWithAge } from '@utils/formatData';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -139,7 +140,7 @@ export const StudentProfile = () => {
                 />
               }
               title="Data de Nascimento"
-              value={searchedStudent.dataNascimento}
+              value={formatDateWithAge(searchedStudent.dataNascimento)}
             />
           )}
 

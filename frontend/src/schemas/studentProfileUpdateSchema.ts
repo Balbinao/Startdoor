@@ -16,21 +16,21 @@ export const studentProfileUpdateSchema = (sectors: IInputOption[]) =>
   z.object({
     nome: z
       .string()
-      .min(5, 'Nome precisa ter pelo menos 5 caracteres')
-      .max(60, 'O nome não pode ter mais de 60 caracteres'),
+      .min(5, 'Precisa ter pelo menos 5 caracteres')
+      .max(60, 'Não pode ter mais de 60 caracteres'),
 
     user: z
       .string()
-      .min(8, 'User precisa ter pelo menos 8 caracteres')
-      .max(30, 'User não pode ter mais de 30 caracteres'),
+      .min(8, 'Precisa ter pelo menos 8 caracteres')
+      .max(30, 'Não pode ter mais de 30 caracteres'),
 
     email: z
       .email({ message: 'Email inválido' })
-      .max(50, { message: 'O email deve ter no máximo 50 caracteres' }),
+      .max(50, { message: 'Deve ter no máximo 50 caracteres' }),
 
     senha: z
       .string()
-      .min(6, 'Senha precisa ter pelo menos 6 caracteres')
+      .min(6, 'Precisa ter pelo menos 6 caracteres')
       .optional()
       .or(z.literal('')),
 
