@@ -3,7 +3,6 @@ package com.example.backend.model;
 import com.example.backend.model.enums.ModeloTrabalho;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -85,6 +84,12 @@ public class Estudante implements UserDetails {
     @JsonIgnore
     @OneToOne(mappedBy = "estudante", cascade = CascadeType.ALL, orphanRemoval = true)
     private EstudanteNotaCondi notaCondicional;
+
+    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
+    private List<ExperienciaAcademica> experienciasAcademicas;
+
+    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
+    private List<ExperienciaProfissional> experienciasProfissionais;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
