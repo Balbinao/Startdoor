@@ -1,6 +1,7 @@
 package com.example.backend.model;
 
 import com.example.backend.model.enums.ModeloTrabalho;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -81,6 +82,7 @@ public class Estudante implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "estudante", cascade = CascadeType.ALL, orphanRemoval = true)
     private EstudanteNotaCondi notaCondicional;
 
