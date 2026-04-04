@@ -75,3 +75,9 @@ body {
 .input-readonly {
   background-color: var(--grey-900);
 }
+
+.empty-message {
+  align-self: center;
+  font-size: 14px;
+  color: var(--grey-400);
+}

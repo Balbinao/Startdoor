@@ -3,13 +3,19 @@ import type {
   ICompany,
   ICompanyUpdatePayload,
 } from '@models/companyData.types';
+import type {
+  IAcademicExperiencePayload,
+  IProfessionalExperiencePayload,
+} from '@models/experience.types';
 import type { IReview } from '@models/review.types';
 import type {
   IConditionalScore,
   IStudent,
   IStudentUpdatePayload,
 } from '@models/studentData.types';
+import type { AcademicExperienceCardData } from '@schemas/academicExperienceCardSchema';
 import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
+import type { ProfessionalExperienceCardData } from '@schemas/professionalExperienceCardSchema';
 import type { ReviewData } from '@schemas/reviewSchema';
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
 
@@ -151,6 +157,34 @@ export const normalizeCompanyUpdateData = (
     linkSite: data.linkSite ?? null,
     linkLinkedin: data.linkLinkedin ?? null,
     linkGupy: data.linkGupy ?? null,
+  };
+};
+
+export const normalizeAcademicExperienceUpdate = (
+  data: AcademicExperienceCardData,
+): IAcademicExperiencePayload => {
+  return {
+    tituloEnsino: data.tituloEnsino,
+    nomeEscola: data.nomeEscola,
+    estadoAtuacao: data.estadoAtuacao,
+    modeloEnsino: data.modeloEnsino,
+    dataInicio: data.dataInicio,
+    dataFim: data.dataFim ?? null,
+    descricao: data.descricao,
+  };
+};
+
+export const normalizeProfessionalExperienceUpdate = (
+  data: ProfessionalExperienceCardData,
+): IProfessionalExperiencePayload => {
+  return {
+    idEmpresa: data.idEmpresa,
+    tituloCargo: data.tituloCargo,
+    estadoAtuacao: data.estadoAtuacao,
+    modeloTrabalho: data.modeloTrabalho,
+    dataInicio: data.dataInicio,
+    dataFim: data.dataFim ?? null,
+    descricao: data.descricao ?? '',
   };
 };
 

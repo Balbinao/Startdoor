@@ -8,15 +8,11 @@ export const academicExperienceCardSchema = z
 
     nomeEscola: z.string().min(1, 'Nome da escola é obrigatório').max(60),
 
-    estadoAtuacao: z.preprocess(
-      val => (val === '' ? undefined : val),
-      z.enum(
-        DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => option.value),
-        {
-          error: 'Campo obrigatório',
-        },
-      ),
-    ),
+    estadoAtuacao: z
+      .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
+      .refine(val => val !== '', {
+        message: 'Campo obrigatório',
+      }),
 
     modeloEnsino: z
       .enum(
@@ -45,7 +41,7 @@ export const academicExperienceCardSchema = z
         message: 'Data fim inválida',
       }),
 
-    descricao: z.string().nullable(),
+    descricao: z.string(),
   })
   .refine(
     data => {
