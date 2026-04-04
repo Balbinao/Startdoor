@@ -1,7 +1,11 @@
 import { DROPDOWN_VALUES_CONST } from '@constants';
 import type { ICompany } from '@models/companyData.types';
 import type { IReview } from '@models/review.types';
-import type { IStudent } from '@models/studentData.types';
+import type {
+  IConditionalScore,
+  IStudent,
+  IStudentUpdatePayload,
+} from '@models/studentData.types';
 import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
 import type { ReviewData } from '@schemas/reviewSchema';
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
@@ -15,45 +19,86 @@ export const extractSelectOptionValue = <
 
 export const normalizeStudentData = (
   studentData: IStudent,
-  // notaCondiData: IStudentNotaCondi,
-): StudentProfileUpdateData => ({
-  nome: studentData.nome ?? '',
-  user: studentData.user ?? '',
-  email: studentData.email ?? '',
-  senha: '',
-  dataNascimento: studentData.dataNascimento ?? '',
-  biografia: studentData.biografia ?? '',
-  paisOrigem:
-    DROPDOWN_VALUES_CONST.PAIS_ORIGEM.find(
-      option => option.value === studentData.paisOrigem,
-    )?.value ?? '',
-  modeloTrabalho:
-    DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.find(
-      option => option.value === studentData.modeloTrabalho,
-    )?.value ?? '',
-  estadoAtuacao:
-    DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
-      option => option.value === studentData.estadoAtuacao,
-    )?.value ?? '',
-  setorInteresse: studentData.setorInteresse ?? '',
-  habilidadesPrincipais: studentData.habilidadesPrincipais ?? '',
-  linkSite: studentData.linkSite ?? undefined,
-  linkLinkedin: studentData.linkLinkedin ?? undefined,
-  // nota_condi: {
-  //   ambiente: notaCondiData.ambiente ?? '',
-  //   aprendizado: notaCondiData.aprendizado ?? '',
-  //   beneficios: notaCondiData.beneficios ?? '',
-  //   cultura: notaCondiData.cultura ?? '',
-  //   efetivacao: notaCondiData.efetivacao ?? '',
-  //   entrevista: notaCondiData.entrevista ?? '',
-  //   feedback: notaCondiData.feedback ?? '',
-  //   infraestrutura: notaCondiData.infraestrutura ?? '',
-  //   integracao: notaCondiData.integracao ?? '',
-  //   remuneracao: notaCondiData.remuneracao ?? '',
-  //   rotina: notaCondiData.rotina ?? '',
-  //   lideranca: notaCondiData.lideranca ?? '',
-  // },
-});
+  notaCondiData: IConditionalScore,
+): StudentProfileUpdateData => {
+  return {
+    nome: studentData.nome ?? '',
+    user: studentData.user ?? '',
+    email: studentData.email ?? '',
+    senha: '',
+    dataNascimento: studentData.dataNascimento ?? '',
+    biografia: studentData.biografia ?? '',
+    paisOrigem:
+      DROPDOWN_VALUES_CONST.PAIS_ORIGEM.find(
+        option => option.value === studentData.paisOrigem,
+      )?.value ?? '',
+    modeloTrabalho:
+      DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.find(
+        option => option.value === studentData.modeloTrabalho,
+      )?.value ?? '',
+    estadoAtuacao:
+      DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
+        option => option.value === studentData.estadoAtuacao,
+      )?.value ?? '',
+    setorInteresse:
+      studentData.setorInteresse !== null && studentData.setorInteresse !== ''
+        ? Number(studentData.setorInteresse)
+        : '',
+    habilidadesPrincipais: studentData.habilidadesPrincipais ?? '',
+    linkSite: studentData.linkSite ?? undefined,
+    linkLinkedin: studentData.linkLinkedin ?? undefined,
+    ambiente: Number(notaCondiData.ambiente ?? 0),
+    aprendizado: Number(notaCondiData.aprendizado ?? 0),
+    beneficios: Number(notaCondiData.beneficios ?? 0),
+    cultura: Number(notaCondiData.cultura ?? 0),
+    efetivacao: Number(notaCondiData.efetivacao ?? 0),
+    entrevista: Number(notaCondiData.entrevista ?? 0),
+    feedback: Number(notaCondiData.feedback ?? 0),
+    infraestrutura: Number(notaCondiData.infraestrutura ?? 0),
+    integracao: Number(notaCondiData.integracao ?? 0),
+    remuneracao: Number(notaCondiData.remuneracao ?? 0),
+    rotina: Number(notaCondiData.rotina ?? 0),
+    lideranca: Number(notaCondiData.lideranca ?? 0),
+  };
+};
+
+export const normalizeStudentUpdateData = (
+  data: StudentProfileUpdateData,
+): IStudentUpdatePayload => {
+  return {
+    nome: data.nome,
+    user: data.user,
+    email: data.email,
+    biografia: data.biografia ?? null,
+    paisOrigem: data.paisOrigem ?? null,
+    dataNascimento: data.dataNascimento ?? null,
+    modeloTrabalho: data.modeloTrabalho ?? null,
+    estadoAtuacao: data.estadoAtuacao ?? null,
+    setorInteresse: data.setorInteresse ?? null,
+    habilidadesPrincipais: data.habilidadesPrincipais ?? null,
+    linkSite: data.linkSite ?? null,
+    linkLinkedin: data.linkLinkedin ?? null,
+  };
+};
+
+export const normalizeConditionalScoreUpdateData = (
+  data: StudentProfileUpdateData,
+): IConditionalScore => {
+  return {
+    ambiente: Number(data.ambiente ?? 0),
+    aprendizado: Number(data.aprendizado ?? 0),
+    beneficios: Number(data.beneficios ?? 0),
+    cultura: Number(data.cultura ?? 0),
+    efetivacao: Number(data.efetivacao ?? 0),
+    entrevista: Number(data.entrevista ?? 0),
+    feedback: Number(data.feedback ?? 0),
+    infraestrutura: Number(data.infraestrutura ?? 0),
+    integracao: Number(data.integracao ?? 0),
+    remuneracao: Number(data.remuneracao ?? 0),
+    rotina: Number(data.rotina ?? 0),
+    lideranca: Number(data.lideranca ?? 0),
+  };
+};
 
 export const normalizeCompanyData = (
   data: ICompany,
@@ -116,3 +161,24 @@ export const normalizeReviewData = (reviewData: IReview): ReviewData => ({
   rotina: reviewData.rotina ?? '',
   lideranca: reviewData.lideranca ?? '',
 });
+
+export function replaceEmptyWithNull<T>(obj: T): T {
+  if (obj === undefined || obj === '') return null as unknown as T;
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => replaceEmptyWithNull(item)) as unknown as T;
+  }
+
+  if (obj !== null && typeof obj === 'object') {
+    const newObj = {} as { [K in keyof T]: T[K] | null };
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const value = obj[key];
+        newObj[key] = replaceEmptyWithNull(value);
+      }
+    }
+    return newObj as T;
+  }
+
+  return obj;
+}

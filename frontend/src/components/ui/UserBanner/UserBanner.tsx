@@ -4,7 +4,7 @@ import { useAuth } from '@hooks/useAuth';
 import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import { useStudentRegistrations } from '@hooks/useStudentRegistration';
+import { useStudent } from '@hooks/useStudentRegistration';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
 export const UserBanner = () => {
@@ -14,7 +14,7 @@ export const UserBanner = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
   const { getUserId, logout } = useAuth();
-  const { student, deleteStudent } = useStudentRegistrations();
+  const { student, deleteStudent } = useStudent();
   const { company, deleteCompany } = useCompanyRegistrations();
 
   const userId = getUserId();

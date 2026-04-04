@@ -5,21 +5,46 @@ export interface IStudent {
   nome: string;
   user: string;
   email: string;
-  senha: string;
-  biografia?: string;
-  paisOrigem?: (typeof DROPDOWN_VALUES_CONST.PAIS_ORIGEM)[number]['value'];
-  mediaNotaGeral?: number;
-  dataNascimento?: string;
-  modeloTrabalho?: (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value'];
-  estadoAtuacao?: (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value'];
-  setorInteresse: number | '';
-  habilidadesPrincipais?: string;
-  linkSite?: string;
-  linkLinkedin?: string;
+  biografia: string | null;
+  paisOrigem:
+    | (typeof DROPDOWN_VALUES_CONST.PAIS_ORIGEM)[number]['value']
+    | null;
+  mediaNotaGeral: number | null;
+  dataNascimento: string | null;
+  modeloTrabalho:
+    | (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value']
+    | null;
+  estadoAtuacao:
+    | (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value']
+    | null;
+  setorInteresse: number | '' | null;
+  habilidadesPrincipais: string | null;
+  linkSite: string | null;
+  linkLinkedin: string | null;
 }
 
-export interface IStudentNotaCondi {
-  id_estudante: number;
+export interface IStudentUpdatePayload {
+  nome: string;
+  user: string;
+  email: string;
+  biografia: string | null;
+  paisOrigem:
+    | (typeof DROPDOWN_VALUES_CONST.PAIS_ORIGEM)[number]['value']
+    | null;
+  dataNascimento: string | null;
+  modeloTrabalho:
+    | (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value']
+    | null;
+  estadoAtuacao:
+    | (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value']
+    | null;
+  setorInteresse: number | '' | null;
+  habilidadesPrincipais: string | null;
+  linkSite: string | null;
+  linkLinkedin: string | null;
+}
+
+export interface IConditionalScore {
   ambiente: number;
   aprendizado: number;
   beneficios: number;

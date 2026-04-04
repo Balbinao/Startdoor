@@ -3,7 +3,7 @@ import { CompanyRegistrationStore } from './CompanyRegistrationStore';
 import { ExperienceStore } from './ExperienceStore';
 import { ReviewStore } from './ReviewStore';
 import { SectorStore } from './SectorStore';
-import { StudentRegistrationStore } from './StudentRegistrationStore';
+import { StudentStore } from './StudentRegistrationStore';
 
 export class RootStore {
   authStore: AuthStore;
@@ -11,7 +11,7 @@ export class RootStore {
   companyRegistrationStore: CompanyRegistrationStore;
   experienceStore: ExperienceStore;
   reviewStore: ReviewStore;
-  studentRegistrationStore: StudentRegistrationStore;
+  studentStore: StudentStore;
 
   constructor() {
     this.authStore = new AuthStore(this);
@@ -19,7 +19,7 @@ export class RootStore {
     this.companyRegistrationStore = new CompanyRegistrationStore(this);
     this.experienceStore = new ExperienceStore(this);
     this.reviewStore = new ReviewStore(this);
-    this.studentRegistrationStore = new StudentRegistrationStore(this);
+    this.studentStore = new StudentStore(this);
   }
 }
 

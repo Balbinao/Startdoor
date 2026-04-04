@@ -1,11 +1,12 @@
-import type { IStudent } from '@models/studentData.types';
+import type { IConditionalScore, IStudent } from '@models/studentData.types';
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';
 
-export class StudentRegistrationStore {
+export class StudentStore {
   root: RootStore;
 
   student: IStudent | null = null;
+  conditinalScore: IConditionalScore | null = null;
 
   constructor(root: RootStore) {
     this.root = root;
@@ -18,5 +19,13 @@ export class StudentRegistrationStore {
 
   get getStudent() {
     return this.student;
+  }
+
+  setConditionalScore = (conditinalScore: IConditionalScore) => {
+    this.conditinalScore = conditinalScore;
+  };
+
+  get getConditionalScore() {
+    return this.conditinalScore;
   }
 }

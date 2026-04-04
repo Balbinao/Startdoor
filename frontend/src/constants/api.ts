@@ -13,6 +13,10 @@ export const API_CONST = {
     BY_ID: (id: number) => `/estudantes/${id}`,
     BY_ID_PASSWORD: (id: number) => `/estudantes/${id}/senha`,
   },
+  CONDITIONAL_SCORE: {
+    BASE: '/estudantes/notas-condi',
+    BY_ID_STUDENT: (id: number) => `/estudantes/notas-condi/${id}`,
+  },
   COMPANY: {
     REGISTRATION: '/empresas/cadastrar/empresa',
     BY_ID: (id: number) => `/empresas/${id}`,
