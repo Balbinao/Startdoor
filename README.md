@@ -15,9 +15,10 @@
 
 # Sumário
 * [Sobre o Projeto](#sobre-o-projeto)
-* [Recomendações com IA](#recomendações-com-ia)
 * [Funcionalidades](#funcionalidades)
+* [Recomendações com IA](#recomendações-com-ia)
 * [Competências Avaliadas](#competências-avaliadas)
+* [Arquitetura Geral do Projeto](#arquitetura-geral-do-projeto)
 * [Tecnologias](#tecnologias)
 * [Protótipo Figma](#protótipo-figma)
 * [Contribuidores](#contribuidores)
@@ -31,6 +32,37 @@ A função principal do sistema é atuar como um **repositório centralizado** o
 ### 🎓 **Objetivo**
 
 Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudante identifique as empresas que melhor se alinham às suas expectativas profissionais antes de se candidatar a uma vaga.
+
+<br>
+
+## ✨ **Funcionalidades** <a name="funcionalidades"></a>
+
+<table align="center">
+  <tr>
+    <th>🔍 Funcionalidade</th>
+    <th>📝 Descrição</th>
+  </tr>
+  <tr>
+    <td><b>Pesquisar empresas</b></td>
+    <td>Encontre organizações por nome, setor ou localização</td>
+  </tr>
+  <tr>
+    <td><b>Acessar avaliações</b></td>
+    <td>Veja notas e relatos de outros estagiários</td>
+  </tr>
+  <tr>
+    <td><b>Comparar oportunidades</b></td>
+    <td>Gráficos e estatísticas lado a lado</td>
+  </tr>
+  <tr>
+    <td><b>Compartilhar feedback</b></td>
+    <td>Contribua com sua experiência</td>
+  </tr>
+  <tr>
+    <td><b>🤖 Recomendações com IA</b></td>
+    <td>Receba sugestões personalizadas baseadas no seu perfil</td>
+  </tr>
+</table>
 
 <br>
 
@@ -71,37 +103,6 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 
 <br>
 
-## ✨ **Funcionalidades** <a name="funcionalidades"></a>
-
-<table align="center">
-  <tr>
-    <th>🔍 Funcionalidade</th>
-    <th>📝 Descrição</th>
-  </tr>
-  <tr>
-    <td><b>Pesquisar empresas</b></td>
-    <td>Encontre organizações por nome, setor ou localização</td>
-  </tr>
-  <tr>
-    <td><b>Acessar avaliações</b></td>
-    <td>Veja notas e relatos de outros estagiários</td>
-  </tr>
-  <tr>
-    <td><b>Comparar oportunidades</b></td>
-    <td>Gráficos e estatísticas lado a lado</td>
-  </tr>
-  <tr>
-    <td><b>Compartilhar feedback</b></td>
-    <td>Contribua com sua experiência</td>
-  </tr>
-  <tr>
-    <td><b>🤖 Recomendações com IA</b></td>
-    <td>Receba sugestões personalizadas baseadas no seu perfil</td>
-  </tr>
-</table>
-
-<br>
-
 ## 📊 **Competências Avaliadas** <a name="competencias"></a>
 
 <table align="center">
@@ -126,6 +127,24 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 </table>
 
 <br>
+
+## Arquitetura Geral do Projeto
+
+O projeto é composto por **quatro componentes principais**.
+
+### Frontend
+
+Interface da aplicação desenvolvida com **React, TypeScript, Vite e Tailwind CSS**.
+
+🔗 **Mais detalhes da arquitetura do Frontend:**  
+[https://github.com/Balbinao/Startdoor/blob/main/frontend/README.md](https://github.com/Balbinao/Startdoor/blob/main/frontend/README.md)
+
+### Backend
+
+API responsável pelas regras de negócio, autenticação com **JWT** e fornecimento dos dados para o frontend.
+
+🔗 **Mais detalhes da arquitetura do Backend:**  
+[https://github.com/Balbinao/Startdoor/blob/main/backend/README.md](https://github.com/Balbinao/Startdoor/blob/main/backend/README.md)
 
 ## 🛠️ **Tecnologias Utilizadas** <a name="tecnologias"></a>
 
@@ -262,6 +281,7 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 ## 📄 **Licença** <a name="licenca"></a>
 
 Este projeto está licenciado sob a **MIT License**:
+
 MIT License
 
 Copyright (c) 2026 Startdoor Contributors
@@ -285,5 +305,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/📚%20Trabalho%20Acadêmico-FATEC%20Ipiranga-8B0000?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/%20Trabalho%20Acadêmico-FATEC%20Ipiranga-8B0000?style=for-the-badge"/>
 </p>
