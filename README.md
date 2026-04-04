@@ -1,4 +1,4 @@
-# 🚪 Startdoor
+# Startdoor
 
 <p align="center">
   <b>Plataforma web colaborativa dedicada à avaliação e ao compartilhamento de experiências de estágio.</b>
@@ -283,7 +283,7 @@ API responsável pelas regras de negócio, autenticação com **JWT** e fornecim
 
 <br>
 
-## 📄 **Licença** <a name="licenca"></a>
+## 📄 **License** <a name="licenca"></a>
 
 Este projeto está licenciado sob a **MIT License**:
 
