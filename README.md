@@ -120,9 +120,6 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
       <a href="https://tailwindcss.com/">
         <img alt="Tailwind CSS" src="https://img.shields.io/badge/tailwind%20css-06B6D4.svg?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
       </a>
-      <a href="https://github.com/lukeed/clsx">
-        <img alt="clsx" src="https://img.shields.io/badge/clsx-000000.svg?style=for-the-badge&logo=npm&logoColor=white"/>
-      </a>
     </td>
     <td>
       <a href="https://spring.io/projects/spring-boot">
@@ -173,7 +170,7 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
 
   <tr>
     <th>Design & Documentação</th>
-    <td align="center">
+    <td>
       <a href="https://www.figma.com/">
         <img alt="Figma" src="https://img.shields.io/badge/figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white"/>
       </a></td>
