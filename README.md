@@ -18,21 +18,57 @@ Clique no botão abaixo para acessar o projeto diretamente no Figma:
 
 A função principal do sistema é atuar como um **repositório centralizado** onde estudantes e estagiários podem registrar relatos detalhados e notas sobre as organizações onde atuam, transformando experiências individuais em informações acessíveis e estruturadas para outros alunos.
 
-### ✨ **O que o sistema permite:**
-- 🔍 Pesquisar empresas
-- ⭐ Acessar avaliações sobre diferentes dimensões do ambiente de trabalho
-- 📊 Visualizar gráficos que facilitam a comparação entre oportunidades
-- 💬 Compartilhar feedback sobre competências específicas:
-  - Cultura organizacional
-  - Remuneração
-  - Chances de efetivação
-  - E muito mais
-
 ### 🎓 **Objetivo**
 
 Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudante identifique as empresas que melhor se alinham às suas expectativas profissionais antes de se candidatar a uma vaga.
 
----
+### ✨ **O que o sistema permite:**
+
+<table align="center">
+  <tr>
+    <th>🔍 Funcionalidade</th>
+    <th>📝 Descrição</th>
+  </tr>
+  <tr>
+    <td><b>Pesquisar empresas</b></td>
+    <td>Encontre organizações por nome, setor ou localização</td>
+  </tr>
+  <tr>
+    <td><b>Acessar avaliações</b></td>
+    <td>Veja notas e relatos de outros estagiários</td>
+  </tr>
+  <tr>
+    <td><b>Comparar oportunidades</b></td>
+    <td>Gráficos e estatísticas lado a lado</td>
+  </tr>
+  <tr>
+    <td><b>Compartilhar feedback</b></td>
+    <td>Contribua com sua experiência</td>
+  </tr>
+</table>
+
+### 📊 **Competências Avaliadas**
+
+<table align="center">
+  <tr>
+    <th>🏢 Ambiente</th>
+    <th>📚 Aprendizado</th>
+    <th>🎁 Benefícios</th>
+    <th>🎭 Cultura</th>
+  </tr>
+  <tr>
+    <th>📈 Efetivação</th>
+    <th>🎯 Entrevista</th>
+    <th>💬 Feedback</th>
+    <th>🖥️ Infraestrutura</th>
+  </tr>
+  <tr>
+    <th>🤝 Integração</th>
+    <th>💰 Remuneração</th>
+    <th>⏰ Rotina</th>
+    <th>👔 Liderança</th>
+  </tr>
+</table>
 
 ## 🛠️ **Tecnologias Utilizadas**
 
