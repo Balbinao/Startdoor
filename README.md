@@ -13,19 +13,15 @@
 
 <br>
 
-## 📑 **Sumário**
-
-| Seção | Link |
-|-------|------|
-| 🎯 Sobre o Projeto | `#sobre` |
-| 🤖 Recomendações com IA | `#ia` |
-| 📱 Protótipo Figma | `#figma` |
-| ✨ Funcionalidades | `#funcionalidades` |
-| 📊 Competências Avaliadas | `#competencias` |
-| 🛠️ Tecnologias Utilizadas | `#tecnologias` |
-| 👥 Contribuidores | `#contribuidores` |
-| 📄 Licença | `#licenca` |
-
+# Sumário
+* [Sobre o Projeto](#sobre-o-projeto)
+* [Recomendações com IA](#recomendações-com-ia)
+* [Funcionalidades](#funcionalidades)
+* [Competências Avaliadas](#competências-avaliadas)
+* [Tecnologias](#tecnologias)
+* [Protótipo Figma](#protótipo-figma)
+* [Contribuidores](#contribuidores)
+* [Licença](#licença)
 <br>
 
 ## 🎯 **Sobre o Projeto** <a name="sobre"></a>
@@ -288,6 +284,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-p align="center">
+<p align="center">
   <img src="https://img.shields.io/badge/📚%20Trabalho%20Acadêmico-FATEC%20Ipiranga-8B0000?style=for-the-badge"/>
 </p>
