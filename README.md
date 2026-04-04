@@ -35,7 +35,7 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
 
 <br>
 
-## 📱 **Protótipo Figma** <a name="figma"></a>
+## 📱 **Protótipo Figma** <a name="prototipo-figma"></a>
 
 Clique no botão abaixo para acessar o protótipo feito no figma.
 
@@ -79,7 +79,7 @@ Clique no botão abaixo para acessar o protótipo feito no figma.
 
 <br>
 
-## 🤖 **Recomendações com IA** <a name="ia"></a>
+## 🤖 **Recomendações com IA** <a name="recomendacoes-com-ia"></a>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Powered%20by-Google%20Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
@@ -106,7 +106,7 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 
 <br>
 
-## 📊 **Competências Avaliadas** <a name="competencias"></a>
+## 📊 **Competências Avaliadas** <a name="competencias-avaliadas"></a>
 
 <table align="center">
   <tr>
@@ -131,7 +131,7 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 
 <br>
 
-## 🏗️ **Arquitetura Geral do Projeto**
+## 🏗️ **Arquitetura Geral do Projeto** <a name="arquitetura-geral"></a>
 
 O projeto é composto por **dois diretórios**.
 
