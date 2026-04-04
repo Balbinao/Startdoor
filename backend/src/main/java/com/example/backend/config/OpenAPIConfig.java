@@ -62,7 +62,11 @@ public class OpenAPIConfig {
                                  * **GET /estudantes** → Apenas ADMIN
                                  * **GET /estudantes/{id}** → Próprio estudante ou ADMIN
                                  * **PUT /estudantes/{id}** → Próprio estudante ou ADMIN
-                                 * **DELETE /estudantes/{id}** → Próprio estudante ou  ADMIN
+                                 * **DELETE /estudantes/{id}** → Próprio estudante ou ADMIN
+                                 * **GET /estudantes/notas-condi** → Apenas ADMIN
+                                 * **GET /estudantes/notas-condi/{id}** → Próprio estudante ou ADMIN
+                                 * **POST /estudantes/notas-condi** → Próprio estudante ou ADMIN
+                                 * **PUT /estudantes/notas-condi/{id}** → Próprio estudante ou ADMIN
                                  * **/admin/** → Apenas ADMIN
                                 
                                 ## Funcionalidades
