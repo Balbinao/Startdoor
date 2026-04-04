@@ -49,7 +49,7 @@ export const FieldDate = <TFormValues extends FieldValues>({
           handleChange?.(e.target.value);
           onChange?.(e.target.value);
         }}
-        className={`h-12 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) px-3 text-lg focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${
+        className={`h-12 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) px-3 text-sm focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${
           !disabled && !readOnly && currentValue ? 'pr-10' : ''
         } ${disabled ? 'input-disabled' : 'cursor-text'} ${
           readOnly ? 'input-readonly' : ''

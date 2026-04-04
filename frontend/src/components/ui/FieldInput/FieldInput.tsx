@@ -23,7 +23,7 @@ export const FieldInput = forwardRef<HTMLInputElement, InputProps>(
         {...props}
         disabled={disabled}
         readOnly={readOnly}
-        className={`h-10 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) text-3xl focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${disabled ? 'input-disabled' : 'cursor-text'} ${readOnly ? 'input-readonly' : ''}`}
+        className={`h-10 w-full rounded-lg border border-(--grey-900) bg-(--grey-1100) focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${disabled ? 'input-disabled' : 'cursor-text'} ${readOnly ? 'input-readonly' : ''}`}
         style={{
           paddingLeft: iconLeft ? 44 : 12,
           paddingRight: iconRight ? 44 : 12,

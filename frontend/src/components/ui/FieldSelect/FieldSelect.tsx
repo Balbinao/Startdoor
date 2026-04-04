@@ -76,7 +76,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
           ref={refs.setReference}
           disabled={disabled}
           onClick={() => !disabled && !readOnly && setOpen(p => !p)}
-          className={`flex h-10 w-full items-center justify-between rounded-lg border border-(--grey-900) bg-(--grey-1100) px-3 text-3xl whitespace-nowrap focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${
+          className={`flex h-10 w-full items-center justify-between rounded-lg border border-(--grey-900) bg-(--grey-1100) px-3 whitespace-nowrap focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${
             disabled ? 'input-disabled' : 'cursor-text'
           } ${readOnly ? 'input-readonly' : ''}`}
         >

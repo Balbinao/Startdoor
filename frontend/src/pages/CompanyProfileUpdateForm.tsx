@@ -196,8 +196,8 @@ export const CompanyProfileUpdateForm = () => {
               placeholder="Conte um pouco sobre você"
             />
 
-            <div className="flex flex-col gap-5">
-              <div className="flex w-full gap-6">
+            <div className="flex flex-col gap-6">
+              <div className="flex w-full flex-col gap-6 sm:flex-row">
                 <FormField<CompanyProfileUpdateData>
                   form={form}
                   type="select"
@@ -219,7 +219,7 @@ export const CompanyProfileUpdateForm = () => {
                 />
               </div>
 
-              <div className="flex w-full gap-6">
+              <div className="flex w-full flex-col gap-6 sm:flex-row">
                 <FormField<CompanyProfileUpdateData>
                   form={form}
                   type="select"
