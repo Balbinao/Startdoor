@@ -199,3 +199,45 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
     </td>
   </tr>
 </table>
+
+## Contribuidores
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <a href="https://github.com/ScrivaniAfonso">
+        <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/124025864?h=80&w=80&fit=cover&mask=circle" alt="Afonso Scrivani" />
+        <br />
+        <sub><b>Afonso Scrivani</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Balbinao">
+        <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/146880321?h=80&w=80&fit=cover&mask=circle" alt="Gustavo Balbino" />
+        <br />
+        <sub><b>Gustavo Balbino</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/gustavojoze">
+        <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/157230452?h=80&w=80&fit=cover&mask=circle" alt="Gustavo José" />
+        <br />
+        <sub><b>Gustavo José</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/LucasOkokama">
+        <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/161041526?h=80&w=80&fit=cover&mask=circle" alt="Lucas Okokama" />
+        <br />
+        <sub><b>Lucas Okokama</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/pedro-Trovo">
+        <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/161767490?h=80&w=80&fit=cover&mask=circle" alt="Pedro Trovo" />
+        <br />
+        <sub><b>Pedro Trovo</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
