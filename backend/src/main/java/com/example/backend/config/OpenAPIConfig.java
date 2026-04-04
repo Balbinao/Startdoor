@@ -65,8 +65,8 @@ public class OpenAPIConfig {
                                  * **DELETE /estudantes/{id}** → Próprio estudante ou ADMIN
                                  * **GET /estudantes/notas-condi** → Apenas ADMIN
                                  * **GET /estudantes/notas-condi/{id}** → Próprio estudante ou ADMIN
-                                 * **POST /estudantes/notas-condi** → Próprio estudante ou ADMIN
                                  * **PUT /estudantes/notas-condi/{id}** → Próprio estudante ou ADMIN
+                                 * **Notas condicionais são criadas automaticamente ao cadastrar estudante (valor padrão: 0)**
                                  * **/admin/** → Apenas ADMIN
                                 
                                 ## Funcionalidades
