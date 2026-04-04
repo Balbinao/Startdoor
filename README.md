@@ -25,7 +25,7 @@
 * [License](#license)
 <br>
 
-## 🎯 **Sobre o Projeto** <a name="sobre"></a>
+## 🎯 **Sobre o Projeto** {#sobre-o-projeto}
 
 A função principal do sistema é atuar como um **repositório centralizado** onde estudantes e estagiários podem registrar relatos detalhados e notas sobre as organizações onde atuam, transformando experiências individuais em informações acessíveis e estruturadas para outros alunos.
 
