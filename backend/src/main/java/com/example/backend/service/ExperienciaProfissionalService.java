@@ -39,8 +39,12 @@ public class ExperienciaProfissionalService {
         Estudante estudante = estudanteRepository.findById(estudanteId)
                 .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
 
+        Empresa empresa = empresaRepository.findById(dto.idEmpresa())
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa selecionada não existe no sistema."));
+
         ExperienciaProfissional exp = new ExperienciaProfissional();
         exp.setEstudante(estudante);
+        exp.setEmpresa(empresa);
         exp.setTituloCargo(dto.tituloCargo());
         exp.setEstadoAtuacao(dto.estadoAtuacao());
         exp.setModeloTrabalho(dto.modeloTrabalho());
@@ -71,6 +75,12 @@ public class ExperienciaProfissionalService {
         if (dto.dataInicio() != null)     exp.setDataInicio(dto.dataInicio());
         if (dto.descricao() != null)      exp.setDescricao(dto.descricao());
         exp.setDataFim(dto.dataFim());
+
+        if (dto.idEmpresa() != null) {
+            Empresa empresa = empresaRepository.findById(dto.idEmpresa())
+                    .orElseThrow(() -> new ResourceNotFoundException("Empresa selecionada não existe no sistema."));
+            exp.setEmpresa(empresa);
+        }
 
         if (dto.dataFim() != null && dto.dataInicio() != null && dto.dataFim().isBefore(dto.dataInicio())) {
             throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
