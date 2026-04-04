@@ -9,7 +9,7 @@ export interface IAcademicExperience {
   modeloEnsino: (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value'];
   dataInicio: string;
   dataFim: string | null;
-  descricao: string | null;
+  descricao: string;
 }
 
 export interface IAcademicExperiencePayload {
@@ -19,7 +19,7 @@ export interface IAcademicExperiencePayload {
   modeloEnsino: (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value'];
   dataInicio: string;
   dataFim: string | null;
-  descricao: string | null;
+  descricao: string;
 }
 
 export interface IProfessionalExperience {
@@ -32,7 +32,7 @@ export interface IProfessionalExperience {
   modeloTrabalho: (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value'];
   dataInicio: string;
   dataFim: string | null;
-  descricao: string | null;
+  descricao: string;
 }
 
 export interface IProfessionalExperiencePayload {
@@ -42,5 +42,5 @@ export interface IProfessionalExperiencePayload {
   modeloTrabalho: (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value'];
   dataInicio: string;
   dataFim: string | null;
-  descricao: string | null;
+  descricao: string;
 }

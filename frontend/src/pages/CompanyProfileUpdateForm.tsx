@@ -107,7 +107,6 @@ export const CompanyProfileUpdateForm = () => {
         }
 
         const sanitizedData = replaceEmptyWithNull(data);
-
         const companyData = normalizeCompanyUpdateData(sanitizedData);
 
         const response = await modalLoadingAuto(

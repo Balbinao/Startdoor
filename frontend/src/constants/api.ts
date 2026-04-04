@@ -23,8 +23,12 @@ export const API_CONST = {
     BY_ID_PASSWORD: (id: number) => `/empresas/${id}/senha`,
   },
   EXPERIENCE: {
-    ACADEMIC_BY_ID: (id: number) => `/experiencias/academico/${id}`,
-    PROFESSIONAL_BY_ID: (id: number) => `/experiencias/professional/${id}`,
+    ACADEMIC_BY_ID: (id: number) => `/experiencias-academicas/${id}`,
+    ACADEMIC_STUDENT_BY_ID: (id: number) =>
+      `/experiencias-academicas/estudante/${id}`,
+    PROFESSIONAL_BY_ID: (id: number) => `/experiencias-professionais/${id}`,
+    PROFESSIONAL_STUDENT_BY_ID: (id: number) =>
+      `/experiencias-professionais/estudante/${id}`,
   },
   REVIEW: {
     BY_ID: (id: number) => `/avaliacoes/${id}`,

@@ -424,6 +424,13 @@ export const StudentProfileUpdateForm = () => {
             />
           ))}
 
+          {academicExperienceCards.length === 0 &&
+            newAcademicExperienceCards.length === 0 && (
+              <span className="empty-message">
+                Nenhuma experiêcia acadêmica encontrada...
+              </span>
+            )}
+
           {academicExperienceCards.length <= 5 &&
             newAcademicExperienceCards.length === 0 && (
               <div className="flex justify-end">
@@ -456,6 +463,13 @@ export const StudentProfileUpdateForm = () => {
               }
             />
           ))}
+
+          {professionalExperienceCards.length === 0 &&
+            newProfessionalExperienceCards.length === 0 && (
+              <span className="empty-message">
+                Nenhuma experiêcia acadêmica encontrada...
+              </span>
+            )}
 
           {professionalExperienceCards.length <= 5 &&
             newAcademicExperienceCards.length === 0 && (

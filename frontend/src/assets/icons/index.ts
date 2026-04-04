@@ -26,6 +26,7 @@ export { default as ShieldFilled } from './shield-filled.svg?react';
 export { default as Sparkles } from './sparkles.svg?react';
 export { default as StarFilled } from './star-filled.svg?react';
 export { default as Star } from './star.svg?react';
+export { default as Trash } from './trash.svg?react';
 export { default as UserFilled } from './user-filled.svg?react';
 export { default as User } from './user.svg?react';
 export { default as XClose } from './xclose.svg?react';

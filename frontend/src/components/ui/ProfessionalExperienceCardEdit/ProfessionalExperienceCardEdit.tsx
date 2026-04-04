@@ -14,6 +14,10 @@ import {
   professionalExperienceCardSchema,
   type ProfessionalExperienceCardData,
 } from '@schemas/professionalExperienceCardSchema';
+import {
+  normalizeProfessionalExperienceUpdate,
+  replaceEmptyWithNull,
+} from '@utils/normalizeData';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
@@ -67,10 +71,18 @@ export const ProfessionalExperienceCardEdit = ({
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
 
+      const sanitizedData = replaceEmptyWithNull(data);
+      const professionalExperience =
+        normalizeProfessionalExperienceUpdate(sanitizedData);
+
       // Cadastrar experiencia profissional
       if (isNew) {
         const response = await modalLoadingAuto(
-          () => createProfessionalExperienceCard(Number(userId), data),
+          () =>
+            createProfessionalExperienceCard(
+              Number(userId),
+              professionalExperience,
+            ),
           MESSAGES_LOADING.CREATE,
         );
         const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.CREATE;
@@ -88,7 +100,11 @@ export const ProfessionalExperienceCardEdit = ({
 
       // Alterar experiencia profissional
       const response = await modalLoadingAuto(
-        () => updateProfessionalExperienceCard(Number(userId), data),
+        () =>
+          updateProfessionalExperienceCard(
+            Number(userId),
+            professionalExperience,
+          ),
         MESSAGES_LOADING.UPDATE,
       );
       const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;

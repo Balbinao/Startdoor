@@ -14,6 +14,10 @@ import {
   academicExperienceCardSchema,
   type AcademicExperienceCardData,
 } from '@schemas/academicExperienceCardSchema';
+import {
+  normalizeAcademicExperienceUpdate,
+  replaceEmptyWithNull,
+} from '@utils/normalizeData';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
@@ -67,10 +71,15 @@ export const AcademicExperienceCardEdit = ({
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
 
+      const sanitizedData = replaceEmptyWithNull(data);
+      const academicExperience =
+        normalizeAcademicExperienceUpdate(sanitizedData);
+
       // Cadastrar experiencia academica
       if (isNew) {
         const response = await modalLoadingAuto(
-          () => createAcademicExperienceCard(Number(userId), data),
+          () =>
+            createAcademicExperienceCard(Number(userId), academicExperience),
           MESSAGES_LOADING.CREATE,
         );
         const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.CREATE;
@@ -88,7 +97,7 @@ export const AcademicExperienceCardEdit = ({
 
       // Alterar experiencia academica
       const response = await modalLoadingAuto(
-        () => updateAcademicExperienceCard(Number(userId), data),
+        () => updateAcademicExperienceCard(Number(userId), academicExperience),
         MESSAGES_LOADING.UPDATE,
       );
       const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;

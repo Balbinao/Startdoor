@@ -1,6 +1,14 @@
-import { BriefcaseFilled, Pencil } from '@assets/icons';
-import { HINTS_CONTS, ROUTES_CONST } from '@constants';
+import { BriefcaseFilled, Pencil, Trash } from '@assets/icons';
+import {
+  HINTS_CONST,
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
+  ROUTES_CONST,
+} from '@constants';
 import { useAuth } from '@hooks/useAuth';
+import { useExperience } from '@hooks/useExperience';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import type { IProfessionalExperience } from '@models/experience.types';
 import { formatMMMYYYY } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
@@ -18,7 +26,12 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
 
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const modalLoadingAuto = useModalLoadingAuto();
+  const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
   const { getUserId } = useAuth();
+
+  const { getAcademicExperienceCards, deleteAcademicExperienceCard } =
+    useExperience();
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState<string>('0px');
@@ -43,6 +56,27 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
     }
   }, [item.descricao, collapsedHeight]);
 
+  const onDelete = async (id: number) => {
+    try {
+      const response = await modalLoadingAuto(
+        () => deleteAcademicExperienceCard(id),
+        MESSAGES_LOADING.DELETE,
+      );
+      const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE;
+      await modalMessageSafe({
+        type: 'success',
+        message,
+        shouldBlockProcess: false,
+      });
+      await modalLoadingAuto(
+        () => getAcademicExperienceCards(Number(userId)),
+        MESSAGES_LOADING.GET,
+      );
+    } catch (error: unknown) {
+      await modalMessageError(error);
+    }
+  };
+
   return (
     <div className="flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
       <div className="flex items-start gap-3">
@@ -62,12 +96,22 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
         </div>
 
         {isEditPage && (
-          <div
-            title={HINTS_CONTS.EDIT}
-            onClick={() => onEdit()}
-            className="cursor-pointer p-1 text-(--blue-100) opacity-70 transition-opacity hover:opacity-100"
-          >
-            <Pencil width={22} height={22} strokeWidth={1.5} />
+          <div className="flex gap-0.5">
+            <div
+              title={HINTS_CONST.EDIT}
+              onClick={() => onEdit()}
+              className="cursor-pointer p-1 text-(--blue-100) opacity-70 transition-opacity hover:opacity-100"
+            >
+              <Pencil width={22} height={22} strokeWidth={1.5} />
+            </div>
+
+            <div
+              title={HINTS_CONST.EDIT}
+              onClick={() => onDelete(item.id)}
+              className="cursor-pointer p-1 text-(--blue-100) opacity-70 transition-opacity hover:opacity-100"
+            >
+              <Trash width={22} height={22} strokeWidth={1.5} />
+            </div>
           </div>
         )}
       </div>
@@ -105,7 +149,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
 
       {shouldCollapse && (
         <div
-          title={isExpanded ? HINTS_CONTS.COLLAPSE : HINTS_CONTS.EXPAND}
+          title={isExpanded ? HINTS_CONST.COLLAPSE : HINTS_CONST.EXPAND}
           className="flex justify-end"
         >
           <SupportButton

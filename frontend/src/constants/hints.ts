@@ -1,4 +1,4 @@
-export const HINTS_CONTS = {
+export const HINTS_CONST = {
   COLLAPSE: 'Recolher',
   EDIT: 'Editar',
   EXPAND: 'Expandir',

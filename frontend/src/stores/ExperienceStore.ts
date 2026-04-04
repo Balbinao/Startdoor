@@ -13,8 +13,18 @@ export class ExperienceStore {
     makeAutoObservable(this);
   }
 
+  academicExperienceCard: IAcademicExperience | null = null;
   academicExperienceCards: IAcademicExperience[] = [];
+  professionalExperienceCard: IProfessionalExperience | null = null;
   academicProfessionalCards: IProfessionalExperience[] = [];
+
+  setAcademicExperienceCard = (items: IAcademicExperience) => {
+    this.academicExperienceCard = items;
+  };
+
+  get getAcademicExperienceCard() {
+    return this.academicExperienceCard;
+  }
 
   setAcademicExperienceCards = (items: IAcademicExperience[]) => {
     this.academicExperienceCards = items;
@@ -22,6 +32,14 @@ export class ExperienceStore {
 
   get getAcademicExperienceCards() {
     return this.academicExperienceCards;
+  }
+
+  setProfessionalExperienceCard = (items: IProfessionalExperience) => {
+    this.professionalExperienceCard = items;
+  };
+
+  get getProfessionalExperienceCard() {
+    return this.professionalExperienceCard;
   }
 
   setProfessionalExperienceCards = (items: IProfessionalExperience[]) => {

@@ -1,10 +1,10 @@
 import { useStore } from '@contexts/store/useStore';
 import type {
   IAcademicExperience,
+  IAcademicExperiencePayload,
   IProfessionalExperience,
+  IProfessionalExperiencePayload,
 } from '@models/experience.types';
-import type { AcademicExperienceCardData } from '@schemas/academicExperienceCardSchema';
-import type { ProfessionalExperienceCardData } from '@schemas/professionalExperienceCardSchema';
 import { experienceService } from '@services/experienceService';
 
 export const useExperience = () => {
@@ -58,7 +58,7 @@ export const useExperience = () => {
       modeloEnsino: 'Remoto',
       dataInicio: '2022-03-01',
       dataFim: null,
-      descricao: null,
+      descricao: 'Minha descricao bem legal!!!',
     },
   ];
 
@@ -112,14 +112,26 @@ export const useExperience = () => {
       modeloTrabalho: 'Remoto',
       dataInicio: '2023-01-05',
       dataFim: null,
-      descricao: null,
+      descricao: 'Minha descricao legal aqui',
     },
   ];
 
+  const getAcademicExperienceCard = async (id: number) => {
+    try {
+      const response = await experienceService.getAcademicExperienceCard(id);
+      experienceStore.setAcademicExperienceCard(response);
+
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const getAcademicExperienceCards = async (id: number) => {
     try {
-      console.log(id);
       // const response = await experienceService.getAcademicExperienceCards(id);
+      // console.log(response);
       const response = mockAcademicExperienceItems;
       experienceStore.setAcademicExperienceCards(response);
 
@@ -132,7 +144,7 @@ export const useExperience = () => {
 
   const createAcademicExperienceCard = async (
     id: number,
-    company: AcademicExperienceCardData,
+    company: IAcademicExperiencePayload,
   ) => {
     try {
       const response = await experienceService.createAcademicExperienceCard(
@@ -148,7 +160,7 @@ export const useExperience = () => {
 
   const updateAcademicExperienceCard = async (
     id: number,
-    company: AcademicExperienceCardData,
+    company: IAcademicExperiencePayload,
   ) => {
     try {
       const response = await experienceService.updateAcademicExperienceCard(
@@ -162,10 +174,33 @@ export const useExperience = () => {
     }
   };
 
+  const deleteAcademicExperienceCard = async (id: number) => {
+    try {
+      const response = await experienceService.deleteAcademicExperienceCard(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const getProfessinalExperienceCard = async (id: number) => {
+    try {
+      const response =
+        await experienceService.getProfessionalExperienceCard(id);
+      experienceStore.setProfessionalExperienceCard(response);
+
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const getProfessionalExperienceCards = async (id: number) => {
     try {
-      console.log(id);
       // const response = await experienceService.getProfessionalExperienceCards(id);
+      // console.log(response);
       const response = mockProfessionalExperienceItems;
       experienceStore.setProfessionalExperienceCards(response);
 
@@ -178,7 +213,7 @@ export const useExperience = () => {
 
   const createProfessionalExperienceCard = async (
     id: number,
-    company: ProfessionalExperienceCardData,
+    company: IProfessionalExperiencePayload,
   ) => {
     try {
       const response = await experienceService.createProfessionalExperienceCard(
@@ -194,7 +229,7 @@ export const useExperience = () => {
 
   const updateProfessionalExperienceCard = async (
     id: number,
-    company: ProfessionalExperienceCardData,
+    company: IProfessionalExperiencePayload,
   ) => {
     try {
       const response = await experienceService.updateProfessionalExperienceCard(
@@ -208,14 +243,29 @@ export const useExperience = () => {
     }
   };
 
+  const deleteProfessionalExperienceCard = async (id: number) => {
+    try {
+      const response =
+        await experienceService.deleteProfessionalExperienceCard(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     academicExperienceCards,
+    getAcademicExperienceCard,
     getAcademicExperienceCards,
     createAcademicExperienceCard,
     updateAcademicExperienceCard,
+    deleteAcademicExperienceCard,
     professionalExperienceCards,
+    getProfessinalExperienceCard,
     getProfessionalExperienceCards,
     createProfessionalExperienceCard,
     updateProfessionalExperienceCard,
+    deleteProfessionalExperienceCard,
   };
 };
