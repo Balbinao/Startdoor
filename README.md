@@ -133,7 +133,7 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 
 ## 🏗️ **Arquitetura Geral do Projeto**
 
-O projeto é composto por **quatro componentes principais**.
+O projeto é composto por **dois diretórios**.
 
 ### Frontend
 
