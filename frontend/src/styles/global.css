@@ -1,5 +1,89 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HostGrotesk';
+  src: url('../assets/fonts/HostGrotesk-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+
 :root {
   /* BLUE */
   --blue-100: #6392ff;
@@ -52,6 +136,7 @@
 body {
   background-color: var(--grey-1300);
   color: var(--grey-100);
+  font-family: 'HostGrotesk', sans-serif;
 }
 
 ::selection {

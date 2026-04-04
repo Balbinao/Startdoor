@@ -114,19 +114,16 @@ export const StudentRegistrationForm = () => {
               {fieldsStudentRegistration.map(field => (
                 <FormField form={form} key={field.name} {...field} />
               ))}
+
+              <span className="text-sm">
+                <FormField
+                  form={form}
+                  type="checkbox"
+                  name="acordo"
+                  label="Confirmo, conforme Art. 299 do Código Penal (Decreto-Lei nº 2.848/1940), a veracidade das informações fornecidas."
+                />
+              </span>
             </div>
-
-            {/* <div className="grid grid-cols-3 gap-5">
-              {studentNotaCondiFields.map(field => (
-                <FormField key={field.name} {...field} />
-              ))}
-            </div> */}
-
-            {/* <FormField
-              type="checkbox"
-              name="acordo"
-              label="Confirmo, conforme Art. 299 do Código Penal (Decreto-Lei nº 2.848/1940), a veracidade das informações fornecidas."
-            /> */}
 
             <FormErrorMessage />
 

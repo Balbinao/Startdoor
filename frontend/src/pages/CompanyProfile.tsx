@@ -34,6 +34,16 @@ export const CompanyProfile = () => {
 
   const { getCompany } = useCompany();
 
+  const hasCompanyInfo =
+    searchedCompany &&
+    (searchedCompany.paisOrigem ||
+      searchedCompany.receitaAnual ||
+      searchedCompany.dataFundacao ||
+      searchedCompany.tamanhoEmpresa ||
+      searchedCompany.estadoSede ||
+      searchedCompany.mediaSalarial ||
+      searchedCompany.areaAtuacao);
+
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -63,109 +73,111 @@ export const CompanyProfile = () => {
   return (
     <div className="flex h-full flex-col items-center gap-32">
       <UserBanner />
-      <div className="flex w-full max-w-3xl flex-col gap-3">
-        <div className="flex w-full gap-3">
-          {searchedCompany?.paisOrigem && (
+      {hasCompanyInfo && (
+        <div className="flex w-full max-w-3xl flex-col gap-3">
+          <div className="flex w-full gap-3">
+            {searchedCompany?.paisOrigem && (
+              <UserAttribute
+                icon={
+                  <Flag
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    strokeWidth={STROKE_WIDTH}
+                  />
+                }
+                title="Pais de Origem"
+                value={searchedCompany.paisOrigem}
+              />
+            )}
+
+            {searchedCompany?.receitaAnual && (
+              <UserAttribute
+                icon={
+                  <Star
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    strokeWidth={STROKE_WIDTH}
+                  />
+                }
+                title="Receita Anual"
+                value={searchedCompany.receitaAnual}
+              />
+            )}
+          </div>
+
+          <div className="flex w-full gap-3">
+            {searchedCompany?.dataFundacao && (
+              <UserAttribute
+                icon={
+                  <Hourglass
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    strokeWidth={STROKE_WIDTH}
+                  />
+                }
+                title="Data de Fundação"
+                value={formatDateWithAge(searchedCompany.dataFundacao)}
+              />
+            )}
+
+            {searchedCompany?.tamanhoEmpresa && (
+              <UserAttribute
+                icon={
+                  <Building
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    strokeWidth={STROKE_WIDTH}
+                  />
+                }
+                title="Taamnho da Empresa"
+                value={searchedCompany.tamanhoEmpresa}
+              />
+            )}
+          </div>
+
+          {searchedCompany?.estadoSede && (
             <UserAttribute
               icon={
-                <Flag
+                <Pin
                   width={ICON_SIZE}
                   height={ICON_SIZE}
                   strokeWidth={STROKE_WIDTH}
                 />
               }
-              title="Pais de Origem"
-              value={searchedCompany.paisOrigem}
+              title="Sede no Brasil"
+              value={searchedCompany.estadoSede}
             />
           )}
 
-          {searchedCompany?.receitaAnual && (
+          {searchedCompany?.mediaSalarial && (
             <UserAttribute
               icon={
-                <Star
+                <Focus
                   width={ICON_SIZE}
                   height={ICON_SIZE}
                   strokeWidth={STROKE_WIDTH}
                 />
               }
-              title="Receita Anual"
-              value={searchedCompany.receitaAnual}
+              title="Média Salarial"
+              value={searchedCompany.mediaSalarial}
+            />
+          )}
+
+          {searchedCompany?.areaAtuacao && (
+            <UserAttribute
+              icon={
+                <Category
+                  width={ICON_SIZE}
+                  height={ICON_SIZE}
+                  strokeWidth={STROKE_WIDTH}
+                />
+              }
+              title="Área de Atuação"
+              value={searchedCompany.areaAtuacao}
             />
           )}
         </div>
-
-        <div className="flex w-full gap-3">
-          {searchedCompany?.dataFundacao && (
-            <UserAttribute
-              icon={
-                <Hourglass
-                  width={ICON_SIZE}
-                  height={ICON_SIZE}
-                  strokeWidth={STROKE_WIDTH}
-                />
-              }
-              title="Data de Fundação"
-              value={formatDateWithAge(searchedCompany.dataFundacao)}
-            />
-          )}
-
-          {searchedCompany?.tamanhoEmpresa && (
-            <UserAttribute
-              icon={
-                <Building
-                  width={ICON_SIZE}
-                  height={ICON_SIZE}
-                  strokeWidth={STROKE_WIDTH}
-                />
-              }
-              title="Taamnho da Empresa"
-              value={searchedCompany.tamanhoEmpresa}
-            />
-          )}
-        </div>
-
-        {searchedCompany?.estadoSede && (
-          <UserAttribute
-            icon={
-              <Pin
-                width={ICON_SIZE}
-                height={ICON_SIZE}
-                strokeWidth={STROKE_WIDTH}
-              />
-            }
-            title="Sede no Brasil"
-            value={searchedCompany.estadoSede}
-          />
-        )}
-
-        {searchedCompany?.mediaSalarial && (
-          <UserAttribute
-            icon={
-              <Focus
-                width={ICON_SIZE}
-                height={ICON_SIZE}
-                strokeWidth={STROKE_WIDTH}
-              />
-            }
-            title="Média Salarial"
-            value={searchedCompany.mediaSalarial}
-          />
-        )}
-
-        {searchedCompany?.areaAtuacao && (
-          <UserAttribute
-            icon={
-              <Category
-                width={ICON_SIZE}
-                height={ICON_SIZE}
-                strokeWidth={STROKE_WIDTH}
-              />
-            }
-            title="Área de Atuação"
-            value={searchedCompany.areaAtuacao}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 };

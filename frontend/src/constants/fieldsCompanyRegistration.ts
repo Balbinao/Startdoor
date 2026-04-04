@@ -30,10 +30,4 @@ export const fieldsCompanyRegistration: FieldConfig<CompanyRegistrationFormData>
       placeholder: 'Digite seu CNPJ',
       maxLength: 14,
     },
-    {
-      type: 'checkbox',
-      name: 'acordo',
-      label:
-        'Declaro, na condição de representante legal da pessoa jurídica, sob as penas do Art. 299 do Decreto-Lei nº 2.848/1940, que os dados informados são verídicos.',
-    },
   ] as const;

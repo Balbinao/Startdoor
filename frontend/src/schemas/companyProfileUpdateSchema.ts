@@ -51,20 +51,31 @@ export const companyProfileUpdateSchema = z.object({
     .max(150, 'Não pode ter mais de 150 caracteres')
     .optional(),
 
-  linkSite: z.url({ message: 'URL inválida' }).optional(),
-
-  linkLinkedin: z
-    .url({ message: 'URL inválida' })
-    .refine(url => url.includes('linkedin.com'), {
-      message: 'Deve ser um link do LinkedIn',
+  linkSite: z
+    .string()
+    .refine(url => url === '' || z.url().safeParse(url).success, {
+      message: 'URL inválida',
     })
     .optional(),
 
+  linkLinkedin: z
+    .string()
+    .refine(
+      url =>
+        url === '' ||
+        (z.url().safeParse(url).success && url.includes('linkedin.com/in/')),
+      { message: 'Deve ser um link do LinkedIn' },
+    )
+    .optional(),
+
   linkGupy: z
-    .url({ message: 'URL inválida' })
-    .refine(url => url.includes('gupy.io'), {
-      message: 'Deve ser um link da Gupy',
-    })
+    .string()
+    .refine(
+      url =>
+        url === '' ||
+        (z.url().safeParse(url).success && url.includes('gupy.io')),
+      { message: 'Deve ser um link da Gupy' },
+    )
     .optional(),
 });
 

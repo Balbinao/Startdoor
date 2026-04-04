@@ -91,20 +91,18 @@ export const StudentProfileUpdateForm = () => {
       estadoAtuacao: '',
       setorInteresse: '',
       habilidadesPrincipais: '',
-      // nota_condi: {
-      //   ambiente: '',
-      //   aprendizado: '',
-      //   beneficios: '',
-      //   cultura: '',
-      //   efetivacao: '',
-      //   entrevista: '',
-      //   feedback: '',
-      //   infraestrutura: '',
-      //   integracao: '',
-      //   remuneracao: '',
-      //   rotina: '',
-      //   lideranca: '',
-      // },
+      ambiente: '',
+      aprendizado: '',
+      beneficios: '',
+      cultura: '',
+      efetivacao: '',
+      entrevista: '',
+      feedback: '',
+      infraestrutura: '',
+      integracao: '',
+      remuneracao: '',
+      rotina: '',
+      lideranca: '',
       linkSite: '',
       linkLinkedin: '',
     },
@@ -202,7 +200,6 @@ export const StudentProfileUpdateForm = () => {
   };
 
   const onSubmit = async (data: StudentProfileUpdateData) => {
-    console.log(data);
     try {
       if (!userId) {
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);

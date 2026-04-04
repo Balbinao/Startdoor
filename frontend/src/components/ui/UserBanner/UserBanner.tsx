@@ -58,9 +58,10 @@ export const UserBanner = () => {
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
   const { getUserId, logout } = useAuth();
-  const { student, deleteStudent } = useStudent();
-  const { company, deleteCompany } = useCompany();
+  const { student, getStudent, deleteStudent } = useStudent();
+  const { company, getCompany, deleteCompany } = useCompany();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
 
   const userId = getUserId();
@@ -162,6 +163,38 @@ export const UserBanner = () => {
     isOwner && editProfileRoute && location.pathname !== editProfileRoute;
 
   useEffect(() => {
+    const fetch = async () => {
+      try {
+        setIsLoading(true);
+
+        if (!userId) {
+          throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
+        }
+
+        if (profileType === USER_ROLES_CONST.ESTUDANTE) {
+          await modalLoadingAuto(
+            () => getStudent(Number(userId)),
+            MESSAGES_LOADING.GET,
+          );
+        }
+
+        if (profileType === USER_ROLES_CONST.EMPRESA) {
+          await modalLoadingAuto(
+            () => getCompany(Number(userId)),
+            MESSAGES_LOADING.GET,
+          );
+        }
+      } catch (error: unknown) {
+        await modalMessageError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetch();
+  }, []);
+
+  useEffect(() => {
     if (
       (profileType === USER_ROLES_CONST.ESTUDANTE && student) ||
       (profileType === USER_ROLES_CONST.EMPRESA && company)
@@ -232,6 +265,7 @@ export const UserBanner = () => {
     },
   ].filter(Boolean) as MenuOption[];
 
+  if (isLoading) return <></>;
   if (isError) return <></>;
 
   return (
