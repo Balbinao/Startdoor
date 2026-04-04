@@ -31,15 +31,12 @@ public class ExperienciaProfissional {
     @Column(name = "titulo_cargo", length = 60, nullable = false)
     private String tituloCargo;
 
-    @Column(name = "nome_empresa", length = 60)
-    private String nomeEmpresa;
-
     @Column(name = "estado_atuacao", length = 30, nullable = false)
     private String estadoAtuacao;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "modelo_trabalho", nullable = false)
-    private ModeloTrabalho modeloTrabalho;
+    private String modeloTrabalho;
 
     @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
