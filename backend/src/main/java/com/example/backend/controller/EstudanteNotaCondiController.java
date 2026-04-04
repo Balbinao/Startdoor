@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.AtualizarEstudanteNotaCondiDTO;
-import com.example.backend.dto.EstudanteNotaCondiDTO;
 import com.example.backend.dto.EstudanteNotaCondiResponseDTO;
 import com.example.backend.openapi.EstudanteNotaCondiControllerOpenApi;
 import com.example.backend.service.EstudanteNotaCondiService;
@@ -34,18 +33,6 @@ public class EstudanteNotaCondiController implements EstudanteNotaCondiControlle
     @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
     public ResponseEntity<EstudanteNotaCondiResponseDTO> buscar(@PathVariable Long id) {
         return ResponseEntity.ok(notaCondiService.buscarPorId(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody EstudanteNotaCondiDTO data) {
-        notaCondiService.cadastrar(data);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now().toString());
-        response.put("status", 200);
-        response.put("message", "Notas condicionais cadastradas com sucesso!");
-
-        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
