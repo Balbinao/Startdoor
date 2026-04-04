@@ -15,10 +15,10 @@
 
 # Sumário
 * [Sobre o Projeto](#sobre-o-projeto)
-* [Protótipo Figma](#protótipo-figma)
+* [Protótipo Figma](#prototipo-figma)
 * [Funcionalidades](#funcionalidades)
-* [Recomendações com IA](#recomendações-com-ia)
-* [Competências Avaliadas](#competências-avaliadas)
+* [Recomendações com IA](#recomendacoes-com-ia)
+* [Competências Avaliadas](#competencias-avaliadas)
 * [Arquitetura Geral do Projeto](#arquitetura-geral-do-projeto)
 * [Tecnologias](#tecnologias)
 * [Contribuidores](#contribuidores)
