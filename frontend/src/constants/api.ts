@@ -24,5 +24,6 @@ export const API_CONST = {
   },
   REVIEW: {
     BY_ID: (id: number) => `/avaliacoes/${id}`,
+    CARD_BY_ID: (id: number) => `/avaliacoes/card/${id}`,
   },
 } as const;

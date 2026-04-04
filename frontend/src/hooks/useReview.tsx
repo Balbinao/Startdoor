@@ -1,10 +1,13 @@
 import { useStore } from '@contexts/store/useStore';
-import type { IReviewCard } from '@models/review.types';
+import type { IReviewCard, IReviewPayload } from '@models/review.types';
+import type { ReviewData } from '@schemas/reviewSchema';
+import { reviewService } from '@services/reviewService';
 
 export const useReview = () => {
   const { reviewStore } = useStore();
 
   const reviewCards = reviewStore.getReviewCards;
+  const review = reviewStore.getReview;
 
   const mockReviewCards: IReviewCard[] = [
     {
@@ -59,6 +62,7 @@ export const useReview = () => {
 
   const getReviewCards = async (id: number) => {
     try {
+      console.log(id);
       // const response = await reviewService.getReviewCards(id);
       const response = mockReviewCards;
       reviewStore.setReviewCards(response);
@@ -70,8 +74,44 @@ export const useReview = () => {
     }
   };
 
+  const getReview = async (id: number) => {
+    try {
+      const response = await reviewService.getReview(id);
+      reviewStore.setReview(response);
+
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const createReview = async (id: number, review: IReviewPayload) => {
+    try {
+      const response = await reviewService.createReview(id, review);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const updateReview = async (id: number, review: ReviewData) => {
+    try {
+      const response = await reviewService.updateReview(id, review);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     reviewCards,
+    review,
     getReviewCards,
+    getReview,
+    createReview,
+    updateReview,
   };
 };

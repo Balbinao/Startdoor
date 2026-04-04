@@ -19,6 +19,15 @@ export const ROUTES_CONST = {
     PROFILE_UPDATE: (id: string | number) => `/perfil-empresa/${id}/alterar`,
   },
 
+  REVIEW: {
+    REVIEW_VIEW_URL: '/perfil-estudante/:id/avaliacao/:reviewId',
+    REVIEW_VIEW_BY_ID: (id: string | number, reviewId: string | number) =>
+      `/perfil-estudante/${id}/avaliacao/${reviewId}`,
+    REVIEW_UPDADE_URL: '/perfil-estudante/:id/avaliacao/:reviewId/alterar',
+    REVIEW_UPDADE_BY_ID: (id: string | number, reviewId: string | number) =>
+      `/perfil-estudante/${id}/avaliacao/${reviewId}/alterar`,
+  },
+
   ROOT_PRIVATE: '/',
   ROOT_PUBLIC: '/',
 } as const;

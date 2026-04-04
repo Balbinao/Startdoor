@@ -61,7 +61,24 @@ function App() {
                 </OwnerRoute>
               }
             />
-            // PERFIL EMPRESA
+
+            {/* <Route
+              path={ROUTES_CONST.REVIEW.REVIEW_UPDADE_URL}
+              element={
+                <OwnerRoute>
+                  <ReviewForm />
+                </OwnerRoute>
+              }
+            />
+            <Route
+              path={ROUTES_CONST.REVIEW.REVIEW_VIEW_URL}
+              element={
+                <OwnerRoute>
+                  <ReviewForm />
+                </OwnerRoute>
+              }
+            /> */}
+
             <Route
               path={ROUTES_CONST.COMPANY.PROFILE_URL}
               element={

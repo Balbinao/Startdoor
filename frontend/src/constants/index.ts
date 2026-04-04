@@ -1,6 +1,7 @@
 export * from './api';
 export * from './dropdownValues';
 export * from './fieldsCompanyRegistration';
+export * from './fieldsReview';
 export * from './fieldsStudentRegistration';
 export * from './hints';
 export * from './messagesLoading';

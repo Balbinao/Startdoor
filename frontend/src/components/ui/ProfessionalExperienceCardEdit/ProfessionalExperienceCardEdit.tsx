@@ -156,7 +156,7 @@ export const ProfessionalExperienceCardEdit = ({
               form={form}
               type="select"
               name="modeloTrabalho"
-              label="Modelo de Ensino"
+              label="Modelo de Trabalho"
               options={DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.map(
                 option => ({
                   ...option,
