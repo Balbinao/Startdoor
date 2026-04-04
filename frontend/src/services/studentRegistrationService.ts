@@ -1,10 +1,9 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
 import type { IStudentRegistration } from '@models/registrationLogin.types';
-import type { IStudent } from '@models/studentData.types';
-import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
+import type { IConditionalScore, IStudent, IStudentUpdatePayload } from '@models/studentData.types';
 
-export const studentRegistrationService = {
+export const studentService = {
   getStudent: async (id: number): Promise<IStudent> => {
     const response = await api.get(API_CONST.STUDENT.BY_ID(id));
     return response.data;
@@ -15,9 +14,8 @@ export const studentRegistrationService = {
     return response.data;
   },
 
-  updateStudent: async (id: number, student: StudentProfileUpdateData) => {
+  updateStudent: async (id: number, student: IStudentUpdatePayload) => {
     const response = await api.put(API_CONST.STUDENT.BY_ID(id), student);
-    console.log(response);
     return response.data;
   },
 
@@ -30,6 +28,26 @@ export const studentRegistrationService = {
 
   deleteStudent: async (id: number) => {
     const response = await api.delete(API_CONST.STUDENT.BY_ID(id));
+    return response.data;
+  },
+
+  getConditionalScore: async (
+    idStudent: number,
+  ): Promise<IConditionalScore> => {
+    const response = await api.get(
+      API_CONST.CONDITIONAL_SCORE.BY_ID_STUDENT(idStudent),
+    );
+    return response.data;
+  },
+
+  updateConditionalScore: async (
+    idStudent: number,
+    conditionalScore: IConditionalScore,
+  ): Promise<IConditionalScore> => {
+    const response = await api.put(
+      API_CONST.CONDITIONAL_SCORE.BY_ID_STUDENT(idStudent),
+      conditionalScore,
+    );
     return response.data;
   },
 };

@@ -1,17 +1,20 @@
 import { useStore } from '@contexts/store/useStore';
 import type { IStudentRegistration } from '@models/registrationLogin.types';
-import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
-import { studentRegistrationService } from '../services/studentRegistrationService';
+import type {
+  IConditionalScore,
+  IStudentUpdatePayload,
+} from '@models/studentData.types';
+import { studentService } from '../services/studentRegistrationService';
 
-export const useStudentRegistrations = () => {
-  const { studentRegistrationStore } = useStore();
+export const useStudent = () => {
+  const { studentStore } = useStore();
 
-  const student = studentRegistrationStore.getStudent;
+  const student = studentStore.getStudent;
 
   const getStudent = async (id: number) => {
     try {
-      const response = await studentRegistrationService.getStudent(id);
-      studentRegistrationStore.setStudent(response);
+      const response = await studentService.getStudent(id);
+      studentStore.setStudent(response);
       return response;
     } catch (error) {
       console.error(error);
@@ -23,7 +26,7 @@ export const useStudentRegistrations = () => {
     studentRegistrationData: IStudentRegistration,
   ) => {
     try {
-      const response = await studentRegistrationService.studentRegistration(
+      const response = await studentService.studentRegistration(
         studentRegistrationData,
       );
 
@@ -34,15 +37,9 @@ export const useStudentRegistrations = () => {
     }
   };
 
-  const updateStudent = async (
-    id: number,
-    student: StudentProfileUpdateData,
-  ) => {
+  const updateStudent = async (id: number, student: IStudentUpdatePayload) => {
     try {
-      const response = await studentRegistrationService.updateStudent(
-        id,
-        student,
-      );
+      const response = await studentService.updateStudent(id, student);
       return response;
     } catch (error) {
       console.error(error);
@@ -52,7 +49,7 @@ export const useStudentRegistrations = () => {
 
   const updateStudentPassword = async (id: number, novaSenha: string) => {
     try {
-      const response = await studentRegistrationService.updateStudentPassword(
+      const response = await studentService.updateStudentPassword(
         id,
         novaSenha,
       );
@@ -65,7 +62,34 @@ export const useStudentRegistrations = () => {
 
   const deleteStudent = async (id: number) => {
     try {
-      const response = await studentRegistrationService.deleteStudent(id);
+      const response = await studentService.deleteStudent(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const getConditionalScore = async (idStudent: number) => {
+    try {
+      const response = await studentService.getConditionalScore(idStudent);
+      studentStore.setConditionalScore(response);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const updateConditionalScore = async (
+    id: number,
+    conditionalScore: IConditionalScore,
+  ) => {
+    try {
+      const response = await studentService.updateConditionalScore(
+        id,
+        conditionalScore,
+      );
       return response;
     } catch (error) {
       console.error(error);
@@ -80,5 +104,7 @@ export const useStudentRegistrations = () => {
     updateStudent,
     updateStudentPassword,
     deleteStudent,
+    getConditionalScore,
+    updateConditionalScore,
   };
 };

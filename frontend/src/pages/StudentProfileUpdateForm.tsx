@@ -12,6 +12,7 @@ import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
   ROUTES_CONST,
+  studentConditionalScoreUpdateFields,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
@@ -19,7 +20,7 @@ import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useSector } from '@hooks/useSector';
-import { useStudentRegistrations } from '@hooks/useStudentRegistration';
+import { useStudent } from '@hooks/useStudentRegistration';
 import type {
   IAcademicExperience,
   IProfessionalExperience,
@@ -28,7 +29,12 @@ import {
   studentProfileUpdateSchema,
   type StudentProfileUpdateData,
 } from '@schemas/studentProfileUpdateSchema';
-import { normalizeStudentData } from '@utils/normalizeData';
+import {
+  normalizeConditionalScoreUpdateData,
+  normalizeStudentData,
+  normalizeStudentUpdateData,
+  replaceEmptyWithNull,
+} from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -47,8 +53,13 @@ export const StudentProfileUpdateForm = () => {
     getProfessionalExperienceCards,
   } = useExperience();
   const { getUserId } = useAuth();
-  const { getStudent, updateStudent, updateStudentPassword } =
-    useStudentRegistrations();
+  const {
+    getStudent,
+    updateStudent,
+    updateStudentPassword,
+    getConditionalScore,
+    updateConditionalScore,
+  } = useStudent();
   const { sectorsItems, getSectors } = useSector();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -117,8 +128,12 @@ export const StudentProfileUpdateForm = () => {
           () => getStudent(Number(userId)),
           MESSAGES_LOADING.GET,
         );
-        reset(normalizeStudentData(response));
-        // reset(normalizeStudentData(studentData, notaCondiData));
+        const responseTwo = await modalLoadingAuto(
+          () => getConditionalScore(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
+
+        reset(normalizeStudentData(response, responseTwo));
 
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
@@ -185,33 +200,46 @@ export const StudentProfileUpdateForm = () => {
   };
 
   const onSubmit = async (data: StudentProfileUpdateData) => {
+    console.log(data);
     try {
-      if (userId) {
-        const password = data.senha;
-        if (password) {
-          await modalLoadingAuto(
-            () => updateStudentPassword(Number(userId), password),
-            MESSAGES_LOADING.UPDATE,
-          );
-        }
-
-        const response = await modalLoadingAuto(
-          () => updateStudent(Number(userId), data),
-          MESSAGES_LOADING.UPDATE,
-        );
-
-        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
-        await modalMessageSafe({
-          type: 'success',
-          message,
-          shouldBlockProcess: false,
-        });
-
-        // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
-        navigate(ROUTES_CONST.LOGIN);
-      } else {
+      if (!userId) {
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
+
+      const password = data.senha;
+      if (password) {
+        await modalLoadingAuto(
+          () => updateStudentPassword(Number(userId), password),
+          MESSAGES_LOADING.UPDATE,
+        );
+      }
+
+      const sanitizedData = replaceEmptyWithNull(data);
+
+      const conditionalScoreData =
+        normalizeConditionalScoreUpdateData(sanitizedData);
+
+      await modalLoadingAuto(
+        () => updateConditionalScore(Number(userId), conditionalScoreData),
+        MESSAGES_LOADING.UPDATE,
+      );
+
+      const studentData = normalizeStudentUpdateData(sanitizedData);
+
+      const response = await modalLoadingAuto(
+        () => updateStudent(Number(userId), studentData),
+        MESSAGES_LOADING.UPDATE,
+      );
+
+      const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
+      await modalMessageSafe({
+        type: 'success',
+        message,
+        shouldBlockProcess: false,
+      });
+
+      // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+      navigate(ROUTES_CONST.LOGIN);
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
@@ -360,11 +388,11 @@ export const StudentProfileUpdateForm = () => {
               />
             </div>
 
-            {/* <div className="grid grid-cols-3 gap-5">
-              {studentNotaCondiFields.map(field => (
-                <FormField key={field.name} {...field} />
+            <div className="grid max-w-md grid-cols-3 gap-5 self-center">
+              {studentConditionalScoreUpdateFields.map(field => (
+                <FormField form={form} key={field.name} {...field} />
               ))}
-            </div> */}
+            </div>
           </div>
 
           <FormErrorMessage />

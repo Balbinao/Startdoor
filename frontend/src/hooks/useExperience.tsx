@@ -118,6 +118,7 @@ export const useExperience = () => {
 
   const getAcademicExperienceCards = async (id: number) => {
     try {
+      console.log(id);
       // const response = await experienceService.getAcademicExperienceCards(id);
       const response = mockAcademicExperienceItems;
       experienceStore.setAcademicExperienceCards(response);
@@ -163,6 +164,7 @@ export const useExperience = () => {
 
   const getProfessionalExperienceCards = async (id: number) => {
     try {
+      console.log(id);
       // const response = await experienceService.getProfessionalExperienceCards(id);
       const response = mockProfessionalExperienceItems;
       experienceStore.setProfessionalExperienceCards(response);

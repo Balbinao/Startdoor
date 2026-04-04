@@ -3,12 +3,14 @@ import type { IInputOption } from '@models/input.types';
 import { extractSelectOptionValue } from '@utils/normalizeData';
 import { z } from 'zod';
 
-// const notaCondiField = z
-//   .union([z.string(), z.number()])
-//   .transform(val => (val === '' ? undefined : Number(val)))
-//   .refine(val => val !== undefined, 'Campo obrigatório')
-//   .refine(val => !Number.isNaN(val), 'Valor inválido')
-//   .refine(val => val >= 0 && val <= 5, 'Valor deve ser entre 0 e 5');
+const scoreField = z
+  .union([z.number(), z.literal('')])
+  .refine(
+    val => val === '' || (typeof val === 'number' && val >= 0 && val <= 5),
+    {
+      message: 'Valor deve ser entre 0 e 5',
+    },
+  );
 
 export const studentProfileUpdateSchema = (sectors: IInputOption[]) =>
   z.object({
@@ -76,25 +78,23 @@ export const studentProfileUpdateSchema = (sectors: IInputOption[]) =>
 
     linkLinkedin: z
       .url({ message: 'URL inválida' })
-      .refine(url => url.includes('linkedin.com'), {
+      .refine(url => url.includes('linkedin.com/in/'), {
         message: 'Deve ser um link do LinkedIn',
       })
       .optional(),
 
-    // nota_condi: z.object({
-    //   ambiente: notaCondiField,
-    //   aprendizado: notaCondiField,
-    //   beneficios: notaCondiField,
-    //   cultura: notaCondiField,
-    //   efetivacao: notaCondiField,
-    //   entrevista: notaCondiField,
-    //   feedback: notaCondiField,
-    //   infraestrutura: notaCondiField,
-    //   integracao: notaCondiField,
-    //   remuneracao: notaCondiField,
-    //   rotina: notaCondiField,
-    //   lideranca: notaCondiField,
-    // }),
+    ambiente: scoreField,
+    aprendizado: scoreField,
+    beneficios: scoreField,
+    cultura: scoreField,
+    efetivacao: scoreField,
+    entrevista: scoreField,
+    feedback: scoreField,
+    infraestrutura: scoreField,
+    integracao: scoreField,
+    remuneracao: scoreField,
+    rotina: scoreField,
+    lideranca: scoreField,
   });
 
 export type StudentProfileUpdateData = z.input<

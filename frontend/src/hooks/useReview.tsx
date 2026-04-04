@@ -1,5 +1,5 @@
 import { useStore } from '@contexts/store/useStore';
-import type { IReviewCard, IReviewPayload } from '@models/review.types';
+import type { IReviewCard } from '@models/review.types';
 import type { ReviewData } from '@schemas/reviewSchema';
 import { reviewService } from '@services/reviewService';
 
@@ -86,7 +86,7 @@ export const useReview = () => {
     }
   };
 
-  const createReview = async (id: number, review: IReviewPayload) => {
+  const createReview = async (id: number, review: ReviewData) => {
     try {
       const response = await reviewService.createReview(id, review);
       return response;

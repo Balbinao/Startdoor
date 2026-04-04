@@ -23,7 +23,7 @@ import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useReview } from '@hooks/useReview';
 import { useSector } from '@hooks/useSector';
-import { useStudentRegistrations } from '@hooks/useStudentRegistration';
+import { useStudent } from '@hooks/useStudentRegistration';
 import type { IStudent } from '@models/studentData.types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -45,7 +45,6 @@ export const StudentProfile = () => {
   } = useExperience();
 
   const { sectorsItems, getSectors } = useSector();
-
   const { reviewCards, getReviewCards } = useReview();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -53,7 +52,7 @@ export const StudentProfile = () => {
 
   const [searchedStudent, setSearchedStudent] = useState<IStudent | null>(null);
 
-  const { getStudent } = useStudentRegistrations();
+  const { getStudent } = useStudent();
 
   useEffect(() => {
     const fetch = async () => {
@@ -183,7 +182,11 @@ export const StudentProfile = () => {
               />
             }
             title="Setor de Interesse"
-            value={searchedStudent.setorInteresse}
+            value={
+              sectorsItems.find(
+                item => item.value === Number(searchedStudent.setorInteresse),
+              )?.label ?? ''
+            }
           />
         )}
 

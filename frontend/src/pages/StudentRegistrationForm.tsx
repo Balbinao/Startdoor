@@ -14,7 +14,7 @@ import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import { useStudentRegistrations } from '@hooks/useStudentRegistration';
+import { useStudent } from '@hooks/useStudentRegistration';
 import {
   studentRegistrationSchema,
   type StudentRegistrationFormData,
@@ -29,7 +29,7 @@ export const StudentRegistrationForm = () => {
   const { modalMessageSafe } = useModalMessageDefault();
 
   const { clearFullLocalStorage } = useAuth();
-  const { studentRegistration } = useStudentRegistrations();
+  const { studentRegistration } = useStudent();
 
   const form = useForm<StudentRegistrationFormData>({
     resolver: zodResolver(studentRegistrationSchema),
@@ -69,8 +69,6 @@ export const StudentRegistrationForm = () => {
   }, []);
 
   const onSubmit = async (data: StudentRegistrationFormData) => {
-    console.log('FORM DATA (raw):', data);
-
     try {
       const { acordo: _, ...studentData } = data; // eslint-disable-line @typescript-eslint/no-unused-vars
       const response = await modalLoadingAuto(
