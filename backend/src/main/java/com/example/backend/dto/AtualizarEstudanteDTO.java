@@ -56,7 +56,7 @@ public record AtualizarEstudanteDTO(
             description = "Preferência de modelo de trabalho",
             example = "Remoto"
     )
-    ModeloTrabalho modeloTrabalho,
+    String modeloTrabalho,
 
     @Schema(
             description = "Estado onde reside/atua",

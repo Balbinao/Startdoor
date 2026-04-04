@@ -22,28 +22,25 @@ public record ExperienciaProfissionalDTO (
         Long idEmpresa,
 
         @Schema(
-                description = "Nome da empresa externa (caso não esteja no sistema)",
-                example = "Oficina do Zé"
-        )
-        String nomeEmpresa,
-
-        @Schema(
                 description = "Estado da atuação profissional",
                 example = "SP"
         )
-        @NotBlank String estadoAtuacao,
+        @NotBlank
+        String estadoAtuacao,
 
         @Schema(
                 description = "Modelo de trabalho",
                 example = "Híbrido"
         )
-        @NotNull ModeloTrabalho modeloTrabalho,
+        @NotNull
+        String modeloTrabalho,
 
         @Schema(
                 description = "Data de início",
                 example = "2023-01-10"
         )
-        @NotNull LocalDate dataInicio,
+        @NotNull
+        LocalDate dataInicio,
 
         @Schema(
                 description = "Data de término (nulo se for o emprego atual)",

@@ -29,14 +29,8 @@ public class ExperienciaProfissionalService {
 
     @Transactional
     public ExperienciaProfissional adicionar(Long estudanteId, ExperienciaProfissionalDTO dto) {
-        boolean temEmpresaSistema = dto.idEmpresa() != null;
-        boolean temNomeEmpresaExterna = dto.nomeEmpresa() != null && !dto.nomeEmpresa().isBlank();
-
-        if (temEmpresaSistema && temNomeEmpresaExterna) {
-            throw new IllegalArgumentException("Informe apenas a empresa do sistema OU o nome de uma empresa externa.");
-        }
-        if (!temEmpresaSistema && !temNomeEmpresaExterna) {
-            throw new IllegalArgumentException("É necessário informar uma empresa para registrar a experiência.");
+        if (dto.idEmpresa() == null) {
+            throw new IllegalArgumentException("É necessário selecionar uma empresa cadastrada no sistema.");
         }
         if (dto.dataFim() != null && dto.dataFim().isBefore(dto.dataInicio())) {
             throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
@@ -54,15 +48,6 @@ public class ExperienciaProfissionalService {
         exp.setDataFim(dto.dataFim());
         exp.setDescricao(dto.descricao());
 
-        if (temEmpresaSistema) {
-            Empresa empresa = empresaRepository.findById(dto.idEmpresa())
-                    .orElseThrow(() -> new ResourceNotFoundException("Empresa selecionada não existe no sistema."));
-            exp.setEmpresa(empresa);
-            exp.setNomeEmpresa(null);
-        } else {
-            exp.setNomeEmpresa(dto.nomeEmpresa());
-            exp.setEmpresa(null);
-        }
         return profissionalRepository.save(exp);
     }
 
@@ -76,10 +61,6 @@ public class ExperienciaProfissionalService {
     public ExperienciaProfissional atualizar(Long id, ExperienciaProfissionalDTO dto) {
         ExperienciaProfissional exp = buscarPorId(id);
 
-        if (dto.idEmpresa() != null && dto.nomeEmpresa() != null && !dto.nomeEmpresa().isBlank()) {
-            throw new IllegalArgumentException("Informe apenas a empresa do sistema OU o nome de uma empresa externa.");
-        }
-
         if (dto.dataFim() != null && dto.dataFim().isBefore(dto.dataInicio())) {
             throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
         }
@@ -91,15 +72,8 @@ public class ExperienciaProfissionalService {
         if (dto.descricao() != null)      exp.setDescricao(dto.descricao());
         exp.setDataFim(dto.dataFim());
 
-        if (dto.idEmpresa() != null) {
-            Empresa empresa = empresaRepository.findById(dto.idEmpresa())
-                    .orElseThrow(() -> new ResourceNotFoundException("Empresa selecionada não existe no sistema."));
-            exp.setEmpresa(empresa);
-            exp.setNomeEmpresa(null);
-
-        } else if (dto.nomeEmpresa() != null && !dto.nomeEmpresa().isBlank()) {
-            exp.setNomeEmpresa(dto.nomeEmpresa());
-            exp.setEmpresa(null);
+        if (dto.dataFim() != null && dto.dataInicio() != null && dto.dataFim().isBefore(dto.dataInicio())) {
+            throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
         }
 
         return profissionalRepository.save(exp);
