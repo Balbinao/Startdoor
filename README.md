@@ -22,7 +22,7 @@
 * [Arquitetura Geral do Projeto](#arquitetura-geral-do-projeto)
 * [Tecnologias](#tecnologias)
 * [Contribuidores](#contribuidores)
-* [Licença](#licença)
+* [License](#license)
 <br>
 
 ## 🎯 **Sobre o Projeto** <a name="sobre"></a>
@@ -37,7 +37,7 @@ Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudan
 
 ## 📱 **Protótipo Figma** <a name="figma"></a>
 
-Clique no botão abaixo para acessar o protótio feito no figma.
+Clique no botão abaixo para acessar o protótipo feito no figma.
 
 <p align="center">
   <a href="https://www.figma.com/proto/uMYDnHDMyCmws5SYpOI9VS/AvaliarEstagios_Prototipo?node-id=3-3&p=f&t=2pt5tdZCC8aVvnQo-0&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=3%3A3&show-proto-sidebar=1">
@@ -185,7 +185,6 @@ API responsável pelas regras de negócio, autenticação com **JWT** e fornecim
       <a href="https://tailwindcss.com/"><img alt="Tailwind" src="https://img.shields.io/badge/Tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/></a>
       <a href="https://axios-http.com/"><img alt="Axios" src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"/></a>
       <a href="https://reactrouter.com/"><img alt="React Router" src="https://img.shields.io/badge/React%20Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white"/></a>
-      <a href="https://github.com/lukeed/clsx"><img alt="clsx" src="https://img.shields.io/badge/clsx-000000?style=for-the-badge&logo=npm&logoColor=white"/></a>
     </td>
     <td>
       <a href="https://spring.io/projects/spring-boot"><img alt="Spring Boot" src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/></a>
@@ -218,7 +217,7 @@ API responsável pelas regras de negócio, autenticação com **JWT** e fornecim
 
   <tr>
     <th>Design & Documentação</th>
-    <td align="center">
+    <td>
       <a href="https://www.figma.com/"><img alt="Figma" src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white"/></a>
       </td>
     <td>
@@ -283,9 +282,7 @@ API responsável pelas regras de negócio, autenticação com **JWT** e fornecim
 
 <br>
 
-## 📄 **License** <a name="licenca"></a>
-
-Este projeto está licenciado sob a **MIT License**:
+## **License** <a name="license"></a>
 
 MIT License
 
