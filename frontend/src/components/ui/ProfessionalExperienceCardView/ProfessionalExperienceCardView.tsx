@@ -6,6 +6,7 @@ import {
   ROUTES_CONST,
 } from '@constants';
 import { useAuth } from '@hooks/useAuth';
+import { useCompany } from '@hooks/useCompany';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -32,6 +33,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
 
   const { getAcademicExperienceCards, deleteAcademicExperienceCard } =
     useExperience();
+  const { companiesOptions } = useCompany();
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState<string>('0px');
@@ -90,9 +92,14 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
 
         <div className="flex flex-1 flex-col gap-1">
           <span className="text-lg font-semibold">{item.tituloCargo}</span>
-          <span className="font-semibold text-(--grey-300)">
-            {item.nomeEmpresa}
-          </span>
+          {(() => {
+            const name = companiesOptions.find(
+              company => company.value === item.idEmpresa,
+            )?.label;
+            return name ? (
+              <span className="font-semibold text-(--grey-300)">{name}</span>
+            ) : null;
+          })()}
         </div>
 
         {isEditPage && (

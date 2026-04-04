@@ -1,17 +1,40 @@
 import { useStore } from '@contexts/store/useStore';
 import type { ICompanyUpdatePayload } from '@models/companyData.types';
+import type { IInputOption } from '@models/input.types';
 import type { ICompanyRegistration } from '@models/registrationLogin.types';
 import { companyService } from '@services/companyService';
 
 export const useCompany = () => {
-  const { companyRegistrationStore } = useStore();
+  const { companyStore } = useStore();
 
-  const company = companyRegistrationStore.getCompany;
+  const company = companyStore.getCompany;
+  const companies = companyStore.getCompanies;
+  const companiesOptions = companyStore.getCompaniesOptions;
 
   const getCompany = async (id: number) => {
     try {
       const response = await companyService.getCompany(id);
-      companyRegistrationStore.setCompany(response);
+      companyStore.setCompany(response);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const getCompanies = async () => {
+    try {
+      const response = await companyService.getCompanies();
+      const formatted: IInputOption[] = [
+        { label: 'Selecione...', value: '' },
+        ...response.map(item => ({
+          label: item.nomeFantasia,
+          value: item.id,
+        })),
+      ];
+
+      companyStore.setCompanies(response);
+      companyStore.setCompaniesOptions(formatted);
       return response;
     } catch (error) {
       console.error(error);
@@ -69,7 +92,10 @@ export const useCompany = () => {
 
   return {
     company,
+    companies,
+    companiesOptions,
     getCompany,
+    getCompanies,
     companyRegistration,
     updateCompany,
     updateCompanyPassword,

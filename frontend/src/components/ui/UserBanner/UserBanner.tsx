@@ -1,114 +1,259 @@
+import {
+  LogoGupy,
+  LogoLinkedIn,
+  Logout,
+  Menu,
+  PencilFilled,
+  TrashFilled,
+  World,
+} from '@assets/icons';
 import { StudentBannerIMG, StudentPfp } from '@assets/images';
-import { MESSAGES_LOADING, MESSAGES_RESPONSE, ROUTES_CONST } from '@constants';
+import {
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
+  ROUTES_CONST,
+  USER_ROLES_CONST,
+} from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudent } from '@hooks/useStudent';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useEffect, useState, type JSX } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { MenuExtraOptions } from '../MenuExtraOptions';
+import type { MenuOption } from '../MenuExtraOptions/MenuExtraOptions';
+
+const ICON_SIZE = 30;
+
+interface ProfileLinksProps {
+  links: { href: string; title: string; icon: JSX.Element }[];
+}
+
+const ProfileLinks = ({ links }: ProfileLinksProps) => {
+  if (!links || links.length === 0) return null;
+  return (
+    <>
+      {links.map((link, idx) => (
+        <a
+          key={idx}
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={link.title}
+        >
+          {link.icon}
+        </a>
+      ))}
+    </>
+  );
+};
 
 export const UserBanner = () => {
   const { id: paramId } = useParams<{ id: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
+
   const { getUserId, logout } = useAuth();
   const { student, deleteStudent } = useStudent();
   const { company, deleteCompany } = useCompany();
 
+  const [isError, setIsError] = useState(true);
+
   const userId = getUserId();
 
-  const isStudentProfile = location.pathname.includes(
-    ROUTES_CONST.STUDENT.UNIQUE,
-  );
-  const isCompanyProfile = location.pathname.includes(
-    ROUTES_CONST.COMPANY.UNIQUE,
+  const isOwner = userId && paramId && String(userId) === paramId;
+  const isStudent = location.pathname.includes(ROUTES_CONST.STUDENT.UNIQUE);
+  const isCompany = location.pathname.includes(ROUTES_CONST.COMPANY.UNIQUE);
+
+  const profileType = isStudent
+    ? USER_ROLES_CONST.ESTUDANTE
+    : isCompany
+      ? USER_ROLES_CONST.EMPRESA
+      : null;
+
+  const profileName =
+    profileType === USER_ROLES_CONST.ESTUDANTE
+      ? student?.nome
+      : profileType === USER_ROLES_CONST.EMPRESA
+        ? company?.nomeFantasia
+        : null;
+
+  const profileLinks = (
+    profileType === USER_ROLES_CONST.ESTUDANTE
+      ? [
+          student?.linkSite && {
+            href: student.linkSite,
+            title: 'Site Profissional',
+            icon: (
+              <World
+                width={ICON_SIZE}
+                height={ICON_SIZE}
+                strokeWidth={1.5}
+                className="text-(--grey-200)"
+              />
+            ),
+          },
+          student?.linkLinkedin && {
+            href: student.linkLinkedin,
+            title: 'LinkedIn',
+            icon: (
+              <LogoLinkedIn
+                width={ICON_SIZE}
+                height={ICON_SIZE}
+                className="text-[#228ec0]"
+              />
+            ),
+          },
+        ]
+      : profileType === USER_ROLES_CONST.EMPRESA
+        ? [
+            company?.linkSite && {
+              href: company.linkSite,
+              title: 'Site Profissional',
+              icon: (
+                <World
+                  width={ICON_SIZE}
+                  height={ICON_SIZE}
+                  strokeWidth={1.7}
+                  className="text-(--grey-200)"
+                />
+              ),
+            },
+            company?.linkLinkedin && {
+              href: company.linkLinkedin,
+              title: 'LinkedIn',
+              icon: (
+                <LogoLinkedIn
+                  width={ICON_SIZE - 4}
+                  height={ICON_SIZE - 4}
+                  className="text-[#228ec0]"
+                />
+              ),
+            },
+            company?.linkGupy && {
+              href: company.linkGupy,
+              title: 'Gupy',
+              icon: (
+                <LogoGupy
+                  width={ICON_SIZE - 6}
+                  height={ICON_SIZE - 6}
+                  className="text-[#466ce7]"
+                />
+              ),
+            },
+          ]
+        : []
+  ).filter((link): link is { href: string; title: string; icon: JSX.Element } =>
+    Boolean(link),
   );
 
-  // Should show the menu
-  const showMenu = userId && paramId && String(userId) === paramId;
-
-  // Route to edit the profile
   const editProfileRoute =
-    userId && isStudentProfile
-      ? ROUTES_CONST.STUDENT.PROFILE_UPDATE(userId)
-      : userId && isCompanyProfile
-        ? ROUTES_CONST.COMPANY.PROFILE_UPDATE(userId)
-        : '';
+    profileType === USER_ROLES_CONST.ESTUDANTE
+      ? ROUTES_CONST.STUDENT.PROFILE_UPDATE(userId!)
+      : profileType === USER_ROLES_CONST.EMPRESA
+        ? ROUTES_CONST.COMPANY.PROFILE_UPDATE(userId!)
+        : null;
 
-  // Should show the link to edit page
   const showEditLink =
-    showMenu && editProfileRoute && location.pathname !== editProfileRoute;
+    isOwner && editProfileRoute && location.pathname !== editProfileRoute;
 
-  const profileName = isStudentProfile
-    ? student?.nome
-    : isCompanyProfile
-      ? company?.nomeFantasia
-      : '';
-
-  const handleLogout = () => {
-    logout();
-  };
+  useEffect(() => {
+    if (
+      (profileType === USER_ROLES_CONST.ESTUDANTE && student) ||
+      (profileType === USER_ROLES_CONST.EMPRESA && company)
+    ) {
+      setIsError(false);
+    }
+  }, [profileType, student, company]);
 
   const handleDeleteAccount = async () => {
     try {
-      if (!userId) {
-        throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
-      }
+      if (!userId) throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
 
-      const action = isStudentProfile
-        ? deleteStudent
-        : isCompanyProfile
-          ? deleteCompany
-          : null;
+      const action =
+        profileType === USER_ROLES_CONST.ESTUDANTE
+          ? deleteStudent
+          : profileType === USER_ROLES_CONST.EMPRESA
+            ? deleteCompany
+            : null;
 
-      if (!action) {
+      if (!action)
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ROLE_NOT_FOUND);
-      }
 
-      const messageAcknowledge = MESSAGES_RESPONSE.WARNING.USER_DELETE_ACCOUNT;
-      const confirmedAcknowledge = await modalMessageSafe({
+      const confirmed = await modalMessageSafe({
         type: 'warning',
-        message: messageAcknowledge,
+        message: MESSAGES_RESPONSE.WARNING.USER_DELETE_ACCOUNT,
         shouldAcknowledge: true,
       });
-      if (!confirmedAcknowledge) return;
+      if (!confirmed) return;
 
       const response = await modalLoadingAuto(
         () => action(Number(userId)),
         MESSAGES_LOADING.DELETE,
       );
 
-      const messageSuccess =
-        response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE;
       await modalMessageSafe({
         type: 'success',
-        message: messageSuccess,
+        message: response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE,
         shouldBlockProcess: false,
       });
 
-      handleLogout();
+      logout();
     } catch (error) {
       await modalMessageError(error);
     }
   };
 
+  const handleLogout = () => logout();
+
+  const menuOptions = [
+    showEditLink && {
+      text: 'Alterar dados',
+      icon: (
+        <PencilFilled width={18} height={18} className="text-(--grey-200)" />
+      ),
+      onClick: () => editProfileRoute && navigate(editProfileRoute),
+    },
+    {
+      text: 'Excluir conta',
+      icon: (
+        <TrashFilled width={18} height={18} className="text-(--grey-200)" />
+      ),
+      onClick: handleDeleteAccount,
+    },
+    {
+      text: 'Sair',
+      icon: <Logout width={18} height={18} className="text-(--grey-200)" />,
+      onClick: handleLogout,
+    },
+  ].filter(Boolean) as MenuOption[];
+
+  if (isError) return <></>;
+
   return (
     <div className="">
       <div className="relative aspect-4/1 w-full">
-        {showMenu && (
+        {isOwner && (
           <div className="absolute top-3 left-1/2 flex w-[96%] -translate-x-1/2 justify-between">
-            <div className="flex w-fit flex-col gap-4 bg-(--grey-1300) p-2 text-xs">
-              {showEditLink && <Link to={editProfileRoute}>Alterar dados</Link>}
-              <span className="cursor-pointer" onClick={handleDeleteAccount}>
-                Excluir conta
-              </span>
-              <span className="cursor-pointer" onClick={handleLogout}>
-                Sair
-              </span>
-            </div>
-            <div>{student?.nome}</div>
+            <MenuExtraOptions options={menuOptions} placement="bottom">
+              <div className="cursor-pointer rounded-md border-zinc-700 bg-zinc-900 px-3 py-2 text-xs">
+                <Menu
+                  width={ICON_SIZE - 8}
+                  height={ICON_SIZE - 8}
+                  className="text-(--grey-200)"
+                />
+              </div>
+            </MenuExtraOptions>
+
+            {profileLinks.length > 0 && (
+              <div className="flex h-fit items-center gap-3 rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1.5">
+                <ProfileLinks links={profileLinks} />
+              </div>
+            )}
           </div>
         )}
 

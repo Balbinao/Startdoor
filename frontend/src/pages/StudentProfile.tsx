@@ -18,6 +18,7 @@ import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
 } from '@constants';
+import { useCompany } from '@hooks/useCompany';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -47,6 +48,7 @@ export const StudentProfile = () => {
 
   const { sectorsItems, getSectors } = useSector();
   const { reviewCards, getReviewCards } = useReview();
+  const { getCompanies } = useCompany();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -76,6 +78,7 @@ export const StudentProfile = () => {
           () => getProfessionalExperienceCards(Number(userId)),
           MESSAGES_LOADING.GET,
         );
+        await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
           () => getReviewCards(Number(userId)),

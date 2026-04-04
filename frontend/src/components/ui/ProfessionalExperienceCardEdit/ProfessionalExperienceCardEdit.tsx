@@ -6,6 +6,7 @@ import {
   MESSAGES_RESPONSE,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useCompany } from '@hooks/useCompany';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -45,6 +46,7 @@ export const ProfessionalExperienceCardEdit = ({
     createProfessionalExperienceCard,
     updateProfessionalExperienceCard,
   } = useExperience();
+  const { companiesOptions } = useCompany();
 
   const form = useForm<ProfessionalExperienceCardData>({
     resolver: zodResolver(professionalExperienceCardSchema),
@@ -151,10 +153,7 @@ export const ProfessionalExperienceCardEdit = ({
             type="select"
             name="idEmpresa"
             label="Empresa"
-            options={DROPDOWN_VALUES_CONST.MOCK_EMPRESAS.map(option => ({
-              ...option,
-              value: Number(option.value),
-            }))}
+            options={companiesOptions}
           />
 
           <div className="flex w-full gap-6">
