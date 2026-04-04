@@ -103,7 +103,6 @@ public class SecurityConfig {
                         // ========== NOTAS CONDICIONAIS ==========
                         .requestMatchers(HttpMethod.GET, "/estudantes/notas-condi").hasRole("ADMIN")  // Só admin vê lista
                         .requestMatchers(HttpMethod.GET, "/estudantes/notas-condi/**").authenticated()  // @PreAuthorize cuida
-                        .requestMatchers(HttpMethod.POST, "/estudantes/notas-condi").authenticated()  // @PreAuthorize cuida (estudante só cria para si)
                         .requestMatchers(HttpMethod.PUT, "/estudantes/notas-condi/**").authenticated()  // @PreAuthorize cuida
                         
                         // ========== ADMIN ==========
