@@ -1,14 +1,14 @@
 # 🚪 Startdoor
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow?style=for-the-badge&logo=progress"/>
-  <img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge&logo=git"/>
-  <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge&logo=open-source-initiative"/>
-  <img src="https://img.shields.io/badge/AI-Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
+  <b>Plataforma web colaborativa dedicada à avaliação e ao compartilhamento de experiências de estágio.</b>
 </p>
 
 <p align="center">
-  <b>Plataforma web colaborativa dedicada à avaliação e ao compartilhamento de experiências de estágio.</b>
+  <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow?style=for-the-badge&logo=progress"/>
+   <img src="https://img.shields.io/badge/%20Trabalho%20Acadêmico-FATEC%20Ipiranga-8B0000?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge&logo=open-source-initiative"/>
+  <img src="https://img.shields.io/badge/AI-Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
 </p>
 
 <br>
@@ -303,7 +303,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-<p align="center">
-  <img src="https://img.shields.io/badge/%20Trabalho%20Acadêmico-FATEC%20Ipiranga-8B0000?style=for-the-badge"/>
-</p>
