@@ -34,7 +34,6 @@ public class ExperienciaProfissional {
     @Column(name = "estado_atuacao", length = 30, nullable = false)
     private String estadoAtuacao;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "modelo_trabalho", nullable = false)
     private String modeloTrabalho;
 
