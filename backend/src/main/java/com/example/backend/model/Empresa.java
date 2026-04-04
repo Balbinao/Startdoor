@@ -90,6 +90,9 @@ public class Empresa implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExperienciaProfissional> experiencias;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

@@ -18,48 +18,6 @@ import java.util.List;
 @SecurityRequirement(name = "Bearer Authentication")
 public interface ExperienciaProfissionalControllerOpenApi {
     @Operation(summary = "Adicionar experiência profissional")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Dados da experiência profissional. ATENÇÃO: Use 'idEmpresa' para IDs da empresa ou 'nomeEmpresa' para o nome. Caso for usar o idEmpresa, deixe o nomeEmpresa como null. E caso use o nomeEmpresa, deixe o idEmpresa como null.",
-            required = true,
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ExperienciaProfissionalDTO.class),
-                    examples = {
-                            @ExampleObject(
-                                    name = "1. Empresa já cadastrada (Usa ID)",
-                                    summary = "Use quando a empresa existe no sistema",
-                                    value = """
-                    {
-                      "tituloCargo": "Estagiário de Backend",
-                      "idEmpresa": 1,
-                      "nomeEmpresa": null,
-                      "estadoAtuacao": "SP",
-                      "modeloTrabalho": "Híbrido",
-                      "dataInicio": "2023-01-10",
-                      "dataFim": "2024-01-10",
-                      "descricao": "Desenvolvimento de APIs com Java."
-                    }
-                    """
-                            ),
-                            @ExampleObject(
-                                    name = "2. Empresa externa (Usa Nome)",
-                                    summary = "Use quando a empresa NÃO está no banco",
-                                    value = """
-                    {
-                      "tituloCargo": "Estagiário de Backend",
-                      "idEmpresa": null,
-                      "nomeEmpresa": "Itau",
-                      "estadoAtuacao": "SP",
-                      "modeloTrabalho": "Híbrido",
-                      "dataInicio": "2023-01-10",
-                      "dataFim": "2024-01-10",
-                      "descricao": "Desenvolvimento Web."
-                    }
-                    """
-                            )
-                    }
-            )
-    )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -89,48 +47,6 @@ public interface ExperienciaProfissionalControllerOpenApi {
     ResponseEntity<ExperienciaProfissional> buscar(Long id);
 
     @Operation(summary = "Atualizar experiência profissional")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Dados da experiência profissional. ATENÇÃO: Use 'idEmpresa' para IDs da empresa ou 'nomeEmpresa' para o nome. Caso for usar o idEmpresa, deixe o nomeEmpresa como null. E caso use o nomeEmpresa, deixe o idEmpresa como null",
-            required = true,
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ExperienciaProfissionalDTO.class),
-                    examples = {
-                            @ExampleObject(
-                                    name = "1. Empresa já cadastrada (Usa ID)",
-                                    summary = "Use quando a empresa existe no sistema",
-                                    value = """
-                    {
-                      "tituloCargo": "Estagiário de Backend",
-                      "idEmpresa": 1,
-                      "nomeEmpresa": null,
-                      "estadoAtuacao": "SP",
-                      "modeloTrabalho": "Híbrido",
-                      "dataInicio": "2023-01-10",
-                      "dataFim": "2024-01-10",
-                      "descricao": "Desenvolvimento de APIs com Java."
-                    }
-                    """
-                            ),
-                            @ExampleObject(
-                                    name = "2. Empresa externa (Usa Nome)",
-                                    summary = "Use quando a empresa NÃO está no banco",
-                                    value = """
-                    {
-                      "tituloCargo": "Estagiário de Backend",
-                      "idEmpresa": null,
-                      "nomeEmpresa": "Itau",
-                      "estadoAtuacao": "SP",
-                      "modeloTrabalho": "Híbrido",
-                      "dataInicio": "2023-01-10",
-                      "dataFim": "2024-01-10",
-                      "descricao": "Desenvolvimento Web."
-                    }
-                    """
-                            )
-                    }
-            )
-    )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
