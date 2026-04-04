@@ -14,7 +14,7 @@ import { ButtonPill } from '@components/ui/ButtonPill';
 import { useAuth } from '@hooks/useAuth';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import { useStudent } from '@hooks/useStudentRegistration';
+import { useStudent } from '@hooks/useStudent';
 import {
   studentRegistrationSchema,
   type StudentRegistrationFormData,

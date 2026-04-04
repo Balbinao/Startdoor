@@ -1,5 +1,8 @@
 import { DROPDOWN_VALUES_CONST } from '@constants';
-import type { ICompany } from '@models/companyData.types';
+import type {
+  ICompany,
+  ICompanyUpdatePayload,
+} from '@models/companyData.types';
 import type { IReview } from '@models/review.types';
 import type {
   IConditionalScore,
@@ -130,6 +133,26 @@ export const normalizeCompanyData = (
   linkLinkedin: data.linkLinkedin ?? undefined,
   linkGupy: data.linkGupy ?? undefined,
 });
+
+export const normalizeCompanyUpdateData = (
+  data: CompanyProfileUpdateData,
+): ICompanyUpdatePayload => {
+  return {
+    nomeFantasia: data.nomeFantasia,
+    email: data.email,
+    cnpj: data.cnpj,
+    biografia: data.biografia ?? null,
+    paisOrigem: data.paisOrigem ?? null,
+    receitaAnual: data.receitaAnual ?? null,
+    dataFundacao: data.dataFundacao ?? null,
+    tamanhoEmpresa: data.tamanhoEmpresa ?? null,
+    estadoSede: data.estadoSede ?? null,
+    areaAtuacao: data.areaAtuacao ?? null,
+    linkSite: data.linkSite ?? null,
+    linkLinkedin: data.linkLinkedin ?? null,
+    linkGupy: data.linkGupy ?? null,
+  };
+};
 
 export const normalizeReviewData = (reviewData: IReview): ReviewData => ({
   idEmpresa: reviewData.idEmpresa ?? 0,

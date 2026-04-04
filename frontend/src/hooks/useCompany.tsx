@@ -1,16 +1,16 @@
 import { useStore } from '@contexts/store/useStore';
+import type { ICompanyUpdatePayload } from '@models/companyData.types';
 import type { ICompanyRegistration } from '@models/registrationLogin.types';
-import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
-import { companyRegistrationService } from '@services/companyRegistrationService';
+import { companyService } from '@services/companyService';
 
-export const useCompanyRegistrations = () => {
+export const useCompany = () => {
   const { companyRegistrationStore } = useStore();
 
   const company = companyRegistrationStore.getCompany;
 
   const getCompany = async (id: number) => {
     try {
-      const response = await companyRegistrationService.getCompany(id);
+      const response = await companyService.getCompany(id);
       companyRegistrationStore.setCompany(response);
       return response;
     } catch (error) {
@@ -23,7 +23,7 @@ export const useCompanyRegistrations = () => {
     companyRegistrationData: ICompanyRegistration,
   ) => {
     try {
-      const response = await companyRegistrationService.companyRegistration(
+      const response = await companyService.companyRegistration(
         companyRegistrationData,
       );
 
@@ -34,15 +34,9 @@ export const useCompanyRegistrations = () => {
     }
   };
 
-  const updateCompany = async (
-    id: number,
-    company: CompanyProfileUpdateData,
-  ) => {
+  const updateCompany = async (id: number, company: ICompanyUpdatePayload) => {
     try {
-      const response = await companyRegistrationService.updateCompany(
-        id,
-        company,
-      );
+      const response = await companyService.updateCompany(id, company);
       return response;
     } catch (error) {
       console.error(error);
@@ -52,7 +46,7 @@ export const useCompanyRegistrations = () => {
 
   const updateCompanyPassword = async (id: number, novaSenha: string) => {
     try {
-      const response = await companyRegistrationService.updateCompanyPassword(
+      const response = await companyService.updateCompanyPassword(
         id,
         novaSenha,
       );
@@ -65,7 +59,7 @@ export const useCompanyRegistrations = () => {
 
   const deleteCompany = async (id: number) => {
     try {
-      const response = await companyRegistrationService.deleteCompany(id);
+      const response = await companyService.deleteCompany(id);
       return response;
     } catch (error) {
       console.error(error);

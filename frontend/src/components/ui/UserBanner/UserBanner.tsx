@@ -1,10 +1,10 @@
 import { StudentBannerIMG, StudentPfp } from '@assets/images';
 import { MESSAGES_LOADING, MESSAGES_RESPONSE, ROUTES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
-import { useCompanyRegistrations } from '@hooks/useCompanyRegistration';
+import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import { useStudent } from '@hooks/useStudentRegistration';
+import { useStudent } from '@hooks/useStudent';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
 export const UserBanner = () => {
@@ -15,7 +15,7 @@ export const UserBanner = () => {
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
   const { getUserId, logout } = useAuth();
   const { student, deleteStudent } = useStudent();
-  const { company, deleteCompany } = useCompanyRegistrations();
+  const { company, deleteCompany } = useCompany();
 
   const userId = getUserId();
 

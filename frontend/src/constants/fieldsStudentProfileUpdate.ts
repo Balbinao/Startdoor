@@ -1,6 +1,3 @@
-// import type { FieldConfig } from '@models/input.types';
-// import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
-// import { DROPDOWN_VALUES_CONST } from './dropdownValues';
 import type { FieldConfig } from '@models/input.types';
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
 import { DROPDOWN_VALUES_CONST } from './dropdownValues';
