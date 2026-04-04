@@ -5,8 +5,10 @@ import com.example.backend.dto.AtualizarEstudanteDTO;
 import com.example.backend.dto.CadastroEstudanteDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Estudante;
+import com.example.backend.model.EstudanteNotaCondi;
 import com.example.backend.repository.AdminRepository;
 import com.example.backend.repository.EmpresaRepository;
+import com.example.backend.repository.EstudanteNotaCondiRepository;
 import com.example.backend.repository.EstudanteRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,12 +19,14 @@ import java.util.List;
 public class EstudanteService {
 
     private final EstudanteRepository estudanteRepository;
+    private final EstudanteNotaCondiRepository notaCondiRepository;
     private final EmpresaRepository empresaRepository;
     private final AdminRepository adminRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public EstudanteService(EstudanteRepository estudanteRepository, BCryptPasswordEncoder bCryptPasswordEncoder, EmpresaRepository empresaRepository, AdminRepository adminRepository) {
+    public EstudanteService(EstudanteRepository estudanteRepository, EstudanteNotaCondiRepository notaCondiRepository, BCryptPasswordEncoder bCryptPasswordEncoder, EmpresaRepository empresaRepository, AdminRepository adminRepository) {
         this.estudanteRepository = estudanteRepository;
+        this.notaCondiRepository = notaCondiRepository;
         this.empresaRepository = empresaRepository;
         this.adminRepository = adminRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -40,7 +44,23 @@ public class EstudanteService {
         estudante.setEmail(data.email());
         estudante.setSenha(bCryptPasswordEncoder.encode(data.senha()));
 
-        estudanteRepository.save(estudante);
+        estudante = estudanteRepository.save(estudante);
+
+        EstudanteNotaCondi notaCondi = new EstudanteNotaCondi();
+        notaCondi.setEstudante(estudante);
+        notaCondi.setAmbiente(0);
+        notaCondi.setAprendizado(0);
+        notaCondi.setBeneficios(0);
+        notaCondi.setCultura(0);
+        notaCondi.setEfetivacao(0);
+        notaCondi.setEntrevista(0);
+        notaCondi.setFeedback(0);
+        notaCondi.setInfraestrutura(0);
+        notaCondi.setIntegracao(0);
+        notaCondi.setRemuneracao(0);
+        notaCondi.setRotina(0);
+        notaCondi.setLideranca(0);
+        notaCondiRepository.save(notaCondi);
     }
 
     private boolean emailJaExiste(String email) {
