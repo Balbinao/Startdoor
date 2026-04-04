@@ -16,6 +16,7 @@ import {
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
+import { useCompany } from '@hooks/useCompany';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -61,6 +62,7 @@ export const StudentProfileUpdateForm = () => {
     updateConditionalScore,
   } = useStudent();
   const { sectorsItems, getSectors } = useSector();
+  const { getCompanies } = useCompany();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -135,6 +137,7 @@ export const StudentProfileUpdateForm = () => {
 
         reset(normalizeStudentData(response, responseTwo));
 
+        await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
           () => getAcademicExperienceCards(Number(userId)),
@@ -178,7 +181,6 @@ export const StudentProfileUpdateForm = () => {
       idEmpresa: 0,
       idEstudante: Number(userId),
       tituloCargo: '',
-      nomeEmpresa: '',
       estadoAtuacao: '',
       modeloTrabalho: '',
       dataInicio: '',

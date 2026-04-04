@@ -12,6 +12,11 @@ export const companyService = {
     return response.data;
   },
 
+  getCompanies: async (): Promise<ICompany[]> => {
+    const response = await api.get(API_CONST.COMPANY.BASE);
+    return response.data;
+  },
+
   companyRegistration: async (data: ICompanyRegistration) => {
     const response = await api.post(API_CONST.COMPANY.REGISTRATION, data);
     return response.data;

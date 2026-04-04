@@ -66,9 +66,8 @@ export const useExperience = () => {
     {
       id: 1,
       idEstudante: 101,
-      idEmpresa: 4,
+      idEmpresa: 1,
       tituloCargo: 'Desenvolvedor Front-end Júnior',
-      nomeEmpresa: 'Itaú Unibanco',
       estadoAtuacao: 'São Paulo',
       modeloTrabalho: 'Presencial',
       dataInicio: '2021-03-01',
@@ -79,9 +78,8 @@ export const useExperience = () => {
     {
       id: 2,
       idEstudante: 101,
-      idEmpresa: 10,
+      idEmpresa: 2,
       tituloCargo: 'Desenvolvedor Front-end Pleno',
-      nomeEmpresa: 'Nubank',
       estadoAtuacao: 'Rio de Janeiro',
       modeloTrabalho: 'Híbrido',
       dataInicio: '2022-09-01',
@@ -92,9 +90,8 @@ export const useExperience = () => {
     {
       id: 3,
       idEstudante: 102,
-      idEmpresa: 5,
+      idEmpresa: 3,
       tituloCargo: 'Analista de Suporte Técnico',
-      nomeEmpresa: 'Santander',
       estadoAtuacao: 'Minas Gerais',
       modeloTrabalho: 'Remoto',
       dataInicio: '2020-02-15',
@@ -105,9 +102,8 @@ export const useExperience = () => {
     {
       id: 4,
       idEstudante: 103,
-      idEmpresa: 9,
+      idEmpresa: 4,
       tituloCargo: 'Engenheiro de Software',
-      nomeEmpresa: 'Banco Inter',
       estadoAtuacao: 'Amapá',
       modeloTrabalho: 'Remoto',
       dataInicio: '2023-01-05',

@@ -1,14 +1,14 @@
 import { AuthStore } from './AuthStore';
-import { CompanyRegistrationStore } from './CompanyRegistrationStore';
+import { CompanyStore } from './CompanyStore';
 import { ExperienceStore } from './ExperienceStore';
 import { ReviewStore } from './ReviewStore';
 import { SectorStore } from './SectorStore';
-import { StudentStore } from './StudentRegistrationStore';
+import { StudentStore } from './StudentStore';
 
 export class RootStore {
   authStore: AuthStore;
   sectorStore: SectorStore;
-  companyRegistrationStore: CompanyRegistrationStore;
+  companyStore: CompanyStore;
   experienceStore: ExperienceStore;
   reviewStore: ReviewStore;
   studentStore: StudentStore;
@@ -16,7 +16,7 @@ export class RootStore {
   constructor() {
     this.authStore = new AuthStore(this);
     this.sectorStore = new SectorStore(this);
-    this.companyRegistrationStore = new CompanyRegistrationStore(this);
+    this.companyStore = new CompanyStore(this);
     this.experienceStore = new ExperienceStore(this);
     this.reviewStore = new ReviewStore(this);
     this.studentStore = new StudentStore(this);

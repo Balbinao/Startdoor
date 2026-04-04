@@ -18,6 +18,7 @@ export const API_CONST = {
     BY_ID_STUDENT: (id: number) => `/estudantes/notas-condi/${id}`,
   },
   COMPANY: {
+    BASE: '/empresas',
     REGISTRATION: '/empresas/cadastrar/empresa',
     BY_ID: (id: number) => `/empresas/${id}`,
     BY_ID_PASSWORD: (id: number) => `/empresas/${id}/senha`,
