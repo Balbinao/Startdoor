@@ -57,6 +57,16 @@ export const StudentProfile = () => {
 
   const { getStudent } = useStudent();
 
+  const hasStudentInfo =
+    searchedStudent &&
+    (searchedStudent.paisOrigem ||
+      searchedStudent.mediaNotaGeral ||
+      searchedStudent.dataNascimento ||
+      searchedStudent.modeloTrabalho ||
+      searchedStudent.estadoAtuacao ||
+      searchedStudent.setorInteresse ||
+      searchedStudent.habilidadesPrincipais);
+
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -101,114 +111,115 @@ export const StudentProfile = () => {
   return (
     <div className="flex h-full flex-col items-center gap-32">
       <UserBanner />
-      <div className="flex w-full max-w-3xl flex-col gap-3">
-        <div className="flex w-full gap-3">
-          {searchedStudent?.paisOrigem && (
+      {hasStudentInfo && (
+        <div className="flex w-full max-w-3xl flex-col gap-3">
+          <div className="flex w-full gap-3">
+            {searchedStudent?.paisOrigem && (
+              <UserAttribute
+                icon={
+                  <Flag
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    strokeWidth={STROKE_WIDTH}
+                  />
+                }
+                title="Pais de Origem"
+                value={searchedStudent.paisOrigem}
+              />
+            )}
+
+            {searchedStudent?.mediaNotaGeral && (
+              <UserAttribute
+                icon={
+                  <Star
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    strokeWidth={STROKE_WIDTH}
+                  />
+                }
+                title="Média da Nota Geral"
+                value={searchedStudent.mediaNotaGeral}
+              />
+            )}
+          </div>
+
+          <div className="flex w-full gap-3">
+            {searchedStudent?.dataNascimento && (
+              <UserAttribute
+                icon={
+                  <Hourglass
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    strokeWidth={STROKE_WIDTH}
+                  />
+                }
+                title="Data de Nascimento"
+                value={formatDateWithAge(searchedStudent.dataNascimento)}
+              />
+            )}
+
+            {searchedStudent?.modeloTrabalho && (
+              <UserAttribute
+                icon={
+                  <Building
+                    width={ICON_SIZE}
+                    height={ICON_SIZE}
+                    strokeWidth={STROKE_WIDTH}
+                  />
+                }
+                title="Modelo de Trabalho"
+                value={searchedStudent.modeloTrabalho}
+              />
+            )}
+          </div>
+
+          {searchedStudent?.estadoAtuacao && (
             <UserAttribute
               icon={
-                <Flag
+                <Pin
                   width={ICON_SIZE}
                   height={ICON_SIZE}
                   strokeWidth={STROKE_WIDTH}
                 />
               }
-              title="Pais de Origem"
-              value={searchedStudent.paisOrigem}
+              title="Estado de Atuação"
+              value={searchedStudent.estadoAtuacao}
             />
           )}
 
-          {searchedStudent?.mediaNotaGeral && (
+          {searchedStudent?.setorInteresse && (
             <UserAttribute
               icon={
-                <Star
+                <Focus
                   width={ICON_SIZE}
                   height={ICON_SIZE}
                   strokeWidth={STROKE_WIDTH}
                 />
               }
-              title="Média da Nota Geral"
-              value={searchedStudent.mediaNotaGeral}
+              title="Setor de Interesse"
+              value={
+                sectorsItems.find(
+                  item => item.value === Number(searchedStudent.setorInteresse),
+                )?.label ?? ''
+              }
+            />
+          )}
+
+          {searchedStudent?.habilidadesPrincipais && (
+            <UserAttribute
+              icon={
+                <Category
+                  width={ICON_SIZE}
+                  height={ICON_SIZE}
+                  strokeWidth={STROKE_WIDTH}
+                />
+              }
+              title="Habilidades Principais"
+              value={searchedStudent.habilidadesPrincipais}
             />
           )}
         </div>
-
-        <div className="flex w-full gap-3">
-          {searchedStudent?.dataNascimento && (
-            <UserAttribute
-              icon={
-                <Hourglass
-                  width={ICON_SIZE}
-                  height={ICON_SIZE}
-                  strokeWidth={STROKE_WIDTH}
-                />
-              }
-              title="Data de Nascimento"
-              value={formatDateWithAge(searchedStudent.dataNascimento)}
-            />
-          )}
-
-          {searchedStudent?.modeloTrabalho && (
-            <UserAttribute
-              icon={
-                <Building
-                  width={ICON_SIZE}
-                  height={ICON_SIZE}
-                  strokeWidth={STROKE_WIDTH}
-                />
-              }
-              title="Modelo de Trabalho"
-              value={searchedStudent.modeloTrabalho}
-            />
-          )}
-        </div>
-
-        {searchedStudent?.estadoAtuacao && (
-          <UserAttribute
-            icon={
-              <Pin
-                width={ICON_SIZE}
-                height={ICON_SIZE}
-                strokeWidth={STROKE_WIDTH}
-              />
-            }
-            title="Estado de Atuação"
-            value={searchedStudent.estadoAtuacao}
-          />
-        )}
-
-        {searchedStudent?.setorInteresse && (
-          <UserAttribute
-            icon={
-              <Focus
-                width={ICON_SIZE}
-                height={ICON_SIZE}
-                strokeWidth={STROKE_WIDTH}
-              />
-            }
-            title="Setor de Interesse"
-            value={
-              sectorsItems.find(
-                item => item.value === Number(searchedStudent.setorInteresse),
-              )?.label ?? ''
-            }
-          />
-        )}
-
-        {searchedStudent?.habilidadesPrincipais && (
-          <UserAttribute
-            icon={
-              <Category
-                width={ICON_SIZE}
-                height={ICON_SIZE}
-                strokeWidth={STROKE_WIDTH}
-              />
-            }
-            title="Habilidades Principais"
-            value={searchedStudent.habilidadesPrincipais}
-          />
-        )}
-      </div>
-
+      )}
       <div className="flex w-full justify-center">
         <div className="flex w-full max-w-xl flex-col gap-6">
           <h2 className="text-2xl font-semibold">Experiência Acadêmica</h2>
@@ -217,7 +228,6 @@ export const StudentProfile = () => {
           ))}
         </div>
       </div>
-
       <div className="flex w-full justify-center">
         <div className="flex w-full max-w-xl flex-col gap-6">
           <h2 className="text-2xl font-semibold">Experiência Profissional</h2>
@@ -226,7 +236,6 @@ export const StudentProfile = () => {
           ))}
         </div>
       </div>
-
       <div className="flex w-full flex-col gap-8">
         <div className="flex items-center gap-8">
           <span className="text-lg font-semibold whitespace-nowrap">
