@@ -265,7 +265,7 @@ export const StudentProfileUpdateForm = () => {
           className="flex w-full max-w-3xl flex-col gap-14"
         >
           <div className="flex flex-col gap-12">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-6">
               <FormField<StudentProfileUpdateData>
                 form={form}
                 type="text"
@@ -317,8 +317,8 @@ export const StudentProfileUpdateForm = () => {
               placeholder="Conte um pouco sobre você"
             />
 
-            <div className="flex flex-col gap-12">
-              <div className="flex w-full gap-6">
+            <div className="flex flex-col gap-6">
+              <div className="flex w-full flex-col gap-6 sm:flex-row">
                 <FormField<StudentProfileUpdateData>
                   form={form}
                   type="select"
@@ -340,7 +340,7 @@ export const StudentProfileUpdateForm = () => {
                 />
               </div>
 
-              <div className="flex w-full gap-6">
+              <div className="flex w-full flex-col gap-6 sm:flex-row">
                 <FormField<StudentProfileUpdateData>
                   form={form}
                   type="select"
@@ -369,7 +369,7 @@ export const StudentProfileUpdateForm = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-6">
               <FormField<StudentProfileUpdateData>
                 form={form}
                 type="text"
@@ -387,7 +387,7 @@ export const StudentProfileUpdateForm = () => {
               />
             </div>
 
-            <div className="grid max-w-md grid-cols-3 gap-5 self-center">
+            <div className="grid max-w-md grid-cols-3 gap-6 self-center">
               {studentConditionalScoreUpdateFields.map(field => (
                 <FormField form={form} key={field.name} {...field} />
               ))}

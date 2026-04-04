@@ -35,7 +35,9 @@ export const FormFieldWrapper = <TFormValues extends FieldValues>({
       {children}
 
       {error?.message && (
-        <span className="text-sm text-red-400">{String(error.message)}</span>
+        <span className="text-sm font-thin text-red-400">
+          {String(error.message)}
+        </span>
       )}
     </div>
   );

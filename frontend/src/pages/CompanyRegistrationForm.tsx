@@ -120,9 +120,9 @@ export const CompanyRegistrationForm = () => {
                 isSubmitting={isSubmitting}
               />
 
-              <div className="flex gap-1 text-center text-sm">
+              <div className="flex gap-1 text-center text-sm font-thin">
                 <p className="text-(--grey-300)">Já tem uma conta?</p>
-                <Link to="/login" className="font-bold text-(--blue-200)">
+                <Link to="/login" className="font-semibold text-(--blue-200)">
                   Acesse ela!
                 </Link>
               </div>

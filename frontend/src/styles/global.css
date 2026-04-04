@@ -137,6 +137,7 @@ body {
   background-color: var(--grey-1300);
   color: var(--grey-100);
   font-family: 'HostGrotesk', sans-serif;
+  font-weight: 300;
 }
 
 ::selection {
