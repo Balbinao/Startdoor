@@ -15,12 +15,12 @@
 
 # Sumário
 * [Sobre o Projeto](#sobre-o-projeto)
+* [Protótipo Figma](#protótipo-figma)
 * [Funcionalidades](#funcionalidades)
 * [Recomendações com IA](#recomendações-com-ia)
 * [Competências Avaliadas](#competências-avaliadas)
 * [Arquitetura Geral do Projeto](#arquitetura-geral-do-projeto)
 * [Tecnologias](#tecnologias)
-* [Protótipo Figma](#protótipo-figma)
 * [Contribuidores](#contribuidores)
 * [Licença](#licença)
 <br>
@@ -34,6 +34,19 @@ A função principal do sistema é atuar como um **repositório centralizado** o
 Funcionar como uma **ferramenta de apoio à decisão**, permitindo que o estudante identifique as empresas que melhor se alinham às suas expectativas profissionais antes de se candidatar a uma vaga.
 
 <br>
+
+## 📱 **Protótipo Figma** <a name="figma"></a>
+
+Clique no botão abaixo para acessar o protótio feito no figma.
+
+<p align="center">
+  <a href="https://www.figma.com/proto/uMYDnHDMyCmws5SYpOI9VS/AvaliarEstagios_Prototipo?node-id=3-3&p=f&t=2pt5tdZCC8aVvnQo-0&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=3%3A3&show-proto-sidebar=1">
+    <img src="https://img.shields.io/badge/🎨%20Figma-Protótipo%20Interativo-F24E1E?style=for-the-badge&logo=figma&logoColor=white"/>
+  </a>
+</p>
+
+<br>
+
 
 ## ✨ **Funcionalidades** <a name="funcionalidades"></a>
 
@@ -93,16 +106,6 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 
 <br>
 
-## 📱 **Protótipo Figma** <a name="figma"></a>
-
-<p align="center">
-  <a href="https://www.figma.com/proto/uMYDnHDMyCmws5SYpOI9VS/AvaliarEstagios_Prototipo?node-id=3-3&p=f&t=2pt5tdZCC8aVvnQo-0&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=3%3A3&show-proto-sidebar=1">
-    <img src="https://img.shields.io/badge/🎨%20Figma-Protótipo%20Interativo-F24E1E?style=for-the-badge&logo=figma&logoColor=white"/>
-  </a>
-</p>
-
-<br>
-
 ## 📊 **Competências Avaliadas** <a name="competencias"></a>
 
 <table align="center">
@@ -128,7 +131,7 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 
 <br>
 
-## Arquitetura Geral do Projeto
+## 🏗️ **Arquitetura Geral do Projeto**
 
 O projeto é composto por **quatro componentes principais**.
 
@@ -145,6 +148,8 @@ API responsável pelas regras de negócio, autenticação com **JWT** e fornecim
 
 🔗 **Mais detalhes da arquitetura do Backend:**  
 [https://github.com/Balbinao/Startdoor/blob/main/backend/README.md](https://github.com/Balbinao/Startdoor/blob/main/backend/README.md)
+
+<br>
 
 ## 🛠️ **Tecnologias Utilizadas** <a name="tecnologias"></a>
 
