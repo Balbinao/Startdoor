@@ -38,6 +38,9 @@ public class ExperienciaProfissionalService {
         if (!temEmpresaSistema && !temNomeEmpresaExterna) {
             throw new IllegalArgumentException("É necessário informar uma empresa para registrar a experiência.");
         }
+        if (dto.dataFim() != null && dto.dataFim().isBefore(dto.dataInicio())) {
+            throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
+        }
 
         Estudante estudante = estudanteRepository.findById(estudanteId)
                 .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
@@ -76,6 +79,11 @@ public class ExperienciaProfissionalService {
         if (dto.idEmpresa() != null && dto.nomeEmpresa() != null && !dto.nomeEmpresa().isBlank()) {
             throw new IllegalArgumentException("Informe apenas a empresa do sistema OU o nome de uma empresa externa.");
         }
+
+        if (dto.dataFim() != null && dto.dataFim().isBefore(dto.dataInicio())) {
+            throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
+        }
+
         if (dto.tituloCargo() != null)    exp.setTituloCargo(dto.tituloCargo());
         if (dto.estadoAtuacao() != null)  exp.setEstadoAtuacao(dto.estadoAtuacao());
         if (dto.modeloTrabalho() != null) exp.setModeloTrabalho(dto.modeloTrabalho());
