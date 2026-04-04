@@ -9,6 +9,7 @@ export const MESSAGES_RESPONSE = {
     USER_ID_NOT_FOUND: 'Nenhum userId encontrado!',
     USER_ROLE_NOT_FOUND: 'Nenhum userRole encontrado!',
     USER_DELETE_ACCOUNT: 'Deseja realmente deletar a conta?',
+    REVIEW_ID_NOT_FOUND: 'Nenhum reviewId encontrado!',
   },
   ERROR: {
     SERVER: 'Parece que houve um erro no servidor!',
