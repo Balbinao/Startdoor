@@ -227,9 +227,9 @@ services:
 docker pull startdoor/startdoor-frontend:latest</code></pre>
   </li>
   <li><b>Executar:</b> <code>docker-compose up -d</code></li>
-  <li><b>Acessar:</b> Abrir <a href="http://localhost:5173">http://localhost:5173</a></li>
+  <li><b>Acessar o projeto:</b> Abrir <a href="http://localhost:5173">http://localhost:5173</a></li>
 </ol>
-<h4>Acesso:</h4>
+<h4>Como acessar:</h4>
 <table align="center">
   <tr>
     <th>🔧 Serviço</th>
