@@ -13,6 +13,7 @@ import com.example.backend.repository.EstudanteRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -96,7 +97,13 @@ public class EstudanteService {
         if (dto.biografia() != null)          estudante.setBiografia(dto.biografia());
         if (dto.paisOrigem() != null)         estudante.setPaisOrigem(dto.paisOrigem());
         if (dto.mediaNotaGeral() != null)     estudante.setMediaNotaGeral(dto.mediaNotaGeral());
-        if (dto.dataNascimento() != null)     estudante.setDataNascimento(dto.dataNascimento());
+        if (dto.dataNascimento() != null) {
+            if (dto.dataNascimento().isBlank()) {
+                estudante.setDataNascimento(null);
+            } else {
+                estudante.setDataNascimento(LocalDate.parse(dto.dataNascimento()));
+            }
+        }
         if (dto.modeloTrabalho() != null)     estudante.setModeloTrabalho(dto.modeloTrabalho());
         if (dto.estadoAtuacao() != null)      estudante.setEstadoAtuacao(dto.estadoAtuacao());
         if (dto.setorInteresse() != null)     estudante.setSetorInteresse(dto.setorInteresse());

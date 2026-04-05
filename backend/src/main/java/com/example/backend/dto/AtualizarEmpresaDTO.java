@@ -43,7 +43,7 @@ public record AtualizarEmpresaDTO(
             description = "Data de fundação",
             example = "2010-08-20"
     )
-    LocalDate dataFundacao,
+    String dataFundacao,
 
     @Schema(
             description = "Porte/Tamanho da empresa",

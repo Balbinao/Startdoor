@@ -12,6 +12,7 @@ import com.example.backend.repository.EstudanteRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -80,7 +81,13 @@ public class EmpresaService {
         if (dto.mediaSalarial() != null) empresa.setMediaSalarial(dto.mediaSalarial());
         if (dto.receitaAnual() != null)   empresa.setReceitaAnual(dto.receitaAnual());
         if (dto.tamanhoEmpresa() != null) empresa.setTamanhoEmpresa(dto.tamanhoEmpresa());
-        if (dto.dataFundacao() != null)   empresa.setDataFundacao(dto.dataFundacao());
+        if (dto.dataFundacao() != null) {
+            if (dto.dataFundacao().isBlank()) {
+                empresa.setDataFundacao(null);
+            } else {
+                empresa.setDataFundacao(LocalDate.parse(dto.dataFundacao()));
+            }
+        }
         if (dto.linkSite() != null)      empresa.setLinkSite(dto.linkSite());
         if (dto.linkLinkedin() != null)  empresa.setLinkLinkedin(dto.linkLinkedin());
         if (dto.linkGupy() != null)      empresa.setLinkGupy(dto.linkGupy());
