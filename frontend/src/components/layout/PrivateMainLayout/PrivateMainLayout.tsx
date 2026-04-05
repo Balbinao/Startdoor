@@ -18,7 +18,7 @@ export const PrivateMainLayout = () => {
       </button>
       <div className="flex w-full max-w-2xl flex-1 items-center justify-center pb-16">
         <Outlet />
-        <div className="fixed bottom-3.5 flex w-full justify-center">
+        <div className="fixed bottom-3.5 left-1/2 -translate-x-1/2">
           <MenuMain />
         </div>
       </div>

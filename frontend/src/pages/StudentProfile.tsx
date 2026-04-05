@@ -49,13 +49,13 @@ export const StudentProfile = () => {
   const { sectorsItems, getSectors } = useSector();
   const { reviewCards, getReviewCards } = useReview();
   const { getCompanies } = useCompany();
+  const { getStudent } = useStudent();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
 
   const [searchedStudent, setSearchedStudent] = useState<IStudent | null>(null);
 
-  const { getStudent } = useStudent();
 
   const hasStudentInfo =
     searchedStudent &&
