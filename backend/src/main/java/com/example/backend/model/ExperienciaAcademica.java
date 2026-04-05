@@ -1,6 +1,5 @@
 package com.example.backend.model;
 
-import com.example.backend.model.enums.ModeloTrabalho; // Vamos reaproveitar o enum que você já tem
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,9 +29,8 @@ public class ExperienciaAcademica {
     @Column(name = "estado_atuacao", length = 30, nullable = false)
     private String estadoAtuacao;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "modelo_ensino", nullable = false)
-    private ModeloTrabalho modeloEnsino;
+    private String modeloEnsino;
 
     @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;

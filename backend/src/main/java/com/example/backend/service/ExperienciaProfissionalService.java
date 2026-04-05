@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.ExpProfissionalResponseDTO;
 import com.example.backend.dto.ExperienciaProfissionalDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Empresa;
@@ -55,15 +56,12 @@ public class ExperienciaProfissionalService {
         return profissionalRepository.save(exp);
     }
 
-    @Transactional(readOnly = true)
-    public ExperienciaProfissional buscarPorId(Long id) {
-        return profissionalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Experiência profissional não encontrada."));
-    }
+
 
     @Transactional
-    public ExperienciaProfissional atualizar(Long id, ExperienciaProfissionalDTO dto) {
-        ExperienciaProfissional exp = buscarPorId(id);
+    public ExpProfissionalResponseDTO atualizar(Long id, ExperienciaProfissionalDTO dto) {
+        ExperienciaProfissional exp = profissionalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência profissional não encontrada."));
 
         if (dto.dataFim() != null && dto.dataFim().isBefore(dto.dataInicio())) {
             throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
@@ -86,13 +84,44 @@ public class ExperienciaProfissionalService {
             throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
         }
 
-        return profissionalRepository.save(exp);
+        return toResponseDTO(profissionalRepository.save(exp));
     }
 
-    public List<ExperienciaProfissional> listarPorEstudante(Long estudanteId) {
-            return profissionalRepository.findByEstudanteId(estudanteId);
+    @Transactional(readOnly = true)
+    public ExpProfissionalResponseDTO buscarPorId(Long id) {
+        ExperienciaProfissional exp = profissionalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência profissional não encontrada."));
+        return toResponseDTO(exp);
     }
 
+    @Transactional(readOnly = true)
+    public List<ExpProfissionalResponseDTO> listarPorEstudante(Long estudanteId) {
+        if (!estudanteRepository.existsById(estudanteId)) {
+            throw new ResourceNotFoundException("Estudante não encontrado.");
+        }
+        return profissionalRepository.findByEstudanteId(estudanteId)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+
+
+    private ExpProfissionalResponseDTO toResponseDTO(ExperienciaProfissional exp) {
+        return new ExpProfissionalResponseDTO(
+                exp.getId(),
+                exp.getTituloCargo(),
+                exp.getEstadoAtuacao(),
+                exp.getModeloTrabalho(),
+                exp.getDataInicio(),
+                exp.getDataFim(),
+                exp.getDescricao(),
+                exp.getCreatedAt(),
+                exp.getEstudante().getId(),
+                exp.getEstudante().getNome(),
+                exp.getEmpresa() != null ? exp.getEmpresa().getId() : null,
+                exp.getEmpresa() != null ? exp.getEmpresa().getNomeFantasia() : "Empresa não identificada"
+        );
+    }
     @Transactional
     public void remover(Long id) {
         profissionalRepository.deleteById(id);
