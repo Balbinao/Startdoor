@@ -226,11 +226,10 @@ services:
     <pre><code>docker pull startdoor/startdoor-backend:latest
 docker pull startdoor/startdoor-frontend:latest</code></pre>
   </li>
-  <li><b>Executar:</b> <code>docker-compose up -d</code></li>
+  <li><b>Executar:</b> 
+    <code>docker-compose up -d</code></li>
   <li><b>Acessar o projeto:</b>
-</ol>
-<h4>Como acessar:</h4>
-<table align="center">
+    <table align="center">
   <tr>
     <th>🔧 Serviço</th>
     <th>🌐 URL</th>
@@ -244,6 +243,7 @@ docker pull startdoor/startdoor-frontend:latest</code></pre>
     <td><a href="http://localhost:8080">http://localhost:8080</a></td>
   </tr>
 </table>
+</ol>
 <h4>Notas:</h4>
 <ul>
   <li>Todas as imagens são atualizadas automaticamente a cada push na branch <code>main</code></li>
@@ -308,10 +308,12 @@ docker pull startdoor/startdoor-frontend:latest</code></pre>
     <th>DevOps / Infra</th>
     <td>
       <a href="https://www.docker.com/"><img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
+       <a href="https://hub.docker.com/r/startdoor/startdoor-backend"><img alt="Docker Backend" src="https://img.shields.io/badge/Docker%20Backend-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
       <a href="https://git-scm.com/"><img alt="Git" src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"/></a>
     </td>
     <td>
       <a href="https://www.docker.com/"><img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
+       <a href="https://hub.docker.com/r/startdoor/startdoor-backend"><img alt="Docker Backend" src="https://img.shields.io/badge/Docker%20Backend-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
       <a href="https://git-scm.com/"><img alt="Git" src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"/></a>
     </td>
   </tr>
