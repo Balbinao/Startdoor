@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const professionalExperienceCardSchema = z
   .object({
-    empresaId: z.number({ error: 'Campo obrigatório' }).refine(val => val > 0, {
+    idEmpresa: z.number({ error: 'Campo obrigatório' }).refine(val => val > 0, {
       message: 'Campo obrigatório',
     }),
 

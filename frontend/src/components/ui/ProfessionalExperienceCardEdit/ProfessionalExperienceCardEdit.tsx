@@ -51,7 +51,7 @@ export const ProfessionalExperienceCardEdit = ({
   const form = useForm<ProfessionalExperienceCardData>({
     resolver: zodResolver(professionalExperienceCardSchema),
     defaultValues: {
-      empresaId: item?.empresaId ?? '',
+      idEmpresa: item?.idEmpresa ?? '',
       tituloCargo: item?.tituloCargo ?? '',
       estadoAtuacao: item?.estadoAtuacao ?? '',
       modeloTrabalho: item?.modeloTrabalho ?? '',
@@ -157,7 +157,7 @@ export const ProfessionalExperienceCardEdit = ({
           <FormField<ProfessionalExperienceCardData>
             form={form}
             type="select"
-            name="empresaId"
+            name="idEmpresa"
             label="Empresa"
             options={companiesOptions}
           />
@@ -187,7 +187,7 @@ export const ProfessionalExperienceCardEdit = ({
           </div>
 
           <div className="flex flex-col gap-2">
-            <p className="text-(--grey-300)">Período Escolar</p>
+            <p className="text-(--grey-300)">Período de Trabalho</p>
             <div className="flex gap-4">
               <FormField<ProfessionalExperienceCardData>
                 form={form}
