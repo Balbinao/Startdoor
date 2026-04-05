@@ -4,9 +4,9 @@ import { z } from 'zod';
 
 export const academicExperienceCardSchema = z
   .object({
-    tituloEnsino: z.string().min(1, 'Título é obrigatório').max(60),
+    tituloEnsino: z.string().min(1, 'Campo obrigatório').max(60),
 
-    nomeEscola: z.string().min(1, 'Nome da escola é obrigatório').max(60),
+    nomeEscola: z.string().min(1, 'Campo obrigatório').max(60),
 
     estadoAtuacao: z
       .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))
