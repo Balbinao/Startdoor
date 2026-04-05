@@ -307,13 +307,13 @@ docker pull startdoor/startdoor-frontend:latest</code></pre>
   <tr>
     <th>DevOps / Infra</th>
     <td>
-      <a href="https://www.docker.com/"><img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
-       <a href="https://hub.docker.com/r/startdoor/startdoor-backend"><img alt="Docker Backend" src="https://img.shields.io/badge/Docker%20Backend-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
+      <a href="https://www.docker.com/"><img alt="docker" src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
+       <a href="https://hub.docker.com/r/startdoor/startdoor-backend"><img alt="dockerhub" src="https://img.shields.io/badge/Docker%20Backend-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
       <a href="https://git-scm.com/"><img alt="Git" src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"/></a>
     </td>
     <td>
-      <a href="https://www.docker.com/"><img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
-       <a href="https://hub.docker.com/r/startdoor/startdoor-backend"><img alt="Docker Backend" src="https://img.shields.io/badge/Docker%20Backend-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
+      <a href="https://www.docker.com/"><img alt="docker" src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
+       <a href="https://hub.docker.com/r/startdoor/startdoor-backend"><img alt="dockerhub" src="https://img.shields.io/badge/Docker%20Backend-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></a>
       <a href="https://git-scm.com/"><img alt="Git" src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"/></a>
     </td>
   </tr>
