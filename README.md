@@ -20,6 +20,7 @@
 * [Recomendações com IA](#recomendacoes-com-ia)
 * [Competências Avaliadas](#competencias-avaliadas)
 * [Arquitetura Geral do Projeto](#arquitetura-geral-do-projeto)
+* [🐳 Imagens Docker](#imagens-docker)
 * [Tecnologias](#tecnologias)
 * [Contribuidores](#contribuidores)
 * [License](#license)
@@ -131,7 +132,7 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 
 <br>
 
-## 🏗️ **Arquitetura Geral do Projeto** <a name="arquitetura-geral"></a>
+## 🏗️ **Arquitetura Geral do Projeto** <a name="arquitetura-geral-do-projeto"></a>
 
 O projeto é composto por **dois diretórios**.
 
@@ -148,6 +149,49 @@ API responsável pelas regras de negócio, autenticação com **JWT** e fornecim
 
 🔗 **Mais detalhes da arquitetura do Backend:**  
 [https://github.com/Balbinao/Startdoor/blob/main/backend/README.md](https://github.com/Balbinao/Startdoor/blob/main/backend/README.md)
+
+<br>
+
+## 🐳 **Imagens Docker** <a name="imagens-docker"></a>
+
+<p>As imagens do projeto estão disponíveis no Docker Hub e são atualizadas automaticamente a cada push na branch <code>main</code>.</p>
+
+<h3>Repositórios</h3>
+
+<table align="center">
+  <tr>
+    <th>🔧 Serviço</th>
+    <th>📦 Docker Hub</th>
+    <th>📥 Comando</th>
+  </tr>
+  <tr>
+    <td><b>Backend</b></td>
+    <td><a href="https://hub.docker.com/r/startdoor/startdoor-backend">startdoor/startdoor-backend</a></td>
+    <td><code>docker pull startdoor/startdoor-backend:latest</code></td>
+  </tr>
+  <tr>
+    <td><b>Frontend</b></td>
+    <td><a href="https://hub.docker.com/r/startdoor/startdoor-frontend">startdoor/startdoor-frontend</a></td>
+    <td><code>docker pull startdoor/startdoor-frontend:latest</code></td>
+  </tr>
+</table>
+
+<h3>Tags Disponíveis</h3>
+
+<table align="center">
+  <tr>
+    <th>🏷️ Tag</th>
+    <th>📝 Descrição</th>
+  </tr>
+  <tr>
+    <td><code>latest</code></td>
+    <td>Versão mais recente da branch main</td>
+  </tr>
+  <tr>
+    <td><code>sha-&lt;commit&gt;</code></td>
+    <td>Versão específica por commit (ex: sha-a1b2c3d)</td>
+  </tr>
+</table>
 
 <br>
 
