@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEmpresaDTO;
 import com.example.backend.dto.CadastroEmpresaDTO;
+import com.example.backend.dto.EmpresaResponseDTO;
 import com.example.backend.model.Empresa;
 import com.example.backend.openapi.EmpresaControllerOpenApi;
 import com.example.backend.service.EmpresaService;
@@ -47,12 +48,12 @@ public class EmpresaController implements EmpresaControllerOpenApi {
     }
 
     @GetMapping
-    public ResponseEntity<List<Empresa>> listar() {
+    public ResponseEntity<List<EmpresaResponseDTO>> listar() {
         return ResponseEntity.ok(empresaService.listarTodas());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Empresa> buscar(@PathVariable Long id) {
+    public ResponseEntity<EmpresaResponseDTO> buscar(@PathVariable Long id) {
         return ResponseEntity.ok(empresaService.buscarPorId(id));
     }
 

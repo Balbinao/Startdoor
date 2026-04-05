@@ -3,6 +3,7 @@ package com.example.backend.openapi;
 import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEmpresaDTO;
 import com.example.backend.dto.CadastroEmpresaDTO;
+import com.example.backend.dto.EmpresaResponseDTO;
 import com.example.backend.model.Empresa;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -58,7 +59,7 @@ public interface EmpresaControllerOpenApi {
                     content = @Content
             )
     })
-    ResponseEntity<List<Empresa>> listar();
+    ResponseEntity<List<EmpresaResponseDTO>> listar();
 
     @Operation(summary = "Buscar empresa por ID")
     @ApiResponses(value = {
@@ -78,7 +79,7 @@ public interface EmpresaControllerOpenApi {
                     content = @Content
             )
     })
-    ResponseEntity<Empresa> buscar(Long id);
+    ResponseEntity<EmpresaResponseDTO> buscar(Long id);
 
 
     @Operation(summary = "Atualizar dados de uma empresa")

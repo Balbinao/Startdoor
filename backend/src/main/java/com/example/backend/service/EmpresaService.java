@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEmpresaDTO;
 import com.example.backend.dto.CadastroEmpresaDTO;
+import com.example.backend.dto.EmpresaResponseDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Empresa;
 import com.example.backend.model.Estudante;
@@ -11,6 +12,7 @@ import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,17 +57,47 @@ public class EmpresaService {
                 empresaRepository.existsByEmail(email) ||
                 adminRepository.existsByEmail(email);
     }
-    public List<Empresa> listarTodas() {
-        return empresaRepository.findAll();
+
+    @Transactional(readOnly = true)
+    public List<EmpresaResponseDTO> listarTodas() {
+        return empresaRepository.findAll()
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
-    public Empresa buscarPorId(Long id) {
-        return empresaRepository.findById(id)
+    @Transactional(readOnly = true)
+    public EmpresaResponseDTO buscarPorId(Long id) {
+        Empresa empresa = empresaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada com o ID: " + id));
+        return toResponseDTO(empresa);
     }
 
-    public void atualizar(Long id, AtualizarEmpresaDTO dto) {
-        Empresa empresa = buscarPorId(id);
+    private EmpresaResponseDTO toResponseDTO(Empresa empresa) {
+        return new EmpresaResponseDTO(
+                empresa.getId(),
+                empresa.getNomeFantasia(),
+                empresa.getCnpj(),
+                empresa.getEmail(),
+                empresa.getMediaNotaGeral(),
+                empresa.getBiografia(),
+                empresa.getPaisOrigem(),
+                empresa.getReceitaAnual(),
+                empresa.getDataFundacao(),
+                empresa.getTamanhoEmpresa(),
+                empresa.getEstadoSede(),
+                empresa.getMediaSalarial(),
+                empresa.getAreaAtuacao(),
+                empresa.getLinkSite(),
+                empresa.getLinkLinkedin(),
+                empresa.getLinkGupy(),
+                empresa.getCreatedAt()
+        );
+    }
+
+    public EmpresaResponseDTO atualizar(Long id, AtualizarEmpresaDTO dto) {
+        Empresa empresa = empresaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada."));
 
         if (dto.nomeFantasia() != null) empresa.setNomeFantasia(dto.nomeFantasia());
         if (dto.email() != null && !dto.email().equals(empresa.getEmail())) {
@@ -92,18 +124,21 @@ public class EmpresaService {
         if (dto.linkLinkedin() != null)  empresa.setLinkLinkedin(dto.linkLinkedin());
         if (dto.linkGupy() != null)      empresa.setLinkGupy(dto.linkGupy());
 
-        empresaRepository.save(empresa);
+        Empresa empresaSalva = empresaRepository.save(empresa);
+        return toResponseDTO(empresaSalva);
     }
 
+    @Transactional
     public void deletar(Long id) {
-        Empresa empresa = buscarPorId(id);
+        Empresa empresa = empresaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada."));
         empresaRepository.delete(empresa);
     }
 
     public void alterarSenha(Long id, AlterarSenhaDTO dto) {
         Empresa empresa = empresaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada"));
-//
+
 //        if (!bCryptPasswordEncoder.matches(dto.senhaAtual(), empresa.getSenha())) {
 //            throw new RuntimeException("Senha atual incorreta!");
 //        }
