@@ -60,6 +60,13 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
 
   const onDelete = async (id: number) => {
     try {
+      const confirmed = await modalMessageSafe({
+        type: 'warning',
+        message: MESSAGES_RESPONSE.WARNING.DELETE_PROFESSIONAL_EXPERIENCE,
+        shouldAcknowledge: true,
+      });
+      if (!confirmed) return;
+
       const response = await modalLoadingAuto(
         () => deleteAcademicExperienceCard(id),
         MESSAGES_LOADING.DELETE,
@@ -97,7 +104,9 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
               company => company.value === item.idEmpresa,
             )?.label;
             return name ? (
-              <span className="font-semibold text-(--grey-300)">{name}</span>
+              <span className="font-semibold text-(--grey-300)">
+                {name}
+              </span>
             ) : null;
           })()}
         </div>

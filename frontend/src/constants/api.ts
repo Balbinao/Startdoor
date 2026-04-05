@@ -27,9 +27,9 @@ export const API_CONST = {
     ACADEMIC_BY_ID: (id: number) => `/experiencias-academicas/${id}`,
     ACADEMIC_STUDENT_BY_ID: (id: number) =>
       `/experiencias-academicas/estudante/${id}`,
-    PROFESSIONAL_BY_ID: (id: number) => `/experiencias-professionais/${id}`,
+    PROFESSIONAL_BY_ID: (id: number) => `/experiencias-profissionais/${id}`,
     PROFESSIONAL_STUDENT_BY_ID: (id: number) =>
-      `/experiencias-professionais/estudante/${id}`,
+      `/experiencias-profissionais/estudante/${id}`,
   },
   REVIEW: {
     BY_ID: (id: number) => `/avaliacoes/${id}`,

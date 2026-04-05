@@ -220,7 +220,7 @@ export const UserBanner = () => {
 
       const confirmed = await modalMessageSafe({
         type: 'warning',
-        message: MESSAGES_RESPONSE.WARNING.USER_DELETE_ACCOUNT,
+        message: MESSAGES_RESPONSE.WARNING.DELETE_ACCOUNT,
         shouldAcknowledge: true,
       });
       if (!confirmed) return;
