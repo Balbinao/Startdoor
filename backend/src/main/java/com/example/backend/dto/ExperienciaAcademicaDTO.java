@@ -34,7 +34,7 @@ public record ExperienciaAcademicaDTO (
                 description = "Modelo de ensino",
                 example = "Presencial"
         )
-        @NotNull ModeloTrabalho modeloEnsino,
+        @NotNull String modeloEnsino,
 
         @Schema(
                 description = "Data de início dos estudos",

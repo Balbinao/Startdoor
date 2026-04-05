@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.ExpProfissionalResponseDTO;
 import com.example.backend.dto.ExperienciaProfissionalDTO;
 import com.example.backend.model.ExperienciaProfissional;
 import com.example.backend.openapi.ExperienciaProfissionalControllerOpenApi;
@@ -31,12 +32,12 @@ public class ExperienciaProfissionalController implements ExperienciaProfissiona
     }
 
     @GetMapping("/estudante/{estudanteId}")
-    public ResponseEntity<List<ExperienciaProfissional>> listarPorEstudante(@PathVariable Long estudanteId) {
+    public ResponseEntity<List<ExpProfissionalResponseDTO>> listarPorEstudante(@PathVariable Long estudanteId) {
         return ResponseEntity.ok(service.listarPorEstudante(estudanteId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExperienciaProfissional> buscar(@PathVariable Long id) {
+    public ResponseEntity<ExpProfissionalResponseDTO> buscar(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 

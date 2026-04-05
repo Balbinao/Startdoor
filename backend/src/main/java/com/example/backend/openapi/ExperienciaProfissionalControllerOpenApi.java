@@ -1,5 +1,6 @@
 package com.example.backend.openapi;
 
+import com.example.backend.dto.ExpProfissionalResponseDTO;
 import com.example.backend.dto.ExperienciaProfissionalDTO;
 import com.example.backend.model.ExperienciaProfissional;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,10 +42,10 @@ public interface ExperienciaProfissionalControllerOpenApi {
                     content = @Content(schema = @Schema(implementation = ExperienciaProfissional.class))
             )
     })
-    ResponseEntity<List<ExperienciaProfissional>> listarPorEstudante(Long estudanteId);
+    ResponseEntity<List<ExpProfissionalResponseDTO>> listarPorEstudante(Long estudanteId);
 
     @Operation(summary = "Buscar experiência profissional por ID")
-    ResponseEntity<ExperienciaProfissional> buscar(Long id);
+    ResponseEntity<ExpProfissionalResponseDTO> buscar(Long id);
 
     @Operation(summary = "Atualizar experiência profissional")
     @ApiResponses(value = {

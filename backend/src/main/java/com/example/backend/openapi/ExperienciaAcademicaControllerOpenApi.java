@@ -1,5 +1,6 @@
 package com.example.backend.openapi;
 
+import com.example.backend.dto.ExpAcademicaResponseDTO;
 import com.example.backend.dto.ExperienciaAcademicaDTO;
 import com.example.backend.model.ExperienciaAcademica;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,14 +48,14 @@ public interface ExperienciaAcademicaControllerOpenApi  {
             ),
             @ApiResponse(responseCode = "404", description = "Estudante não encontrado")
     })
-    ResponseEntity<List<ExperienciaAcademica>> listarPorEstudante(Long estudanteId);
+    ResponseEntity<List<ExpAcademicaResponseDTO>> listarPorEstudante(Long estudanteId);
 
     @Operation(summary = "Buscar experiência acadêmica por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Encontrada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Experiência não encontrada")
     })
-    ResponseEntity<ExperienciaAcademica> buscar(Long id);
+    ResponseEntity<ExpAcademicaResponseDTO> buscar(Long id);
 
     @Operation(summary = "Atualizar experiência acadêmica")
     @ApiResponses(value = {

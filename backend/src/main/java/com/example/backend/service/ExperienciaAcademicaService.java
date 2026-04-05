@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.ExpAcademicaResponseDTO;
 import com.example.backend.dto.ExperienciaAcademicaDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Estudante;
@@ -46,35 +47,43 @@ public class ExperienciaAcademicaService {
     }
 
     @Transactional(readOnly = true)
-    public List<ExperienciaAcademica> listarPorEstudante(Long estudanteId) {
+    public List<ExpAcademicaResponseDTO> listarPorEstudante(Long estudanteId) {
         if (!estudanteRepository.existsById(estudanteId)) {
             throw new ResourceNotFoundException("Estudante não encontrado.");
         }
-        return academicaRepository.findByEstudanteId(estudanteId);
+        return academicaRepository.findByEstudanteId(estudanteId)
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
-    public ExperienciaAcademica buscarPorId(Long id) {
-        return academicaRepository.findById(id)
+    public ExpAcademicaResponseDTO buscarPorId(Long id) {
+        ExperienciaAcademica exp = academicaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada."));
+
+        return toResponseDTO(exp);
     }
 
     @Transactional
-    public ExperienciaAcademica atualizar(Long id, ExperienciaAcademicaDTO dto) {
-        ExperienciaAcademica exp = buscarPorId(id);
+    public ExpAcademicaResponseDTO atualizar(Long id, ExperienciaAcademicaDTO dto) {
+        ExperienciaAcademica exp = academicaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Experiência acadêmica não encontrada."));
+
         if (dto.tituloEnsino() != null)  exp.setTituloEnsino(dto.tituloEnsino());
         if (dto.nomeEscola() != null)    exp.setNomeEscola(dto.nomeEscola());
         if (dto.estadoAtuacao() != null) exp.setEstadoAtuacao(dto.estadoAtuacao());
         if (dto.modeloEnsino() != null)  exp.setModeloEnsino(dto.modeloEnsino());
         if (dto.dataInicio() != null)    exp.setDataInicio(dto.dataInicio());
         if (dto.descricao() != null)     exp.setDescricao(dto.descricao());
+
         exp.setDataFim(dto.dataFim());
 
         if (exp.getDataFim() != null && exp.getDataFim().isBefore(exp.getDataInicio())) {
             throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
         }
-
-        return academicaRepository.save(exp);
+        ExperienciaAcademica expSalva = academicaRepository.save(exp);
+        return toResponseDTO(expSalva);
     }
 
     @Transactional
@@ -83,5 +92,21 @@ public class ExperienciaAcademicaService {
             throw new ResourceNotFoundException("Experiência acadêmica não encontrada.");
         }
         academicaRepository.deleteById(id);
+    }
+
+    private ExpAcademicaResponseDTO toResponseDTO(ExperienciaAcademica exp) {
+        return new ExpAcademicaResponseDTO(
+                exp.getId(),
+                exp.getTituloEnsino(),
+                exp.getNomeEscola(),
+                exp.getEstadoAtuacao(),
+                exp.getModeloEnsino(),
+                exp.getDataInicio(),
+                exp.getDataFim(),
+                exp.getDescricao(),
+                exp.getCreatedAt(),
+                exp.getEstudante().getId(),
+                exp.getEstudante().getNome()
+        );
     }
 }

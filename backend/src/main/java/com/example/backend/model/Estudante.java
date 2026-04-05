@@ -85,9 +85,11 @@ public class Estudante implements UserDetails {
     private EstudanteNotaCondi notaCondicional;
 
     @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ExperienciaAcademica> experienciasAcademicas;
 
     @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ExperienciaProfissional> experienciasProfissionais;
 
     @Override
