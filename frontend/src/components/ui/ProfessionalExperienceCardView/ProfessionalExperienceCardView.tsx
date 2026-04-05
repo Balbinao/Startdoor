@@ -101,7 +101,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
           <span className="text-lg font-semibold">{item.tituloCargo}</span>
           {(() => {
             const name = companiesOptions.find(
-              company => company.value === item.empresaId,
+              company => company.value === item.idEmpresa,
             )?.label;
             return name ? (
               <span className="font-semibold text-(--grey-300)">{name}</span>

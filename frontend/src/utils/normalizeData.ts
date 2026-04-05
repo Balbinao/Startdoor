@@ -178,7 +178,7 @@ export const normalizeProfessionalExperienceUpdate = (
   data: ProfessionalExperienceCardData,
 ): IProfessionalExperiencePayload => {
   return {
-    idEmpresa: data.empresaId,
+    idEmpresa: data.idEmpresa,
     tituloCargo: data.tituloCargo,
     estadoAtuacao: data.estadoAtuacao,
     modeloTrabalho: data.modeloTrabalho,
