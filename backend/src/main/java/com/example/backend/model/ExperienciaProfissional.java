@@ -1,6 +1,5 @@
 package com.example.backend.model;
 
-import com.example.backend.model.enums.ModeloTrabalho;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
