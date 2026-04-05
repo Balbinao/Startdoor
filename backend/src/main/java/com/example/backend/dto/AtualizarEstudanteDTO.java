@@ -50,7 +50,7 @@ public record AtualizarEstudanteDTO(
             description = "Data de nascimento",
             example = "2000-05-15"
     )
-    LocalDate dataNascimento,
+    String dataNascimento,
 
     @Schema(
             description = "Preferência de modelo de trabalho",
