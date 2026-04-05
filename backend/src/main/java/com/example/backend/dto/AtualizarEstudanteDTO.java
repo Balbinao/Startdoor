@@ -1,11 +1,9 @@
 package com.example.backend.dto;
 
-import com.example.backend.model.enums.ModeloTrabalho;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Schema(description = "Dados para atualização de um estudante (todos os campos são opcionais)")
 public record AtualizarEstudanteDTO(

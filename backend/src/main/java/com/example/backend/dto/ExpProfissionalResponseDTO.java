@@ -14,7 +14,7 @@ public record ExpProfissionalResponseDTO(
         LocalDateTime createdAt,
         Long estudanteId,
         String nomeEstudante,
-        Long empresaId,
+        Long idEmpresa,
         String nomeEmpresaFantasia
 ) {
 }
