@@ -21,6 +21,7 @@
 * [Competências Avaliadas](#competencias-avaliadas)
 * [Arquitetura Geral do Projeto](#arquitetura-geral-do-projeto)
 * [🐳 Imagens Docker](#imagens-docker)
+    * [Como Usar](#como-usar)    
 * [Tecnologias](#tecnologias)
 * [Contribuidores](#contribuidores)
 * [License](#license)
@@ -193,6 +194,62 @@ API responsável pelas regras de negócio, autenticação com **JWT** e fornecim
   </tr>
 </table>
 
+<br>
+
+<h3>🚀 Como Usar</h3> <a name="como-usar"></a>
+<p>As imagens do projeto podem ser executadas em qualquer ambiente com <b>Docker Desktop</b> instalado, sem necessidade de instalar Java, Node.js ou configurar banco de dados manualmente.</p>
+<h4>Fluxo de Uso:</h4>
+<ol>
+  <li><b>Pré-requisito:</b> Instalar o <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a></li>
+  <li><b>Criar arquivo</b> <code>docker-compose.yml</code> com o conteúdo abaixo</li>
+  <h4>docker-compose.yml:</h4>
+<pre><code>version: '3.8'
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: "0000"
+      MYSQL_DATABASE: startdoor
+    ports:
+      - "3307:3306"
+  backend:
+    image: startdoor/startdoor-backend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  frontend:
+    image: startdoor/startdoor-frontend:latest
+    ports:
+      - "5173:5173"</code></pre>
+  <li><b>Baixar imagens:</b>
+    <pre><code>docker pull startdoor/startdoor-backend:latest
+docker pull startdoor/startdoor-frontend:latest</code></pre>
+  </li>
+  <li><b>Executar:</b> <code>docker-compose up -d</code></li>
+  <li><b>Acessar:</b> Abrir <a href="http://localhost:5173">http://localhost:5173</a></li>
+</ol>
+<h4>Acesso:</h4>
+<table align="center">
+  <tr>
+    <th>🔧 Serviço</th>
+    <th>🌐 URL</th>
+  </tr>
+  <tr>
+    <td><b>Frontend</b></td>
+    <td><a href="http://localhost:5173">http://localhost:5173</a></td>
+  </tr>
+  <tr>
+    <td><b>Backend API</b></td>
+    <td><a href="http://localhost:8080">http://localhost:8080</a></td>
+  </tr>
+</table>
+<h4>Notas:</h4>
+<ul>
+  <li>Todas as imagens são atualizadas automaticamente a cada push na branch <code>main</code></li>
+  <li>Para atualizar, basta rodar <code>docker-compose pull && docker-compose up -d</code></li>
+  <li>O banco MySQL é criado automaticamente na primeira execução</li>
+</ul>
 <br>
 
 ## 🛠️ **Tecnologias Utilizadas** <a name="tecnologias"></a>
