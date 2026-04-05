@@ -229,22 +229,27 @@ export const StudentProfile = () => {
           </div>
         </div>
       )}
-      <div className="flex w-full justify-center">
-        <div className="flex w-full max-w-xl flex-col gap-6">
-          <h2 className="text-2xl font-semibold">Experiência Acadêmica</h2>
-          {academicExperienceCards.map(item => (
-            <AcademicExperienceCard key={item.id} item={item} />
-          ))}
+      {academicExperienceCards.length > 0 && (
+        <div className="flex w-full justify-center">
+          <div className="flex w-full max-w-xl flex-col gap-6">
+            <h2 className="text-2xl font-semibold">Experiência Acadêmica</h2>
+            {academicExperienceCards.map(item => (
+              <AcademicExperienceCard key={item.id} item={item} />
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="flex w-full justify-center">
-        <div className="flex w-full max-w-xl flex-col gap-6">
-          <h2 className="text-2xl font-semibold">Experiência Profissional</h2>
-          {professionalExperienceCards.map(item => (
-            <ProfessionalExperienceCard key={item.id} item={item} />
-          ))}
+      )}
+
+      {professionalExperienceCards.length > 0 && (
+        <div className="flex w-full justify-center">
+          <div className="flex w-full max-w-xl flex-col gap-6">
+            <h2 className="text-2xl font-semibold">Experiência Profissional</h2>
+            {professionalExperienceCards.map(item => (
+              <ProfessionalExperienceCard key={item.id} item={item} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <div className="flex w-full flex-col gap-8">
         <div className="flex items-center gap-8">
           <span className="text-lg font-semibold whitespace-nowrap">

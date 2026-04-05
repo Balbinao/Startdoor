@@ -5,21 +5,17 @@ import { AcademicExperienceCardView } from '../AcademicExperienceCardView';
 
 interface Props {
   item: IAcademicExperience;
-  isNew?: boolean;
-  onRemove?: () => void;
 }
 
-export const AcademicExperienceCard = ({ item, isNew, onRemove }: Props) => {
-  const [isEditing, setIsEditing] = useState(isNew ?? false);
+export const AcademicExperienceCard = ({ item }: Props) => {
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div className="w-full max-w-xl">
       {isEditing ? (
         <AcademicExperienceCardEdit
           item={item}
-          isNew={isNew}
           onEdit={() => setIsEditing(false)}
-          onRemove={onRemove}
         />
       ) : (
         <AcademicExperienceCardView

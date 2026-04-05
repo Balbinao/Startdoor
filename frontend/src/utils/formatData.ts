@@ -43,7 +43,10 @@ export function formatDDMMMYYYY(dateString: string): string {
 }
 
 export const formatDateWithAge = (dateString: string): string => {
-  const date = new Date(dateString);
+  const [yearNumber, monthNumber, dayNumber] = dateString
+    .split('-')
+    .map(Number);
+  const date = new Date(yearNumber, monthNumber - 1, dayNumber);
 
   if (isNaN(date.getTime())) return '';
 
@@ -62,5 +65,5 @@ export const formatDateWithAge = (dateString: string): string => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
 
-  return `${day}/${month}/${year} ${age ? `(${age} anos)` : ''}`;
+  return `${day}/${month}/${year} ${age ? `(${age} ${age > 1 ? 'anos' : 'ano'})` : ''}`;
 };

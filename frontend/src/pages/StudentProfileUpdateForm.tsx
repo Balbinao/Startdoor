@@ -2,10 +2,12 @@ import { Plus } from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { AcademicExperienceCard } from '@components/ui/AcademicExperienceCard';
+import { AcademicExperienceCardEdit } from '@components/ui/AcademicExperienceCardEdit';
 import { ButtonPill } from '@components/ui/ButtonPill';
 import { ButtonSquare } from '@components/ui/ButtonSquare';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { ProfessionalExperienceCard } from '@components/ui/ProfessionalExperienceCard';
+import { ProfessionalExperienceCardEdit } from '@components/ui/ProfessionalExperienceCardEdit';
 import { UserBanner } from '@components/ui/UserBanner';
 import {
   DROPDOWN_VALUES_CONST,
@@ -66,11 +68,12 @@ export const StudentProfileUpdateForm = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
-  const [newAcademicExperienceCards, setNewAcademicExperienceCards] = useState<
-    IAcademicExperience[]
-  >([]);
-  const [newProfessionalExperienceCards, setNewProfessionalExperienceCards] =
-    useState<IProfessionalExperience[]>([]);
+  const [isCreatingAcademicExperience, setIsCreatingAcademicExperience] =
+    useState(false);
+  const [
+    isCreatingProfessionalExperience,
+    setIsCreatingProfessionalExperience,
+  ] = useState(false);
 
   const currentUserId = getUserId();
   if (currentUserId && currentUserId !== userId) {
@@ -156,48 +159,6 @@ export const StudentProfileUpdateForm = () => {
 
     fetch();
   }, []);
-
-  const handleAddNewAcademicExperienceCard = () => {
-    const newCard: IAcademicExperience = {
-      id: Date.now(),
-      idEstudante: Number(userId),
-      tituloEnsino: '',
-      nomeEscola: '',
-      estadoAtuacao: '',
-      modeloEnsino: '',
-      dataInicio: '',
-      dataFim: '',
-      descricao: '',
-    };
-
-    setNewAcademicExperienceCards(prev => [...prev, newCard]);
-  };
-
-  const handleAddNewProfessionalExperienceCard = () => {
-    const newCard: IProfessionalExperience = {
-      id: Date.now(),
-      idEmpresa: 0,
-      idEstudante: Number(userId),
-      tituloCargo: '',
-      estadoAtuacao: '',
-      modeloTrabalho: '',
-      dataInicio: '',
-      dataFim: '',
-      descricao: '',
-    };
-
-    setNewProfessionalExperienceCards(prev => [...prev, newCard]);
-  };
-
-  const handleRemoveNewAcademicExperienceCard = (id: number) => {
-    setNewAcademicExperienceCards(prev => prev.filter(card => card.id !== id));
-  };
-
-  const handleRemoveNewProfessionalExperienceCard = (id: number) => {
-    setNewProfessionalExperienceCards(prev =>
-      prev.filter(card => card.id !== id),
-    );
-  };
 
   const onSubmit = async (data: StudentProfileUpdateData) => {
     try {
@@ -414,34 +375,32 @@ export const StudentProfileUpdateForm = () => {
             <AcademicExperienceCard key={item.id} item={item} />
           ))}
 
-          {newAcademicExperienceCards.map(item => (
-            <AcademicExperienceCard
-              key={item.id}
-              item={item}
+          {isCreatingAcademicExperience && (
+            <AcademicExperienceCardEdit
+              item={{} as IAcademicExperience}
               isNew
-              onRemove={() => handleRemoveNewAcademicExperienceCard(item.id)}
+              onRemove={() => setIsCreatingAcademicExperience(false)}
             />
-          ))}
+          )}
 
           {academicExperienceCards.length === 0 &&
-            newAcademicExperienceCards.length === 0 && (
+            !isCreatingAcademicExperience && (
               <span className="empty-message">
                 Nenhuma experiêcia acadêmica encontrada...
               </span>
             )}
 
-          {academicExperienceCards.length <= 5 &&
-            newAcademicExperienceCards.length === 0 && (
-              <div className="flex justify-end">
-                <ButtonSquare
-                  type="button"
-                  text="Adicionar"
-                  isSubmitting={isSubmitting}
-                  iconLeft={<Plus width={22} height={22} />}
-                  onClick={handleAddNewAcademicExperienceCard}
-                />
-              </div>
-            )}
+          {academicExperienceCards.length < 5 && (
+            <div className="flex justify-end">
+              <ButtonSquare
+                type="button"
+                text="Adicionar"
+                isSubmitting={isSubmitting}
+                iconLeft={<Plus width={22} height={22} />}
+                onClick={() => setIsCreatingAcademicExperience(true)}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -452,36 +411,32 @@ export const StudentProfileUpdateForm = () => {
             <ProfessionalExperienceCard key={item.id} item={item} />
           ))}
 
-          {newProfessionalExperienceCards.map(item => (
-            <ProfessionalExperienceCard
-              key={item.id}
-              item={item}
+          {isCreatingProfessionalExperience && (
+            <ProfessionalExperienceCardEdit
+              item={{} as IProfessionalExperience}
               isNew
-              onRemove={() =>
-                handleRemoveNewProfessionalExperienceCard(item.id)
-              }
+              onRemove={() => setIsCreatingProfessionalExperience(false)}
             />
-          ))}
+          )}
 
           {professionalExperienceCards.length === 0 &&
-            newProfessionalExperienceCards.length === 0 && (
+            !isCreatingProfessionalExperience && (
               <span className="empty-message">
-                Nenhuma experiêcia acadêmica encontrada...
+                Nenhuma experiêcia profissional encontrada...
               </span>
             )}
 
-          {professionalExperienceCards.length <= 5 &&
-            newAcademicExperienceCards.length === 0 && (
-              <div className="flex justify-end">
-                <ButtonSquare
-                  type="button"
-                  text="Adicionar"
-                  isSubmitting={isSubmitting}
-                  iconLeft={<Plus width={22} height={22} />}
-                  onClick={handleAddNewProfessionalExperienceCard}
-                />
-              </div>
-            )}
+          {professionalExperienceCards.length < 5 && (
+            <div className="flex justify-end">
+              <ButtonSquare
+                type="button"
+                text="Adicionar"
+                isSubmitting={isSubmitting}
+                iconLeft={<Plus width={22} height={22} />}
+                onClick={() => setIsCreatingProfessionalExperience(true)}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

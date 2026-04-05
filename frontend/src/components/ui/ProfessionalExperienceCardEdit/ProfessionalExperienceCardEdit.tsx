@@ -25,7 +25,7 @@ import { SupportButton } from '../SupportButton';
 
 interface Props {
   item: IProfessionalExperience;
-  onEdit: () => void;
+  onEdit?: () => void;
   isNew?: boolean;
   onRemove?: () => void;
 }
@@ -93,6 +93,9 @@ export const ProfessionalExperienceCardEdit = ({
           message,
           shouldBlockProcess: false,
         });
+
+        onRemove?.();
+
         await modalLoadingAuto(
           () => getProfessionalExperienceCards(Number(userId)),
           MESSAGES_LOADING.GET,
@@ -115,8 +118,11 @@ export const ProfessionalExperienceCardEdit = ({
         message,
         shouldBlockProcess: false,
       });
+
+      onEdit?.();
+
       await modalLoadingAuto(
-        () => getProfessionalExperienceCards(Number(userId)),
+        () => getProfessionalExperienceCards(item.id),
         MESSAGES_LOADING.GET,
       );
     } catch (error: unknown) {
@@ -143,8 +149,8 @@ export const ProfessionalExperienceCardEdit = ({
             form={form}
             type="text"
             name="tituloCargo"
-            label="Título do Ensino"
-            placeholder="Informe o título do ensino..."
+            label="Título do Estágio"
+            placeholder="Informe o título do estágio..."
             maxLength={60}
           />
 
@@ -212,10 +218,10 @@ export const ProfessionalExperienceCardEdit = ({
               text="Cancelar"
               isSubmitting={isSubmitting}
               onClick={() => {
-                if (isNew && onRemove) {
-                  onRemove();
+                if (isNew) {
+                  onRemove?.();
                 } else {
-                  onEdit();
+                  onEdit?.();
                 }
               }}
             />

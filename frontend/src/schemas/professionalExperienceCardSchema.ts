@@ -43,7 +43,7 @@ export const professionalExperienceCardSchema = z
         message: 'Data fim inválida',
       }),
 
-    descricao: z.string(),
+    descricao: z.string().min(16, 'Precisa ter pelo menos 16 caracteres'),
   })
   .refine(
     data => {
