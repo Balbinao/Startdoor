@@ -7,12 +7,20 @@ import {
   Pin,
   Star,
 } from '@assets/icons';
+import { FormField } from '@components/layout/FormField/FormField';
+import { ReviewCard } from '@components/ui/ReviewCard';
 import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
-import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
+import {
+  DROPDOWN_VALUES_CONST,
+  MESSAGES_LOADING,
+  MESSAGES_RESPONSE,
+} from '@constants';
 import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useReview } from '@hooks/useReview';
+import { useSector } from '@hooks/useSector';
 import type { ICompany } from '@models/companyData.types';
 import { formatDateWithAge } from '@utils/formatData';
 import { useEffect, useState } from 'react';
@@ -27,12 +35,15 @@ export const CompanyProfile = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
 
+  const { sectorsItems, getSectors } = useSector();
+
+  const { reviewCards, getReviewCards } = useReview();
+  const { getCompany } = useCompany();
+
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
 
   const [searchedCompany, setSearchedCompany] = useState<ICompany | null>(null);
-
-  const { getCompany } = useCompany();
 
   const hasCompanyInfo =
     searchedCompany &&
@@ -48,15 +59,21 @@ export const CompanyProfile = () => {
     const fetch = async () => {
       try {
         setIsLoading(true);
-        if (userId) {
-          await modalLoadingAuto(
-            async () => setSearchedCompany(await getCompany(Number(userId))),
-            MESSAGES_LOADING.GET,
-          );
-          setIsError(false);
-        } else {
+
+        if (!userId) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
+
+        await modalLoadingAuto(
+          async () => setSearchedCompany(await getCompany(Number(userId))),
+          MESSAGES_LOADING.GET,
+        );
+        await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
+        await modalLoadingAuto(
+          () => getReviewCards(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
+        setIsError(false);
       } catch (error: unknown) {
         await modalMessageError(error);
       } finally {
@@ -185,6 +202,41 @@ export const CompanyProfile = () => {
           </div>
         </div>
       )}
+      <div className="flex w-full flex-col gap-8">
+        <div className="flex items-center gap-8">
+          <span className="text-lg font-semibold whitespace-nowrap">
+            4 Reviews
+          </span>
+
+          <div className="flex flex-1 gap-4">
+            <span className="flex-1">
+              <FormField
+                type="select"
+                name="sortSetor"
+                options={sectorsItems}
+              />
+            </span>
+            <span className="w-56">
+              <FormField
+                type="select"
+                name="sortOrder"
+                options={DROPDOWN_VALUES_CONST.REVIEWS_SORT.map(option => ({
+                  ...option,
+                }))}
+                onChange={(selectedValue: string | number) =>
+                  console.log(selectedValue)
+                }
+              />
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          {reviewCards.map(item => (
+            <ReviewCard item={item} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

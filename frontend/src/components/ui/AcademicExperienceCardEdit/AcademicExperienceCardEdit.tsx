@@ -24,8 +24,8 @@ import { SupportButton } from '../SupportButton';
 
 interface Props {
   item: IAcademicExperience;
-  onEdit: () => void;
   isNew?: boolean;
+  onEdit?: () => void;
   onRemove?: () => void;
 }
 
@@ -88,6 +88,9 @@ export const AcademicExperienceCardEdit = ({
           message,
           shouldBlockProcess: false,
         });
+
+        onRemove?.();
+
         await modalLoadingAuto(
           () => getAcademicExperienceCards(Number(userId)),
           MESSAGES_LOADING.GET,
@@ -97,7 +100,7 @@ export const AcademicExperienceCardEdit = ({
 
       // Alterar experiencia academica
       const response = await modalLoadingAuto(
-        () => updateAcademicExperienceCard(Number(userId), academicExperience),
+        () => updateAcademicExperienceCard(item.id, academicExperience),
         MESSAGES_LOADING.UPDATE,
       );
       const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
@@ -106,6 +109,9 @@ export const AcademicExperienceCardEdit = ({
         message,
         shouldBlockProcess: false,
       });
+
+      onEdit?.();
+
       await modalLoadingAuto(
         () => getAcademicExperienceCards(Number(userId)),
         MESSAGES_LOADING.GET,
@@ -204,10 +210,10 @@ export const AcademicExperienceCardEdit = ({
               text="Cancelar"
               isSubmitting={isSubmitting}
               onClick={() => {
-                if (isNew && onRemove) {
-                  onRemove();
+                if (isNew) {
+                  onRemove?.();
                 } else {
-                  onEdit();
+                  onEdit?.();
                 }
               }}
             />

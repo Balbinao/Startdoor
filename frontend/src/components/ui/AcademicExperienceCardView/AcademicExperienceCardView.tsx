@@ -58,6 +58,13 @@ export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
 
   const onDelete = async (id: number) => {
     try {
+      const confirmed = await modalMessageSafe({
+        type: 'warning',
+        message: MESSAGES_RESPONSE.WARNING.DELETE_ACADEMIC_EXPERIENCE,
+        shouldAcknowledge: true,
+      });
+      if (!confirmed) return;
+
       const response = await modalLoadingAuto(
         () => deleteAcademicExperienceCard(id),
         MESSAGES_LOADING.DELETE,
