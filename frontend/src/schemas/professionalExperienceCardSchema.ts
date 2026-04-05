@@ -4,11 +4,11 @@ import { z } from 'zod';
 
 export const professionalExperienceCardSchema = z
   .object({
-    idEmpresa: z.number().refine(val => val > 0, {
-      message: 'Empresa é obrigatória',
+    empresaId: z.number({ error: 'Campo obrigatório' }).refine(val => val > 0, {
+      message: 'Campo obrigatório',
     }),
 
-    tituloCargo: z.string().min(1, 'Título é obrigatório').max(60),
+    tituloCargo: z.string().min(1, 'Campo obrigatório').max(60),
 
     estadoAtuacao: z
       .enum(extractSelectOptionValue(DROPDOWN_VALUES_CONST.ESTADO_ATUACAO))

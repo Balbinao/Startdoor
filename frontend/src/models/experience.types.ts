@@ -25,7 +25,7 @@ export interface IAcademicExperiencePayload {
 export interface IProfessionalExperience {
   id: number;
   idEstudante: number;
-  idEmpresa: number;
+  empresaId: number;
   tituloCargo: string;
   estadoAtuacao: (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value'];
   modeloTrabalho: (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value'];

@@ -31,7 +31,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
   const { getUserId } = useAuth();
 
-  const { getAcademicExperienceCards, deleteAcademicExperienceCard } =
+  const { getProfessionalExperienceCards, deleteProfessionalExperienceCard } =
     useExperience();
   const { companiesOptions } = useCompany();
 
@@ -68,7 +68,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
       if (!confirmed) return;
 
       const response = await modalLoadingAuto(
-        () => deleteAcademicExperienceCard(id),
+        () => deleteProfessionalExperienceCard(id),
         MESSAGES_LOADING.DELETE,
       );
       const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE;
@@ -78,7 +78,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
         shouldBlockProcess: false,
       });
       await modalLoadingAuto(
-        () => getAcademicExperienceCards(Number(userId)),
+        () => getProfessionalExperienceCards(Number(userId)),
         MESSAGES_LOADING.GET,
       );
     } catch (error: unknown) {
@@ -101,12 +101,10 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
           <span className="text-lg font-semibold">{item.tituloCargo}</span>
           {(() => {
             const name = companiesOptions.find(
-              company => company.value === item.idEmpresa,
+              company => company.value === item.empresaId,
             )?.label;
             return name ? (
-              <span className="font-semibold text-(--grey-300)">
-                {name}
-              </span>
+              <span className="font-semibold text-(--grey-300)">{name}</span>
             ) : null;
           })()}
         </div>
@@ -122,7 +120,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
             </div>
 
             <div
-              title={HINTS_CONST.EDIT}
+              title={HINTS_CONST.DELETE}
               onClick={() => onDelete(item.id)}
               className="cursor-pointer p-1 text-(--blue-100) opacity-70 transition-opacity hover:opacity-100"
             >

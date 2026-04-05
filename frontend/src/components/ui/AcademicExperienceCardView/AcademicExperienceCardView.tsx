@@ -109,7 +109,7 @@ export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
             </div>
 
             <div
-              title={HINTS_CONST.EDIT}
+              title={HINTS_CONST.DELETE}
               onClick={() => onDelete(item.id)}
               className="cursor-pointer p-1 text-(--blue-100) opacity-70 transition-opacity hover:opacity-100"
             >
