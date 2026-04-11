@@ -7,6 +7,7 @@ import { ROUTES_CONST } from '@constants';
 import { CompanyProfile } from '@pages/CompanyProfile';
 import { CompanyProfileUpdateForm } from '@pages/CompanyProfileUpdateForm';
 import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
+import { ReviewForm } from '@pages/ReviewForm';
 import { StudentProfile } from '@pages/StudentProfile';
 import { StudentProfileUpdateForm } from '@pages/StudentProfileUpdateForm';
 import { StudentRegistrationForm } from '@pages/StudentRegistrationForm';
@@ -62,7 +63,7 @@ function App() {
               }
             />
 
-            {/* <Route
+            <Route
               path={ROUTES_CONST.REVIEW.REVIEW_UPDADE_URL}
               element={
                 <OwnerRoute>
@@ -77,7 +78,7 @@ function App() {
                   <ReviewForm />
                 </OwnerRoute>
               }
-            /> */}
+            />
 
             <Route
               path={ROUTES_CONST.COMPANY.PROFILE_URL}

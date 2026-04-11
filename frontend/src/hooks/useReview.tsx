@@ -1,5 +1,5 @@
 import { useStore } from '@contexts/store/useStore';
-import type { IReviewCard } from '@models/review.types';
+import type { IReview, IReviewCard } from '@models/review.types';
 import type { ReviewData } from '@schemas/reviewSchema';
 import { reviewService } from '@services/reviewService';
 
@@ -60,6 +60,35 @@ export const useReview = () => {
     },
   ];
 
+  const mockReview: IReview = {
+    id: 1,
+    idEstudante: 123,
+    idEmpresa: 1,
+    idSetor: 2,
+    estadoAtuacao: 'São Paulo',
+    modeloTrabalho: 'Presencial',
+    dataInicio: '2023-01-01',
+    dataFim: '2023-12-31',
+    tituloCargo: 'Desenvolvedor Frontend',
+    textoAvaliacao:
+      'Ótima experiência, com bastante aprendizado e suporte da equipe.',
+    salarioMin: 1500,
+    salarioMax: 3000,
+    anonima: 1,
+    ambiente: 4,
+    aprendizado: 5,
+    beneficios: 3,
+    cultura: 4,
+    efetivacao: 3,
+    entrevista: 4,
+    feedback: 5,
+    infraestrutura: 4,
+    integracao: 5,
+    remuneracao: 3,
+    rotina: 4,
+    lideranca: 5,
+  };
+
   const getReviewCards = async (id: number) => {
     try {
       console.log(id);
@@ -76,7 +105,8 @@ export const useReview = () => {
 
   const getReview = async (id: number) => {
     try {
-      const response = await reviewService.getReview(id);
+      // const response = await reviewService.getReview(id);
+      const response = mockReview;
       reviewStore.setReview(response);
 
       return response;

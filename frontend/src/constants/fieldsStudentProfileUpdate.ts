@@ -8,7 +8,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'ambiente',
       label: 'Ambiente',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -16,7 +16,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'aprendizado',
       label: 'Aprendizado',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -24,7 +24,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'beneficios',
       label: 'Benefícios',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -32,7 +32,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'cultura',
       label: 'Cultura',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -40,7 +40,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'efetivacao',
       label: 'Efetivação',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -48,7 +48,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'entrevista',
       label: 'Entrevista',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -56,7 +56,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'feedback',
       label: 'Feedback',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -64,7 +64,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'infraestrutura',
       label: 'Infraestrutura',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -72,7 +72,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'integracao',
       label: 'Integração',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -80,7 +80,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'remuneracao',
       label: 'Remuneração',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -88,7 +88,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'rotina',
       label: 'Rotina',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
@@ -96,7 +96,7 @@ export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpda
       type: 'select',
       name: 'lideranca',
       label: 'Liderança',
-      options: DROPDOWN_VALUES_CONST.NOTA_CONDI.map(option => ({
+      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
         ...option,
       })),
     },
