@@ -17,7 +17,7 @@ export interface IReview {
   idEstudante: number;
   idEmpresa: number;
   idSetor: number;
-  estadoAtuacao: string;
+  estadoAtuacao: (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value'];
   modeloTrabalho: (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value'];
   dataInicio: string;
   dataFim?: string | null;
@@ -38,5 +38,4 @@ export interface IReview {
   remuneracao: number;
   rotina: number;
   lideranca: number;
-  numApoios?: number;
 }

@@ -56,18 +56,18 @@ export const normalizeStudentData = (
     habilidadesPrincipais: studentData.habilidadesPrincipais ?? '',
     linkSite: studentData.linkSite ?? undefined,
     linkLinkedin: studentData.linkLinkedin ?? undefined,
-    ambiente: Number(notaCondiData.ambiente ?? 0),
-    aprendizado: Number(notaCondiData.aprendizado ?? 0),
-    beneficios: Number(notaCondiData.beneficios ?? 0),
-    cultura: Number(notaCondiData.cultura ?? 0),
-    efetivacao: Number(notaCondiData.efetivacao ?? 0),
-    entrevista: Number(notaCondiData.entrevista ?? 0),
-    feedback: Number(notaCondiData.feedback ?? 0),
-    infraestrutura: Number(notaCondiData.infraestrutura ?? 0),
-    integracao: Number(notaCondiData.integracao ?? 0),
-    remuneracao: Number(notaCondiData.remuneracao ?? 0),
-    rotina: Number(notaCondiData.rotina ?? 0),
-    lideranca: Number(notaCondiData.lideranca ?? 0),
+    ambiente: notaCondiData.ambiente,
+    aprendizado: notaCondiData.aprendizado,
+    beneficios: notaCondiData.beneficios,
+    cultura: notaCondiData.cultura,
+    efetivacao: notaCondiData.efetivacao,
+    entrevista: notaCondiData.entrevista,
+    feedback: notaCondiData.feedback,
+    infraestrutura: notaCondiData.infraestrutura,
+    integracao: notaCondiData.integracao,
+    remuneracao: notaCondiData.remuneracao,
+    rotina: notaCondiData.rotina,
+    lideranca: notaCondiData.lideranca,
   };
 };
 
@@ -111,34 +111,36 @@ export const normalizeConditionalScoreUpdateData = (
 
 export const normalizeCompanyData = (
   data: ICompany,
-): CompanyProfileUpdateData => ({
-  nomeFantasia: data.nomeFantasia ?? '',
-  email: data.email ?? '',
-  senha: '',
-  cnpj: data.cnpj ?? '',
-  dataFundacao: data.dataFundacao ?? '',
-  biografia: data.biografia ?? '',
-  paisOrigem:
-    DROPDOWN_VALUES_CONST.PAIS_ORIGEM.find(
-      option => option.value === data.paisOrigem,
-    )?.value ?? '',
-  receitaAnual:
-    DROPDOWN_VALUES_CONST.RECEITA_ANUAL.find(
-      option => option.value === data.receitaAnual,
-    )?.value ?? '',
-  tamanhoEmpresa:
-    DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA.find(
-      option => option.value === data.tamanhoEmpresa,
-    )?.value ?? '',
-  estadoSede:
-    DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
-      option => option.value === data.estadoSede,
-    )?.value ?? '',
-  areaAtuacao: data.areaAtuacao ?? '',
-  linkSite: data.linkSite ?? undefined,
-  linkLinkedin: data.linkLinkedin ?? undefined,
-  linkGupy: data.linkGupy ?? undefined,
-});
+): CompanyProfileUpdateData => {
+  return {
+    nomeFantasia: data.nomeFantasia ?? '',
+    email: data.email ?? '',
+    senha: '',
+    cnpj: data.cnpj ?? '',
+    dataFundacao: data.dataFundacao ?? '',
+    biografia: data.biografia ?? '',
+    paisOrigem:
+      DROPDOWN_VALUES_CONST.PAIS_ORIGEM.find(
+        option => option.value === data.paisOrigem,
+      )?.value ?? '',
+    receitaAnual:
+      DROPDOWN_VALUES_CONST.RECEITA_ANUAL.find(
+        option => option.value === data.receitaAnual,
+      )?.value ?? '',
+    tamanhoEmpresa:
+      DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA.find(
+        option => option.value === data.tamanhoEmpresa,
+      )?.value ?? '',
+    estadoSede:
+      DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
+        option => option.value === data.estadoSede,
+      )?.value ?? '',
+    areaAtuacao: data.areaAtuacao ?? '',
+    linkSite: data.linkSite ?? undefined,
+    linkLinkedin: data.linkLinkedin ?? undefined,
+    linkGupy: data.linkGupy ?? undefined,
+  };
+};
 
 export const normalizeCompanyUpdateData = (
   data: CompanyProfileUpdateData,
@@ -188,36 +190,38 @@ export const normalizeProfessionalExperienceUpdate = (
   };
 };
 
-export const normalizeReviewData = (reviewData: IReview): ReviewData => ({
-  idEmpresa: reviewData.idEmpresa ?? 0,
-  idSetor: reviewData.idSetor ?? '',
-  estadoAtuacao:
-    DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
-      option => option.value === reviewData.estadoAtuacao,
-    )?.value ?? '',
-  modeloTrabalho:
-    DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.find(
-      option => option.value === reviewData.modeloTrabalho,
-    )?.value ?? '',
-  dataInicio: reviewData.dataInicio ?? '',
-  dataFim: reviewData.dataFim ?? undefined,
-  tituloCargo: reviewData.tituloCargo ?? '',
-  textoAvaliacao: reviewData.textoAvaliacao ?? '',
-  salarioMin: reviewData.salarioMin ?? 0,
-  salarioMax: reviewData.salarioMax ?? 0,
-  ambiente: reviewData.ambiente ?? '',
-  aprendizado: reviewData.aprendizado ?? '',
-  beneficios: reviewData.beneficios ?? '',
-  cultura: reviewData.cultura ?? '',
-  efetivacao: reviewData.efetivacao ?? '',
-  entrevista: reviewData.entrevista ?? '',
-  feedback: reviewData.feedback ?? '',
-  infraestrutura: reviewData.infraestrutura ?? '',
-  integracao: reviewData.integracao ?? '',
-  remuneracao: reviewData.remuneracao ?? '',
-  rotina: reviewData.rotina ?? '',
-  lideranca: reviewData.lideranca ?? '',
-});
+export const normalizeReviewData = (reviewData: IReview): ReviewData => {
+  return {
+    idEmpresa: reviewData.idEmpresa ?? 0,
+    idSetor: reviewData.idSetor ?? '',
+    estadoAtuacao:
+      DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
+        option => option.value === reviewData.estadoAtuacao,
+      )?.value ?? '',
+    modeloTrabalho:
+      DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.find(
+        option => option.value === reviewData.modeloTrabalho,
+      )?.value ?? '',
+    dataInicio: reviewData.dataInicio ?? '',
+    dataFim: reviewData.dataFim ?? undefined,
+    tituloCargo: reviewData.tituloCargo ?? '',
+    textoAvaliacao: reviewData.textoAvaliacao ?? '',
+    salarioMin: reviewData.salarioMin ?? 0,
+    salarioMax: reviewData.salarioMax ?? 0,
+    ambiente: reviewData.ambiente ?? '',
+    aprendizado: reviewData.aprendizado ?? '',
+    beneficios: reviewData.beneficios ?? '',
+    cultura: reviewData.cultura ?? '',
+    efetivacao: reviewData.efetivacao ?? '',
+    entrevista: reviewData.entrevista ?? '',
+    feedback: reviewData.feedback ?? '',
+    infraestrutura: reviewData.infraestrutura ?? '',
+    integracao: reviewData.integracao ?? '',
+    remuneracao: reviewData.remuneracao ?? '',
+    rotina: reviewData.rotina ?? '',
+    lideranca: reviewData.lideranca ?? '',
+  };
+};
 
 export function replaceEmptyWithNull<T>(obj: T): T {
   if (obj === undefined || obj === '') return null as unknown as T;

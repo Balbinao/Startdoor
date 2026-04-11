@@ -43,6 +43,7 @@ export type ISelectField<T extends FieldValues> = IBaseField<T> & {
   type: 'select';
   options: IInputOption[];
   value?: string | number;
+  iconLeft?: React.ReactNode;
 };
 
 export type ICheckboxField<T extends FieldValues> = IBaseField<T> & {

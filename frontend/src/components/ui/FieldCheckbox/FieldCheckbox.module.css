@@ -1,0 +1,65 @@
+.checkboxWrapper .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  position: relative;
+}
+
+.checkboxWrapper .checkbox::after {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.checkboxWrapper .checkbox > * {
+  position: absolute;
+  inset: 0;
+}
+
+.checkboxWrapper input {
+  appearance: none;
+  cursor: pointer;
+  background-color: var(--grey-1100);
+  border-radius: 6px;
+  border: 1px solid var(--grey-900);
+  transition: all 0.5s ease;
+}
+
+.checkboxWrapper input:hover {
+  border-color: var(--grey-500);
+}
+
+.checkboxWrapper input:checked {
+  transition-delay: 0.1s;
+}
+
+.checkboxWrapper input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.checkboxWrapper input:checked + svg {
+  stroke-dasharray: 16 93;
+  stroke-dashoffset: 109;
+}
+
+.checkboxWrapper svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-dasharray: 93;
+  stroke-dashoffset: 94;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2px;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition:
+    stroke-dasharray 0.3s,
+    stroke-dashoffset 0.3s;
+}
+
+.checkboxWrapper input:focus-visible {
+  outline: 2px solid var(--purple-400);
+}

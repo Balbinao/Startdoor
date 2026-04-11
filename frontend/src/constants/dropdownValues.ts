@@ -335,7 +335,7 @@ export const DROPDOWN_VALUES_CONST = {
     { label: '+100000', value: '+100000' },
   ] as const,
 
-  NOTA_CONDI: [
+  NOTA: [
     { label: 'Selecione...', value: '' },
     { label: '1', value: 1 },
     { label: '2', value: 2 },

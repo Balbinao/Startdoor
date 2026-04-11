@@ -27,6 +27,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
   disabled,
   readOnly,
   options,
+  iconLeft,
   form,
   value,
   onChange,
@@ -80,6 +81,8 @@ export const FieldSelect = <TFormValues extends FieldValues>({
             disabled ? 'input-disabled' : 'cursor-text'
           } ${readOnly ? 'input-readonly' : ''}`}
         >
+          {iconLeft && iconLeft}
+
           <span className="truncate">{selected?.label || 'Selecione...'}</span>
 
           {!disabled && !readOnly && (
