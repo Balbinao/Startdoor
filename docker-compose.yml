@@ -26,6 +26,8 @@ services:
         condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - fotos_volume:/app/fotos
 
   frontend:
     build:
@@ -35,3 +37,6 @@ services:
       - "5173:5173"
     depends_on:
       - app
+
+volumes:
+  fotos_volume:
