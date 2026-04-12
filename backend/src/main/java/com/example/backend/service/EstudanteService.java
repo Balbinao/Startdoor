@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.AlterarSenhaDTO;
 import com.example.backend.dto.AtualizarEstudanteDTO;
 import com.example.backend.dto.CadastroEstudanteDTO;
+import com.example.backend.dto.EstudanteResponseDTO;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Estudante;
 import com.example.backend.model.EstudanteNotaCondi;
@@ -12,6 +13,8 @@ import com.example.backend.repository.EstudanteNotaCondiRepository;
 import com.example.backend.repository.EstudanteRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,13 +27,15 @@ public class EstudanteService {
     private final EmpresaRepository empresaRepository;
     private final AdminRepository adminRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final FotoStorageService fotoStorageService;
 
-    public EstudanteService(EstudanteRepository estudanteRepository, EstudanteNotaCondiRepository notaCondiRepository, BCryptPasswordEncoder bCryptPasswordEncoder, EmpresaRepository empresaRepository, AdminRepository adminRepository) {
+    public EstudanteService(EstudanteRepository estudanteRepository, EstudanteNotaCondiRepository notaCondiRepository, BCryptPasswordEncoder bCryptPasswordEncoder, EmpresaRepository empresaRepository, AdminRepository adminRepository, FotoStorageService fotoStorageService) {
         this.estudanteRepository = estudanteRepository;
         this.notaCondiRepository = notaCondiRepository;
         this.empresaRepository = empresaRepository;
         this.adminRepository = adminRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.fotoStorageService = fotoStorageService;
     }
 
     public void cadastrar(CadastroEstudanteDTO data) {
@@ -114,10 +119,17 @@ public class EstudanteService {
         estudanteRepository.save(estudante);
     }
 
+    @Transactional
     public void deletar(Long id) {
-        Estudante estudante = buscarPorId(id);
+        Estudante estudante = estudanteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
+
+        if (estudante.getFotoUrl() != null) {
+            fotoStorageService.excluir(estudante.getFotoUrl());
+        }
         estudanteRepository.delete(estudante);
     }
+
 
     public void alterarSenha(Long id, AlterarSenhaDTO dto) {
         Estudante estudante = estudanteRepository.findById(id)
@@ -129,5 +141,59 @@ public class EstudanteService {
 
         estudante.setSenha(bCryptPasswordEncoder.encode(dto.novaSenha()));
         estudanteRepository.save(estudante);
+    }
+
+
+    @Transactional
+    public EstudanteResponseDTO atualizarFoto(Long id, MultipartFile arquivo) {
+        Estudante estudante = estudanteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
+
+        if (estudante.getFotoUrl() != null) {
+            fotoStorageService.excluir(estudante.getFotoUrl());
+        }
+        String nomeFoto = fotoStorageService.salvar(arquivo);
+
+        estudante.setFotoUrl(nomeFoto);
+        return toResponseDTO(estudanteRepository.save(estudante));
+    }
+
+    @Transactional
+    public void removerFoto(Long id) {
+        Estudante estudante = estudanteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
+
+        if (estudante.getFotoUrl() != null) {
+            fotoStorageService.excluir(estudante.getFotoUrl());
+            estudante.setFotoUrl(null);
+            estudanteRepository.save(estudante);
+        }
+    }
+
+
+    private EstudanteResponseDTO toResponseDTO(Estudante estudante) {
+        String urlCompleta = (estudante.getFotoUrl() != null)
+                ? "http://localhost:8080/fotos/" + estudante.getFotoUrl()
+                : null;
+
+        return new EstudanteResponseDTO(
+                estudante.getId(),
+                estudante.getNome(),
+                estudante.getCpf(),
+                estudante.getUser(),
+                estudante.getEmail(),
+                urlCompleta,
+                estudante.getBiografia(),
+                estudante.getPaisOrigem(),
+                estudante.getMediaNotaGeral(),
+                estudante.getDataNascimento(),
+                estudante.getModeloTrabalho(),
+                estudante.getEstadoAtuacao(),
+                estudante.getSetorInteresse(),
+                estudante.getHabilidadesPrincipais(),
+                estudante.getLinkSite(),
+                estudante.getLinkLinkedin(),
+                estudante.getCreatedAt()
+        );
     }
 }

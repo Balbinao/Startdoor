@@ -41,6 +41,9 @@ public class Estudante implements UserDetails {
 
     private String senha;
 
+    @Column(name = "foto_url")
+    private String fotoUrl;
+
     @Column(columnDefinition = "TEXT")
     private String biografia;
 

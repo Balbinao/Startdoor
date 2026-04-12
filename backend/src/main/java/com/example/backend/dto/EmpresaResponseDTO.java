@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public record EmpresaResponseDTO(
         Long id,
+        String fotoUrl,
         String nomeFantasia,
         String cnpj,
         String email,

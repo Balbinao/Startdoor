@@ -21,6 +21,10 @@ WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
 
+RUN mkdir -p /app/fotos
+
+RUN chmod 777 /app/fotos
+
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

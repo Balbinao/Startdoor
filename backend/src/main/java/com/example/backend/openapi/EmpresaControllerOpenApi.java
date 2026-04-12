@@ -1,9 +1,6 @@
 package com.example.backend.openapi;
 
-import com.example.backend.dto.AlterarSenhaDTO;
-import com.example.backend.dto.AtualizarEmpresaDTO;
-import com.example.backend.dto.CadastroEmpresaDTO;
-import com.example.backend.dto.EmpresaResponseDTO;
+import com.example.backend.dto.*;
 import com.example.backend.model.Empresa;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -168,4 +166,26 @@ public interface EmpresaControllerOpenApi {
             )
     })
     ResponseEntity<?> alterarSenha(Long id, AlterarSenhaDTO data);
+
+    @Operation(summary = "Adicionar/Atualizar foto da empresa")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Logo atualizado com sucesso",
+                    content = @Content(schema = @Schema(implementation = EmpresaResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Arquivo inválido (deve ser imagem)"),
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+    })
+    ResponseEntity<EmpresaResponseDTO> uploadFoto(
+            @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Arquivo de imagem para o logo",
+                    required = true
+            ) FotoUploadDTO fotoDto
+    );
+
+    @Operation(summary = "Remover logo da empresa")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Foto removida com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+    })
+    ResponseEntity<Void> removerFoto(@PathVariable Long id);
 }
