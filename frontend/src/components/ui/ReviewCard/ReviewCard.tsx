@@ -1,13 +1,12 @@
-import {
-  BriefcaseFilled,
-  MessageCircleFilled,
-  ShieldFilled,
-  StarFilled,
-  UserFilled,
-} from '@assets/icons';
+import { BriefcaseFilled, StarFilled, UserFilled } from '@assets/icons';
+import { ROUTES_CONST } from '@constants';
+import { useCompany } from '@hooks/useCompany';
+import { useStudent } from '@hooks/useStudent';
 import type { IReviewCard } from '@models/review.types';
 import { formatDDMMMYYYY } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SupportButton } from '../SupportButton';
 
 interface Props {
   item: IReviewCard;
@@ -15,6 +14,10 @@ interface Props {
 
 export const ReviewCard = ({ item }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const { companiesOptions } = useCompany();
+  const { studentsOptions } = useStudent();
 
   const [shouldCollapse, setShouldCollapse] = useState(false);
   const [height, setHeight] = useState<string>('0px');
@@ -32,7 +35,7 @@ export const ReviewCard = ({ item }: Props) => {
   }, [item.textoAvaliacao, collapsedHeight]);
 
   return (
-    <div className="relative flex w-full cursor-pointer flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
+    <div className="relative flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
       <div className="flex items-start gap-3">
         <div className="w-fit rounded-lg bg-(--grey-800) p-3">
           {item.source === 'Estudante' && (
@@ -43,23 +46,29 @@ export const ReviewCard = ({ item }: Props) => {
             />
           )}
           {item.source === 'Empresa' && (
-            <UserFilled
-              width={36}
-              height={36}
-              className="text-(--grey-300)"
-            />
+            <UserFilled width={36} height={36} className="text-(--grey-300)" />
           )}
         </div>
 
         <div className="flex flex-1 flex-col gap-1">
           <div className="flex flex-1 justify-between">
             {item.source === 'Estudante' && (
-              <span className="text-lg font-semibold">{item.nomeEmpresa}</span>
+              <span className="text-lg font-semibold">
+                {
+                  companiesOptions.find(
+                    company => company.value === item.idEmpresa,
+                  )?.label
+                }
+              </span>
             )}
 
             {item.source === 'Empresa' && (
               <span className="text-lg font-semibold">
-                {item.nomeEstudante}
+                {
+                  studentsOptions.find(
+                    student => student.value === item.idEstudante,
+                  )?.label
+                }
               </span>
             )}
 
@@ -98,7 +107,7 @@ export const ReviewCard = ({ item }: Props) => {
         )}
       </div>
 
-      <div className="absolute right-3 bottom-3 flex gap-4 rounded-md border border-(--grey-500) bg-(--grey-900) px-3 py-1.5">
+      {/* <div className="absolute right-3 bottom-3 flex gap-4 rounded-md border border-(--grey-500) bg-(--grey-900) px-3 py-1.5 text-(--blue-100)">
         <span className="flex items-center gap-1">
           <MessageCircleFilled
             width={18}
@@ -111,6 +120,19 @@ export const ReviewCard = ({ item }: Props) => {
           <ShieldFilled width={18} height={18} className="text-(--blue-100)" />
           {item.numComents}
         </span>
+      </div> */}
+      <div className="absolute right-3 bottom-3">
+        <SupportButton
+          text="Visualizar"
+          onClick={() =>
+            navigate(
+              ROUTES_CONST.REVIEW.REVIEW_VIEW_BY_ID(
+                item.idEstudante,
+                item.idEmpresa,
+              ),
+            )
+          }
+        />
       </div>
     </div>
   );

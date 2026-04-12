@@ -1,4 +1,5 @@
 import { useStore } from '@contexts/store/useStore';
+import type { IInputOption } from '@models/input.types';
 import type { IStudentRegistration } from '@models/registrationLogin.types';
 import type {
   IConditionalScore,
@@ -10,12 +11,35 @@ export const useStudent = () => {
   const { studentStore } = useStore();
 
   const student = studentStore.getStudent;
+  const students = studentStore.getStudents;
+  const studentsOptions = studentStore.getStudentsOptions;
 
   const getStudent = async (id: number) => {
     try {
       const response = await studentService.getStudent(id);
       studentStore.setStudent(response);
       return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const getStudents = async () => {
+    try {
+      // const response = await studentService.getStudents();
+      // const formatted: IInputOption[] = [
+      //   { label: 'Selecione...', value: '' },
+      //   ...response.map(item => ({
+      //     label: item.nome,
+      //     value: item.id,
+      //   })),
+      // ];
+
+      // studentStore.setStudents(response);
+      // studentStore.setStudentsOptions(formatted);
+      // return response;
+      return [];
     } catch (error) {
       console.error(error);
       throw error;
@@ -99,7 +123,10 @@ export const useStudent = () => {
 
   return {
     student,
+    students,
+    studentsOptions,
     getStudent,
+    getStudents,
     studentRegistration,
     updateStudent,
     updateStudentPassword,

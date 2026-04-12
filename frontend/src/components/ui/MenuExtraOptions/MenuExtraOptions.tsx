@@ -1,3 +1,4 @@
+import type { Placement } from '@floating-ui/react';
 import {
   autoUpdate,
   flip,
@@ -16,19 +17,19 @@ export interface MenuOption {
 interface MenuExtraOptionsProps {
   children: ReactNode;
   options: MenuOption[];
-  placement?: 'top' | 'bottom';
+  placement?: Placement;
 }
 
 export const MenuExtraOptions = ({
   children,
   options,
-  placement = 'bottom',
+  placement = 'bottom-start',
 }: MenuExtraOptionsProps) => {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const { x, y, strategy, refs, update } = useFloating({
-    placement: placement === 'bottom' ? 'bottom-start' : 'top-start',
+    placement,
     middleware: [offset(8), flip(), shift({ padding: 16 })],
   });
 
@@ -43,12 +44,14 @@ export const MenuExtraOptions = ({
         setOpen(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   useEffect(() => {
     if (!open) return;
+
     if (refs.reference.current && refs.floating.current) {
       return autoUpdate(refs.reference.current, refs.floating.current, update);
     }

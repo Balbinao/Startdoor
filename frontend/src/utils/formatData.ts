@@ -67,3 +67,46 @@ export const formatDateWithAge = (dateString: string): string => {
 
   return `${day}/${month}/${year} ${age ? `(${age} ${age > 1 ? 'anos' : 'ano'})` : ''}`;
 };
+
+export function formatDateWithYearOrMonthAgo(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  const months = [
+    'Jan',
+    'Fev',
+    'Mar',
+    'Abr',
+    'Mai',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Set',
+    'Out',
+    'Nov',
+    'Dez',
+  ];
+
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  let yearsDiff = now.getFullYear() - year;
+  let monthsDiff = now.getMonth() - date.getMonth();
+
+  if (monthsDiff < 0) {
+    yearsDiff--;
+    monthsDiff += 12;
+  }
+
+  let relative = '';
+
+  if (yearsDiff > 0) {
+    relative = `há ${yearsDiff} ano${yearsDiff > 1 ? 's' : ''}`;
+  } else if (monthsDiff > 0) {
+    relative = `há ${monthsDiff} mês${monthsDiff > 1 ? 'es' : ''}`;
+  } else {
+    relative = 'este mês';
+  }
+
+  return `${month} ${year} (${relative})`;
+}

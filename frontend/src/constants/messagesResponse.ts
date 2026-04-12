@@ -14,6 +14,7 @@ export const MESSAGES_RESPONSE = {
       'Deseja realmente deletar esta experiência academica?',
     DELETE_PROFESSIONAL_EXPERIENCE:
       'Deseja realmente deletar esta experiência profissional?',
+    DELETE_REVIEW: 'Deseja realmente deletar esta avaliação?',
   },
   ERROR: {
     SERVER: 'Parece que houve um erro no servidor!',

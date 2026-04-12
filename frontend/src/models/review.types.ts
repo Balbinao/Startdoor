@@ -2,14 +2,12 @@ import type { DROPDOWN_VALUES_CONST } from '@constants';
 
 export interface IReviewCard {
   source: 'Empresa' | 'Estudante';
-  nomeEmpresa?: string;
-  nomeEstudante?: string;
+  idEstudante: number;
+  idEmpresa: number;
   tituloCargo: string;
   notaMedia: number;
   textoAvaliacao: string;
   dataPublicacao: string;
-  numApoios: number;
-  numComents: number;
 }
 
 export interface IReview {
@@ -38,4 +36,5 @@ export interface IReview {
   remuneracao: number;
   rotina: number;
   lideranca: number;
+  created_at: string;
 }

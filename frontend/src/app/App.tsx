@@ -7,6 +7,7 @@ import { CompanyProfile } from '@pages/CompanyProfile';
 import { CompanyProfileUpdateForm } from '@pages/CompanyProfileUpdateForm';
 import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
 import { ReviewForm } from '@pages/ReviewForm';
+import { ReviewView } from '@pages/ReviewView';
 // import { ReviewView } from '@pages/ReviewView';
 import { StudentProfile } from '@pages/StudentProfile';
 import { StudentProfileUpdateForm } from '@pages/StudentProfileUpdateForm';
@@ -60,10 +61,10 @@ function App() {
               path={ROUTES_CONST.REVIEW.REVIEW_UPDADE_URL}
               element={<ReviewForm />}
             />
-            {/* <Route
+            <Route
               path={ROUTES_CONST.REVIEW.REVIEW_VIEW_URL}
               element={<ReviewView />}
-            /> */}
+            />
 
             <Route
               path={ROUTES_CONST.COMPANY.PROFILE_URL}

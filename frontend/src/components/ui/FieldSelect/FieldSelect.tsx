@@ -90,7 +90,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
               width={24}
               height={24}
               className={`transition-transform duration-200 ${
-                open ? 'rotate-180' : 'rotate-0'
+                open ? 'rotate-0' : 'rotate-180'
               }`}
             />
           )}
