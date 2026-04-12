@@ -13,6 +13,7 @@ import com.example.backend.repository.EstudanteRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,12 +25,14 @@ public class EmpresaService {
     private final EstudanteRepository estudanteRepository;
     private final AdminRepository adminRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final FotoStorageService fotoStorageService;
 
-    public EmpresaService(EmpresaRepository repository, EstudanteRepository estudanteRepository, AdminRepository adminRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public EmpresaService(EmpresaRepository repository, EstudanteRepository estudanteRepository, AdminRepository adminRepository, BCryptPasswordEncoder bCryptPasswordEncoder, FotoStorageService fotoStorageService) {
         this.empresaRepository = repository;
         this.estudanteRepository = estudanteRepository;
         this.adminRepository = adminRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.fotoStorageService = fotoStorageService;
     }
 
     public void cadastrar(CadastroEmpresaDTO data) {
@@ -74,8 +77,13 @@ public class EmpresaService {
     }
 
     private EmpresaResponseDTO toResponseDTO(Empresa empresa) {
+        String urlCompleta = (empresa.getFotoUrl() != null)
+                ? "http://localhost:8080/fotos/" + empresa.getFotoUrl()
+                : null;
+
         return new EmpresaResponseDTO(
                 empresa.getId(),
+                urlCompleta,
                 empresa.getNomeFantasia(),
                 empresa.getCnpj(),
                 empresa.getEmail(),
@@ -145,5 +153,31 @@ public class EmpresaService {
 
         empresa.setSenha(bCryptPasswordEncoder.encode(dto.novaSenha()));
         empresaRepository.save(empresa);
+    }
+
+    public EmpresaResponseDTO atualizarFoto(Long id, MultipartFile arquivo) {
+        Empresa empresa = empresaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+
+        if (empresa.getFotoUrl() != null) {
+            fotoStorageService.excluir(empresa.getFotoUrl());
+        }
+
+        String nomeArquivo = fotoStorageService.salvar(arquivo);
+        empresa.setFotoUrl(nomeArquivo);
+        empresaRepository.save(empresa);
+
+        return toResponseDTO(empresa);
+    }
+
+    public void removerFoto(Long id) {
+        Empresa empresa = empresaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+
+        if (empresa.getFotoUrl() != null) {
+            fotoStorageService.excluir(empresa.getFotoUrl());
+            empresa.setFotoUrl(null);
+            empresaRepository.save(empresa);
+        }
     }
 }

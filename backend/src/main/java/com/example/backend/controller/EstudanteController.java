@@ -1,8 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.AlterarSenhaDTO;
-import com.example.backend.dto.AtualizarEstudanteDTO;
-import com.example.backend.dto.CadastroEstudanteDTO;
+import com.example.backend.dto.*;
 import com.example.backend.model.Estudante;
 import com.example.backend.openapi.EstudanteControllerOpenApi;
 import com.example.backend.service.EstudanteService;
@@ -15,9 +13,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -89,5 +89,26 @@ public class EstudanteController implements EstudanteControllerOpenApi {
         response.put("message", "Senha alterada com sucesso");
 
         return ResponseEntity.ok(response);
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
+    @PutMapping(value = "/{id}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<EstudanteResponseDTO> uploadFoto(
+            @PathVariable Long id,
+            @ModelAttribute FotoUploadDTO fotoDto) {
+
+        var arquivo = fotoDto.arquivo();
+        if (arquivo == null || arquivo.getContentType() == null || !arquivo.getContentType().startsWith("image/")) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(estudanteService.atualizarFoto(id, fotoDto.arquivo()));
+    }
+
+    @DeleteMapping("/{id}/foto")
+    @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
+    public ResponseEntity<Void> removerFoto(@PathVariable Long id) {
+        estudanteService.removerFoto(id);
+        return ResponseEntity.noContent().build();
     }
 }

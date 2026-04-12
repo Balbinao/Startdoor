@@ -1,9 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.AlterarSenhaDTO;
-import com.example.backend.dto.AtualizarEmpresaDTO;
-import com.example.backend.dto.CadastroEmpresaDTO;
-import com.example.backend.dto.EmpresaResponseDTO;
+import com.example.backend.dto.*;
 import com.example.backend.model.Empresa;
 import com.example.backend.openapi.EmpresaControllerOpenApi;
 import com.example.backend.service.EmpresaService;
@@ -16,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -88,5 +86,26 @@ public class EmpresaController implements EmpresaControllerOpenApi {
         response.put("message", "Senha da empresa alterada com sucesso");
 
         return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
+    @PutMapping(value = "/{id}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<EmpresaResponseDTO> uploadFoto(
+            @PathVariable Long id,
+            @ModelAttribute FotoUploadDTO fotoDto) {
+
+        var arquivo = fotoDto.arquivo();
+        if (arquivo == null || arquivo.getContentType() == null || !arquivo.getContentType().startsWith("image/")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(empresaService.atualizarFoto(id, arquivo));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
+    @DeleteMapping("/{id}/foto")
+    public ResponseEntity<Void> removerFoto(@PathVariable Long id) {
+        empresaService.removerFoto(id);
+        return ResponseEntity.noContent().build();
     }
 }

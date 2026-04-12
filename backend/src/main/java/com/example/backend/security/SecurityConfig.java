@@ -72,6 +72,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/estudantes/cadastrar/estudante").permitAll()
                         .requestMatchers(HttpMethod.POST, "/empresas/cadastrar/empresa").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/fotos/**").permitAll()
                         
                         // Swagger - público
                         .requestMatchers(
