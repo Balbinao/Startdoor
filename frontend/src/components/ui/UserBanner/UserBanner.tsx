@@ -21,7 +21,7 @@ import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudent } from '@hooks/useStudent';
 import { useEffect, useState, type JSX } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MenuExtraOptions } from '../MenuExtraOptions';
 import type { MenuOption } from '../MenuExtraOptions/MenuExtraOptions';
 
@@ -50,15 +50,19 @@ const ProfileLinks = ({ links }: ProfileLinksProps) => {
   );
 };
 
-export const UserBanner = () => {
-  const { id: paramId } = useParams<{ id: string }>();
+interface Props {
+  type: (typeof USER_ROLES_CONST)[keyof typeof USER_ROLES_CONST];
+  id: number;
+}
+
+export const UserBanner = ({ type, id }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
-  const { getUserId, logout } = useAuth();
+  const { getUserId, getUserRole, logout } = useAuth();
   const { student, getStudent, deleteStudent } = useStudent();
   const { company, getCompany, deleteCompany } = useCompany();
 
@@ -66,26 +70,19 @@ export const UserBanner = () => {
   const [isError, setIsError] = useState(true);
 
   const userId = getUserId();
+  const userRole = getUserRole();
 
-  const isOwner = userId && paramId && String(userId) === paramId;
-  const isStudent = location.pathname.includes(ROUTES_CONST.STUDENT.UNIQUE);
-  const isCompany = location.pathname.includes(ROUTES_CONST.COMPANY.UNIQUE);
-
-  const profileType = isStudent
-    ? USER_ROLES_CONST.ESTUDANTE
-    : isCompany
-      ? USER_ROLES_CONST.EMPRESA
-      : null;
+  const isOwner = id === userId && userRole === type;
 
   const profileName =
-    profileType === USER_ROLES_CONST.ESTUDANTE
+    type === USER_ROLES_CONST.ESTUDANTE
       ? student?.nome
-      : profileType === USER_ROLES_CONST.EMPRESA
+      : type === USER_ROLES_CONST.EMPRESA
         ? company?.nomeFantasia
         : null;
 
   const profileLinks = (
-    profileType === USER_ROLES_CONST.ESTUDANTE
+    type === USER_ROLES_CONST.ESTUDANTE
       ? [
           student?.linkSite && {
             href: student.linkSite,
@@ -111,7 +108,7 @@ export const UserBanner = () => {
             ),
           },
         ]
-      : profileType === USER_ROLES_CONST.EMPRESA
+      : type === USER_ROLES_CONST.EMPRESA
         ? [
             company?.linkSite && {
               href: company.linkSite,
@@ -154,9 +151,9 @@ export const UserBanner = () => {
   );
 
   const editProfileRoute =
-    profileType === USER_ROLES_CONST.ESTUDANTE
+    type === USER_ROLES_CONST.ESTUDANTE
       ? ROUTES_CONST.STUDENT.PROFILE_UPDATE(userId!)
-      : profileType === USER_ROLES_CONST.EMPRESA
+      : type === USER_ROLES_CONST.EMPRESA
         ? ROUTES_CONST.COMPANY.PROFILE_UPDATE(userId!)
         : null;
 
@@ -168,20 +165,20 @@ export const UserBanner = () => {
       try {
         setIsLoading(true);
 
-        if (!userId) {
+        if (!id) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
 
-        if (profileType === USER_ROLES_CONST.ESTUDANTE) {
+        if (type === USER_ROLES_CONST.ESTUDANTE) {
           await modalLoadingAuto(
-            () => getStudent(Number(userId)),
+            () => getStudent(Number(id)),
             MESSAGES_LOADING.GET,
           );
         }
 
-        if (profileType === USER_ROLES_CONST.EMPRESA) {
+        if (type === USER_ROLES_CONST.EMPRESA) {
           await modalLoadingAuto(
-            () => getCompany(Number(userId)),
+            () => getCompany(Number(id)),
             MESSAGES_LOADING.GET,
           );
         }
@@ -197,21 +194,21 @@ export const UserBanner = () => {
 
   useEffect(() => {
     if (
-      (profileType === USER_ROLES_CONST.ESTUDANTE && student) ||
-      (profileType === USER_ROLES_CONST.EMPRESA && company)
+      (type === USER_ROLES_CONST.ESTUDANTE && student) ||
+      (type === USER_ROLES_CONST.EMPRESA && company)
     ) {
       setIsError(false);
     }
-  }, [profileType, student, company]);
+  }, [type, student, company]);
 
   const handleDeleteAccount = async () => {
     try {
       if (!userId) throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
 
       const action =
-        profileType === USER_ROLES_CONST.ESTUDANTE
+        type === USER_ROLES_CONST.ESTUDANTE
           ? deleteStudent
-          : profileType === USER_ROLES_CONST.EMPRESA
+          : type === USER_ROLES_CONST.EMPRESA
             ? deleteCompany
             : null;
 
@@ -226,7 +223,7 @@ export const UserBanner = () => {
       if (!confirmed) return;
 
       const response = await modalLoadingAuto(
-        () => action(Number(userId)),
+        () => action(userId),
         MESSAGES_LOADING.DELETE,
       );
 

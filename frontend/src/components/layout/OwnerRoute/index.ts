@@ -1,1 +1,0 @@
-export { OwnerRoute } from './OwnerRoute';

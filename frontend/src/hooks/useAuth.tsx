@@ -23,10 +23,10 @@ export const useAuth = () => {
     }
   };
 
-  const getUserId = (): string | null => {
+  const getUserId = (): number | null => {
     const id = localStorage.getItem(STORAGEKEYS_CONST.USER_ID);
     if (id && id !== 'undefined' && id !== 'null' && id !== '[object Object]') {
-      return id;
+      return Number(id);
     }
     return null;
   };

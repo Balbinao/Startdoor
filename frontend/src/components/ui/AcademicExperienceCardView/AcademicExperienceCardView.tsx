@@ -12,7 +12,7 @@ import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import type { IAcademicExperience } from '@models/experience.types';
 import { formatMMMYYYY } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
 
 interface Props {
@@ -21,7 +21,6 @@ interface Props {
 }
 
 export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
-  const { id } = useParams();
   const location = useLocation();
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -39,10 +38,8 @@ export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
 
   const userId = getUserId();
   const isEditPage =
-    !!id &&
     !!userId &&
-    location.pathname === ROUTES_CONST.STUDENT.PROFILE_UPDATE(id) &&
-    id === userId;
+    location.pathname === ROUTES_CONST.STUDENT.PROFILE_UPDATE(userId);
 
   const lineHeight = 32;
   const maxLines = 3;

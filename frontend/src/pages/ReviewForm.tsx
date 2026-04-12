@@ -10,8 +10,10 @@ import {
   MESSAGES_RESPONSE,
   reviewScoreFields,
   ROUTES_CONST,
+  USER_ROLES_CONST,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@hooks/useAuth';
 import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -21,7 +23,7 @@ import { reviewSchema, type ReviewData } from '@schemas/reviewSchema';
 import { normalizeReviewData } from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 export const ReviewForm = () => {
   const { id: urlUserId, reviewId: urlReviewId } = useParams<{
@@ -39,6 +41,10 @@ export const ReviewForm = () => {
   const { sectorsItems, getSectors } = useSector();
   const { getReview, updateReview } = useReview();
   const { getCompanies, companiesOptions } = useCompany();
+  const { getUserId, getUserRole } = useAuth();
+
+  const userId = getUserId();
+  const userRole = getUserRole();
 
   const form = useForm<ReviewData>({
     resolver: zodResolver(reviewSchema(sectorsItems)),
@@ -80,7 +86,7 @@ export const ReviewForm = () => {
       try {
         setIsLoading(true);
 
-        if (!urlUserId) {
+        if (!userId) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
         if (!urlReviewId) {
@@ -109,7 +115,7 @@ export const ReviewForm = () => {
 
   const onSubmit = async (data: ReviewData) => {
     try {
-      if (!urlUserId) {
+      if (!userId) {
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
       if (!urlReviewId) {
@@ -117,7 +123,7 @@ export const ReviewForm = () => {
       }
 
       const response = await modalLoadingAuto(
-        () => updateReview(Number(urlUserId), data),
+        () => updateReview(Number(userId), data),
         MESSAGES_LOADING.UPDATE,
       );
 
@@ -128,7 +134,7 @@ export const ReviewForm = () => {
         shouldBlockProcess: false,
       });
 
-      navigate(ROUTES_CONST.STUDENT.PROFILE(urlUserId));
+      navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
@@ -142,12 +148,21 @@ export const ReviewForm = () => {
     }
   };
 
+  if (!userId) return <Navigate to={ROUTES_CONST.LOGIN} replace />;
+  if (userRole === USER_ROLES_CONST.EMPRESA)
+    return <Navigate to={ROUTES_CONST.COMPANY.PROFILE(userId)} replace />;
+  if (urlUserId !== String(userId)) {
+    return (
+      <Navigate to={ROUTES_CONST.STUDENT.PROFILE(userId)} replace />
+    );
+  }
+
   if (isLoading) return <></>;
   if (isError) return <></>;
 
   return (
     <div className="flex h-full flex-col items-center gap-32">
-      <UserBanner />
+      <UserBanner type="ESTUDANTE" id={Number(userId)} />
 
       <FormWrapper form={form}>
         <form
