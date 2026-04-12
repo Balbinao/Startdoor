@@ -30,7 +30,7 @@ const ICON_SIZE = 44;
 const STROKE_WIDTH = 1.5;
 
 export const CompanyProfile = () => {
-  const { id: userId } = useParams<{ id: string }>();
+  const { id: urlUserId } = useParams<{ id: string }>();
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
@@ -60,17 +60,17 @@ export const CompanyProfile = () => {
       try {
         setIsLoading(true);
 
-        if (!userId) {
+        if (!urlUserId) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
 
         await modalLoadingAuto(
-          async () => setSearchedCompany(await getCompany(Number(userId))),
+          async () => setSearchedCompany(await getCompany(Number(urlUserId))),
           MESSAGES_LOADING.GET,
         );
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
-          () => getReviewCards(Number(userId)),
+          () => getReviewCards(Number(urlUserId)),
           MESSAGES_LOADING.GET,
         );
         setIsError(false);
@@ -89,7 +89,7 @@ export const CompanyProfile = () => {
 
   return (
     <div className="flex h-full flex-col items-center gap-32">
-      <UserBanner />
+      <UserBanner type="EMPRESA" id={Number(urlUserId)} />
       {hasCompanyInfo && (
         <div className="flex w-full max-w-3xl flex-col gap-8">
           {searchedCompany.biografia && (

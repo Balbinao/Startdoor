@@ -34,7 +34,7 @@ const ICON_SIZE = 44;
 const STROKE_WIDTH = 1.5;
 
 export const StudentProfile = () => {
-  const { id: userId } = useParams<{ id: string }>();
+  const { id: urlUserId } = useParams<{ id: string }>();
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
@@ -56,7 +56,6 @@ export const StudentProfile = () => {
 
   const [searchedStudent, setSearchedStudent] = useState<IStudent | null>(null);
 
-
   const hasStudentInfo =
     searchedStudent &&
     (searchedStudent.paisOrigem ||
@@ -72,26 +71,26 @@ export const StudentProfile = () => {
       try {
         setIsLoading(true);
 
-        if (!userId) {
+        if (!urlUserId) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
 
         await modalLoadingAuto(
-          async () => setSearchedStudent(await getStudent(Number(userId))),
+          async () => setSearchedStudent(await getStudent(Number(urlUserId))),
           MESSAGES_LOADING.GET,
         );
         await modalLoadingAuto(
-          () => getAcademicExperienceCards(Number(userId)),
+          () => getAcademicExperienceCards(Number(urlUserId)),
           MESSAGES_LOADING.GET,
         );
         await modalLoadingAuto(
-          () => getProfessionalExperienceCards(Number(userId)),
+          () => getProfessionalExperienceCards(Number(urlUserId)),
           MESSAGES_LOADING.GET,
         );
         await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
-          () => getReviewCards(Number(userId)),
+          () => getReviewCards(Number(urlUserId)),
           MESSAGES_LOADING.GET,
         );
         setIsError(false);
@@ -110,7 +109,7 @@ export const StudentProfile = () => {
 
   return (
     <div className="flex h-full flex-col items-center gap-32">
-      <UserBanner />
+      <UserBanner type="ESTUDANTE" id={Number(urlUserId)} />
       {hasStudentInfo && (
         <div className="flex w-full max-w-3xl flex-col gap-8">
           {searchedStudent.biografia && (

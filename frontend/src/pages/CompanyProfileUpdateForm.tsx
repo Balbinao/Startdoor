@@ -8,6 +8,7 @@ import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
   ROUTES_CONST,
+  USER_ROLES_CONST,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
@@ -25,25 +26,23 @@ import {
 } from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 export const CompanyProfileUpdateForm = () => {
-  const { id: userId } = useParams<{ id: string }>();
+  const { id: urlUserId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
-  const { getUserId } = useAuth();
+  const { getUserId, getUserRole } = useAuth();
   const { getCompany, updateCompany, updateCompanyPassword } = useCompany();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
 
-  const currentUserId = getUserId();
-  if (currentUserId && currentUserId !== userId) {
-    navigate(ROUTES_CONST.COMPANY.PROFILE(currentUserId));
-  }
+  const userId = getUserId();
+  const userRole = getUserRole();
 
   const form = useForm<CompanyProfileUpdateData>({
     resolver: zodResolver(companyProfileUpdateSchema),
@@ -140,12 +139,23 @@ export const CompanyProfileUpdateForm = () => {
     }
   };
 
+  if (!userId) return <Navigate to={ROUTES_CONST.LOGIN} replace />;
+  if (userRole === USER_ROLES_CONST.ESTUDANTE)
+    return (
+      <Navigate to={ROUTES_CONST.STUDENT.PROFILE_UPDATE(userId)} replace />
+    );
+  if (urlUserId !== String(userId)) {
+    return (
+      <Navigate to={ROUTES_CONST.COMPANY.PROFILE_UPDATE(userId)} replace />
+    );
+  }
+
   if (isLoading) return <></>;
   if (isError) return <></>;
 
   return (
     <div className="flex h-full flex-col items-center gap-32">
-      <UserBanner />
+      <UserBanner type="EMPRESA" id={Number(userId)} />
 
       <FormWrapper form={form}>
         <form

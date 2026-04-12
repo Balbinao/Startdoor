@@ -15,6 +15,7 @@ import {
   MESSAGES_RESPONSE,
   ROUTES_CONST,
   studentConditionalScoreUpdateFields,
+  USER_ROLES_CONST,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@hooks/useAuth';
@@ -40,10 +41,10 @@ import {
 } from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 export const StudentProfileUpdateForm = () => {
-  const { id: userId } = useParams<{ id: string }>();
+  const { id: urlUserId } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
@@ -55,7 +56,7 @@ export const StudentProfileUpdateForm = () => {
     getAcademicExperienceCards,
     getProfessionalExperienceCards,
   } = useExperience();
-  const { getUserId } = useAuth();
+  const { getUserId, getUserRole } = useAuth();
   const {
     getStudent,
     updateStudent,
@@ -75,10 +76,8 @@ export const StudentProfileUpdateForm = () => {
     setIsCreatingProfessionalExperience,
   ] = useState(false);
 
-  const currentUserId = getUserId();
-  if (currentUserId && currentUserId !== userId) {
-    navigate(ROUTES_CONST.STUDENT.PROFILE(currentUserId));
-  }
+  const userId = getUserId();
+  const userRole = getUserRole();
 
   const form = useForm<StudentProfileUpdateData>({
     resolver: zodResolver(studentProfileUpdateSchema(sectorsItems)),
@@ -213,12 +212,23 @@ export const StudentProfileUpdateForm = () => {
     }
   };
 
+  if (!userId) return <Navigate to={ROUTES_CONST.LOGIN} replace />;
+  if (userRole === USER_ROLES_CONST.EMPRESA)
+    return (
+      <Navigate to={ROUTES_CONST.COMPANY.PROFILE_UPDATE(userId)} replace />
+    );
+  if (urlUserId !== String(userId)) {
+    return (
+      <Navigate to={ROUTES_CONST.STUDENT.PROFILE_UPDATE(userId)} replace />
+    );
+  }
+
   if (isLoading) return <></>;
   if (isError) return <></>;
 
   return (
     <div className="flex h-full flex-col items-center gap-32">
-      <UserBanner />
+      <UserBanner type="ESTUDANTE" id={Number(userId)} />
 
       <FormWrapper form={form}>
         <form
