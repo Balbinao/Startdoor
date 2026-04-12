@@ -1,11 +1,20 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
 import type { IStudentRegistration } from '@models/registrationLogin.types';
-import type { IConditionalScore, IStudent, IStudentUpdatePayload } from '@models/studentData.types';
+import type {
+  IConditionalScore,
+  IStudent,
+  IStudentUpdatePayload,
+} from '@models/studentData.types';
 
 export const studentService = {
   getStudent: async (id: number): Promise<IStudent> => {
     const response = await api.get(API_CONST.STUDENT.BY_ID(id));
+    return response.data;
+  },
+
+  getStudents: async (): Promise<IStudent[]> => {
+    const response = await api.get(API_CONST.STUDENT.BASE);
     return response.data;
   },
 

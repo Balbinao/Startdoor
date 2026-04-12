@@ -49,7 +49,7 @@ export const StudentProfile = () => {
   const { sectorsItems, getSectors } = useSector();
   const { reviewCards, getReviewCards } = useReview();
   const { getCompanies } = useCompany();
-  const { getStudent } = useStudent();
+  const { getStudent, getStudents } = useStudent();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -88,6 +88,7 @@ export const StudentProfile = () => {
           MESSAGES_LOADING.GET,
         );
         await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
+        await modalLoadingAuto(() => getStudents(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
           () => getReviewCards(Number(urlUserId)),

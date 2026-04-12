@@ -9,6 +9,7 @@ export const API_CONST = {
     BASE: '/setores',
   },
   STUDENT: {
+    BASE: '/estudantes',
     REGISTRATION: '/estudantes/cadastrar/estudante',
     BY_ID: (id: number) => `/estudantes/${id}`,
     BY_ID_PASSWORD: (id: number) => `/estudantes/${id}/senha`,

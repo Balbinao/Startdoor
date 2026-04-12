@@ -1,9 +1,6 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
-import type {
-  IReview,
-  IReviewCard,
-} from '@models/review.types';
+import type { IReview, IReviewCard } from '@models/review.types';
 import type { ReviewData } from '@schemas/reviewSchema';
 
 export const reviewService = {
@@ -24,6 +21,11 @@ export const reviewService = {
 
   updateReview: async (id: number, review: ReviewData) => {
     const response = await api.put(API_CONST.REVIEW.BY_ID(id), review);
+    return response.data;
+  },
+
+  deleteReview: async (id: number) => {
+    const response = await api.delete(API_CONST.REVIEW.BY_ID(id));
     return response.data;
   },
 };

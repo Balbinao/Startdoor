@@ -152,9 +152,7 @@ export const ReviewForm = () => {
   if (userRole === USER_ROLES_CONST.EMPRESA)
     return <Navigate to={ROUTES_CONST.COMPANY.PROFILE(userId)} replace />;
   if (urlUserId !== String(userId)) {
-    return (
-      <Navigate to={ROUTES_CONST.STUDENT.PROFILE(userId)} replace />
-    );
+    return <Navigate to={ROUTES_CONST.STUDENT.PROFILE(userId)} replace />;
   }
 
   if (isLoading) return <></>;

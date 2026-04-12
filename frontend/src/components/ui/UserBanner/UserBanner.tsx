@@ -269,33 +269,32 @@ export const UserBanner = ({ type, id }: Props) => {
   return (
     <div className="">
       <div className="relative aspect-4/1 w-full">
-        {isOwner && (
-          <div className="absolute top-3 left-1/2 flex w-[96%] -translate-x-1/2 justify-between">
-            <div className="flex gap-3">
-              <button
-                title="Voltar"
-                onClick={() => {
-                  if (window.history.length > 1) navigate(-1);
-                }}
-                className="h-fit w-fit cursor-pointer rounded-xl border border-(--grey-900) bg-(--grey-1100) p-2 text-(--grey-300) transition-colors hover:bg-(--grey-900) hover:text-(--grey-200) md:hidden"
-              >
-                <ChevronsLeft width={28} height={28} />
-              </button>
-
+        <div className="absolute top-3 left-1/2 flex w-[96%] -translate-x-1/2 justify-between">
+          <div className="flex gap-3">
+            <button
+              title="Voltar"
+              onClick={() => {
+                if (window.history.length > 1) navigate(-1);
+              }}
+              className="h-fit w-fit cursor-pointer rounded-xl border border-(--grey-900) bg-(--grey-1100) p-2 text-(--grey-300) transition-colors hover:bg-(--grey-900) hover:text-(--grey-200) md:hidden"
+            >
+              <ChevronsLeft width={28} height={28} />
+            </button>
+            {isOwner && (
               <MenuExtraOptions options={menuOptions} placement="bottom">
                 <div className="cursor-pointer rounded-xl border-zinc-700 bg-zinc-900 px-3 py-2 text-xs">
                   <Menu width={26} height={30} className="text-(--grey-200)" />
                 </div>
               </MenuExtraOptions>
-            </div>
-
-            {profileLinks.length > 0 && (
-              <div className="flex h-fit items-center gap-3 rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1.5">
-                <ProfileLinks links={profileLinks} />
-              </div>
             )}
           </div>
-        )}
+
+          {profileLinks.length > 0 && (
+            <div className="flex h-fit items-center gap-3 rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1.5">
+              <ProfileLinks links={profileLinks} />
+            </div>
+          )}
+        </div>
 
         {profileName && (
           <h1 className="absolute -bottom-22 w-full text-center text-2xl text-white">
