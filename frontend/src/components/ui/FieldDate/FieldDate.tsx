@@ -1,7 +1,7 @@
 import { CalendarEvent, XClose } from '@assets/icons';
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { IInputDate } from '@models/input.types';
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import type { FieldValues, PathValue, UseFormReturn } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
@@ -25,6 +25,8 @@ export const FieldDate = <TFormValues extends FieldValues>({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [internalValue, setInternalValue] = useState(value ?? '');
 
+  const inputId = `date-${name}-${useId()}`;
+
   const handleOpenPicker = () => {
     if (inputRef.current && 'showPicker' in inputRef.current) {
       inputRef.current.showPicker();
@@ -38,6 +40,7 @@ export const FieldDate = <TFormValues extends FieldValues>({
   ) => (
     <div className="relative w-full">
       <input
+        id={inputId}
         ref={inputRef}
         type="date"
         value={currentValue ?? ''}
@@ -79,7 +82,12 @@ export const FieldDate = <TFormValues extends FieldValues>({
 
   if (form) {
     return (
-      <FormFieldWrapper<TFormValues> name={name} label={label} form={form}>
+      <FormFieldWrapper<TFormValues>
+        name={name}
+        inputId={inputId}
+        label={label}
+        form={form}
+      >
         <Controller
           name={name}
           control={form.control}
@@ -97,7 +105,7 @@ export const FieldDate = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper<TFormValues> name={name} label={label}>
+    <FormFieldWrapper<TFormValues> name={name} inputId={inputId} label={label}>
       {render(
         internalValue,
         value => {

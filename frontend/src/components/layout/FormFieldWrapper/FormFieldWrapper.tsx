@@ -10,15 +10,19 @@ import {
 type Props<TFormValues extends FieldValues> = {
   name: Path<TFormValues>;
   children: ReactNode;
+  inputId: string;
   label?: string;
   form?: UseFormReturn<TFormValues>;
+  onClick?: () => void;
 };
 
 export const FormFieldWrapper = <TFormValues extends FieldValues>({
   name,
-  label,
   children,
+  inputId,
+  label,
   form,
+  onClick
 }: Props<TFormValues>) => {
   const error = form
     ? (get(form.formState.errors, name) as FieldError | undefined)
@@ -27,7 +31,11 @@ export const FormFieldWrapper = <TFormValues extends FieldValues>({
   return (
     <div className="flex w-full flex-col gap-1.5">
       {label && (
-        <label htmlFor={name} className="text-(--grey-300)">
+        <label
+          htmlFor={inputId}
+          onClick={onClick}
+          className="text-(--grey-300)"
+        >
           {label}
         </label>
       )}

@@ -1,6 +1,6 @@
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { IRadioField } from '@models/input.types';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import {
   Controller,
   type FieldValues,
@@ -27,44 +27,57 @@ export const FieldRadio = <TFormValues extends FieldValues>({
     string | number | undefined
   >(value);
 
+  const uniqueId = useId();
+
   const render = (
     currentValue?: string | number,
     handleChange?: (value: string | number) => void,
   ) => (
     <div className="flex flex-col gap-2">
-      {options.map(option => (
-        <label
-          key={option.value}
-          className={`flex items-start gap-2 ${
-            disabled ? 'input-disabled' : 'cursor-pointer'
-          } ${readOnly ? 'input-readonly' : ''}`}
-        >
-          <input
-            type="radio"
-            value={option.value}
-            disabled={disabled}
-            readOnly={readOnly}
-            checked={currentValue === option.value}
-            onChange={() => {
-              handleChange?.(option.value);
-              onChange?.(option.value);
-            }}
-          />
+      {options.map((option, index) => {
+        const inputId = `radio-${name}-${uniqueId}-${index}`;
 
-          <div className="flex flex-col">
-            <span>{option.label}</span>
-            {option.desc && (
-              <span className="text-xs text-(--grey-300)">{option.desc}</span>
-            )}
-          </div>
-        </label>
-      ))}
+        return (
+          <label
+            htmlFor={inputId}
+            key={option.value}
+            className={`flex items-start gap-2 ${
+              disabled ? 'input-disabled' : 'cursor-pointer'
+            } ${readOnly ? 'input-readonly' : ''}`}
+          >
+            <input
+              id={inputId}
+              type="radio"
+              value={option.value}
+              disabled={disabled}
+              readOnly={readOnly}
+              checked={currentValue === option.value}
+              onChange={() => {
+                handleChange?.(option.value);
+                onChange?.(option.value);
+              }}
+            />
+
+            <div className="flex flex-col">
+              <span>{option.label}</span>
+              {option.desc && (
+                <span className="text-xs text-(--grey-300)">{option.desc}</span>
+              )}
+            </div>
+          </label>
+        );
+      })}
     </div>
   );
 
   if (form) {
     return (
-      <FormFieldWrapper<TFormValues> name={name} label={label} form={form}>
+      <FormFieldWrapper<TFormValues>
+        name={name}
+        inputId={""}
+        label={label}
+        form={form}
+      >
         <Controller
           name={name}
           control={form.control}
@@ -77,7 +90,7 @@ export const FieldRadio = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper<TFormValues> name={name} label={label}>
+    <FormFieldWrapper<TFormValues> name={name} inputId={""} label={label}>
       {render(internalValue, value => {
         setInternalValue(value);
       })}

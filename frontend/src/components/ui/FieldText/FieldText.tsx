@@ -1,7 +1,7 @@
 import { Eye, EyeOff } from '@assets/icons';
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { ITextField } from '@models/input.types';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import {
   Controller,
   type FieldValues,
@@ -34,6 +34,8 @@ export const FieldText = <TFormValues extends FieldValues>({
   const [internalValue, setInternalValue] = useState(value ?? '');
   const [showPassword, setShowPassword] = useState(false);
 
+  const inputId = `text-${name}-${useId()}`;
+
   const isPassword = type === 'password';
   const inputType = isPassword && showPassword ? 'text' : type;
 
@@ -59,7 +61,7 @@ export const FieldText = <TFormValues extends FieldValues>({
     handleChange?: (value: string) => void,
   ) => (
     <FieldInput
-      id={name}
+      id={inputId}
       type={inputType}
       value={currentValue ?? ''}
       placeholder={placeholder}
@@ -101,7 +103,7 @@ export const FieldText = <TFormValues extends FieldValues>({
 
   if (form) {
     return (
-      <FormFieldWrapper name={name} label={label} form={form}>
+      <FormFieldWrapper name={name} inputId={inputId} label={label} form={form}>
         <Controller
           name={name}
           control={form.control}
@@ -112,7 +114,7 @@ export const FieldText = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper name={name} label={label}>
+    <FormFieldWrapper name={name} inputId={inputId} label={label}>
       {render(internalValue, value => {
         setInternalValue(value);
       })}

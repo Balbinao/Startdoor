@@ -8,6 +8,7 @@ export const MESSAGES_RESPONSE = {
   WARNING: {
     USER_ID_NOT_FOUND: 'Nenhum userId encontrado!',
     USER_ROLE_NOT_FOUND: 'Nenhum userRole encontrado!',
+    USER_NOT_FOUND: 'Usuário não encontrado!',
     REVIEW_ID_NOT_FOUND: 'Nenhum reviewId encontrado!',
     DELETE_ACCOUNT: 'Deseja realmente deletar a conta?',
     DELETE_ACADEMIC_EXPERIENCE:
@@ -15,6 +16,7 @@ export const MESSAGES_RESPONSE = {
     DELETE_PROFESSIONAL_EXPERIENCE:
       'Deseja realmente deletar esta experiência profissional?',
     DELETE_REVIEW: 'Deseja realmente deletar esta avaliação?',
+    DELETE_COMMENT: 'Deseja realmente excluir esse comentário?',
   },
   ERROR: {
     SERVER: 'Parece que houve um erro no servidor!',

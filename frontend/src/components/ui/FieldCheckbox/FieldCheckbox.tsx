@@ -1,6 +1,6 @@
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { ICheckboxField } from '@models/input.types';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import {
   Controller,
   type FieldValues,
@@ -25,15 +25,17 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
 }: Props<TFormValues>) => {
   const [internalValue, setInternalValue] = useState<boolean>(value ?? false);
 
+  const uniqueId = useId();
+  const inputId = `checkbox-${name}-${uniqueId}`;
+  const symbolId = `checkbox-symbol-${name}-${uniqueId}`;
+
   const render = (
     currentValue: boolean,
     handleChange?: (value: boolean) => void,
   ) => {
-    const symbolId = `checkbox-${name}`;
-
     return (
       <label
-        htmlFor={name}
+        htmlFor={inputId}
         className={`flex items-start gap-2.5 ${
           disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
         }`}
@@ -41,7 +43,7 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
         <div className={Styles.checkboxWrapper}>
           <span className={Styles.checkbox}>
             <input
-              id={name}
+              id={inputId}
               type="checkbox"
               checked={!!currentValue}
               disabled={disabled}
@@ -79,14 +81,18 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
           </svg>
         </div>
 
-        {label && <span className="text-(--grey-300) leading-6">{label}</span>}
+        {label && <span className="leading-6 text-(--grey-300)">{label}</span>}
       </label>
     );
   };
 
   if (form) {
     return (
-      <FormFieldWrapper<TFormValues> name={name} label={undefined} form={form}>
+      <FormFieldWrapper<TFormValues>
+        name={name}
+        inputId={inputId}
+        form={form}
+      >
         <Controller
           name={name}
           control={form.control}
@@ -97,7 +103,10 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper<TFormValues> name={name} label={undefined}>
+    <FormFieldWrapper<TFormValues>
+      name={name}
+      inputId={inputId}
+    >
       {render(internalValue, value => {
         setInternalValue(value);
       })}

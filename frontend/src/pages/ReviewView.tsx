@@ -4,6 +4,7 @@ import {
   TrashFilled,
   UserFilled,
 } from '@assets/icons';
+import { CommentForm } from '@components/ui/CommentForm';
 import {
   MenuExtraOptions,
   type MenuOption,
@@ -204,10 +205,12 @@ export const ReviewView = () => {
                 ))}
             </span>
           )}
-        </div>
 
-        <ScoreCard hasScoreDropdown />
+          <ScoreCard hasScoreDropdown />
+        </div>
       </div>
+
+      <CommentForm />
     </div>
   );
 };

@@ -36,4 +36,8 @@ export const API_CONST = {
     BY_ID: (id: number) => `/avaliacoes/${id}`,
     CARD_BY_ID: (id: number) => `/avaliacoes/card/${id}`,
   },
+  COMMENT: {
+    BY_ID: (id: number) => `/comentarios/${id}`,
+    STUDENT_BY_ID: (id: number) => `/comentarios/estudante/${id}`,
+  },
 } as const;

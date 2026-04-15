@@ -1,4 +1,5 @@
 import { AuthStore } from './AuthStore';
+import { CommentStore } from './CommentStore';
 import { CompanyStore } from './CompanyStore';
 import { ExperienceStore } from './ExperienceStore';
 import { ReviewStore } from './ReviewStore';
@@ -12,6 +13,7 @@ export class RootStore {
   experienceStore: ExperienceStore;
   reviewStore: ReviewStore;
   studentStore: StudentStore;
+  commentStore: CommentStore;
 
   constructor() {
     this.authStore = new AuthStore(this);
@@ -20,6 +22,7 @@ export class RootStore {
     this.experienceStore = new ExperienceStore(this);
     this.reviewStore = new ReviewStore(this);
     this.studentStore = new StudentStore(this);
+    this.commentStore = new CommentStore(this);
   }
 }
 
