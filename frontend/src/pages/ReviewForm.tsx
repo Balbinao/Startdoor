@@ -165,7 +165,7 @@ export const ReviewForm = () => {
       <FormWrapper form={form}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex w-full max-w-3xl flex-col gap-12"
+          className="flex w-full flex-col gap-12"
         >
           <FormField<ReviewData>
             form={form}

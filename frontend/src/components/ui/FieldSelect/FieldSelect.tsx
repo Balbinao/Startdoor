@@ -8,7 +8,7 @@ import {
   useFloating,
 } from '@floating-ui/react';
 import type { ISelectField } from '@models/input.types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   Controller,
   type FieldValues,
@@ -37,7 +37,10 @@ export const FieldSelect = <TFormValues extends FieldValues>({
     string | number | undefined
   >(value);
 
+  const inputId = `select-${name}-${useId()}`;
+
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const { x, y, strategy, refs, update } = useFloating({
     placement: 'bottom-start',
@@ -74,7 +77,10 @@ export const FieldSelect = <TFormValues extends FieldValues>({
       <div ref={wrapperRef} className="relative w-full">
         <button
           type="button"
-          ref={refs.setReference}
+          ref={node => {
+            refs.setReference(node);
+            buttonRef.current = node;
+          }}
           disabled={disabled}
           onClick={() => !disabled && !readOnly && setOpen(p => !p)}
           className={`flex h-10 w-full items-center justify-between rounded-lg border border-(--grey-900) bg-(--grey-1100) px-3 whitespace-nowrap focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${
@@ -135,7 +141,15 @@ export const FieldSelect = <TFormValues extends FieldValues>({
 
   if (form) {
     return (
-      <FormFieldWrapper<TFormValues> name={name} label={label} form={form}>
+      <FormFieldWrapper<TFormValues>
+        name={name}
+        inputId={inputId}
+        label={label}
+        form={form}
+        onClick={() => {
+          buttonRef.current?.click();
+        }}
+      >
         <Controller
           name={name}
           control={form.control}
@@ -146,7 +160,14 @@ export const FieldSelect = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper<TFormValues> name={name} label={label}>
+    <FormFieldWrapper<TFormValues>
+      name={name}
+      inputId={inputId}
+      label={label}
+      onClick={() => {
+        buttonRef.current?.click();
+      }}
+    >
       {render(internalValue, value => {
         setInternalValue(value);
       })}

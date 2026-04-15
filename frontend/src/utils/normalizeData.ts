@@ -1,4 +1,5 @@
 import { DROPDOWN_VALUES_CONST } from '@constants';
+import type { ICommentPayload } from '@models/comment.types';
 import type {
   ICompany,
   ICompanyUpdatePayload,
@@ -14,6 +15,7 @@ import type {
   IStudentUpdatePayload,
 } from '@models/studentData.types';
 import type { AcademicExperienceCardData } from '@schemas/academicExperienceCardSchema';
+import type { CommentData } from '@schemas/commentSchema';
 import type { CompanyProfileUpdateData } from '@schemas/companyProfileUpdateSchema';
 import type { ProfessionalExperienceCardData } from '@schemas/professionalExperienceCardSchema';
 import type { ReviewData } from '@schemas/reviewSchema';
@@ -220,6 +222,13 @@ export const normalizeReviewData = (reviewData: IReview): ReviewData => {
     remuneracao: reviewData.remuneracao ?? '',
     rotina: reviewData.rotina ?? '',
     lideranca: reviewData.lideranca ?? '',
+  };
+};
+
+export const normalizeCommentUpdate = (data: CommentData): ICommentPayload => {
+  return {
+    texto: data.texto,
+    anonimo: data.anonimo,
   };
 };
 
