@@ -2,6 +2,7 @@ import { StarFilled } from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { ButtonPill } from '@components/ui/ButtonPill';
+import { FieldDoubleRange } from '@components/ui/FieldDoubleRange';
 import { FormErrorMessage } from '@components/ui/FormErrorMessage';
 import { UserBanner } from '@components/ui/UserBanner';
 import {
@@ -57,8 +58,10 @@ export const ReviewForm = () => {
       dataFim: undefined,
       tituloCargo: '',
       textoAvaliacao: '',
-      salarioMin: 0,
-      salarioMax: 0,
+      faixaSalarial: {
+        min: 0,
+        max: 0,
+      },
       ambiente: '',
       aprendizado: '',
       beneficios: '',
@@ -239,6 +242,17 @@ export const ReviewForm = () => {
               placeholder="Descreva sua experiência no estágio..."
             />
           </div>
+
+          <FieldDoubleRange
+            form={form}
+            type="doubleRange"
+            name="faixaSalarial"
+            label="Faixa Salarial"
+            minLimit={0}
+            maxLimit={5000}
+            step={50}
+            unitType='R$'
+          />
 
           <div className="self-end">
             <FormField<ReviewData>

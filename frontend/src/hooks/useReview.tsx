@@ -69,8 +69,10 @@ A liderança também teve um papel importante na minha jornada. Os gestores eram
 
 Outro ponto positivo foi a cultura organizacional, que valorizava inovação, respeito e transparência. Havia um incentivo constante para evoluir tecnicamente, inclusive com acesso a cursos, treinamentos e momentos dedicados ao aprendizado.
   `,
-    salarioMin: 1500,
-    salarioMax: 3000,
+    faixaSalarial: {
+      salarioMin: 1850,
+      salarioMax: 2480,
+    },
     anonima: 1,
     ambiente: 4,
     aprendizado: 5,
@@ -103,6 +105,7 @@ Outro ponto positivo foi a cultura organizacional, que valorizava inovação, re
 
   const getReview = async (id: number) => {
     try {
+      console.log(id);
       // const response = await reviewService.getReview(id);
       const response = mockReview;
       reviewStore.setReview(response);

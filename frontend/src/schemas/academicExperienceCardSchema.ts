@@ -33,12 +33,9 @@ export const academicExperienceCardSchema = z
     dataFim: z
       .string()
       .optional()
-      .refine(
-        val => !val || REGEX_CONST.DATE.test(val),
-        'Formato de data inválido',
-      )
+      .refine(val => !val || REGEX_CONST.DATE.test(val), 'Data inválida')
       .refine(val => !val || !isNaN(new Date(val).getTime()), {
-        message: 'Data fim inválida',
+        message: 'Data inválida',
       }),
 
     descricao: z.string().min(16, 'Precisa ter pelo menos 16 caracteres'),

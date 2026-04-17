@@ -64,7 +64,7 @@ export const companyProfileUpdateSchema = z.object({
       url =>
         url === '' ||
         (z.url().safeParse(url).success && url.includes('linkedin.com/in/')),
-      { message: 'Deve ser um link do LinkedIn' },
+      { message: 'URL inválida' },
     )
     .optional(),
 
@@ -74,7 +74,7 @@ export const companyProfileUpdateSchema = z.object({
       url =>
         url === '' ||
         (z.url().safeParse(url).success && url.includes('gupy.io')),
-      { message: 'Deve ser um link da Gupy' },
+      { message: 'URL inválida' },
     )
     .optional(),
 });

@@ -8,6 +8,11 @@ export type IInputOption = {
   desc?: string;
 };
 
+export type RangeValue = {
+  min: number;
+  max: number;
+};
+
 type IBaseField<T extends FieldValues> = {
   name: FieldName<T>;
   label?: string;
@@ -58,10 +63,20 @@ export type IInputDate<T extends FieldValues> = IBaseField<T> & {
   max?: string;
 };
 
+export type IDoubleRangeField<T extends FieldValues> = IBaseField<T> & {
+  type: 'doubleRange';
+  minLimit: number;
+  maxLimit: number;
+  value?: RangeValue;
+  step?: number;
+  unitType?: string;
+};
+
 export type FieldConfig<T extends FieldValues> =
   | ITextField<T>
   | ITextareaField<T>
   | IRadioField<T>
   | ISelectField<T>
   | ICheckboxField<T>
-  | IInputDate<T>;
+  | IInputDate<T>
+  | IDoubleRangeField<T>;
