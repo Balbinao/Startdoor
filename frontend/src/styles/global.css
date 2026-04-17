@@ -133,6 +133,10 @@
 }
 
 /* GLOBAL STYLES */
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   background-color: var(--grey-1300);
   color: var(--grey-100);

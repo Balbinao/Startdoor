@@ -208,8 +208,10 @@ export const normalizeReviewData = (reviewData: IReview): ReviewData => {
     dataFim: reviewData.dataFim ?? undefined,
     tituloCargo: reviewData.tituloCargo ?? '',
     textoAvaliacao: reviewData.textoAvaliacao ?? '',
-    salarioMin: reviewData.salarioMin ?? 0,
-    salarioMax: reviewData.salarioMax ?? 0,
+    faixaSalarial: {
+      min: reviewData.faixaSalarial.salarioMin,
+      max: reviewData.faixaSalarial.salarioMax,
+    },
     ambiente: reviewData.ambiente ?? '',
     aprendizado: reviewData.aprendizado ?? '',
     beneficios: reviewData.beneficios ?? '',

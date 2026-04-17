@@ -40,7 +40,7 @@ export const professionalExperienceCardSchema = z
         'Formato de data inválido',
       )
       .refine(val => !val || !isNaN(new Date(val).getTime()), {
-        message: 'Data fim inválida',
+        message: 'Data inválida',
       }),
 
     descricao: z.string().min(16, 'Precisa ter pelo menos 16 caracteres'),

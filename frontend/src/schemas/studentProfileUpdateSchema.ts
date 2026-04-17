@@ -87,7 +87,7 @@ export const studentProfileUpdateSchema = (sectors: IInputOption[]) =>
         url =>
           url === '' ||
           (z.url().safeParse(url).success && url.includes('linkedin.com/in/')),
-        { message: 'Deve ser um link do LinkedIn' },
+        { message: 'URL inválida' },
       )
       .optional(),
 

@@ -1,10 +1,11 @@
 import { FieldCheckbox } from '@components/ui/FieldCheckbox';
 import { FieldDate } from '@components/ui/FieldDate/FieldDate';
+import { FieldDoubleRange } from '@components/ui/FieldDoubleRange';
 import { FieldRadio } from '@components/ui/FieldRadio';
 import { FieldSelect } from '@components/ui/FieldSelect';
 import { FieldText } from '@components/ui/FieldText';
 import { FieldTextarea } from '@components/ui/FieldTextarea/FieldTextarea';
-import type { FieldConfig } from '@models/input.types';
+import type { FieldConfig, RangeValue } from '@models/input.types';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 type FieldOnChange =
@@ -13,6 +14,10 @@ type FieldOnChange =
   | {
       type: 'text' | 'email' | 'password' | 'number' | 'textarea' | 'date';
       onChange?: (value: string) => void;
+    }
+  | {
+      type: 'doubleRange';
+      onChange?: (value: RangeValue) => void;
     };
 
 type Props<TFormValues extends FieldValues> = FieldConfig<TFormValues> & {
@@ -45,6 +50,9 @@ export const FormField = <TFormValues extends FieldValues>(
 
     case 'date':
       return <FieldDate<TFormValues> {...field} form={form} />;
+
+    case 'doubleRange':
+      return <FieldDoubleRange<TFormValues> {...field} form={form} />;
 
     default:
       return null;

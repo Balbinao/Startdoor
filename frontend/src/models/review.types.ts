@@ -21,8 +21,10 @@ export interface IReview {
   dataFim?: string | null;
   tituloCargo: string;
   textoAvaliacao: string;
-  salarioMin: number;
-  salarioMax: number;
+  faixaSalarial: {
+    salarioMin: number;
+    salarioMax: number;
+  };
   anonima: number;
   ambiente: number;
   aprendizado: number;

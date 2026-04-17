@@ -53,12 +53,9 @@ export const reviewSchema = (sectors: IInputOption[]) =>
       dataFim: z
         .string()
         .optional()
-        .refine(
-          val => !val || REGEX_CONST.DATE.test(val),
-          'Formato de data inválido',
-        )
+        .refine(val => !val || REGEX_CONST.DATE.test(val), 'Data inválida')
         .refine(val => !val || !isNaN(new Date(val).getTime()), {
-          message: 'Data fim inválida',
+          message: 'Data inválida',
         }),
 
       tituloCargo: z
@@ -70,11 +67,10 @@ export const reviewSchema = (sectors: IInputOption[]) =>
         .string()
         .min(16, 'Precisa ter pelo menos 16 caracteres'),
 
-      salarioMin: z.number().positive('Deve ser positivo'),
-      // salarioMin: z.coerce.number().positive('Deve ser positivo'),
-
-      salarioMax: z.number().positive('Deve ser positivo'),
-      // salarioMax: z.coerce.number().positive('Deve ser positivo'),
+      faixaSalarial: z.object({
+        min: z.number(),
+        max: z.number(),
+      }),
 
       anonima: z.boolean().optional(),
 
@@ -100,10 +96,6 @@ export const reviewSchema = (sectors: IInputOption[]) =>
         message: 'Deve ser menor ou igual à data fim',
         path: ['dataInicio'],
       },
-    )
-    .refine(data => data.salarioMin < data.salarioMax, {
-      message: 'Deve ser menor que o salário máximo',
-      path: ['salarioMin'],
-    });
+    );
 
 export type ReviewData = z.input<ReturnType<typeof reviewSchema>>;

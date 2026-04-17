@@ -1,4 +1,5 @@
 import {
+  Coin,
   PencilFilled,
   ThreeDotsVertical,
   TrashFilled,
@@ -10,6 +11,7 @@ import {
   type MenuOption,
 } from '@components/ui/MenuExtraOptions/MenuExtraOptions';
 import { ScoreCard } from '@components/ui/ScoreCard';
+import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
 import {
   MESSAGES_LOADING,
@@ -189,7 +191,7 @@ export const ReviewView = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-6">
           {review?.tituloCargo && (
             <span className="text-xl font-semibold"> {review.tituloCargo}</span>
           )}
@@ -199,11 +201,21 @@ export const ReviewView = () => {
                 .split(/\n+/)
                 .filter(p => p.trim() !== '')
                 .map((paragrafo, i) => (
-                  <p key={i} className="mb-4">
+                  <p key={i} className="mb-4 last:mb-0">
                     {paragrafo}
                   </p>
                 ))}
             </span>
+          )}
+
+          {review?.faixaSalarial && (
+            <div className='w-64'>
+              <UserAttribute
+                icon={<Coin width={44} height={44} strokeWidth={1.5} />}
+                title="Faixa Salarial"
+                value={`R$ ${review.faixaSalarial.salarioMin} — R$ ${review.faixaSalarial.salarioMax}`}
+              />
+            </div>
           )}
 
           <ScoreCard hasScoreDropdown />
