@@ -221,10 +221,10 @@ export const UserBanner = ({ type, id }: Props) => {
   }, [type, student, company]);
 
   useEffect(() => {
-    if (type === USER_ROLES_CONST.ESTUDANTE && student?.fotoUrl) {
-      setProfileImage(student.fotoUrl);
-    } else if (company?.fotoUrl) {
-      setProfileImage(company.fotoUrl);
+    if (type === USER_ROLES_CONST.ESTUDANTE) {
+      setProfileImage(student?.fotoUrl ?? null);
+    } else {
+      setProfileImage(company?.fotoUrl ?? null);
     }
   }, [student, company, type]);
 
@@ -397,19 +397,43 @@ export const UserBanner = ({ type, id }: Props) => {
         />
 
         <div
-          className={`group ${showUpdateView ? 'cursor-pointer' : ''} absolute bottom-0 left-1/2 h-36 w-36 -translate-x-1/2 translate-y-1/4 overflow-hidden rounded-2xl border-2 border-gray-800`}
+          className={`group ${showUpdateView ? 'cursor-pointer' : ''} absolute bottom-0 left-1/2 h-36 w-36 -translate-x-1/2 translate-y-1/4 overflow-hidden rounded-2xl border-2 border-zinc-700`}
         >
           <div {...getRootProps()} className="relative h-full w-full">
             <input {...getInputProps()} />
 
             {previewUrl ? (
-              <img src={previewUrl} className="h-full w-full object-cover" />
+              <img
+                src={previewUrl}
+                className="h-full w-full cursor-pointer object-cover"
+                onClick={() => {
+                  if (!userId) return;
+
+                  if (type === USER_ROLES_CONST.ESTUDANTE) {
+                    navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+                  } else {
+                    navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+                  }
+                }}
+              />
             ) : (
-              <div className="h-full w-full bg-(--grey-1000) p-8">
+              <div className="h-full w-full cursor-pointer bg-(--grey-1000) p-8">
                 {type === USER_ROLES_CONST.ESTUDANTE ? (
-                  <UserFilled className="h-full w-full text-(--grey-400)" />
+                  <UserFilled
+                    className="h-full w-full text-(--grey-400)"
+                    onClick={() => {
+                      if (!userId) return;
+                      navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+                    }}
+                  />
                 ) : (
-                  <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
+                  <BriefcaseFilled
+                    className="h-full w-full text-(--grey-400)"
+                    onClick={() => {
+                      if (!userId) return;
+                      navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+                    }}
+                  />
                 )}
               </div>
             )}
