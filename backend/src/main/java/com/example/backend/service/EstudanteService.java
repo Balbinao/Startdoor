@@ -75,16 +75,24 @@ public class EstudanteService {
                 adminRepository.existsByEmail(email);
     }
 
-    public List<Estudante> listarTodos(){
-        return estudanteRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<EstudanteResponseDTO> listarTodos(){
+        List<Estudante> estudantes = estudanteRepository.findAll();
+
+        return estudantes.stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
-    public Estudante buscarPorId(Long id){
-        return estudanteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado com o ID: " + id));
+    public EstudanteResponseDTO buscarPorId(Long id){
+        Estudante estudante =  estudanteRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Estudante não encontrado com o ID: " + id));
+        return toResponseDTO(estudante);
     }
 
     public void atualizar(Long id, AtualizarEstudanteDTO dto) {
-        Estudante estudante = buscarPorId(id);
+        Estudante estudante = estudanteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado."));
 
         if (dto.nome() != null) estudante.setNome(dto.nome());
         if (dto.user() != null && !dto.user().equals(estudante.getUser())) {

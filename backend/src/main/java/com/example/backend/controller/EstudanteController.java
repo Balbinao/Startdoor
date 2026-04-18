@@ -48,13 +48,13 @@ public class EstudanteController implements EstudanteControllerOpenApi {
     }
 
     @GetMapping
-    public ResponseEntity<List<Estudante>> listar() {
+    public ResponseEntity<List<EstudanteResponseDTO>> listar() {
         return ResponseEntity.ok(estudanteService.listarTodos());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
-    public ResponseEntity<Estudante> buscar(@PathVariable Long id) {
+    public ResponseEntity<EstudanteResponseDTO> buscar(@PathVariable Long id) {
        return ResponseEntity.ok(estudanteService.buscarPorId(id));
     }
 
