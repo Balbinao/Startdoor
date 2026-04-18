@@ -1,81 +1,105 @@
-import { BriefcaseFilled, StarFilled, UserFilled } from '@assets/icons';
-import { ROUTES_CONST } from '@constants';
+import { StarFilled } from '@assets/icons';
+import { MESSAGES_LOADING, MESSAGES_RESPONSE, ROUTES_CONST } from '@constants';
 import { useCompany } from '@hooks/useCompany';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudent } from '@hooks/useStudent';
-import type { IReviewCard } from '@models/review.types';
+import type {
+  IReviewCardCompanyView,
+  IReviewCardStudentView,
+} from '@models/review.types';
 import { formatDDMMMYYYY } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
+import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
-  item: IReviewCard;
+  item: IReviewCardCompanyView | IReviewCardStudentView;
 }
 
 export const ReviewCard = ({ item }: Props) => {
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLSpanElement>(null);
   const navigate = useNavigate();
 
-  const { companiesOptions } = useCompany();
-  const { studentsOptions } = useStudent();
+  const modalLoadingAuto = useModalLoadingAuto();
+  const { modalMessageError } = useModalMessageDefault();
+
+  const { students, getStudents } = useStudent();
+  const { companies, getCompanies } = useCompany();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const [shouldCollapse, setShouldCollapse] = useState(false);
-  const [height, setHeight] = useState<string>('0px');
-
-  const lineHeight = 32;
-  const maxLines = 3;
-  const collapsedHeight = lineHeight * maxLines;
 
   useEffect(() => {
-    if (contentRef.current) {
-      const fullHeight = contentRef.current.scrollHeight;
-      setHeight(`${fullHeight}px`);
-      setShouldCollapse(fullHeight > collapsedHeight);
-    }
-  }, [item.textoAvaliacao, collapsedHeight]);
+    const fetch = async () => {
+      try {
+        setIsLoading(true);
+
+        await modalLoadingAuto(() => getStudents(), MESSAGES_LOADING.GET);
+        await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
+
+        setIsError(false);
+      } catch (error: unknown) {
+        setIsError(true);
+        await modalMessageError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetch();
+  }, []);
+
+  const isReviewCardFromCompanyPerspective = 'idEstudante' in item;
+
+  const user = isReviewCardFromCompanyPerspective
+    ? students.find(s => s.id === item.idEstudante)
+    : companies.find(c => c.id === item.idEmpresa);
+
+  useEffect(() => {
+    if (isLoading || isError || !user) return;
+
+    const el = contentRef.current;
+    if (!el) return;
+
+    const isOverflowing = el.scrollHeight > el.clientHeight;
+    setShouldCollapse(isOverflowing);
+  }, [item.textoAvaliacao, isLoading, isError, user]);
+
+  if (!user) {
+    console.error(MESSAGES_RESPONSE.WARNING.USER_NOT_FOUND);
+    return null;
+  }
+
+  if (isLoading) return null;
+  if (isError) return null;
 
   return (
     <div className="relative flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
       <div className="flex items-start gap-3">
-        <div className="w-fit rounded-lg bg-(--grey-800) p-3">
-          {item.source === 'Estudante' && (
-            <BriefcaseFilled
-              width={36}
-              height={36}
-              className="text-(--grey-300)"
-            />
-          )}
-          {item.source === 'Empresa' && (
-            <UserFilled width={36} height={36} className="text-(--grey-300)" />
-          )}
-        </div>
+        <UserProfilePicture
+          userId={user.id}
+          size={64}
+          src={user?.fotoUrl}
+          defaultIconType={
+            isReviewCardFromCompanyPerspective ? 'student' : 'company'
+          }
+        />
 
         <div className="flex flex-1 flex-col gap-1">
           <div className="flex flex-1 justify-between">
-            {item.source === 'Estudante' && (
-              <span className="text-lg font-semibold">
-                {
-                  companiesOptions.find(
-                    company => company.value === item.idEmpresa,
-                  )?.label
-                }
-              </span>
-            )}
-
-            {item.source === 'Empresa' && (
-              <span className="text-lg font-semibold">
-                {
-                  studentsOptions.find(
-                    student => student.value === item.idEstudante,
-                  )?.label
-                }
-              </span>
-            )}
+            <span className="text-lg font-semibold">
+              {'nomeFantasia' in user ? user.nomeFantasia : user.nome}
+            </span>
 
             <span className="text-(--grey-400)">
               {formatDDMMMYYYY(item.dataPublicacao)}
             </span>
           </div>
+
           <div className="flex gap-3 font-semibold text-(--grey-300)">
             <span>{item.tituloCargo}</span>
             <span className="text-(--grey-400)">•</span>
@@ -92,44 +116,24 @@ export const ReviewCard = ({ item }: Props) => {
       </div>
 
       <div className="relative">
-        <div
+        <span
           ref={contentRef}
-          style={{
-            height: !shouldCollapse ? height : `${collapsedHeight}px`,
-          }}
-          className="line-clamp-3 overflow-hidden leading-8 transition-[height] duration-300 ease-in-out"
+          className="line-clamp-3 leading-8 text-(--grey-200)"
         >
           {item.textoAvaliacao}
-        </div>
+        </span>
 
         {shouldCollapse && (
-          <div className="pointer-events-none absolute bottom-0 left-0 h-25 w-full bg-linear-to-t from-(--grey-1000) to-transparent" />
+          <div className="pointer-events-none absolute bottom-0 left-0 h-10 w-full bg-linear-to-t from-(--grey-1000) to-transparent" />
         )}
       </div>
 
-      {/* <div className="absolute right-3 bottom-3 flex gap-4 rounded-md border border-(--grey-500) bg-(--grey-900) px-3 py-1.5 text-(--blue-100)">
-        <span className="flex items-center gap-1">
-          <MessageCircleFilled
-            width={18}
-            height={18}
-            className="text-(--blue-100)"
-          />
-          {item.numApoios}
-        </span>
-        <span className="flex items-center gap-1">
-          <ShieldFilled width={18} height={18} className="text-(--blue-100)" />
-          {item.numComents}
-        </span>
-      </div> */}
       <div className="absolute right-3 bottom-3">
         <SupportButton
           text="Visualizar"
           onClick={() =>
             navigate(
-              ROUTES_CONST.REVIEW.REVIEW_VIEW_BY_ID(
-                item.idEstudante,
-                item.idEmpresa,
-              ),
+              ROUTES_CONST.REVIEW.REVIEW_VIEW_BY_ID(user.id, item.idAvaliacao),
             )
           }
         />

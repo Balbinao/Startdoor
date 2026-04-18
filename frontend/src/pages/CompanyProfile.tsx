@@ -37,7 +37,7 @@ export const CompanyProfile = () => {
 
   const { sectorsItems, getSectors } = useSector();
 
-  const { reviewCards, getReviewCards } = useReview();
+  const { reviewCards, getReviewCardsCompany } = useReview();
   const { getCompany } = useCompany();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -70,7 +70,7 @@ export const CompanyProfile = () => {
         );
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
-          () => getReviewCards(Number(urlUserId)),
+          () => getReviewCardsCompany(Number(urlUserId)),
           MESSAGES_LOADING.GET,
         );
         setIsError(false);

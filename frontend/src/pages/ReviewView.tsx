@@ -3,7 +3,6 @@ import {
   PencilFilled,
   ThreeDotsVertical,
   TrashFilled,
-  UserFilled,
 } from '@assets/icons';
 import { CommentForm } from '@components/ui/CommentForm';
 import {
@@ -13,6 +12,7 @@ import {
 import { ScoreCard } from '@components/ui/ScoreCard';
 import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
+import { UserProfilePicture } from '@components/ui/UserProfilePicture';
 import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
@@ -139,22 +139,25 @@ export const ReviewView = () => {
 
       <div className="flex flex-col gap-10">
         <div className="flex items-start gap-3">
-          <div className="h-20 w-20">
-            {student?.fotoUrl ? (
-              <img
-                src={student.fotoUrl}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="h-full w-full rounded-lg bg-(--grey-1000) p-3">
-                <UserFilled className="h-full w-full text-(--grey-400)" />
-              </div>
-            )}
-          </div>
+          {student && (
+            <UserProfilePicture
+              userId={student.id}
+              size={80}
+              src={student.fotoUrl}
+              isAnonymous={review?.anonima === 1}
+              defaultIconType="student"
+            />
+          )}
 
           <div className="flex flex-1 flex-col gap-1">
             <div className="flex items-center justify-between">
-              <span className="text-lg font-bold">{student?.nome}</span>
+              <span className="text-lg font-bold">
+                {isOwner
+                  ? 'Você'
+                  : review?.anonima
+                    ? 'Usuário Anônimo'
+                    : student?.nome}
+              </span>
               <div className="flex items-center gap-2">
                 {review?.created_at && (
                   <span className="inline-block max-w-22 truncate text-sm text-(--grey-200) sm:max-w-full">

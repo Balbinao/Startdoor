@@ -1,4 +1,3 @@
-import { BriefcaseFilled, UserFilled } from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
@@ -16,6 +15,7 @@ import { normalizeCommentUpdate } from '@utils/normalizeData';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
+import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
   item: ICommentStudent | ICommentCompany;
@@ -85,19 +85,15 @@ export const CommentCardEdit = ({ item, user, onEdit }: Props) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-start gap-3">
-        <div className="h-16 w-16">
-          {user?.fotoUrl && !item.anonimo ? (
-            <img src={user.fotoUrl} className="h-full w-full object-cover" />
-          ) : (
-            <div className="h-full w-full rounded-lg bg-(--grey-1000) p-3">
-              {isStudentUser ? (
-                <UserFilled className="h-full w-full text-(--grey-400)" />
-              ) : (
-                <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
-              )}
-            </div>
-          )}
-        </div>
+        {user && (
+          <UserProfilePicture
+            userId={user.id}
+            size={64}
+            src={user?.fotoUrl}
+            isAnonymous={item.anonimo}
+            defaultIconType={isStudentUser ? 'student' : 'company'}
+          />
+        )}
 
         <div className="flex-1 gap-1">
           <div className="w-fullx flex justify-between">

@@ -47,7 +47,7 @@ export const StudentProfile = () => {
   } = useExperience();
 
   const { sectorsItems, getSectors } = useSector();
-  const { reviewCards, getReviewCards } = useReview();
+  const { reviewCards, getReviewCardsStudent } = useReview();
   const { getCompanies } = useCompany();
   const { getStudent } = useStudent();
 
@@ -90,7 +90,7 @@ export const StudentProfile = () => {
         await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(
-          () => getReviewCards(Number(urlUserId)),
+          () => getReviewCardsStudent(Number(urlUserId)),
           MESSAGES_LOADING.GET,
         );
         setIsError(false);

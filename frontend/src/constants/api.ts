@@ -35,8 +35,9 @@ export const API_CONST = {
       `/experiencias-profissionais/estudante/${id}`,
   },
   REVIEW: {
-    BY_ID: (id: number) => `/avaliacoes/${id}`,
-    CARD_BY_ID: (id: number) => `/avaliacoes/card/${id}`,
+    STUDENT_REVIEW_BY_ID: (id: number) => `estudantes/avaliacoes/${id}`,
+    STUDENT_BY_ID_REVIEWS: (id: number) => `estudantes/${id}/avaliacoes`,
+    COMPANY_BY_ID_REVIEW: (id: number) => `estudantes/${id}/avaliacoes`,
   },
   COMMENT: {
     BY_ID: (id: number) => `/comentarios/${id}`,

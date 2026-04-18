@@ -1,4 +1,4 @@
-import { BriefcaseFilled, Pencil, Trash } from '@assets/icons';
+import { Pencil, Trash } from '@assets/icons';
 import {
   HINTS_CONST,
   MESSAGES_LOADING,
@@ -15,6 +15,7 @@ import { formatMMMYYYY } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
+import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
   item: IProfessionalExperience;
@@ -92,15 +93,13 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
   return (
     <div className="flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
       <div className="flex items-start gap-3">
-        <div className="h-16 w-16">
-          {company.fotoUrl ? (
-            <img src={company.fotoUrl} className="h-full w-full object-cover" />
-          ) : (
-            <div className="h-full w-full rounded-lg bg-(--grey-800) p-3">
-              <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
-            </div>
-          )}
-        </div>
+        <UserProfilePicture
+          userId={company.id}
+          size={64}
+          src={company.fotoUrl}
+          defaultIconType="company"
+          iconWrapperClassName="bg-(--grey-800)"
+        />
 
         <div className="flex flex-1 flex-col gap-1">
           <span className="text-lg font-semibold">{item.tituloCargo}</span>
