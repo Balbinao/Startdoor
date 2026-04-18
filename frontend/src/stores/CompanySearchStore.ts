@@ -1,4 +1,5 @@
 import type { ICompanyCard, ICompany } from '@models/companyData.types';
+import Fuse from 'fuse.js'
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';
 
@@ -140,66 +141,73 @@ export class CompanySearchStore {
       lideranca: 0,
     };
   };
-
   getFilteredCompanies = (): ICompany[] => {
-    console.log('filters.searchText:', this.filters.searchText);
-    console.log('filters.notaGeralMin:', this.filters.notaGeralMin);
-    console.log('filters.notaGeralMax:', this.filters.notaGeralMax);
-    return this.companies.filter(company => {
-      const matchesSearch =
-        !this.filters.searchText ||
-        company.nomeFantasia
-          .toLowerCase()
-          .includes(this.filters.searchText.toLowerCase()) 
+  console.log('filters.searchText:', this.filters.searchText);
+  console.log('filters.notaGeralMin:', this.filters.notaGeralMin);
+  console.log('filters.notaGeralMax:', this.filters.notaGeralMax);
 
-      const matchesNota =
-        (this.filters.notaGeralMin === 0 && this.filters.notaGeralMax === 0) ||
-        (company.mediaNotaGeral !== undefined &&
-          company.mediaNotaGeral >= this.filters.notaGeralMin &&
-          company.mediaNotaGeral <= this.filters.notaGeralMax);
+  let filtered = this.companies;
 
-      const matchesSetor =
-        this.filters.setorId === 0 || company.setor !== undefined;
-
-      const matchesTamanho =
-        !this.filters.tamanhoEmpresa ||
-        company.tamanhoEmpresa === this.filters.tamanhoEmpresa;
-
-      const matchesReceita =
-        !this.filters.receitaAnual ||
-        company.receitaAnual === this.filters.receitaAnual;
-
-      let matchesCompetencias = true;
-      if (this.filters.competenciaMin > 0 && company.competencias) {
-        const values = Object.values(company.competencias).filter(
-          v => v !== undefined,
-        ) as number[];
-        const avgCompetencia =
-          values.length > 0
-            ? values.reduce((a, b) => a + b, 0) / values.length
-            : 0;
-        matchesCompetencias =
-          avgCompetencia >= this.filters.competenciaMin &&
-          avgCompetencia <= this.filters.competenciaMax;
-      }
-
-      const matchesIndividualCompetencias = COMPETENCIAS_FILTERS.every(key => {
-        const filterValue = this.filters[key];
-        if (filterValue === 0) return true;
-        const companyValue = company.competencias?.[key];
-        if (companyValue === undefined) return true;
-        return companyValue >= filterValue;
-      });
-
-      return (
-        matchesSearch &&
-        matchesNota &&
-        matchesSetor &&
-        matchesTamanho &&
-        matchesReceita &&
-        matchesCompetencias &&
-        matchesIndividualCompetencias
-      );
+  if (this.filters.searchText) {
+    const fuse = new Fuse(filtered, {
+      keys: ['nomeFantasia'],
+      threshold: 0.3,
     });
-  };
+
+    filtered = fuse.search(this.filters.searchText).map(r => r.item);
+  }
+  return filtered.filter(company => {
+    const matchesNota =
+      (this.filters.notaGeralMin === 0 && this.filters.notaGeralMax === 0) ||
+      (company.mediaNotaGeral !== undefined &&
+        company.mediaNotaGeral >= this.filters.notaGeralMin &&
+        company.mediaNotaGeral <= this.filters.notaGeralMax);
+
+    const matchesSetor =
+      this.filters.setorId === 0 || company.setor !== undefined;
+
+    const matchesTamanho =
+      !this.filters.tamanhoEmpresa ||
+      company.tamanhoEmpresa === this.filters.tamanhoEmpresa;
+
+    const matchesReceita =
+      !this.filters.receitaAnual ||
+      company.receitaAnual === this.filters.receitaAnual;
+
+    let matchesCompetencias = true;
+    if (this.filters.competenciaMin > 0 && company.competencias) {
+      const values = Object.values(company.competencias).filter(
+        v => v !== undefined,
+      ) as number[];
+
+      const avgCompetencia =
+        values.length > 0
+          ? values.reduce((a, b) => a + b, 0) / values.length
+          : 0;
+
+      matchesCompetencias =
+        avgCompetencia >= this.filters.competenciaMin &&
+        avgCompetencia <= this.filters.competenciaMax;
+    }
+
+    const matchesIndividualCompetencias = COMPETENCIAS_FILTERS.every(key => {
+      const filterValue = this.filters[key];
+      if (filterValue === 0) return true;
+
+      const companyValue = company.competencias?.[key];
+      if (companyValue === undefined) return true;
+
+      return companyValue >= filterValue;
+    });
+
+    return (
+      matchesNota &&
+      matchesSetor &&
+      matchesTamanho &&
+      matchesReceita &&
+      matchesCompetencias &&
+      matchesIndividualCompetencias
+    );
+  });
+}
 }
