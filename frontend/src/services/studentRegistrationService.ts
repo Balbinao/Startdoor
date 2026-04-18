@@ -40,6 +40,19 @@ export const studentService = {
     return response.data;
   },
 
+  updateStudentProfilePicture: async (id: number, formData: FormData) => {
+    const response = await api.put(
+      API_CONST.STUDENT.BY_ID_PICTURE(id),
+      formData,
+    );
+    return response.data;
+  },
+
+  deleteStudentProfilePicture: async (id: number) => {
+    const response = await api.delete(API_CONST.STUDENT.BY_ID_PICTURE(id));
+    return response.data;
+  },
+
   getConditionalScore: async (
     idStudent: number,
   ): Promise<IConditionalScore> => {

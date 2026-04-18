@@ -116,6 +116,32 @@ export const useStudent = () => {
     }
   };
 
+  const updateStudentProfilePicture = async (
+    id: number,
+    formData: FormData,
+  ) => {
+    try {
+      const response = await studentService.updateStudentProfilePicture(
+        id,
+        formData,
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const deleteStudentProfilePicture = async (id: number) => {
+    try {
+      const response = await studentService.deleteStudentProfilePicture(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const getConditionalScore = async (idStudent: number) => {
     try {
       const response = await studentService.getConditionalScore(idStudent);
@@ -153,6 +179,8 @@ export const useStudent = () => {
     updateStudent,
     updateStudentPassword,
     deleteStudent,
+    updateStudentProfilePicture,
+    deleteStudentProfilePicture,
     getConditionalScore,
     updateConditionalScore,
   };

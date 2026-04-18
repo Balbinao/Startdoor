@@ -5,6 +5,7 @@ export interface IStudent {
   nome: string;
   user: string;
   email: string;
+  fotoUrl?: string | null;
   biografia: string | null;
   paisOrigem:
     | (typeof DROPDOWN_VALUES_CONST.PAIS_ORIGEM)[number]['value']

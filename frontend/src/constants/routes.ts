@@ -1,3 +1,5 @@
+import { API_CONST } from './api';
+
 export const ROUTES_CONST = {
   LOGIN: '/login',
 
@@ -26,6 +28,11 @@ export const ROUTES_CONST = {
     REVIEW_UPDADE_URL: '/perfil-estudante/:id/avaliacao/:reviewId/alterar',
     REVIEW_UPDADE_BY_ID: (id: string | number, reviewId: string | number) =>
       `/perfil-estudante/${id}/avaliacao/${reviewId}/alterar`,
+  },
+
+  FILE: {
+    IMAGES: (imageFilename: string) =>
+      `${API_CONST.GENERAL.BACKEND_URL}/fotos/${imageFilename}`,
   },
 
   ROOT_PRIVATE: '/',

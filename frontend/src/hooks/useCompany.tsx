@@ -90,6 +90,32 @@ export const useCompany = () => {
     }
   };
 
+  const updateCompanyProfilePicture = async (
+    id: number,
+    formData: FormData,
+  ) => {
+    try {
+      const response = await companyService.updateCompanyProfilePicture(
+        id,
+        formData,
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const deleteCompanyProfilePicture = async (id: number) => {
+    try {
+      const response = await companyService.deleteCompanyProfilePicture(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     company,
     companies,
@@ -100,5 +126,7 @@ export const useCompany = () => {
     updateCompany,
     updateCompanyPassword,
     deleteCompany,
+    updateCompanyProfilePicture,
+    deleteCompanyProfilePicture,
   };
 };
