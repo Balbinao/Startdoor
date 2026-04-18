@@ -65,7 +65,7 @@ public interface EstudanteControllerOpenApi {
                     content = @Content
             )
     })
-    ResponseEntity<List<Estudante>> listar();
+    ResponseEntity<List<EstudanteResponseDTO>> listar();
 
     @Operation(summary = "Buscar estudante por ID")
     @ApiResponses(value = {
@@ -90,7 +90,7 @@ public interface EstudanteControllerOpenApi {
                     content = @Content
             )
     })
-    ResponseEntity<Estudante> buscar(Long id);
+    ResponseEntity<EstudanteResponseDTO> buscar(Long id);
 
     @Operation(summary = "Atualizar dados de um estudante")
     @ApiResponses(value = {

@@ -63,8 +63,9 @@ public class EmpresaService {
 
     @Transactional(readOnly = true)
     public List<EmpresaResponseDTO> listarTodas() {
-        return empresaRepository.findAll()
-                .stream()
+        List<Empresa> empresas = empresaRepository.findAll();
+
+        return empresas.stream()
                 .map(this::toResponseDTO)
                 .toList();
     }
