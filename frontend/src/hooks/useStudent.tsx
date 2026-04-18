@@ -32,6 +32,7 @@ export const useStudent = () => {
       nome: 'João Silva',
       user: 'joaosilva',
       email: 'joao.silva@email.com',
+      fotoUrl: "urlinvalidateste",
       biografia:
         'Desenvolvedor front-end apaixonado por tecnologia, com interesse em criar interfaces modernas e acessíveis.',
       paisOrigem: 'Brasil', // pode trocar por algum da lista se quiser estritamente dela

@@ -32,7 +32,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
 
   const { getProfessionalExperienceCards, deleteProfessionalExperienceCard } =
     useExperience();
-  const { companiesOptions } = useCompany();
+  const { companies } = useCompany();
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState<string>('0px');
@@ -54,6 +54,12 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
       setShouldCollapse(fullHeight > collapsedHeight);
     }
   }, [item.descricao, collapsedHeight]);
+
+  const company = companies.find(c => c.id === item.idEmpresa);
+  if (!company) {
+    console.error(MESSAGES_RESPONSE.WARNING.COMPANY_NOT_FOUND);
+    return null;
+  }
 
   const onDelete = async (id: number) => {
     try {
@@ -86,24 +92,21 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
   return (
     <div className="flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
       <div className="flex items-start gap-3">
-        <div className="w-fit rounded-lg bg-(--grey-800) p-3">
-          <BriefcaseFilled
-            width={36}
-            height={36}
-            className="text-(--grey-300)"
-          />
+        <div className="h-16 w-16">
+          {company.fotoUrl ? (
+            <img src={company.fotoUrl} className="h-full w-full object-cover" />
+          ) : (
+            <div className="h-full w-full rounded-lg bg-(--grey-800) p-3">
+              <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
+            </div>
+          )}
         </div>
 
         <div className="flex flex-1 flex-col gap-1">
           <span className="text-lg font-semibold">{item.tituloCargo}</span>
-          {(() => {
-            const name = companiesOptions.find(
-              company => company.value === item.idEmpresa,
-            )?.label;
-            return name ? (
-              <span className="font-semibold text-(--grey-300)">{name}</span>
-            ) : null;
-          })()}
+          <span className="font-semibold text-(--grey-300)">
+            {company.nomeFantasia}
+          </span>
         </div>
 
         {isEditPage && (

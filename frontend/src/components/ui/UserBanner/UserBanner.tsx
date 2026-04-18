@@ -1,4 +1,5 @@
 import {
+  BriefcaseFilled,
   ChevronsLeft,
   LogoGupy,
   LogoLinkedIn,
@@ -221,9 +222,9 @@ export const UserBanner = ({ type, id }: Props) => {
 
   useEffect(() => {
     if (type === USER_ROLES_CONST.ESTUDANTE && student?.fotoUrl) {
-      setProfileImage(ROUTES_CONST.FILE.IMAGES(student.fotoUrl));
-    } else if (type === USER_ROLES_CONST.EMPRESA && company?.fotoUrl) {
-      setProfileImage(ROUTES_CONST.FILE.IMAGES(company.fotoUrl));
+      setProfileImage(student.fotoUrl);
+    } else if (company?.fotoUrl) {
+      setProfileImage(company.fotoUrl);
     }
   }, [student, company, type]);
 
@@ -250,13 +251,7 @@ export const UserBanner = ({ type, id }: Props) => {
         const action =
           type === USER_ROLES_CONST.ESTUDANTE
             ? updateStudentProfilePicture
-            : type === USER_ROLES_CONST.EMPRESA
-              ? updateCompanyProfilePicture
-              : null;
-
-        if (!action) return;
-
-        console.log(action);
+            : updateCompanyProfilePicture;
 
         await modalLoadingAuto(
           () => action(userId, formData),
@@ -281,11 +276,7 @@ export const UserBanner = ({ type, id }: Props) => {
       const action =
         type === USER_ROLES_CONST.ESTUDANTE
           ? deleteStudentProfilePicture
-          : type === USER_ROLES_CONST.EMPRESA
-            ? deleteCompanyProfilePicture
-            : null;
-
-      if (!action) return;
+          : deleteCompanyProfilePicture;
 
       await modalLoadingAuto(() => action(userId), MESSAGES_LOADING.DELETE);
     } catch (error) {
@@ -414,8 +405,12 @@ export const UserBanner = ({ type, id }: Props) => {
             {previewUrl ? (
               <img src={previewUrl} className="h-full w-full object-cover" />
             ) : (
-              <div className="h-full w-full bg-(--grey-800) p-8">
-                <UserFilled className="h-full w-full" />
+              <div className="h-full w-full bg-(--grey-1000) p-8">
+                {type === USER_ROLES_CONST.ESTUDANTE ? (
+                  <UserFilled className="h-full w-full text-(--grey-400)" />
+                ) : (
+                  <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
+                )}
               </div>
             )}
 

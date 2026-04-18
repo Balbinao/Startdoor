@@ -1,4 +1,4 @@
-import { UserFilled } from '@assets/icons';
+import { BriefcaseFilled, UserFilled } from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
@@ -7,7 +7,8 @@ import { useAuth } from '@hooks/useAuth';
 import { useComment } from '@hooks/useComment';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import type { IComment } from '@models/comment.types';
+import type { ICommentCompany, ICommentStudent } from '@models/comment.types';
+import type { ICompany } from '@models/companyData.types';
 import type { IStudent } from '@models/studentData.types';
 import { commentSchema, type CommentData } from '@schemas/commentSchema';
 import { formatDateWithYearOrMonthAgo } from '@utils/formatData';
@@ -17,12 +18,12 @@ import { useParams } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
 
 interface Props {
-  item: IComment;
-  student: IStudent;
+  item: ICommentStudent | ICommentCompany;
+  user: IStudent | ICompany;
   onEdit?: () => void;
 }
 
-export const CommentCardEdit = ({ item, student, onEdit }: Props) => {
+export const CommentCardEdit = ({ item, user, onEdit }: Props) => {
   const { reviewId: urlReviewId } = useParams<{
     reviewId: string;
   }>();
@@ -45,6 +46,11 @@ export const CommentCardEdit = ({ item, student, onEdit }: Props) => {
   });
 
   const { handleSubmit } = form;
+
+  const isStudentUser = 'nome' in user;
+
+  const name = isStudentUser ? user.nome : user.nomeFantasia;
+  const username = isStudentUser ? user.user : user.username;
 
   const onSubmit = async (data: CommentData) => {
     try {
@@ -79,15 +85,23 @@ export const CommentCardEdit = ({ item, student, onEdit }: Props) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-start gap-3">
-        {item.anonimo && (
-          <div className="w-fit rounded-lg bg-(--grey-1000) p-3">
-            <UserFilled width={36} height={36} className="text-(--grey-400)" />
-          </div>
-        )}
+        <div className="h-16 w-16">
+          {user?.fotoUrl && !item.anonimo ? (
+            <img src={user.fotoUrl} className="h-full w-full object-cover" />
+          ) : (
+            <div className="h-full w-full rounded-lg bg-(--grey-1000) p-3">
+              {isStudentUser ? (
+                <UserFilled className="h-full w-full text-(--grey-400)" />
+              ) : (
+                <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
+              )}
+            </div>
+          )}
+        </div>
 
         <div className="flex-1 gap-1">
           <div className="w-fullx flex justify-between">
-            <span className="text-lg font-bold">{student.nome}</span>
+            <span className="text-lg font-bold">{name}</span>
 
             <div className="flex items-center gap-2">
               <span className="text-sm text-(--grey-200)">
@@ -96,9 +110,10 @@ export const CommentCardEdit = ({ item, student, onEdit }: Props) => {
             </div>
           </div>
 
-          <span className="text-(--grey-200)">@{student.user}</span>
+          <span className="text-(--grey-200)">@{username}</span>
         </div>
       </div>
+
       <FormWrapper form={form}>
         <form
           onSubmit={handleSubmit(onSubmit)}
