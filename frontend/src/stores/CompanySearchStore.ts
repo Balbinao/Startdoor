@@ -1,4 +1,4 @@
-import type { ICompanyCard } from '@models/companyData.types';
+import type { ICompanyCard, ICompany } from '@models/companyData.types';
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';
 
@@ -58,7 +58,7 @@ export const COMPETENCIAS_LABELS: Record<string, string> = {
 export class CompanySearchStore {
   root: RootStore;
 
-  companies: ICompanyCard[] = [];
+  companies: ICompany[] = [];
   isLoading = false;
 
   filters: ICompanySearchFilters = {
@@ -89,7 +89,7 @@ export class CompanySearchStore {
     makeAutoObservable(this);
   }
 
-  setCompanies = (companies: ICompanyCard[]) => {
+  setCompanies = (companies: ICompany[]) => {
     this.companies = companies;
   };
 
@@ -141,7 +141,7 @@ export class CompanySearchStore {
     };
   };
 
-  getFilteredCompanies = (): ICompanyCard[] => {
+  getFilteredCompanies = (): ICompany[] => {
     console.log('filters.searchText:', this.filters.searchText);
     console.log('filters.notaGeralMin:', this.filters.notaGeralMin);
     console.log('filters.notaGeralMax:', this.filters.notaGeralMax);

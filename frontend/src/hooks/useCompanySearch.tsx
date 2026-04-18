@@ -220,26 +220,51 @@ const getCompanies = useCallback(async () => {
     //Aqui foi feito essa desestruturação porque precisava ser testado as competencias e numReviews
     companySearchStore.setLoading(true);
     const response = await companyService.getCompanies();
-    const mapped = response.map(company => ({
-      id: company.id,
-      nomeFantasia: company.nomeFantasia,
-      mediaNotaGeral: company.mediaNotaGeral 
-        ? Number(company.mediaNotaGeral) 
-        : undefined,
-      setor: company.areaAtuacao,
-      tamanhoEmpresa: company.tamanhoEmpresa,
-      estadoSede: company.estadoSede,
-      receitaAnual: company.receitaAnual,
-      numReviews: undefined,
-      competencias: undefined,
-    }));
-    companySearchStore.setCompanies(mapped);
-    return mapped;
+    // const mapped = response.map(company => ({
+    //   id: company.id,
+    //   nomeFantasia: company.nomeFantasia,
+    //   mediaNotaGeral: company.mediaNotaGeral 
+    //     ? Number(company.mediaNotaGeral) 
+    //     : undefined,
+    //   setor: company.areaAtuacao,
+    //   tamanhoEmpresa: company.tamanhoEmpresa,
+    //   estadoSede: company.estadoSede,
+    //   paisOrigem: company.paisOrigem,
+    //   receitaAnual: company.receitaAnual,
+    //   numReviews: undefined,
+    //   competencias: undefined,
+    // }));
+// id: number;
+//   nomeFantasia: string;
+//   cnpj: string;
+//   username: string;
+//   email: string;
+//   senha: string;
+//   mediaNotaGeral?: number;
+//   biografia?: string;
+//   paisOrigem?: (typeof DROPDOWN_VALUES_CONST.PAIS_ORIGEM)[number]['value'];
+//   receitaAnual?: (typeof DROPDOWN_VALUES_CONST.RECEITA_ANUAL)[number]['value'];
+//   dataFundacao?: string;
+//   tamanhoEmpresa?: (typeof DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA)[number]['value'];
+//   estadoSede?: (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value'];
+//   mediaSalarial?: number;
+//   areaAtuacao?: string;
+//   linkSite?: string;
+//   linkLinkedin?: string;
+//   linkGupy?: string;
+
+
+
+    companySearchStore.setCompanies(response);
+    return response;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }, [companySearchStore]);
+
+
+
   const setSearchText = (searchText: string) => {
     companySearchStore.setFilter('searchText', searchText);
   };
@@ -273,6 +298,10 @@ const getCompanies = useCallback(async () => {
   const resetFilters = () => {
     companySearchStore.resetFilters();
   };
+
+  const getCompaniesImage = () =>{
+
+  }
 
   return {
     filteredCompanies,

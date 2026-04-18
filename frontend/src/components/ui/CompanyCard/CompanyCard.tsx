@@ -3,13 +3,13 @@ import {
  StarFilled
 } from '@assets/icons';
 import {StudentPfp} from '@assets/images';
-import type { ICompanyCard } from '@models/companyData.types';
+import type { ICompanyCard, ICompany } from '@models/companyData.types';
 import { ROUTES_CONST } from '@constants';
 import { useNavigate } from 'react-router-dom';
 
 
 interface Props {
-  item: ICompanyCard;
+  item: ICompany;
 }
 export const CompanyCard = ({ item }: Props) => {
   const navigate = useNavigate();
@@ -51,16 +51,19 @@ export const CompanyCard = ({ item }: Props) => {
           height={16}
           className="text-(--yellow-100) self-end"
         />
+        {item.paisOrigem && (item.estadoSede && (
         <div className="text-xs text-(--grey-400)">
-          São Paulo, Brasil
+          {item.paisOrigem +", "+item.estadoSede}
         </div>
+        ))}
         </div>
       </div>
-
+        {(item.biografia && (
         <p className="text-xs  leading-relaxed text-(--grey-200)">
        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit eligendi saepe impedit consequuntur, cupiditate reprehenderit tempore ipsam officia itaque cumque, omnis culpa dolor repellendus nam ratione harum dolores totam quasi.
         </p>
-      
+        ))}
+
 
     
       {item.mediaNotaGeral !== undefined && item.mediaNotaGeral > 0 && (

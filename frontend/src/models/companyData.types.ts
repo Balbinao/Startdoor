@@ -44,6 +44,21 @@ export interface ICompany {
   linkSite?: string;
   linkLinkedin?: string;
   linkGupy?: string;
+  competencias?: {
+    ambiente?: number;
+    aprendizado?: number;
+    beneficios?: number;
+    cultura?: number;
+    efetivacao?: number;
+    entrevista?: number;
+    feedback?: number;
+    infraestrutura?: number;
+    integracao?: number;
+    remuneracao?: number;
+    rotina?: number;
+    lideranca?: number;
+  };
+  setor?: string;
 }
 
 export interface ICompanyUpdatePayload {
