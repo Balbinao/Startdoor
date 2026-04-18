@@ -38,4 +38,17 @@ export const companyService = {
     const response = await api.delete(API_CONST.COMPANY.BY_ID(id));
     return response.data;
   },
+
+  updateCompanyProfilePicture: async (id: number, formData: FormData) => {
+    const response = await api.put(
+      API_CONST.COMPANY.BY_ID_PICTURE(id),
+      formData,
+    );
+    return response.data;
+  },
+
+  deleteCompanyProfilePicture: async (id: number) => {
+    const response = await api.delete(API_CONST.COMPANY.BY_ID_PICTURE(id));
+    return response.data;
+  },
 };

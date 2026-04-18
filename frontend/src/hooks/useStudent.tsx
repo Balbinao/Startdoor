@@ -32,6 +32,7 @@ export const useStudent = () => {
       nome: 'João Silva',
       user: 'joaosilva',
       email: 'joao.silva@email.com',
+      fotoUrl: "urlinvalidateste",
       biografia:
         'Desenvolvedor front-end apaixonado por tecnologia, com interesse em criar interfaces modernas e acessíveis.',
       paisOrigem: 'Brasil', // pode trocar por algum da lista se quiser estritamente dela
@@ -116,6 +117,32 @@ export const useStudent = () => {
     }
   };
 
+  const updateStudentProfilePicture = async (
+    id: number,
+    formData: FormData,
+  ) => {
+    try {
+      const response = await studentService.updateStudentProfilePicture(
+        id,
+        formData,
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const deleteStudentProfilePicture = async (id: number) => {
+    try {
+      const response = await studentService.deleteStudentProfilePicture(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const getConditionalScore = async (idStudent: number) => {
     try {
       const response = await studentService.getConditionalScore(idStudent);
@@ -153,6 +180,8 @@ export const useStudent = () => {
     updateStudent,
     updateStudentPassword,
     deleteStudent,
+    updateStudentProfilePicture,
+    deleteStudentProfilePicture,
     getConditionalScore,
     updateConditionalScore,
   };

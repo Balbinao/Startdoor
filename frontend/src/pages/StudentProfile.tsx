@@ -279,8 +279,8 @@ export const StudentProfile = () => {
         </div>
 
         <div className="flex flex-col gap-6">
-          {reviewCards.map(item => (
-            <ReviewCard item={item} />
+          {reviewCards.map((item, index) => (
+            <ReviewCard key={index} item={item} />
           ))}
         </div>
       </div>

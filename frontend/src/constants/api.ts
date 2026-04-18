@@ -13,6 +13,7 @@ export const API_CONST = {
     REGISTRATION: '/estudantes/cadastrar/estudante',
     BY_ID: (id: number) => `/estudantes/${id}`,
     BY_ID_PASSWORD: (id: number) => `/estudantes/${id}/senha`,
+    BY_ID_PICTURE: (id: number) => `/estudantes/${id}/foto`,
   },
   CONDITIONAL_SCORE: {
     BASE: '/estudantes/notas-condi',
@@ -23,6 +24,7 @@ export const API_CONST = {
     REGISTRATION: '/empresas/cadastrar/empresa',
     BY_ID: (id: number) => `/empresas/${id}`,
     BY_ID_PASSWORD: (id: number) => `/empresas/${id}/senha`,
+    BY_ID_PICTURE: (id: number) => `/empresas/${id}/foto`,
   },
   EXPERIENCE: {
     ACADEMIC_BY_ID: (id: number) => `/experiencias-academicas/${id}`,

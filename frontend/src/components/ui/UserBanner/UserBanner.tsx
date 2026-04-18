@@ -1,14 +1,17 @@
 import {
+  BriefcaseFilled,
   ChevronsLeft,
   LogoGupy,
   LogoLinkedIn,
   Logout,
   Menu,
   PencilFilled,
+  PictureScan,
   TrashFilled,
+  UserFilled,
   World,
 } from '@assets/icons';
-import { StudentBannerIMG, StudentPfp } from '@assets/images';
+import { StudentBannerIMG } from '@assets/images';
 import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
@@ -21,6 +24,7 @@ import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudent } from '@hooks/useStudent';
 import { useEffect, useState, type JSX } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MenuExtraOptions } from '../MenuExtraOptions';
 import type { MenuOption } from '../MenuExtraOptions/MenuExtraOptions';
@@ -63,11 +67,25 @@ export const UserBanner = ({ type, id }: Props) => {
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
   const { getUserId, getUserRole, logout } = useAuth();
-  const { student, getStudent, deleteStudent } = useStudent();
-  const { company, getCompany, deleteCompany } = useCompany();
+  const {
+    student,
+    getStudent,
+    deleteStudent,
+    updateStudentProfilePicture,
+    deleteStudentProfilePicture,
+  } = useStudent();
+  const {
+    company,
+    getCompany,
+    deleteCompany,
+    updateCompanyProfilePicture,
+    deleteCompanyProfilePicture,
+  } = useCompany();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
+
+  const [profileImage, setProfileImage] = useState<string | File | null>(null);
 
   const userId = getUserId();
   const userRole = getUserRole();
@@ -157,6 +175,7 @@ export const UserBanner = ({ type, id }: Props) => {
         ? ROUTES_CONST.COMPANY.PROFILE_UPDATE(userId!)
         : null;
 
+  const showUpdateView = location.pathname === editProfileRoute;
   const showEditLink =
     isOwner && editProfileRoute && location.pathname !== editProfileRoute;
 
@@ -200,6 +219,75 @@ export const UserBanner = ({ type, id }: Props) => {
       setIsError(false);
     }
   }, [type, student, company]);
+
+  useEffect(() => {
+    if (type === USER_ROLES_CONST.ESTUDANTE && student?.fotoUrl) {
+      setProfileImage(student.fotoUrl);
+    } else if (company?.fotoUrl) {
+      setProfileImage(company.fotoUrl);
+    }
+  }, [student, company, type]);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      'image/jpeg': [],
+      'image/png': [],
+    },
+    maxFiles: 1,
+    disabled: !showUpdateView,
+
+    onDrop: async acceptedFiles => {
+      if (!showUpdateView || !userId) return;
+
+      const file = acceptedFiles[0];
+      if (!file) return;
+
+      try {
+        setProfileImage(file);
+
+        const formData = new FormData();
+        formData.append('arquivo', file);
+
+        const action =
+          type === USER_ROLES_CONST.ESTUDANTE
+            ? updateStudentProfilePicture
+            : updateCompanyProfilePicture;
+
+        await modalLoadingAuto(
+          () => action(userId, formData),
+          MESSAGES_LOADING.UPDATE,
+        );
+      } catch (error) {
+        await modalMessageError(error);
+      }
+    },
+
+    onDropRejected: () => {
+      modalMessageError('Arquivo inválido');
+    },
+  });
+
+  const handleRemoveProfileImage = async () => {
+    if (!userId) return;
+
+    try {
+      setProfileImage(null);
+
+      const action =
+        type === USER_ROLES_CONST.ESTUDANTE
+          ? deleteStudentProfilePicture
+          : deleteCompanyProfilePicture;
+
+      await modalLoadingAuto(() => action(userId), MESSAGES_LOADING.DELETE);
+    } catch (error) {
+      await modalMessageError(error);
+    }
+  };
+
+  const previewUrl =
+    profileImage instanceof File
+      ? URL.createObjectURL(profileImage)
+      : profileImage;
 
   const handleDeleteAccount = async () => {
     try {
@@ -308,11 +396,47 @@ export const UserBanner = ({ type, id }: Props) => {
           className="h-full w-full rounded-xl object-cover"
         />
 
-        <img
-          src={StudentPfp}
-          alt="Foto de Perfil"
-          className="absolute bottom-0 left-1/2 h-40 w-40 -translate-x-1/2 translate-y-1/4 rounded-4xl border-2 border-gray-700 object-cover"
-        />
+        <div
+          className={`group ${showUpdateView ? 'cursor-pointer' : ''} absolute bottom-0 left-1/2 h-36 w-36 -translate-x-1/2 translate-y-1/4 overflow-hidden rounded-2xl border-2 border-gray-800`}
+        >
+          <div {...getRootProps()} className="relative h-full w-full">
+            <input {...getInputProps()} />
+
+            {previewUrl ? (
+              <img src={previewUrl} className="h-full w-full object-cover" />
+            ) : (
+              <div className="h-full w-full bg-(--grey-1000) p-8">
+                {type === USER_ROLES_CONST.ESTUDANTE ? (
+                  <UserFilled className="h-full w-full text-(--grey-400)" />
+                ) : (
+                  <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
+                )}
+              </div>
+            )}
+
+            {showUpdateView && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/80 opacity-0 transition group-hover:opacity-100">
+                <PictureScan
+                  width={44}
+                  height={44}
+                  className="text-zinc-300"
+                  strokeWidth={1.25}
+                />
+
+                <div
+                  onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleRemoveProfileImage();
+                  }}
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/4 p-1 text-xs whitespace-nowrap text-zinc-500 hover:text-red-400"
+                >
+                  Remover foto
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
