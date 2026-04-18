@@ -5,6 +5,7 @@ import { ExperienceStore } from './ExperienceStore';
 import { ReviewStore } from './ReviewStore';
 import { SectorStore } from './SectorStore';
 import { StudentStore } from './StudentStore';
+import { CompanySearchStore } from './CompanySearchStore';
 
 export class RootStore {
   authStore: AuthStore;
@@ -14,6 +15,7 @@ export class RootStore {
   reviewStore: ReviewStore;
   studentStore: StudentStore;
   commentStore: CommentStore;
+  companySearchStore: CompanySearchStore;
 
   constructor() {
     this.authStore = new AuthStore(this);
@@ -23,6 +25,7 @@ export class RootStore {
     this.reviewStore = new ReviewStore(this);
     this.studentStore = new StudentStore(this);
     this.commentStore = new CommentStore(this);
+    this.companySearchStore = new CompanySearchStore(this);
   }
 }
 

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useStore } from '@contexts/store/useStore';
 import type { IInputOption } from '@models/input.types';
 import { sectorService } from '@services/sectorService';
@@ -50,7 +51,7 @@ export const useSector = () => {
   //   { id: 40, nome: 'Vendas' },
   // ];
 
-  const getSectors = async () => {
+  const getSectors = useCallback(async () => {
     try {
       const response = await sectorService.getSectors();
       // const response = mockSectorItems;
@@ -69,7 +70,7 @@ export const useSector = () => {
       console.error(error);
       throw error;
     }
-  };
+  }, [sectorStore]);
 
   return {
     sectorsItems,

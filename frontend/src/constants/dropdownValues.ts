@@ -305,7 +305,7 @@ export const DROPDOWN_VALUES_CONST = {
   // ] as const,
 
   RECEITA_ANUAL: [
-    { label: 'Selecione...', value: '' },
+    { label: 'Receita anual', value: '' },
     { label: 'R$1 milhão', value: 'R$1 milhão' },
     { label: 'R$10 milhões', value: 'R$10 milhões' },
     { label: 'R$50 milhões', value: 'R$50 milhões' },
@@ -321,7 +321,7 @@ export const DROPDOWN_VALUES_CONST = {
   ] as const,
 
   TAMANHO_EMPRESA: [
-    { label: 'Selecione...', value: '' },
+    { label: 'Funcionarios', value: '' },
     { label: '1-10', value: '1-10' },
     { label: '11-50', value: '11-50' },
     { label: '51-100', value: '51-100' },
@@ -336,7 +336,7 @@ export const DROPDOWN_VALUES_CONST = {
   ] as const,
 
   NOTA: [
-    { label: 'Selecione...', value: '' },
+    { label: 'Nota', value: '' },
     { label: '1', value: 1 },
     { label: '2', value: 2 },
     { label: '3', value: 3 },

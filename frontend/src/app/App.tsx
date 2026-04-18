@@ -6,6 +6,7 @@ import { ROUTES_CONST } from '@constants';
 import { CompanyProfile } from '@pages/CompanyProfile';
 import { CompanyProfileUpdateForm } from '@pages/CompanyProfileUpdateForm';
 import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
+import { CompanySearch } from '@pages/CompanySearch';
 import { ReviewForm } from '@pages/ReviewForm';
 import { ReviewView } from '@pages/ReviewView';
 // import { ReviewView } from '@pages/ReviewView';
@@ -46,6 +47,10 @@ function App() {
             path={ROUTES_CONST.ROOT_PRIVATE}
             element={<PrivateMainLayout />}
           >
+            <Route
+              path={ROUTES_CONST.SEARCH}
+              element={<CompanySearch />}
+            />
             <Route index element={<ProfileRedirect />} />
 
             <Route

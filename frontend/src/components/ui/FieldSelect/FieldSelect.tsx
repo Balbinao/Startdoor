@@ -19,6 +19,8 @@ type Props<TFormValues extends FieldValues> = ISelectField<TFormValues> & {
   form?: UseFormReturn<TFormValues>;
   value?: string | number;
   onChange?: (value: string | number) => void;
+  //Foi colocado para colocar estilho no select
+  className?: string;
 };
 
 export const FieldSelect = <TFormValues extends FieldValues>({
@@ -31,6 +33,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
   form,
   value,
   onChange,
+  className,
 }: Props<TFormValues>) => {
   const [open, setOpen] = useState(false);
   const [internalValue, setInternalValue] = useState<
@@ -85,7 +88,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
           onClick={() => !disabled && !readOnly && setOpen(p => !p)}
           className={`flex h-10 w-full items-center justify-between rounded-lg border border-(--grey-900) bg-(--grey-1100) px-3 whitespace-nowrap focus:ring-1 focus:ring-(--purple-400) focus:outline-none ${
             disabled ? 'input-disabled' : 'cursor-text'
-          } ${readOnly ? 'input-readonly' : ''}`}
+          } ${readOnly ? 'input-readonly' : ''} ${className || ''}`}
         >
           {iconLeft && iconLeft}
 

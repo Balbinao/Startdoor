@@ -1,6 +1,8 @@
 export const ROUTES_CONST = {
   LOGIN: '/login',
 
+  SEARCH: '/pesquisar',
+
   STUDENT: {
     REGISTRATION: '/cadastro-estudante',
     UNIQUE: 'estudante',

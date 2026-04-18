@@ -49,3 +49,5 @@ export { default as UserFilled } from './user-filled.svg?react';
 export { default as User } from './user.svg?react';
 export { default as World } from './world.svg?react';
 export { default as XClose } from './xclose.svg?react';
+export {default as FilterSelect} from './filter-select.svg?react'
+export {default as FilterCompetence} from './filter-competence.svg?react'

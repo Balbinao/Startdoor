@@ -3,6 +3,8 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/src/test/**/target/
+!**/src/main/resources
 
 
 .apt_generated
@@ -51,6 +53,8 @@ lerna-debug.log*
 **/dist
 **/dist-ssr
 **/*.local
+**/imagemProjeto
+**/ia1.txt
 
 # Environment variables
 **.env
@@ -62,6 +66,7 @@ lerna-debug.log*
 frontend/node_modules/
 frontend/dist/
 frontend/*.local
+
 
 ### MAC OS ###
 .DS_Store
