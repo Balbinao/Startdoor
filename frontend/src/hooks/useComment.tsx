@@ -1,6 +1,5 @@
 import { useStore } from '@contexts/store/useStore';
-import type { IComment, ICommentPayload } from '@models/comment.types';
-import type { CommentData } from '@schemas/commentSchema';
+import type { ICommentStudent, ICommentPayload } from '@models/comment.types';
 import { commentService } from '@services/commentService';
 
 export const useComment = () => {
@@ -8,7 +7,7 @@ export const useComment = () => {
 
   const comments = commentStore.getComments;
 
-  const mockComments: IComment[] = [
+  const mockComments: ICommentStudent[] = [
     {
       id: 1,
       idEstudante: 1,
@@ -50,6 +49,7 @@ export const useComment = () => {
 
   const getComments = async (reviewId: number) => {
     try {
+      console.log(reviewId)
       // const response = await commentService.getComments(reviewId);
       const response = mockComments;
       commentStore.setComments(response);

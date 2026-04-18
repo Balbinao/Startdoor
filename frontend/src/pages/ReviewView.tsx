@@ -139,10 +139,20 @@ export const ReviewView = () => {
 
       <div className="flex flex-col gap-10">
         <div className="flex items-start gap-3">
-          <div className="w-fit rounded-lg bg-(--grey-1000) p-3">
-            <UserFilled width={36} height={36} className="text-(--grey-400)" />
+          <div className="h-20 w-20">
+            {student?.fotoUrl ? (
+              <img
+                src={student.fotoUrl}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="h-full w-full rounded-lg bg-(--grey-1000) p-3">
+                <UserFilled className="h-full w-full text-(--grey-400)" />
+              </div>
+            )}
           </div>
-          <div className="flex w-full flex-col gap-1">
+
+          <div className="flex flex-1 flex-col gap-1">
             <div className="flex items-center justify-between">
               <span className="text-lg font-bold">{student?.nome}</span>
               <div className="flex items-center gap-2">
@@ -209,7 +219,7 @@ export const ReviewView = () => {
           )}
 
           {review?.faixaSalarial && (
-            <div className='w-64'>
+            <div className="w-64">
               <UserAttribute
                 icon={<Coin width={44} height={44} strokeWidth={1.5} />}
                 title="Faixa Salarial"

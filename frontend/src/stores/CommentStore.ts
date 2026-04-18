@@ -1,6 +1,6 @@
-import type { IComment } from '@models/comment.types';
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';
+import type { ICommentStudent } from '@models/comment.types';
 
 export class CommentStore {
   root: RootStore;
@@ -10,9 +10,9 @@ export class CommentStore {
     makeAutoObservable(this);
   }
 
-  comments: IComment[] = [];
+  comments: ICommentStudent[] = [];
 
-  setComments = (items: IComment[]) => {
+  setComments = (items: ICommentStudent[]) => {
     this.comments = items;
   };
 

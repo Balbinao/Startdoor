@@ -28,6 +28,7 @@ export { default as Menu } from './menu.svg?react';
 export { default as MessageCircleFilled } from './message-circle-filled.svg?react';
 export { default as Pencil } from './pencil.svg?react';
 export { default as PencilFilled } from './pencilFilled.svg?react';
+export { default as PictureScan } from './photo-scan.svg?react';
 export { default as Pig } from './pig.svg?react';
 export { default as Pin } from './pin.svg?react';
 export { default as Plus } from './plus.svg?react';

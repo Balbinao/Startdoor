@@ -8,6 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component("estudanteSecurity")
 public class EstudanteSecurity {
 
@@ -22,47 +24,44 @@ public class EstudanteSecurity {
     }
 
     public boolean isOwner(Long estudanteId) {
-        // 1. Pega o usuário logado
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails userDetails)) {
             return false;
         }
 
-        String emailLogado = ((UserDetails) authentication.getPrincipal()).getUsername();
+        String uuidLogado = userDetails.getUsername();
         
-        // 2. Busca o estudante pelo ID
         var estudante = estudanteRepository.findById(estudanteId).orElse(null);
         if (estudante == null) {
             return false;
         }
 
-        // 3. Verifica se o email do estudante é o mesmo do usuário logado
-        return estudante.getEmail().equals(emailLogado);
+        return Objects.equals(estudante.getUuid(), uuidLogado);
     }
 
     public boolean isOwnerOfProfissional(Long id) {
-        String emailLogado = getEmailLogado();
-        if (emailLogado == null) return false;
+        String uuidLogado = getUuidLogado();
+        if (uuidLogado == null) return false;
 
         return profissionalRepository.findById(id)
-                .map(exp -> exp.getEstudante().getEmail().equals(emailLogado))
+                .map(exp -> Objects.equals(exp.getEstudante().getUuid(), uuidLogado))
                 .orElse(false);
     }
 
     public boolean isOwnerOfAcademica(Long id) {
-        String emailLogado = getEmailLogado();
-        if (emailLogado == null) return false;
+        String uuidLogado = getUuidLogado();
+        if (uuidLogado == null) return false;
 
         return academicaRepository.findById(id)
-                .map(exp -> exp.getEstudante().getEmail().equals(emailLogado))
+                .map(exp -> Objects.equals(exp.getEstudante().getUuid(), uuidLogado))
                 .orElse(false);
     }
 
-    private String getEmailLogado() {
+    private String getUuidLogado() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails userDetails)) {
             return null;
         }
-        return ((UserDetails) authentication.getPrincipal()).getUsername();
+        return userDetails.getUsername();
     }
 }

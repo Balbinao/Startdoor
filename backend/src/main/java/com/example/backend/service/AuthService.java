@@ -25,20 +25,41 @@ public class AuthService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 1. Tenta como estudante
-        UserDetails user = estudanteRepository.findByEmail(username);
+    public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
+        // Busca por UUID (para validação de token)
+        var estudante = estudanteRepository.findByUuid(identifier);
+        if (estudante.isPresent()) return estudante.get();
+        
+        var empresa = empresaRepository.findByUuid(identifier);
+        if (empresa.isPresent()) return empresa.get();
+        
+        var admin = adminRepository.findByUuid(identifier);
+        if (admin.isPresent()) return admin.get();
+        
+        // Busca por email (para login)
+        UserDetails user = estudanteRepository.findByEmail(identifier);
         if (user != null) return user;
         
-        // 2. Tenta como empresa
-        user = empresaRepository.findByEmail(username);
+        user = empresaRepository.findByEmail(identifier);
         if (user != null) return user;
         
-        // 3. Tenta como admin
-        user = adminRepository.findByEmail(username);
+        user = adminRepository.findByEmail(identifier);
         if (user != null) return user;
         
-        // 4. Se não encontrou ninguém
-        throw new UsernameNotFoundException("Usuário não encontrado com o e-mail: " + username);
+        // Fallback: tenta como ID (Long)
+        try {
+            Long id = Long.parseLong(identifier);
+            
+            estudante = estudanteRepository.findById(id);
+            if (estudante.isPresent()) return estudante.get();
+            
+            empresa = empresaRepository.findById(id);
+            if (empresa.isPresent()) return empresa.get();
+            
+            admin = adminRepository.findById(id);
+            if (admin.isPresent()) return admin.get();
+        } catch (NumberFormatException ignored) {}
+        
+        throw new UsernameNotFoundException("Usuário não encontrado: " + identifier);
     }
 }

@@ -4,6 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.example.backend.model.Admin;
+import com.example.backend.model.Empresa;
+import com.example.backend.model.Estudante;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,21 +25,33 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             
-            // Extrair a primeira role do usuário
             String role = user.getAuthorities().stream()
                     .findFirst()
                     .map(GrantedAuthority::getAuthority)
                     .orElse("ROLE_USER");
             
+            String userId = getUserId(user);
+            
             return JWT.create()
                     .withIssuer("auth-api")
-                    .withSubject(user.getUsername())
+                    .withSubject(userId)
                     .withClaim("role", role)  
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Erro ao gerar token", exception);
         }
+    }
+
+    private String getUserId(UserDetails user) {
+        if (user instanceof Estudante estudante) {
+            return estudante.getUuid();
+        } else if (user instanceof Empresa empresa) {
+            return empresa.getUuid();
+        } else if (user instanceof Admin admin) {
+            return admin.getUuid();
+        }
+        return user.getUsername();
     }
 
     public String validarToken(String token) {
