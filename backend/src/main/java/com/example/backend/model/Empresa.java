@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "empresa")
@@ -28,6 +29,9 @@ public class Empresa implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
+    private String uuid;
 
     @NotBlank
     @Column(name = "nome_fantasia")
@@ -108,7 +112,14 @@ public class Empresa implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return uuid;
+    }
+
+    @PrePersist
+    public void generateUuid() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID().toString();
+        }
     }
 
     @Override

@@ -6,6 +6,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component("empresaSecurity")
 public class EmpresaSecurity {
 
@@ -16,21 +18,18 @@ public class EmpresaSecurity {
     }
 
     public boolean isOwner(Long empresaId) {
-        // 1. Pega o usuário logado
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails userDetails)) {
             return false;
         }
 
-        String emailLogado = ((UserDetails) authentication.getPrincipal()).getUsername();
+        String uuidLogado = userDetails.getUsername();
         
-        // 2. Busca a empresa pelo ID
         var empresa = empresaRepository.findById(empresaId).orElse(null);
         if (empresa == null) {
             return false;
         }
 
-        // 3. Verifica se o email da empresa é o mesmo do usuário logado
-        return empresa.getEmail().equals(emailLogado);
+        return Objects.equals(empresa.getUuid(), uuidLogado);
     }
 }
