@@ -1,4 +1,5 @@
 import {
+  BriefcaseFilled,
   PencilFilled,
   ThreeDotsVertical,
   TrashFilled,
@@ -13,7 +14,8 @@ import { useAuth } from '@hooks/useAuth';
 import { useComment } from '@hooks/useComment';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import type { IComment } from '@models/comment.types';
+import type { ICommentCompany, ICommentStudent } from '@models/comment.types';
+import type { ICompany } from '@models/companyData.types';
 import type { IStudent } from '@models/studentData.types';
 import { formatDateWithYearOrMonthAgo } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
@@ -22,15 +24,13 @@ import { MenuExtraOptions } from '../MenuExtraOptions';
 import type { MenuOption } from '../MenuExtraOptions/MenuExtraOptions';
 
 interface Props {
-  item: IComment;
-  student: IStudent;
+  item: ICommentStudent | ICommentCompany;
+  user: IStudent | ICompany;
   onEdit: () => void;
 }
 
-export const CommentCardView = ({ item, student, onEdit }: Props) => {
-  const { reviewId: urlReviewId } = useParams<{
-    reviewId: string;
-  }>();
+export const CommentCardView = ({ item, user, onEdit }: Props) => {
+  const { reviewId: urlReviewId } = useParams<{ reviewId: string }>();
 
   const contentRef = useRef<HTMLSpanElement>(null);
 
@@ -46,8 +46,19 @@ export const CommentCardView = ({ item, student, onEdit }: Props) => {
   const userId = getUserId();
   const userRole = getUserRole();
 
+  const isStudentComment = 'idEstudante' in item;
+  const isStudentUser = 'nome' in user;
+
   const isOwner =
-    item.idEstudante === userId && userRole === USER_ROLES_CONST.ESTUDANTE;
+    (isStudentComment &&
+      item.idEstudante === userId &&
+      userRole === USER_ROLES_CONST.ESTUDANTE) ||
+    (!isStudentComment &&
+      item.idEmpresa === userId &&
+      userRole === USER_ROLES_CONST.EMPRESA);
+
+  const name = isStudentUser ? user.nome : user.nomeFantasia;
+  const username = isStudentUser ? user.user : user.username;
 
   useEffect(() => {
     const el = contentRef.current;
@@ -70,12 +81,15 @@ export const CommentCardView = ({ item, student, onEdit }: Props) => {
         () => deleteComment(id),
         MESSAGES_LOADING.DELETE,
       );
+
       const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE;
+
       await modalMessageSafe({
         type: 'success',
         message,
         shouldBlockProcess: false,
       });
+
       await modalLoadingAuto(
         () => getComments(Number(urlReviewId)),
         MESSAGES_LOADING.GET,
@@ -85,7 +99,7 @@ export const CommentCardView = ({ item, student, onEdit }: Props) => {
     }
   };
 
-  const menuOptions = [
+  const menuOptions: MenuOption[] = [
     {
       text: 'Editar',
       icon: (
@@ -100,28 +114,37 @@ export const CommentCardView = ({ item, student, onEdit }: Props) => {
       ),
       onClick: () => item.id && onDelete(item.id),
     },
-  ] as MenuOption[];
+  ];
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-start gap-3">
-        {item.anonimo && (
-          <div className="w-fit rounded-lg bg-(--grey-1000) p-3">
-            <UserFilled width={36} height={36} className="text-(--grey-400)" />
-          </div>
-        )}
+        <div className="h-16 w-16">
+          {user?.fotoUrl && !item.anonimo ? (
+            <img src={user.fotoUrl} className="h-full w-full object-cover" />
+          ) : (
+            <div className="h-full w-full rounded-lg bg-(--grey-1000) p-3">
+              {isStudentUser ? (
+                <UserFilled className="h-full w-full text-(--grey-400)" />
+              ) : (
+                <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
+              )}
+            </div>
+          )}
+        </div>
 
         <div className="flex-1 gap-1">
-          <div className="w-fullx flex justify-between">
-            <span className="text-lg font-bold">{student.nome}</span>
+          <div className="flex w-full justify-between">
+            <span className="text-lg font-bold">{name}</span>
 
             <div className="flex items-center gap-2">
               <span className="text-sm text-(--grey-200)">
                 {formatDateWithYearOrMonthAgo(item.createdAt)}
               </span>
+
               {isOwner && (
                 <MenuExtraOptions options={menuOptions} placement="bottom-end">
-                  <div className="cursor-pointer px-2 py-2">
+                  <div className="cursor-pointer px-1 py-1">
                     <ThreeDotsVertical
                       width={18}
                       height={18}
@@ -134,7 +157,7 @@ export const CommentCardView = ({ item, student, onEdit }: Props) => {
             </div>
           </div>
 
-          <span className="text-(--grey-200)">@{student.user}</span>
+          <span className="text-(--grey-200)">@{username}</span>
         </div>
       </div>
 

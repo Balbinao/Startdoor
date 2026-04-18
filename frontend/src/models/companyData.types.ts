@@ -31,6 +31,7 @@ export interface ICompany {
   cnpj: string;
   username: string;
   email: string;
+  fotoUrl?: string | null;
   senha: string;
   mediaNotaGeral?: number;
   biografia?: string;

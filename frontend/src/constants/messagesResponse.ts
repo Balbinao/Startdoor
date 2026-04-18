@@ -9,6 +9,7 @@ export const MESSAGES_RESPONSE = {
     USER_ID_NOT_FOUND: 'Nenhum userId encontrado!',
     USER_ROLE_NOT_FOUND: 'Nenhum userRole encontrado!',
     USER_NOT_FOUND: 'Usuário não encontrado!',
+    COMPANY_NOT_FOUND: 'Empresa não encontrada!',
     REVIEW_ID_NOT_FOUND: 'Nenhum reviewId encontrado!',
     DELETE_ACCOUNT: 'Deseja realmente deletar a conta?',
     DELETE_ACADEMIC_EXPERIENCE:

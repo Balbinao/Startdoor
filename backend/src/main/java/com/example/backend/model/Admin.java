@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "admin")
@@ -21,6 +22,9 @@ public class Admin implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
+    private String uuid;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -43,7 +47,14 @@ public class Admin implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return uuid;
+    }
+
+    @PrePersist
+    public void generateUuid() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID().toString();
+        }
     }
 
     @Override

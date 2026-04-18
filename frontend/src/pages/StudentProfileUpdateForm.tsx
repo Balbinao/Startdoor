@@ -228,7 +228,7 @@ export const StudentProfileUpdateForm = () => {
 
   return (
     <div className="flex h-full flex-col items-center gap-32">
-      <UserBanner type="ESTUDANTE" id={Number(userId)} />
+      <UserBanner type="ESTUDANTE" id={userId} />
 
       <FormWrapper form={form}>
         <form

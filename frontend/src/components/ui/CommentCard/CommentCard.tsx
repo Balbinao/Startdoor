@@ -1,23 +1,30 @@
+import { MESSAGES_RESPONSE } from '@constants';
+import { useCompany } from '@hooks/useCompany';
 import { useStudent } from '@hooks/useStudent';
-import type { IComment } from '@models/comment.types';
+import type { ICommentCompany, ICommentStudent } from '@models/comment.types';
 import { useState } from 'react';
 import { CommentCardEdit } from '../CommentCardEdit';
 import { CommentCardView } from '../CommentCardView';
 
 interface Props {
-  item: IComment;
+  item: ICommentStudent | ICommentCompany;
 }
 
 export const CommentCard = ({ item }: Props) => {
   const { students } = useStudent();
+  const { companies } = useCompany();
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const student = students.find(student => student.id === item.idEstudante);
+  const isStudentComment = 'idEstudante' in item;
 
-  if (!student) {
-    console.error(`Student with Id ${item.idEstudante} was not found!`);
-    return <></>;
+  const user = isStudentComment
+    ? students.find(s => s.id === item.idEstudante)
+    : companies.find(c => c.id === item.idEmpresa);
+
+  if (!user) {
+    console.error(MESSAGES_RESPONSE.WARNING.USER_NOT_FOUND);
+    return null;
   }
 
   return (
@@ -25,13 +32,13 @@ export const CommentCard = ({ item }: Props) => {
       {isEditing ? (
         <CommentCardEdit
           item={item}
-          student={student}
+          user={user}
           onEdit={() => setIsEditing(false)}
         />
       ) : (
         <CommentCardView
           item={item}
-          student={student}
+          user={user}
           onEdit={() => setIsEditing(true)}
         />
       )}
