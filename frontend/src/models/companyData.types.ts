@@ -44,6 +44,7 @@ export interface ICompany {
   linkSite?: string;
   linkLinkedin?: string;
   linkGupy?: string;
+  fotoUrl?: string;
   competencias?: {
     ambiente?: number;
     aprendizado?: number;

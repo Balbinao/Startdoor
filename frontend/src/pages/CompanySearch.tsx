@@ -13,7 +13,10 @@ import { useDebounce } from '@hooks/useDebounce';
 import { observer } from 'mobx-react-lite';
 
 const SELECT_WIDTH = 'w-36';
+const ICON = 18
+const SELECT_STYLE = "h-11 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)] "
 const DEBOUNCE_DELAY = 200;
+
 
 export const CompanySearch = observer(() => {
   const {
@@ -37,6 +40,8 @@ export const CompanySearch = observer(() => {
 
   const debouncedSearchText = useDebounce(searchInput, DEBOUNCE_DELAY);
   const debouncedCompetencias = useDebounce(competenciasValues, DEBOUNCE_DELAY);
+
+  
 
   useEffect(() => {
     const fetch = async () => {
@@ -96,7 +101,7 @@ export const CompanySearch = observer(() => {
   return (
     <div className="flex w-full flex-col gap-6">
       <div className="flex flex-col gap-4">
-        <div className='flex w-full mb-10px h-20 
+        <div className='flex w-full mb-4 h-20 
         rounded-xl items-center justify-center bg-(--grey-1100)
         '>
         <h1 className="text-2xl font-semibold text-(--grey-300) text-center ">
@@ -105,6 +110,7 @@ export const CompanySearch = observer(() => {
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex gap-3">
+
             <div className="relative flex-1">
               <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">
                 <Search
@@ -131,59 +137,53 @@ export const CompanySearch = observer(() => {
             </button>
           </div>
 
-          <div className="flex gap-10">
-            <div className="h-11 w-33">
+          <div className="flex justify-center items-center gap-4">
+            
               <FormField
                 type="select"
                 name="nota"
                 options={[...DROPDOWN_VALUES_CONST.NOTA]}
                 value={filters.notaGeralMax || ''}
                 onChange={handleNotaChange}
-                className="h-11 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)]"
-                iconLeft={
+                className={SELECT_STYLE }
+                iconLeft={    
                   <FilterSelect
-                    width={18}
-                    height={18}
+                    width={ICON}
+                    height={ICON}
                     className="text-(--yellow-100)"
                   />}
               />
-            </div>
-
-          
-
-            <div className="h-11 w-48">
+              
               <FormField
                 type="select"
                 name="receitaAnual"
                 options={[...DROPDOWN_VALUES_CONST.RECEITA_ANUAL]}
                 value={filters.receitaAnual || ''}
                 onChange={handleReceitaChange}
-                className="h-11 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)]"
+                className={SELECT_STYLE}
                 iconLeft={
                   <FilterSelect
-                    width={18}
-                    height={18}
+                    width={ICON}
+                    height={ICON}
                     className="text-(--yellow-100)"
                   />}
               />
-            </div>
-
-              <div className="h-11 w-65">
+            
               <FormField
                 type="select"
                 name="tamanhoEmpresa"
                 options={[...DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA]}
                 value={filters.tamanhoEmpresa || ''}
                 onChange={handleTamanhoChange}
-                className="h-11 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)]"
+                className={SELECT_STYLE}
                 iconLeft={
                   <FilterSelect
-                    width={18}
-                    height={18}
+                    width={ICON}
+                    height={ICON}
                     className="text-(--yellow-100)"
                   />}
               />
-            </div>
+          
           </div>
         </div>
       </div>
@@ -202,8 +202,8 @@ export const CompanySearch = observer(() => {
                 className="h-12 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)]"
                 iconLeft={
                   <StarFilled
-                    width={18}
-                    height={18}
+                    width={ICON}
+                    height={ICON}
                     className="text-(--yellow-100)"
                   />
                 }
