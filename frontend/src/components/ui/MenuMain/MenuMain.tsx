@@ -19,11 +19,17 @@ export const MenuMain = () => {
       ? ROUTES_CONST.COMPANY.PROFILE(userId)
       : ROUTES_CONST.STUDENT.PROFILE(userId);
 
+  const searchPath = ROUTES_CONST.SEARCH;
+
   const isProfileActive = location.pathname.startsWith(profilePath);
+  const isSearchActive = location.pathname.startsWith(searchPath);
 
   return (
     <nav className="flex max-w-md flex-1 items-center justify-center gap-6 rounded-full border border-(--grey-600) bg-(--grey-900) p-2.5 text-(--grey-300)">
-      <NavLink to={'/'} className={`p-2.5`}>
+      <NavLink
+        to={searchPath}
+        className={`p-2.5 ${isSearchActive ? 'rounded-full bg-(--grey-700)' : ''}`}
+      >
         <Search width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
 

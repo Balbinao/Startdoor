@@ -1,0 +1,80 @@
+import {
+ Star,
+ StarFilled
+} from '@assets/icons';
+import {StudentPfp} from '@assets/images';
+import type { ICompanyCard } from '@models/companyData.types';
+import { ROUTES_CONST } from '@constants';
+import { useNavigate } from 'react-router-dom';
+
+
+interface Props {
+  item: ICompanyCard;
+}
+export const CompanyCard = ({ item }: Props) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(ROUTES_CONST.COMPANY.PROFILE(item.id));
+  };
+
+  return (
+    <div
+      onClick={handleCardClick}
+      className="flex w-full cursor-pointer flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1000) p-4 transition-colors hover:border-(--grey-600) hover:bg-(--grey-900)"
+    >
+      {/* HEADER */}
+      <div className="flex items-start justify-between">
+        <div className="flex gap-3 justify-center">
+      <img
+        src={StudentPfp}
+        alt="company logo"
+        className="h-14 w-14 rounded-lg object-cover"
+      />         
+        
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-semibold text-(--grey-100)">
+              {item.nomeFantasia}
+            </h3>
+
+            {item.estadoSede && (
+              <span className="text-xs text-(--grey-400)">
+                {item.estadoSede}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+        <Star
+          width={16}
+          height={16}
+          className="text-(--yellow-100) self-end"
+        />
+        <div className="text-xs text-(--grey-400)">
+          São Paulo, Brasil
+        </div>
+        </div>
+      </div>
+
+        <p className="text-xs  leading-relaxed text-(--grey-200)">
+       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit eligendi saepe impedit consequuntur, cupiditate reprehenderit tempore ipsam officia itaque cumque, omnis culpa dolor repellendus nam ratione harum dolores totam quasi.
+        </p>
+      
+
+    
+      {item.mediaNotaGeral !== undefined && item.mediaNotaGeral > 0 && (
+        <div className="flex w-fit items-center gap-2 rounded-lg bg-(--grey-900) px-3 py-1.5">
+          <StarFilled
+            width={16}
+            height={16}
+            className="text-(--yellow-100)"
+          />
+          <span className="font-semibold text-(--grey-100)">
+            {item.mediaNotaGeral.toFixed(1)}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
