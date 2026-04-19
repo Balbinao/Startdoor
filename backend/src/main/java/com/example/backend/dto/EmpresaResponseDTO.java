@@ -10,7 +10,6 @@ public record EmpresaResponseDTO(
         String nomeFantasia,
         String cnpj,
         String email,
-        BigDecimal mediaNotaGeral,
         String biografia,
         String paisOrigem,
         String receitaAnual,

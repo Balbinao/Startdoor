@@ -109,7 +109,6 @@ public class EstudanteService {
         }
         if (dto.biografia() != null)          estudante.setBiografia(dto.biografia());
         if (dto.paisOrigem() != null)         estudante.setPaisOrigem(dto.paisOrigem());
-        if (dto.mediaNotaGeral() != null)     estudante.setMediaNotaGeral(dto.mediaNotaGeral());
         if (dto.dataNascimento() != null) {
             if (dto.dataNascimento().isBlank()) {
                 estudante.setDataNascimento(null);
@@ -193,7 +192,6 @@ public class EstudanteService {
                 urlCompleta,
                 estudante.getBiografia(),
                 estudante.getPaisOrigem(),
-                estudante.getMediaNotaGeral(),
                 estudante.getDataNascimento(),
                 estudante.getModeloTrabalho(),
                 estudante.getEstadoAtuacao(),

@@ -54,9 +54,6 @@ public class Estudante implements UserDetails {
     @Column(name = "pais_origem")
     private String paisOrigem;
 
-    @Column(name = "media_nota_geral")
-    private BigDecimal mediaNotaGeral;
-
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 

@@ -3,6 +3,8 @@ package com.example.backend.openapi;
 import com.example.backend.dto.*;
 import com.example.backend.model.Empresa;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,10 +12,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Tag(name = "🏢 Empresas", description = "Operações de CRUD para gerenciamento de empresas")
@@ -188,4 +193,30 @@ public interface EmpresaControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
     })
     ResponseEntity<Void> removerFoto(@PathVariable Long id);
+
+    @Operation(summary = "Pesquisar empresas com filtros dinâmicos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = EmpresaResumoDTO.class)))),
+            @ApiResponse(responseCode = "401", description = "Token JWT ausente ou inválido", content = @Content)
+    })
+    ResponseEntity<Page<EmpresaResumoDTO>> pesquisar(
+
+            @Parameter(description = "Nota média geral mínima", required = false) BigDecimal nota,
+            @Parameter(description = "Faixa de receita anual", required = false) String receita,
+            @Parameter(description = "Tamanho da empresa", required = false) String tamanho,
+            @Parameter(description = "Nota mínima de Ambiente", required = false) Integer ambiente,
+            @Parameter(description = "Nota mínima de Aprendizado", required = false) Integer aprendizado,
+            @Parameter(description = "Nota mínima de Benefícios", required = false) Integer beneficios,
+            @Parameter(description = "Nota mínima de Cultura", required = false) Integer cultura,
+            @Parameter(description = "Nota mínima de Efetivação", required = false) Integer efetivacao,
+            @Parameter(description = "Nota mínima de Entrevista", required = false) Integer entrevista,
+            @Parameter(description = "Nota mínima de Feedback", required = false) Integer feedback,
+            @Parameter(description = "Nota mínima de Infraestrutura", required = false) Integer infra,
+            @Parameter(description = "Nota mínima de Integração", required = false) Integer integracao,
+            @Parameter(description = "Nota mínima de Remuneração", required = false) Integer remuneracao,
+            @Parameter(description = "Nota mínima de Rotina", required = false) Integer rotina,
+            @Parameter(description = "Nota mínima de Liderança", required = false) Integer lideranca,
+            @Parameter(description = "Configurações de paginação (page, size, sort)") Pageable pageable
+    );
 }

@@ -13,7 +13,6 @@ public record EstudanteResponseDTO (
         String fotoUrl,
         String biografia,
         String paisOrigem,
-        BigDecimal mediaNotaGeral,
         LocalDate dataNascimento,
         String modeloTrabalho,
         String estadoAtuacao,
