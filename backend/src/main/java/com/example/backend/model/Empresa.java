@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -100,6 +101,14 @@ public class Empresa implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_empresa_media", referencedColumnName = "id")
     private EmpresaMedia empresaMedia;
+
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<EstudanteAvaliacao> avaliacoes;
+
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<EmpresaAvaliacaoComent> comentarios;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

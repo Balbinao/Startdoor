@@ -11,7 +11,6 @@ import {
   UserFilled,
   World,
 } from '@assets/icons';
-import { StudentBannerIMG } from '@assets/images';
 import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
@@ -221,10 +220,10 @@ export const UserBanner = ({ type, id }: Props) => {
   }, [type, student, company]);
 
   useEffect(() => {
-    if (type === USER_ROLES_CONST.ESTUDANTE && student?.fotoUrl) {
-      setProfileImage(student.fotoUrl);
-    } else if (company?.fotoUrl) {
-      setProfileImage(company.fotoUrl);
+    if (type === USER_ROLES_CONST.ESTUDANTE) {
+      setProfileImage(student?.fotoUrl ?? null);
+    } else {
+      setProfileImage(company?.fotoUrl ?? null);
     }
   }, [student, company, type]);
 
@@ -355,87 +354,103 @@ export const UserBanner = ({ type, id }: Props) => {
   if (isError) return <></>;
 
   return (
-    <div className="">
-      <div className="relative aspect-4/1 w-full">
-        <div className="absolute top-3 left-1/2 flex w-[96%] -translate-x-1/2 justify-between">
-          <div className="flex gap-3">
-            <button
-              title="Voltar"
-              onClick={() => {
-                if (window.history.length > 1) navigate(-1);
-              }}
-              className="h-fit w-fit cursor-pointer rounded-xl border border-(--grey-900) bg-(--grey-1100) p-2 text-(--grey-300) transition-colors hover:bg-(--grey-900) hover:text-(--grey-200) md:hidden"
-            >
-              <ChevronsLeft width={28} height={28} />
-            </button>
-            {isOwner && (
-              <MenuExtraOptions options={menuOptions} placement="bottom">
-                <div className="cursor-pointer rounded-xl border-zinc-700 bg-zinc-900 px-3 py-2 text-xs">
-                  <Menu width={26} height={30} className="text-(--grey-200)" />
-                </div>
-              </MenuExtraOptions>
-            )}
-          </div>
-
-          {profileLinks.length > 0 && (
-            <div className="flex h-fit items-center gap-3 rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1.5">
-              <ProfileLinks links={profileLinks} />
-            </div>
+    <div className="relative aspect-4/1 w-full">
+      <div className="absolute top-3 left-1/2 flex w-[96%] -translate-x-1/2 justify-between">
+        <div className="flex gap-3">
+          <button
+            title="Voltar"
+            onClick={() => {
+              if (window.history.length > 1) navigate(-1);
+            }}
+            className="h-fit w-fit cursor-pointer rounded-xl border border-(--grey-900) bg-(--grey-1100) p-2 text-(--grey-300) transition-colors hover:bg-(--grey-900) hover:text-(--grey-200) md:hidden"
+          >
+            <ChevronsLeft width={28} height={28} />
+          </button>
+          {isOwner && (
+            <MenuExtraOptions options={menuOptions} placement="bottom-start">
+              <div className="cursor-pointer rounded-xl border-zinc-700 bg-zinc-900 px-3 py-2 text-xs">
+                <Menu width={26} height={30} className="text-(--grey-200)" />
+              </div>
+            </MenuExtraOptions>
           )}
         </div>
 
-        {profileName && (
-          <h1 className="absolute -bottom-22 w-full text-center text-2xl text-white">
-            {profileName}
-          </h1>
-        )}
-
-        <img
-          src={StudentBannerIMG}
-          alt="Foto do Banner"
-          className="h-full w-full rounded-xl object-cover"
-        />
-
-        <div
-          className={`group ${showUpdateView ? 'cursor-pointer' : ''} absolute bottom-0 left-1/2 h-36 w-36 -translate-x-1/2 translate-y-1/4 overflow-hidden rounded-2xl border-2 border-gray-800`}
-        >
-          <div {...getRootProps()} className="relative h-full w-full">
-            <input {...getInputProps()} />
-
-            {previewUrl ? (
-              <img src={previewUrl} className="h-full w-full object-cover" />
-            ) : (
-              <div className="h-full w-full bg-(--grey-1000) p-8">
-                {type === USER_ROLES_CONST.ESTUDANTE ? (
-                  <UserFilled className="h-full w-full text-(--grey-400)" />
-                ) : (
-                  <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
-                )}
-              </div>
-            )}
-
-            {showUpdateView && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/80 opacity-0 transition group-hover:opacity-100">
-                <PictureScan
-                  width={44}
-                  height={44}
-                  className="text-zinc-300"
-                  strokeWidth={1.25}
-                />
-
-                <div
-                  onClick={e => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleRemoveProfileImage();
-                  }}
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/4 p-1 text-xs whitespace-nowrap text-zinc-500 hover:text-red-400"
-                >
-                  Remover foto
-                </div>
-              </div>
-            )}
+        {profileLinks.length > 0 && (
+          <div className="flex h-fit items-center gap-3 rounded-lg border border-zinc-700 bg-zinc-900 px-2 py-1.5">
+            <ProfileLinks links={profileLinks} />
           </div>
+        )}
+      </div>
+
+      {profileName && (
+        <h1 className="absolute -bottom-22 w-full text-center text-2xl text-white">
+          {profileName}
+        </h1>
+      )}
+
+      <div
+        className={`group absolute bottom-0 left-1/2 h-36 w-36 -translate-x-1/2 translate-y-1/4 cursor-pointer overflow-hidden rounded-2xl border-2 border-zinc-700`}
+      >
+        <div {...getRootProps()} className="relative h-full w-full">
+          <input {...getInputProps()} />
+
+          {previewUrl ? (
+            <img
+              src={previewUrl}
+              className="h-full w-full object-cover"
+              onClick={() => {
+                if (!userId) return;
+
+                if (type === USER_ROLES_CONST.ESTUDANTE) {
+                  navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+                } else {
+                  navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+                }
+              }}
+            />
+          ) : (
+            <div className="h-full w-full bg-(--grey-1000) p-8">
+              {type === USER_ROLES_CONST.ESTUDANTE ? (
+                <UserFilled
+                  className="h-full w-full text-(--grey-400)"
+                  onClick={() => {
+                    if (!userId) return;
+                    navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+                  }}
+                />
+              ) : (
+                <BriefcaseFilled
+                  className="h-full w-full text-(--grey-400)"
+                  onClick={() => {
+                    if (!userId) return;
+                    navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+                  }}
+                />
+              )}
+            </div>
+          )}
+
+          {showUpdateView && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/80 opacity-0 transition group-hover:opacity-100">
+              <PictureScan
+                width={44}
+                height={44}
+                className="text-zinc-300"
+                strokeWidth={1.25}
+              />
+
+              <div
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleRemoveProfileImage();
+                }}
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/4 p-1 text-xs whitespace-nowrap text-zinc-500 hover:text-red-400"
+              >
+                Remover foto
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

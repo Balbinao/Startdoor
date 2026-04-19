@@ -77,18 +77,18 @@ export const normalizeStudentUpdateData = (
   data: StudentProfileUpdateData,
 ): IStudentUpdatePayload => {
   return {
-    nome: data.nome,
-    user: data.user,
-    email: data.email,
-    biografia: data.biografia ?? '',
+    nome: data.nome.trim(),
+    user: data.user.trim(),
+    email: data.email.trim(),
+    biografia: data.biografia?.trim() ?? '',
     paisOrigem: data.paisOrigem ?? '',
-    dataNascimento: data.dataNascimento ?? '',
+    dataNascimento: data.dataNascimento?.trim() ?? '',
     modeloTrabalho: data.modeloTrabalho ?? '',
     estadoAtuacao: data.estadoAtuacao ?? '',
     setorInteresse: data.setorInteresse ?? '',
-    habilidadesPrincipais: data.habilidadesPrincipais ?? '',
-    linkSite: data.linkSite ?? '',
-    linkLinkedin: data.linkLinkedin ?? '',
+    habilidadesPrincipais: data.habilidadesPrincipais?.trim() ?? '',
+    linkSite: data.linkSite?.trim() ?? '',
+    linkLinkedin: data.linkLinkedin?.trim() ?? '',
   };
 };
 
@@ -148,19 +148,19 @@ export const normalizeCompanyUpdateData = (
   data: CompanyProfileUpdateData,
 ): ICompanyUpdatePayload => {
   return {
-    nomeFantasia: data.nomeFantasia,
-    email: data.email,
-    cnpj: data.cnpj,
-    biografia: data.biografia ?? '',
+    nomeFantasia: data.nomeFantasia.trim(),
+    email: data.email.trim(),
+    cnpj: data.cnpj.trim(),
+    biografia: data.biografia?.trim() ?? '',
     paisOrigem: data.paisOrigem ?? '',
     receitaAnual: data.receitaAnual ?? '',
-    dataFundacao: data.dataFundacao ?? '',
+    dataFundacao: data.dataFundacao?.trim() ?? '',
     tamanhoEmpresa: data.tamanhoEmpresa ?? '',
     estadoSede: data.estadoSede ?? '',
-    areaAtuacao: data.areaAtuacao ?? '',
-    linkSite: data.linkSite ?? '',
-    linkLinkedin: data.linkLinkedin ?? '',
-    linkGupy: data.linkGupy ?? '',
+    areaAtuacao: data.areaAtuacao?.trim() ?? '',
+    linkSite: data.linkSite?.trim() ?? '',
+    linkLinkedin: data.linkLinkedin?.trim() ?? '',
+    linkGupy: data.linkGupy?.trim() ?? '',
   };
 };
 
@@ -168,13 +168,13 @@ export const normalizeAcademicExperienceUpdate = (
   data: AcademicExperienceCardData,
 ): IAcademicExperiencePayload => {
   return {
-    tituloEnsino: data.tituloEnsino,
-    nomeEscola: data.nomeEscola,
+    tituloEnsino: data.tituloEnsino.trim(),
+    nomeEscola: data.nomeEscola.trim(),
     estadoAtuacao: data.estadoAtuacao,
     modeloEnsino: data.modeloEnsino,
-    dataInicio: data.dataInicio,
-    dataFim: data.dataFim ?? null,
-    descricao: data.descricao,
+    dataInicio: data.dataInicio.trim(),
+    dataFim: data.dataFim?.trim() ?? null,
+    descricao: data.descricao.trim(),
   };
 };
 
@@ -183,12 +183,12 @@ export const normalizeProfessionalExperienceUpdate = (
 ): IProfessionalExperiencePayload => {
   return {
     idEmpresa: data.idEmpresa,
-    tituloCargo: data.tituloCargo,
+    tituloCargo: data.tituloCargo.trim(),
     estadoAtuacao: data.estadoAtuacao,
     modeloTrabalho: data.modeloTrabalho,
-    dataInicio: data.dataInicio,
-    dataFim: data.dataFim ?? null,
-    descricao: data.descricao,
+    dataInicio: data.dataInicio.trim(),
+    dataFim: data.dataFim?.trim() ?? null,
+    descricao: data.descricao.trim(),
   };
 };
 
@@ -229,7 +229,7 @@ export const normalizeReviewData = (reviewData: IReview): ReviewData => {
 
 export const normalizeCommentUpdate = (data: CommentData): ICommentPayload => {
   return {
-    texto: data.texto,
+    texto: data.texto.trim(),
     anonimo: data.anonimo,
   };
 };

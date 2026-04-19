@@ -1,10 +1,4 @@
-import {
-  BriefcaseFilled,
-  PencilFilled,
-  ThreeDotsVertical,
-  TrashFilled,
-  UserFilled,
-} from '@assets/icons';
+import { PencilFilled, ThreeDotsVertical, TrashFilled } from '@assets/icons';
 import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
@@ -22,6 +16,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MenuExtraOptions } from '../MenuExtraOptions';
 import type { MenuOption } from '../MenuExtraOptions/MenuExtraOptions';
+import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
   item: ICommentStudent | ICommentCompany;
@@ -32,7 +27,7 @@ interface Props {
 export const CommentCardView = ({ item, user, onEdit }: Props) => {
   const { reviewId: urlReviewId } = useParams<{ reviewId: string }>();
 
-  const contentRef = useRef<HTMLSpanElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
@@ -41,6 +36,7 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
   const { getComments, deleteComment } = useComment();
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [height, setHeight] = useState<string>('0px');
   const [shouldCollapse, setShouldCollapse] = useState(false);
 
   const userId = getUserId();
@@ -60,13 +56,17 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
   const name = isStudentUser ? user.nome : user.nomeFantasia;
   const username = isStudentUser ? user.user : user.username;
 
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
+  const lineHeight = 32;
+  const maxLines = 3;
+  const collapsedHeight = lineHeight * maxLines;
 
-    const isOverflowing = el.scrollHeight > el.clientHeight;
-    setShouldCollapse(isOverflowing);
-  }, [item.texto]);
+  useEffect(() => {
+    if (contentRef.current) {
+      const fullHeight = contentRef.current.scrollHeight;
+      setHeight(`${fullHeight}px`);
+      setShouldCollapse(fullHeight > collapsedHeight);
+    }
+  }, [item.texto, collapsedHeight]);
 
   const onDelete = async (id: number) => {
     try {
@@ -119,23 +119,21 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-start gap-3">
-        <div className="h-16 w-16">
-          {user?.fotoUrl && !item.anonimo ? (
-            <img src={user.fotoUrl} className="h-full w-full object-cover" />
-          ) : (
-            <div className="h-full w-full rounded-lg bg-(--grey-1000) p-3">
-              {isStudentUser ? (
-                <UserFilled className="h-full w-full text-(--grey-400)" />
-              ) : (
-                <BriefcaseFilled className="h-full w-full text-(--grey-400)" />
-              )}
-            </div>
-          )}
-        </div>
+        {user && (
+          <UserProfilePicture
+            userId={user.id}
+            size={64}
+            src={user?.fotoUrl}
+            isAnonymous={item.anonimo}
+            defaultIconType={isStudentUser ? 'student' : 'company'}
+          />
+        )}
 
         <div className="flex-1 gap-1">
           <div className="flex w-full justify-between">
-            <span className="text-lg font-bold">{name}</span>
+            <span className="text-lg font-bold">
+              {isOwner ? 'Você' : item.anonimo ? 'Usuário Anônimo' : name}
+            </span>
 
             <div className="flex items-center gap-2">
               <span className="text-sm text-(--grey-200)">
@@ -157,19 +155,27 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
             </div>
           </div>
 
-          <span className="text-(--grey-200)">@{username}</span>
+          {!item.anonimo && (
+            <span className="text-(--grey-200)">@{username}</span>
+          )}
         </div>
       </div>
 
-      <div className="flex flex-col gap-1">
-        <span
+      <div className="relative">
+        <div
           ref={contentRef}
-          className={`leading-8 text-(--grey-200) transition-all ${
-            !isExpanded ? 'line-clamp-3' : ''
-          }`}
+          style={{
+            height:
+              isExpanded || !shouldCollapse ? height : `${collapsedHeight}px`,
+          }}
+          className="overflow-hidden leading-8 text-(--grey-200) transition-[height] duration-300 ease-in-out"
         >
           {item.texto}
-        </span>
+        </div>
+
+        {!isExpanded && shouldCollapse && (
+          <div className="pointer-events-none absolute bottom-0 left-0 h-16 w-full bg-linear-to-t from-(--grey-1300) to-transparent" />
+        )}
       </div>
 
       {shouldCollapse && (

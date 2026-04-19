@@ -95,6 +95,14 @@ public class Estudante implements UserDetails {
     @JsonIgnore
     private List<ExperienciaProfissional> experienciasProfissionais;
 
+    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<EstudanteAvaliacao> avaliacoes;
+
+    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<EstudanteAvaliacaoComent> comentarios;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_ESTUDANTE"));

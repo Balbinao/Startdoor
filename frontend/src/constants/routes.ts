@@ -25,6 +25,8 @@ export const ROUTES_CONST = {
     REVIEW_VIEW_URL: '/perfil-estudante/:id/avaliacao/:reviewId',
     REVIEW_VIEW_BY_ID: (id: string | number, reviewId: string | number) =>
       `/perfil-estudante/${id}/avaliacao/${reviewId}`,
+    REVIEW_CREATE_URL: `/perfil/estudante/:id/avaliacao`,
+    REVIEW_CREATE: (id: number) => `/perfil/estudante/${id}/avaliacao`,
     REVIEW_UPDADE_URL: '/perfil-estudante/:id/avaliacao/:reviewId/alterar',
     REVIEW_UPDADE_BY_ID: (id: string | number, reviewId: string | number) =>
       `/perfil-estudante/${id}/avaliacao/${reviewId}/alterar`,

@@ -121,8 +121,7 @@ export const CompanyProfileUpdateForm = () => {
         });
         if (!confirmedSuccess) return;
 
-        // navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
-        navigate(ROUTES_CONST.LOGIN);
+        navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
       } else {
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
@@ -154,7 +153,7 @@ export const CompanyProfileUpdateForm = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-32">
       <UserBanner type="EMPRESA" id={Number(userId)} />
 
       <FormWrapper form={form}>

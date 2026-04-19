@@ -3,7 +3,7 @@ import {
  StarFilled
 } from '@assets/icons';
 import {StudentPfp} from '@assets/images';
-import type { ICompanyCard, ICompany } from '@models/companyData.types';
+import type { ICompany } from '@models/companyData.types';
 import { ROUTES_CONST } from '@constants';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,20 +14,23 @@ interface Props {
 export const CompanyCard = ({ item }: Props) => {
   const navigate = useNavigate();
 
+  const LOREM = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio facilis suscipit saepe, laborum quibusdam voluptatem quae deleniti earum voluptas assumenda laudantium odit neque placeat, voluptate nam quia eligendi qui amet."
+
   const handleCardClick = () => {
     navigate(ROUTES_CONST.COMPANY.PROFILE(item.id));
   };
+
 
   return (
     <div
       onClick={handleCardClick}
       className="flex w-full cursor-pointer flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1000) p-4 transition-colors hover:border-(--grey-600) hover:bg-(--grey-900)"
     >
-      {/* HEADER */}
       <div className="flex items-start justify-between">
         <div className="flex gap-3 justify-center">
+      
       <img
-        src={StudentPfp}
+        src={item.fotoUrl || StudentPfp}
         alt="company logo"
         className="h-14 w-14 rounded-lg object-cover"
       />         
@@ -58,14 +61,11 @@ export const CompanyCard = ({ item }: Props) => {
         ))}
         </div>
       </div>
-        {(item.biografia && (
+      
         <p className="text-xs  leading-relaxed text-(--grey-200)">
-       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit eligendi saepe impedit consequuntur, cupiditate reprehenderit tempore ipsam officia itaque cumque, omnis culpa dolor repellendus nam ratione harum dolores totam quasi.
+          {item.biografia || LOREM }
         </p>
-        ))}
 
-
-    
       {item.mediaNotaGeral !== undefined && item.mediaNotaGeral > 0 && (
         <div className="flex w-fit items-center gap-2 rounded-lg bg-(--grey-900) px-3 py-1.5">
           <StarFilled
