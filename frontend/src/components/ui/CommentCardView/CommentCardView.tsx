@@ -27,7 +27,7 @@ interface Props {
 export const CommentCardView = ({ item, user, onEdit }: Props) => {
   const { reviewId: urlReviewId } = useParams<{ reviewId: string }>();
 
-  const contentRef = useRef<HTMLSpanElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
@@ -36,6 +36,7 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
   const { getComments, deleteComment } = useComment();
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [height, setHeight] = useState<string>('0px');
   const [shouldCollapse, setShouldCollapse] = useState(false);
 
   const userId = getUserId();
@@ -55,13 +56,17 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
   const name = isStudentUser ? user.nome : user.nomeFantasia;
   const username = isStudentUser ? user.user : user.username;
 
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
+  const lineHeight = 32;
+  const maxLines = 3;
+  const collapsedHeight = lineHeight * maxLines;
 
-    const isOverflowing = el.scrollHeight > el.clientHeight;
-    setShouldCollapse(isOverflowing);
-  }, [item.texto]);
+  useEffect(() => {
+    if (contentRef.current) {
+      const fullHeight = contentRef.current.scrollHeight;
+      setHeight(`${fullHeight}px`);
+      setShouldCollapse(fullHeight > collapsedHeight);
+    }
+  }, [item.texto, collapsedHeight]);
 
   const onDelete = async (id: number) => {
     try {
@@ -156,15 +161,21 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1">
-        <span
+      <div className="relative">
+        <div
           ref={contentRef}
-          className={`leading-8 text-(--grey-200) transition-all ${
-            !isExpanded ? 'line-clamp-3' : ''
-          }`}
+          style={{
+            height:
+              isExpanded || !shouldCollapse ? height : `${collapsedHeight}px`,
+          }}
+          className="overflow-hidden leading-8 text-(--grey-200) transition-[height] duration-300 ease-in-out"
         >
           {item.texto}
-        </span>
+        </div>
+
+        {!isExpanded && shouldCollapse && (
+          <div className="pointer-events-none absolute bottom-0 left-0 h-16 w-full bg-linear-to-t from-(--grey-1300) to-transparent" />
+        )}
       </div>
 
       {shouldCollapse && (

@@ -19,8 +19,8 @@ import {
   replaceEmptyWithNull,
 } from '@utils/normalizeData';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
+import { useAuth } from '@hooks/useAuth';
 
 interface Props {
   item: IAcademicExperience;
@@ -35,8 +35,6 @@ export const AcademicExperienceCardEdit = ({
   isNew,
   onRemove,
 }: Props) => {
-  const { id: userId } = useParams<{ id: string }>();
-
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
@@ -45,6 +43,9 @@ export const AcademicExperienceCardEdit = ({
     createAcademicExperienceCard,
     updateAcademicExperienceCard,
   } = useExperience();
+  const { getUserId } = useAuth();
+
+  const userId = getUserId();
 
   const form = useForm<AcademicExperienceCardData>({
     resolver: zodResolver(academicExperienceCardSchema),

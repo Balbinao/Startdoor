@@ -40,12 +40,14 @@ export const ReviewForm = () => {
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
   const { sectorsItems, getSectors } = useSector();
-  const { getReview, updateReview } = useReview();
+  const { getReview, createReview, updateReview } = useReview();
   const { getCompanies, companiesOptions } = useCompany();
   const { getUserId, getUserRole } = useAuth();
 
   const userId = getUserId();
   const userRole = getUserRole();
+
+  const isEditMode = Boolean(urlReviewId);
 
   const form = useForm<ReviewData>({
     resolver: zodResolver(reviewSchema(sectorsItems)),
@@ -59,8 +61,8 @@ export const ReviewForm = () => {
       tituloCargo: '',
       textoAvaliacao: '',
       faixaSalarial: {
-        min: 0,
-        max: 0,
+        min: 1500,
+        max: 3000,
       },
       ambiente: '',
       aprendizado: '',
@@ -92,15 +94,15 @@ export const ReviewForm = () => {
         if (!userId) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
-        if (!urlReviewId) {
-          throw new Error(MESSAGES_RESPONSE.WARNING.REVIEW_ID_NOT_FOUND);
-        }
 
-        const response = await modalLoadingAuto(
-          () => getReview(Number(urlReviewId)),
-          MESSAGES_LOADING.GET,
-        );
-        reset(normalizeReviewData(response));
+        if (isEditMode) {
+          const response = await modalLoadingAuto(
+            () => getReview(Number(urlReviewId)),
+            MESSAGES_LOADING.GET,
+          );
+
+          reset(normalizeReviewData(response));
+        }
 
         await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
         await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
@@ -121,21 +123,34 @@ export const ReviewForm = () => {
       if (!userId) {
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }
-      if (!urlReviewId) {
-        throw new Error(MESSAGES_RESPONSE.WARNING.REVIEW_ID_NOT_FOUND);
+
+      if (isEditMode) {
+        const response = await modalLoadingAuto(
+          () => updateReview(userId, data),
+          MESSAGES_LOADING.UPDATE,
+        );
+
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
+
+        await modalMessageSafe({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
+      } else {
+        const response = await modalLoadingAuto(
+          () => createReview(userId, data),
+          MESSAGES_LOADING.UPDATE,
+        );
+
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
+
+        await modalMessageSafe({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
       }
-
-      const response = await modalLoadingAuto(
-        () => updateReview(Number(userId), data),
-        MESSAGES_LOADING.UPDATE,
-      );
-
-      const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
-      await modalMessageSafe({
-        type: 'success',
-        message,
-        shouldBlockProcess: false,
-      });
 
       navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
     } catch (error: unknown) {
@@ -162,7 +177,7 @@ export const ReviewForm = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-32">
       <UserBanner type="ESTUDANTE" id={Number(userId)} />
 
       <FormWrapper form={form}>
@@ -251,7 +266,7 @@ export const ReviewForm = () => {
             minLimit={0}
             maxLimit={5000}
             step={50}
-            unitType='R$'
+            unitType="R$"
           />
 
           <div className="self-end">
@@ -263,7 +278,7 @@ export const ReviewForm = () => {
             />
           </div>
 
-          <div className="grid w-full max-w-sm grid-cols-3 gap-5 self-center">
+          <div className="grid w-full max-w-md grid-cols-3 gap-5 self-center">
             {reviewScoreFields.map(([name, label]) => (
               <FormField
                 key={name}
@@ -288,8 +303,10 @@ export const ReviewForm = () => {
           <div className="flex flex-col items-center gap-3">
             <ButtonPill
               type="submit"
-              text="Salvar"
-              submittingText={MESSAGES_LOADING.CREATE}
+              text={isEditMode ? 'Salvar alterações' : 'Criar avaliação'}
+              submittingText={
+                isEditMode ? MESSAGES_LOADING.UPDATE : MESSAGES_LOADING.CREATE
+              }
               isSubmitting={isSubmitting}
             />
           </div>

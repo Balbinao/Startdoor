@@ -8,8 +8,8 @@ type Props = {
   src?: string | null;
   isAnonymous?: boolean;
   defaultIconType: 'student' | 'company';
-  iconWrapperClassName?: string;
-  iconClassName?: string;
+  bgIconWrapperClassName?: string;
+  bgIconClassName?: string;
 };
 
 export const UserProfilePicture = ({
@@ -18,8 +18,8 @@ export const UserProfilePicture = ({
   src,
   isAnonymous = false,
   defaultIconType = 'student',
-  iconWrapperClassName = 'bg-(--grey-1000)',
-  iconClassName = 'text-(--grey-400)',
+  bgIconWrapperClassName = 'bg-(--grey-1000)',
+  bgIconClassName = 'text-(--grey-400)',
 }: Props) => {
   const navigate = useNavigate();
 
@@ -38,10 +38,12 @@ export const UserProfilePicture = ({
           }}
         />
       ) : (
-        <div className={`h-full w-full rounded-lg p-3 ${iconWrapperClassName}`}>
+        <div
+          className={`h-full w-full rounded-lg p-3 ${bgIconWrapperClassName}`}
+        >
           {defaultIconType === 'student' ? (
             <UserFilled
-              className={`h-full w-full ${!isAnonymous && 'cursor-pointer'} ${iconClassName}`}
+              className={`h-full w-full ${!isAnonymous && 'cursor-pointer'} ${bgIconClassName}`}
               onClick={() => {
                 if (!isAnonymous)
                   navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
@@ -49,7 +51,7 @@ export const UserProfilePicture = ({
             />
           ) : (
             <BriefcaseFilled
-              className={`h-full w-full ${!isAnonymous && 'cursor-pointer'} ${iconClassName}`}
+              className={`h-full w-full ${!isAnonymous && 'cursor-pointer'} ${bgIconClassName}`}
               onClick={() => {
                 if (!isAnonymous)
                   navigate(ROUTES_CONST.COMPANY.PROFILE(userId));

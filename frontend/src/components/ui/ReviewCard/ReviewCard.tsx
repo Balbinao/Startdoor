@@ -87,6 +87,7 @@ export const ReviewCard = ({ item }: Props) => {
           defaultIconType={
             isReviewCardFromCompanyPerspective ? 'student' : 'company'
           }
+          bgIconWrapperClassName="bg-(--grey-800)"
         />
 
         <div className="flex flex-1 flex-col gap-1">

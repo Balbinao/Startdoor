@@ -72,7 +72,7 @@ export const studentProfileUpdateSchema = (sectors: IInputOption[]) =>
     //   .refine(val => val !== '', 'Setor obrigatório')
     //   .refine(val => sectors.some(s => s.value === val), 'Setor inválido'),
 
-    habilidadesPrincipais: z.string(),
+    habilidadesPrincipais: z.string().optional(),
 
     linkSite: z
       .string()

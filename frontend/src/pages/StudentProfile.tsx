@@ -5,10 +5,11 @@ import {
   Focus,
   Hourglass,
   Pin,
-  Star,
+  Plus,
 } from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
 import { AcademicExperienceCard } from '@components/ui/AcademicExperienceCard';
+import { ButtonSquare } from '@components/ui/ButtonSquare';
 import { ProfessionalExperienceCard } from '@components/ui/ProfessionalExperienceCard';
 import { ReviewCard } from '@components/ui/ReviewCard';
 import { UserAttribute } from '@components/ui/UserAttribute/UserAttribute';
@@ -17,6 +18,7 @@ import {
   DROPDOWN_VALUES_CONST,
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
+  ROUTES_CONST,
 } from '@constants';
 import { useCompany } from '@hooks/useCompany';
 import { useExperience } from '@hooks/useExperience';
@@ -28,13 +30,15 @@ import { useStudent } from '@hooks/useStudent';
 import type { IStudent } from '@models/studentData.types';
 import { formatDateWithAge } from '@utils/formatData';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ICON_SIZE = 44;
 const STROKE_WIDTH = 1.5;
 
 export const StudentProfile = () => {
   const { id: urlUserId } = useParams<{ id: string }>();
+
+  const navigate = useNavigate();
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
@@ -59,7 +63,6 @@ export const StudentProfile = () => {
   const hasStudentInfo =
     searchedStudent &&
     (searchedStudent.paisOrigem ||
-      searchedStudent.mediaNotaGeral ||
       searchedStudent.dataNascimento ||
       searchedStudent.modeloTrabalho ||
       searchedStudent.estadoAtuacao ||
@@ -134,17 +137,17 @@ export const StudentProfile = () => {
                 />
               )}
 
-              {searchedStudent?.mediaNotaGeral && (
+              {searchedStudent?.estadoAtuacao && (
                 <UserAttribute
                   icon={
-                    <Star
+                    <Pin
                       width={ICON_SIZE}
                       height={ICON_SIZE}
                       strokeWidth={STROKE_WIDTH}
                     />
                   }
-                  title="Média da Nota Geral"
-                  value={searchedStudent.mediaNotaGeral}
+                  title="Estado de Atuação"
+                  value={searchedStudent.estadoAtuacao}
                 />
               )}
             </div>
@@ -178,20 +181,6 @@ export const StudentProfile = () => {
                 />
               )}
             </div>
-
-            {searchedStudent?.estadoAtuacao && (
-              <UserAttribute
-                icon={
-                  <Pin
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    strokeWidth={STROKE_WIDTH}
-                  />
-                }
-                title="Estado de Atuação"
-                value={searchedStudent.estadoAtuacao}
-              />
-            )}
 
             {searchedStudent?.setorInteresse && (
               <UserAttribute
@@ -230,7 +219,7 @@ export const StudentProfile = () => {
       )}
       {academicExperienceCards.length > 0 && (
         <div className="flex w-full justify-center">
-          <div className="flex w-full max-w-xl flex-col gap-6">
+          <div className="flex w-full flex-col gap-6">
             <h2 className="text-2xl font-semibold">Experiência Acadêmica</h2>
             {academicExperienceCards.map(item => (
               <AcademicExperienceCard key={item.id} item={item} />
@@ -241,7 +230,7 @@ export const StudentProfile = () => {
 
       {professionalExperienceCards.length > 0 && (
         <div className="flex w-full justify-center">
-          <div className="flex w-full max-w-xl flex-col gap-6">
+          <div className="flex w-full flex-col gap-6">
             <h2 className="text-2xl font-semibold">Experiência Profissional</h2>
             {professionalExperienceCards.map(item => (
               <ProfessionalExperienceCard key={item.id} item={item} />
@@ -249,6 +238,7 @@ export const StudentProfile = () => {
           </div>
         </div>
       )}
+
       <div className="flex w-full flex-col gap-8">
         <div className="flex items-center gap-8">
           <span className="text-lg font-semibold whitespace-nowrap">
@@ -277,6 +267,16 @@ export const StudentProfile = () => {
             </span>
           </div>
         </div>
+
+        <ButtonSquare
+          text="CRAR NOVA AVALIAÇÃO"
+          iconLeft={<Plus />}
+          className="w-full"
+          onClick={() => {
+            if (!urlUserId) return;
+            navigate(ROUTES_CONST.REVIEW.REVIEW_CREATE(Number(urlUserId)));
+          }}
+        />
 
         <div className="flex flex-col gap-6">
           {reviewCards.map((item, index) => (

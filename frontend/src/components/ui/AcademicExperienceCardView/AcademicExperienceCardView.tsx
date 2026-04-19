@@ -85,7 +85,7 @@ export const AcademicExperienceCardView = ({ item, onEdit }: Props) => {
     <div className="flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
       <div className="flex items-start gap-3">
         <div className="w-fit rounded-lg bg-(--grey-800) p-3">
-          <SchoolFilled width={36} height={36} className="text-(--grey-300)" />
+          <SchoolFilled width={36} height={36} className="text-(--grey-400)" />
         </div>
 
         <div className="flex flex-1 flex-col gap-1">

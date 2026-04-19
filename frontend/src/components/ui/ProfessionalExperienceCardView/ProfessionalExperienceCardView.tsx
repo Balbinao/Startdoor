@@ -98,7 +98,7 @@ export const ProfessionalExperienceCardView = ({ item, onEdit }: Props) => {
           size={64}
           src={company.fotoUrl}
           defaultIconType="company"
-          iconWrapperClassName="bg-(--grey-800)"
+          bgIconWrapperClassName="bg-(--grey-800)"
         />
 
         <div className="flex flex-1 flex-col gap-1">
