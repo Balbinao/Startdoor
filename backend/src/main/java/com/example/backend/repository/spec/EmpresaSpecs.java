@@ -10,6 +10,7 @@ import java.util.List;
 
 public class EmpresaSpecs {
     public static Specification<Empresa> filtrar(
+            String nomeFantasia,
             BigDecimal notaGeral,
             String receitaAnual,
             String tamanhoEmpresa, Integer ambiente, Integer aprendizado, Integer beneficios,
@@ -19,6 +20,12 @@ public class EmpresaSpecs {
 
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
+            if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
+                predicates.add(builder.like(
+                        builder.upper(root.get("nomeFantasia")),
+                        "%" + nomeFantasia.toUpperCase() + "%"
+                ));
+            }
 
             if (receitaAnual != null && !receitaAnual.isBlank()) {
                 predicates.add(builder.equal(root.get("receitaAnual"), receitaAnual));

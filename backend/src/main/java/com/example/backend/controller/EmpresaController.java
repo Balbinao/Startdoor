@@ -118,6 +118,7 @@ public class EmpresaController implements EmpresaControllerOpenApi {
 
     @GetMapping("/pesquisa")
     public ResponseEntity<Page<EmpresaResumoDTO>> pesquisar(
+            @RequestParam(required = false) String nome,
             @RequestParam(required = false) BigDecimal nota,
             @RequestParam(required = false) String receita,
             @RequestParam(required = false) String tamanho,
@@ -136,7 +137,7 @@ public class EmpresaController implements EmpresaControllerOpenApi {
             @ParameterObject Pageable pageable) {
 
         Page<EmpresaResumoDTO> empresas = empresaService.pesquisar(
-                nota, receita, tamanho,
+                nome, nota, receita, tamanho,
                 ambiente, aprendizado, beneficios,
                 cultura, efetivacao, entrevista,
                 feedback, infra, integracao,

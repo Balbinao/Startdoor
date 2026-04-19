@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.exception.ResourceNotFoundException; // Sua exceção aqui
+import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Empresa;
 import com.example.backend.model.EmpresaMedia;
 import com.example.backend.model.EstudanteAvaliacao;
