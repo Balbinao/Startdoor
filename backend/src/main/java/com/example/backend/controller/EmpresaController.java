@@ -4,6 +4,7 @@ import com.example.backend.dto.*;
 import com.example.backend.model.Empresa;
 import com.example.backend.openapi.EmpresaControllerOpenApi;
 import com.example.backend.service.EmpresaService;
+import com.example.backend.service.EmpresaSetorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,9 +34,11 @@ import java.util.Map;
 public class EmpresaController implements EmpresaControllerOpenApi {
 
     private final EmpresaService empresaService;
+    private final EmpresaSetorService empresaSetorService;
 
-    public EmpresaController(EmpresaService empresaService) {
+    public EmpresaController(EmpresaService empresaService, EmpresaSetorService empresaSetorService) {
         this.empresaService = empresaService;
+        this.empresaSetorService = empresaSetorService;
     }
     @PostMapping("/cadastrar/empresa")
     public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEmpresaDTO data) {
@@ -143,5 +146,25 @@ public class EmpresaController implements EmpresaControllerOpenApi {
         );
 
         return ResponseEntity.ok(empresas);
+    }
+
+    @GetMapping("/{id}/setores")
+    public ResponseEntity<List<EmpresaSetorResponseDTO>> listarSetoresDaEmpresa(@PathVariable Long id) {
+        return ResponseEntity.ok(empresaSetorService.listarPorEmpresa(id));
+    }
+
+    @PostMapping("/{id}/setores")
+    @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
+    public ResponseEntity<EmpresaSetorResponseDTO> adicionarSetor(
+            @PathVariable Long id,
+            @RequestBody AdicionarSetorEmpresaDTO data) {
+        return ResponseEntity.ok(empresaSetorService.adicionar(id, data.setorId()));
+    }
+
+    @DeleteMapping("/{id}/setores/{setorId}")
+    @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
+    public ResponseEntity<Void> removerSetor(@PathVariable Long id, @PathVariable Long setorId) {
+        empresaSetorService.remover(id, setorId);
+        return ResponseEntity.noContent().build();
     }
 }
