@@ -158,7 +158,7 @@ public class EmpresaService {
 
     public EmpresaResponseDTO atualizarFoto(Long id, MultipartFile arquivo) {
         Empresa empresa = empresaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada"));
 
         if (empresa.getFotoUrl() != null) {
             fotoStorageService.excluir(empresa.getFotoUrl());
@@ -173,7 +173,7 @@ public class EmpresaService {
 
     public void removerFoto(Long id) {
         Empresa empresa = empresaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada"));
 
         if (empresa.getFotoUrl() != null) {
             fotoStorageService.excluir(empresa.getFotoUrl());
