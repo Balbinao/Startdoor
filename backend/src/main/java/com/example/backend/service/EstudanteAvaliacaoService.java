@@ -178,6 +178,7 @@ public class EstudanteAvaliacaoService {
                 userEstudante,
                 avaliacao.getEmpresa().getId(),
                 avaliacao.getEmpresa().getNomeFantasia(),
+                avaliacao.getEmpresa().getFotoUrl(),
                 avaliacao.getSetor().getId(),
                 avaliacao.getSetor().getNome(),
                 avaliacao.getEstadoAtuacao(),

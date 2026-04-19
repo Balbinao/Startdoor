@@ -14,6 +14,7 @@ public record EstudanteAvaliacaoResponseDTO(
         @Schema(description = "Username do estudante", example = "joaosilva") String userEstudante,
         @Schema(description = "ID da empresa", example = "1") Long empresaId,
         @Schema(description = "Nome da empresa", example = "Tech Brasil") String nomeEmpresa,
+        @Schema(description = "URL da foto da empresa", example = "http://localhost:8080/fotos/logo.jpg") String fotoUrlEmpresa,
         @Schema(description = "ID do setor", example = "1") Long setorId,
         @Schema(description = "Nome do setor", example = "Tecnologia") String nomeSetor,
         @Schema(description = "Estado de atuação", example = "SP") String estadoAtuacao,
