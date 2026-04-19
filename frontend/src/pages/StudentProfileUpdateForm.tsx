@@ -64,7 +64,7 @@ export const StudentProfileUpdateForm = () => {
     getConditionalScore,
     updateConditionalScore,
   } = useStudent();
-  const { sectorsItems, getSectors } = useSector();
+  const { sectorsOptions, getSectors } = useSector();
   const { getCompanies } = useCompany();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -80,7 +80,7 @@ export const StudentProfileUpdateForm = () => {
   const userRole = getUserRole();
 
   const form = useForm<StudentProfileUpdateData>({
-    resolver: zodResolver(studentProfileUpdateSchema(sectorsItems)),
+    resolver: zodResolver(studentProfileUpdateSchema(sectorsOptions)),
     defaultValues: {
       nome: '',
       user: '',
@@ -197,7 +197,7 @@ export const StudentProfileUpdateForm = () => {
         shouldBlockProcess: false,
       });
 
-      navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+      navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId));
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
@@ -326,7 +326,7 @@ export const StudentProfileUpdateForm = () => {
                   type="select"
                   name="setorInteresse"
                   label="Setor de Interesse"
-                  options={sectorsItems}
+                  options={sectorsOptions}
                 />
               </div>
 

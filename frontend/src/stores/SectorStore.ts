@@ -10,13 +10,13 @@ export class SectorStore {
     makeAutoObservable(this);
   }
 
-  sectors: IInputOption[] = [];
+  sectorsOptions: IInputOption[] = [];
 
-  setSectors = (items: IInputOption[]) => {
-    this.sectors = items;
+  setSectorsOptions = (items: IInputOption[]) => {
+    this.sectorsOptions = items;
   };
 
-  get getSectors() {
-    return this.sectors;
+  get getSectorsOptions() {
+    return this.sectorsOptions;
   }
 }

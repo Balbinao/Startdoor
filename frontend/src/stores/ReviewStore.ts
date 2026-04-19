@@ -1,8 +1,4 @@
-import type {
-  IReview,
-  IReviewCardCompanyView,
-  IReviewCardStudentView,
-} from '@models/review.types';
+import type { IReview } from '@models/review.types';
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';
 
@@ -14,12 +10,10 @@ export class ReviewStore {
     makeAutoObservable(this);
   }
 
-  reviewCards: (IReviewCardCompanyView | IReviewCardStudentView)[] = [];
+  reviewCards: IReview[] = [];
   review: IReview | null = null;
 
-  setReviewCards = (
-    items: (IReviewCardCompanyView | IReviewCardStudentView)[],
-  ) => {
+  setReviewCards = (items: IReview[]) => {
     this.reviewCards = items;
   };
 

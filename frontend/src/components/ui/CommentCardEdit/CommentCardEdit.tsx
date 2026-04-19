@@ -2,13 +2,10 @@ import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '@hooks/useAuth';
 import { useComment } from '@hooks/useComment';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import type { ICommentCompany, ICommentStudent } from '@models/comment.types';
-import type { ICompany } from '@models/companyData.types';
-import type { IStudent } from '@models/studentData.types';
+import type { IComment } from '@models/comment.types';
 import { commentSchema, type CommentData } from '@schemas/commentSchema';
 import { formatDateWithYearOrMonthAgo } from '@utils/formatData';
 import { normalizeCommentUpdate } from '@utils/normalizeData';
@@ -18,12 +15,11 @@ import { SupportButton } from '../SupportButton';
 import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
-  item: ICommentStudent | ICommentCompany;
-  user: IStudent | ICompany;
+  item: IComment;
   onEdit?: () => void;
 }
 
-export const CommentCardEdit = ({ item, user, onEdit }: Props) => {
+export const CommentCardEdit = ({ item, onEdit }: Props) => {
   const { reviewId: urlReviewId } = useParams<{
     reviewId: string;
   }>();
@@ -31,26 +27,18 @@ export const CommentCardEdit = ({ item, user, onEdit }: Props) => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
-  const { getUserId } = useAuth();
-
-  const { getComments, updateComment } = useComment();
-
-  const userId = getUserId();
+  const { getAllReviewComments, updateCommentStudent, updateCommentCompany } =
+    useComment();
 
   const form = useForm<CommentData>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
-      texto: item.texto ?? '',
-      anonimo: item.anonimo,
+      texto: item.text ?? '',
+      anonima: item.anonymous,
     },
   });
 
   const { handleSubmit } = form;
-
-  const isStudentUser = 'nome' in user;
-
-  const name = isStudentUser ? user.nome : user.nomeFantasia;
-  const username = isStudentUser ? user.user : user.username;
 
   const onSubmit = async (data: CommentData) => {
     try {
@@ -60,21 +48,36 @@ export const CommentCardEdit = ({ item, user, onEdit }: Props) => {
 
       const comment = normalizeCommentUpdate(data);
 
-      const response = await modalLoadingAuto(
-        () => updateComment(Number(userId), comment),
-        MESSAGES_LOADING.UPDATE,
-      );
-      const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
-      await modalMessageSafe({
-        type: 'success',
-        message,
-        shouldBlockProcess: false,
-      });
+      if (item.type === 'ESTUDANTE') {
+        const response = await modalLoadingAuto(
+          () => updateCommentStudent(item.id, comment),
+          MESSAGES_LOADING.UPDATE,
+        );
+
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
+        await modalMessageSafe({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
+      } else {
+        const response = await modalLoadingAuto(
+          () => updateCommentCompany(item.id, comment),
+          MESSAGES_LOADING.UPDATE,
+        );
+
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
+        await modalMessageSafe({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
+      }
 
       onEdit?.();
 
       await modalLoadingAuto(
-        () => getComments(Number(urlReviewId)),
+        () => getAllReviewComments(Number(urlReviewId)),
         MESSAGES_LOADING.GET,
       );
     } catch (error: unknown) {
@@ -85,19 +88,17 @@ export const CommentCardEdit = ({ item, user, onEdit }: Props) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-start gap-3">
-        {user && (
-          <UserProfilePicture
-            userId={user.id}
-            size={64}
-            src={user?.fotoUrl}
-            isAnonymous={item.anonimo}
-            defaultIconType={isStudentUser ? 'student' : 'company'}
-          />
-        )}
+        <UserProfilePicture
+          userId={item.authorId}
+          size={64}
+          src={item.authorPhotoUrl}
+          isAnonymous={item.anonymous}
+          defaultIconType={item.type === 'ESTUDANTE' ? 'student' : 'company'}
+        />
 
         <div className="flex-1 gap-1">
           <div className="w-fullx flex justify-between">
-            <span className="text-lg font-bold">{name}</span>
+            <span className="text-lg font-bold">{item.authorName}</span>
 
             <div className="flex items-center gap-2">
               <span className="text-sm text-(--grey-200)">
@@ -106,7 +107,7 @@ export const CommentCardEdit = ({ item, user, onEdit }: Props) => {
             </div>
           </div>
 
-          <span className="text-(--grey-200)">@{username}</span>
+          <span className="text-(--grey-200)">@{item.authorUsername}</span>
         </div>
       </div>
 
@@ -128,7 +129,7 @@ export const CommentCardEdit = ({ item, user, onEdit }: Props) => {
               <FormField
                 form={form}
                 type="checkbox"
-                name="anonimo"
+                name="anonima"
                 label="Postar comentário ANÔNIMO"
               />
             </span>

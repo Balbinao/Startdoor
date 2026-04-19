@@ -19,7 +19,6 @@ type Props<TFormValues extends FieldValues> = ISelectField<TFormValues> & {
   form?: UseFormReturn<TFormValues>;
   value?: string | number;
   onChange?: (value: string | number) => void;
-  //Foi colocado para colocar estilho no select
   className?: string;
 };
 
@@ -49,6 +48,10 @@ export const FieldSelect = <TFormValues extends FieldValues>({
     placement: 'bottom-start',
     middleware: [offset(8), flip(), shift({ padding: 16 })],
   });
+
+  useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

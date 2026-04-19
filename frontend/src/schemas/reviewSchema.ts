@@ -11,18 +11,20 @@ const scoreField = z
 export const reviewSchema = (sectors: IInputOption[]) =>
   z
     .object({
-      idEmpresa: z.number().refine(val => val > 0, {
-        message: 'Empresa é obrigatória',
-      }),
+      empresaId: z.union([z.number(), z.literal('')]).refine(
+        val => {
+          if (val === '') return false;
+          return val > 0;
+        },
+        {
+          message: 'Empresa é obrigatória',
+        },
+      ),
 
-      idSetor: z
+      setorId: z
         .union([z.number(), z.literal('')])
-        .optional()
         .refine(
-          val =>
-            val === undefined ||
-            val === '' ||
-            sectors.some(s => s.value === val),
+          val => val !== '' && sectors.some(s => s.value === val),
           'Setor inválido',
         ),
 

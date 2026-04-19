@@ -5,11 +5,14 @@ import {
   DROPDOWN_VALUES_CONST,
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
+  USER_ROLES_CONST,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@hooks/useAuth';
 import { useComment } from '@hooks/useComment';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useReview } from '@hooks/useReview';
 import { useStudent } from '@hooks/useStudent';
 import { commentSchema, type CommentData } from '@schemas/commentSchema';
 import { useEffect, useState } from 'react';
@@ -19,25 +22,37 @@ import { ButtonSquare } from '../ButtonSquare';
 import { CommentCard } from '../CommentCard';
 
 export const CommentForm = () => {
-  const { id: urlUserId, reviewId: urlReviewId } = useParams<{
-    id: string;
+  const { reviewId: urlReviewId } = useParams<{
     reviewId: string;
   }>();
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
+  const { getUserId, getUserRole } = useAuth();
+  const { review } = useReview();
+
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
 
-  const { comments, getComments, createComment } = useComment();
+  const [sortOrder, setSortOrder] = useState<string>('');
+
+  const userId = getUserId();
+  const userRole = getUserRole();
+
+  const {
+    comments,
+    getAllReviewComments,
+    createCommentStudent,
+    createCommentCompany,
+  } = useComment();
   const { getStudents } = useStudent();
 
   const form = useForm<CommentData>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
       texto: '',
-      anonimo: false,
+      anonima: false,
     },
   });
 
@@ -48,7 +63,7 @@ export const CommentForm = () => {
       try {
         setIsLoading(true);
 
-        if (!urlUserId) {
+        if (!userId) {
           throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
         }
         if (!urlReviewId) {
@@ -56,7 +71,7 @@ export const CommentForm = () => {
         }
 
         await modalLoadingAuto(
-          () => getComments(Number(urlReviewId)),
+          () => getAllReviewComments(Number(urlReviewId)),
           MESSAGES_LOADING.GET,
         );
         await modalLoadingAuto(() => getStudents(), MESSAGES_LOADING.GET);
@@ -74,25 +89,48 @@ export const CommentForm = () => {
 
   const onSubmit = async (data: CommentData) => {
     try {
-      if (!urlUserId) {
+      if (!userId) {
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
+      }
+      if (!userRole) {
+        throw new Error(MESSAGES_RESPONSE.WARNING.USER_ROLE_NOT_FOUND);
       }
       if (!urlReviewId) {
         throw new Error(MESSAGES_RESPONSE.WARNING.REVIEW_ID_NOT_FOUND);
       }
 
-      const response = await modalLoadingAuto(
-        () => createComment(Number(urlUserId), data),
-        MESSAGES_LOADING.UPDATE,
+      if (userRole === USER_ROLES_CONST.ESTUDANTE) {
+        const response = await modalLoadingAuto(
+          () => createCommentStudent(Number(urlReviewId), data),
+          MESSAGES_LOADING.UPDATE,
+        );
+
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.CREATE;
+        await modalMessageSafe({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
+      } else if (userRole === USER_ROLES_CONST.EMPRESA) {
+        const response = await modalLoadingAuto(
+          () => createCommentCompany(Number(urlReviewId), data),
+          MESSAGES_LOADING.UPDATE,
+        );
+
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.CREATE;
+        await modalMessageSafe({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
+      }
+
+      await modalLoadingAuto(
+        () => getAllReviewComments(Number(urlReviewId)),
+        MESSAGES_LOADING.GET,
       );
 
-      const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.CREATE;
-      await modalMessageSafe({
-        type: 'success',
-        message,
-        shouldBlockProcess: false,
-      });
-
+      setSortOrder('');
       reset();
     } catch (error: unknown) {
       await modalMessageError(error);
@@ -104,38 +142,44 @@ export const CommentForm = () => {
 
   return (
     <div className="flex w-full flex-col gap-16">
-      <FormWrapper form={form}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex w-full flex-col gap-6"
-        >
-          <span>
-            <FormField
-              form={form}
-              type="textarea"
-              name="texto"
-              placeholder="Faça um comentário sobre a avaliação"
-            />
-          </span>
-
-          <div className="flex justify-between">
+      {((userRole === USER_ROLES_CONST.EMPRESA &&
+        userId === review?.empresaId) ||
+        userRole === USER_ROLES_CONST.ESTUDANTE) && (
+        <FormWrapper form={form}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex w-full flex-col gap-6"
+          >
             <span>
               <FormField
                 form={form}
-                type="checkbox"
-                name="anonimo"
-                label="Postar comentário ANÔNIMO"
+                type="textarea"
+                name="texto"
+                placeholder="Faça um comentário sobre a avaliação"
               />
             </span>
 
-            <ButtonSquare
-              type='submit'
-              text="Enviar"
-              iconLeft={<SendFilled width={20} height={20} />}
-            />
-          </div>
-        </form>
-      </FormWrapper>
+            <div className="flex justify-between">
+              <span>
+                {!(userRole === USER_ROLES_CONST.EMPRESA) && (
+                  <FormField
+                    form={form}
+                    type="checkbox"
+                    name="anonima"
+                    label="Postar comentário ANÔNIMO"
+                  />
+                )}
+              </span>
+
+              <ButtonSquare
+                type="submit"
+                text="Enviar"
+                iconLeft={<SendFilled width={20} height={20} />}
+              />
+            </div>
+          </form>
+        </FormWrapper>
+      )}
 
       <div className="flex items-center justify-between gap-2">
         <span>
@@ -145,12 +189,24 @@ export const CommentForm = () => {
           <FormField
             type="select"
             name="sortOrder"
+            value={sortOrder}
             options={DROPDOWN_VALUES_CONST.REVIEWS_SORT.map(option => ({
               ...option,
             }))}
-            onChange={(selectedValue: string | number) =>
-              console.log(selectedValue)
-            }
+            onChange={async (selectedValue: string | number) => {
+              setSortOrder(String(selectedValue));
+
+              if (
+                selectedValue === 'Mais recentes' ||
+                selectedValue === 'Mais antigas'
+              ) {
+                await modalLoadingAuto(
+                  () =>
+                    getAllReviewComments(Number(urlReviewId), selectedValue),
+                  MESSAGES_LOADING.GET,
+                );
+              }
+            }}
             iconLeft={
               <Filter className="text-(--grey-300)" width={20} height={20} />
             }
@@ -162,6 +218,12 @@ export const CommentForm = () => {
         {comments.map(item => {
           return <CommentCard key={item.id} item={item} />;
         })}
+
+        {comments.length === 0 && (
+          <span className="empty-message">
+            Seja o primeiro a fazer um comentário!
+          </span>
+        )}
       </div>
     </div>
   );

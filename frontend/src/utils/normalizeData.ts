@@ -1,5 +1,10 @@
 import { DROPDOWN_VALUES_CONST } from '@constants';
-import type { ICommentPayload } from '@models/comment.types';
+import type {
+  IComment,
+  ICommentCompany,
+  ICommentPayload,
+  ICommentStudent,
+} from '@models/comment.types';
 import type {
   ICompany,
   ICompanyUpdatePayload,
@@ -8,7 +13,7 @@ import type {
   IAcademicExperiencePayload,
   IProfessionalExperiencePayload,
 } from '@models/experience.types';
-import type { IReview } from '@models/review.types';
+import type { IReview, IReviewPayload } from '@models/review.types';
 import type {
   IConditionalScore,
   IStudent,
@@ -192,10 +197,48 @@ export const normalizeProfessionalExperienceUpdate = (
   };
 };
 
-export const normalizeReviewData = (reviewData: IReview): ReviewData => {
+export const normalizeReviewData = (data: IReview): ReviewData => {
   return {
-    idEmpresa: reviewData.idEmpresa ?? 0,
-    idSetor: reviewData.idSetor ?? '',
+    empresaId: data.empresaId ?? 0,
+    setorId: data.setorId ?? '',
+    estadoAtuacao:
+      DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
+        option => option.value === data.estadoAtuacao,
+      )?.value ?? '',
+    modeloTrabalho:
+      DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.find(
+        option => option.value === data.modeloTrabalho,
+      )?.value ?? '',
+    dataInicio: data.dataInicio ?? '',
+    dataFim: data.dataFim ?? undefined,
+    tituloCargo: data.tituloCargo ?? '',
+    textoAvaliacao: data.textoAvaliacao ?? '',
+    faixaSalarial: {
+      min: data.salarioMin,
+      max: data.salarioMax,
+    },
+    anonima: data.anonima ?? false,
+    ambiente: data.ambiente ?? '',
+    aprendizado: data.aprendizado ?? '',
+    beneficios: data.beneficios ?? '',
+    cultura: data.cultura ?? '',
+    efetivacao: data.efetivacao ?? '',
+    entrevista: data.entrevista ?? '',
+    feedback: data.feedback ?? '',
+    infraestrutura: data.infraestrutura ?? '',
+    integracao: data.integracao ?? '',
+    remuneracao: data.remuneracao ?? '',
+    rotina: data.rotina ?? '',
+    lideranca: data.lideranca ?? '',
+  };
+};
+
+export const normalizeReviewPayload = (
+  reviewData: ReviewData,
+): IReviewPayload => {
+  return {
+    idEmpresa: Number(reviewData.empresaId),
+    idSetor: Number(reviewData.setorId),
     estadoAtuacao:
       DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.find(
         option => option.value === reviewData.estadoAtuacao,
@@ -208,29 +251,52 @@ export const normalizeReviewData = (reviewData: IReview): ReviewData => {
     dataFim: reviewData.dataFim ?? undefined,
     tituloCargo: reviewData.tituloCargo ?? '',
     textoAvaliacao: reviewData.textoAvaliacao ?? '',
-    faixaSalarial: {
-      min: reviewData.faixaSalarial.salarioMin,
-      max: reviewData.faixaSalarial.salarioMax,
-    },
-    ambiente: reviewData.ambiente ?? '',
-    aprendizado: reviewData.aprendizado ?? '',
-    beneficios: reviewData.beneficios ?? '',
-    cultura: reviewData.cultura ?? '',
-    efetivacao: reviewData.efetivacao ?? '',
-    entrevista: reviewData.entrevista ?? '',
-    feedback: reviewData.feedback ?? '',
-    infraestrutura: reviewData.infraestrutura ?? '',
-    integracao: reviewData.integracao ?? '',
-    remuneracao: reviewData.remuneracao ?? '',
-    rotina: reviewData.rotina ?? '',
-    lideranca: reviewData.lideranca ?? '',
+    salarioMin: reviewData.faixaSalarial.min,
+    salarioMax: reviewData.faixaSalarial.max,
+    anonima: reviewData.anonima ?? false,
+    ambiente: Number(reviewData.ambiente ?? 0),
+    aprendizado: Number(reviewData.aprendizado ?? 0),
+    beneficios: Number(reviewData.beneficios ?? 0),
+    cultura: Number(reviewData.cultura ?? 0),
+    efetivacao: Number(reviewData.efetivacao ?? 0),
+    entrevista: Number(reviewData.entrevista ?? 0),
+    feedback: Number(reviewData.feedback ?? 0),
+    infraestrutura: Number(reviewData.infraestrutura ?? 0),
+    integracao: Number(reviewData.integracao ?? 0),
+    remuneracao: Number(reviewData.remuneracao ?? 0),
+    rotina: Number(reviewData.rotina ?? 0),
+    lideranca: Number(reviewData.lideranca ?? 0),
   };
 };
+
+export const normalizeStudentComment = (c: ICommentStudent): IComment => ({
+  id: c.id,
+  type: 'ESTUDANTE',
+  authorId: c.estudanteId,
+  authorName: c.nomeEstudante,
+  authorPhotoUrl: c.fotoUrlEstudante,
+  authorUsername: c.userEstudante,
+  reviewId: c.avaliacaoId,
+  text: c.texto,
+  anonymous: c.anonima,
+  createdAt: c.createdAt,
+});
+
+export const normalizeCompanyComment = (c: ICommentCompany): IComment => ({
+  id: c.id,
+  type: 'EMPRESA',
+  authorId: c.empresaId,
+  authorName: c.nomeEmpresa,
+  authorPhotoUrl: c.fotoUrlEmpresa,
+  reviewId: c.avaliacaoId,
+  text: c.texto,
+  createdAt: c.createdAt,
+});
 
 export const normalizeCommentUpdate = (data: CommentData): ICommentPayload => {
   return {
     texto: data.texto.trim(),
-    anonimo: data.anonimo,
+    anonima: data.anonima,
   };
 };
 
