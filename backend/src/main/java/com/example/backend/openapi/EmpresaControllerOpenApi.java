@@ -219,4 +219,28 @@ public interface EmpresaControllerOpenApi {
             @Parameter(description = "Nota mínima de Liderança", required = false) Integer lideranca,
             @Parameter(description = "Configurações de paginação (page, size, sort)") Pageable pageable
     );
+
+    @Operation(summary = "Listar setores de uma empresa")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de setores retornada com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+    })
+    ResponseEntity<List<EmpresaSetorResponseDTO>> listarSetoresDaEmpresa(Long id);
+
+    @Operation(summary = "Adicionar setor à empresa")
+    @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Setor adicionado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Empresa ou Setor não encontrado"),
+        @ApiResponse(responseCode = "409", description = "Setor já associado à empresa")
+    })
+    ResponseEntity<EmpresaSetorResponseDTO> adicionarSetor(Long id, AdicionarSetorEmpresaDTO data);
+
+    @Operation(summary = "Remover setor da empresa")
+    @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Setor removido com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Vínculo não encontrado")
+    })
+    ResponseEntity<Void> removerSetor(Long id, Long setorId);
 }

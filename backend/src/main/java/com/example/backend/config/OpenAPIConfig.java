@@ -59,6 +59,9 @@ public class OpenAPIConfig {
                                 | POST | /setores/ | ADMIN |
                                 | PUT | /setores/{id} | ADMIN |
                                 | DELETE | /setores/{id} | ADMIN |
+                                | GET | /empresas/{id}/setores | Público |
+                                | POST | /empresas/{id}/setores | ADMIN ou Dono |
+                                | DELETE | /empresas/{id}/setores/{setorId} | ADMIN ou Dono |
                                 | GET | /empresas/ | Público |
                                 | GET | /empresas/{id} | Público |
                                 | PUT | /empresas/{id} | Própria empresa ou ADMIN |
@@ -83,7 +86,6 @@ public class OpenAPIConfig {
                                 | POST | /avaliacoes/{id}/comentarios-empresa | EMPRESA, ADMIN |
                                 | PUT | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
                                 | DELETE | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
-                                | GET | /setores/empresa/{id} | Público |
                                 | GET | /admin/ | ADMIN |
 
 
