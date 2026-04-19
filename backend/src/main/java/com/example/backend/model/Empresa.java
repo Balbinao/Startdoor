@@ -97,6 +97,10 @@ public class Empresa implements UserDetails {
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExperienciaProfissional> experiencias;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_empresa_media", referencedColumnName = "id")
+    private EmpresaMedia empresaMedia;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
