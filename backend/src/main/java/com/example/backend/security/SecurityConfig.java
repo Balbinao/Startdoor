@@ -105,7 +105,18 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/estudantes/notas-condi").hasRole("ADMIN")  // Só admin vê lista
                         .requestMatchers(HttpMethod.GET, "/estudantes/notas-condi/**").authenticated()  // @PreAuthorize cuida
                         .requestMatchers(HttpMethod.PUT, "/estudantes/notas-condi/**").authenticated()  // @PreAuthorize cuida
-                        
+
+                        // ========== AVALIAÇÕES ==========
+                        .requestMatchers(HttpMethod.GET, "/avaliacoes/**").permitAll()  // Público - listar avaliações
+                        .requestMatchers(HttpMethod.POST, "/avaliacoes/**").authenticated()  // @PreAuthorize role ESTUDANTE
+                        .requestMatchers(HttpMethod.PUT, "/avaliacoes/**").authenticated()  // @PreAuthorize no controller
+                        .requestMatchers(HttpMethod.DELETE, "/avaliacoes/**").authenticated()  // @PreAuthorize no controller
+
+                        // ========== EMPRESA-SETOR ==========
+                        .requestMatchers(HttpMethod.GET, "/empresas/*/setores").permitAll()  // Público
+                        .requestMatchers(HttpMethod.POST, "/empresas/*/setores").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/empresas/*/setores/**").authenticated()
+
                         // ========== ADMIN ==========
                         .requestMatchers("/admin/**").hasRole("ADMIN") 
                         .anyRequest().authenticated()
