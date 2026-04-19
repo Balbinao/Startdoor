@@ -1,6 +1,5 @@
 -- ==========================================================
 -- 1. SETORES E ESTUDANTES
-INSERT INTO setor (id, nome, created_at) VALUES (1, 'Desenvolvimento', NOW());
 INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (1, 'user-gus', 'Gus Balbino', 'guss_dev', 'gus@teste.com', '123', 'https://github.com/balbinogus.png', NOW());
 INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (2, 'user-ana', 'Ana Silva', 'ana_tech', 'ana@teste.com', '123', 'https://ui-avatars.com/api/?name=Ana+Silva', NOW());
 INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (5, 'user-diego', 'Diego Oliveira', 'diego_dev', 'diego@teste.com', '123', 'https://ui-avatars.com/api/?name=Diego+Oliveira', NOW());
@@ -53,3 +52,18 @@ INSERT INTO estudante_avaliacao (uuid, id_estudante, id_empresa, id_setor, estad
 INSERT INTO estudante_avaliacao (uuid, id_estudante, id_empresa, id_setor, estado_atuacao, modelo_trabalho, data_inicio, titulo_cargo, texto_avaliacao, salario_min, salario_max, anonima, ambiente, aprendizado, beneficios, cultura, efetivacao, entrevista, feedback, infraestrutura, integracao, remuneracao, rotina, lideranca, created_at) VALUES ('aval-12', 7, 15, 1, 'PR', 'Presencial', '2022-12-01', 'Suporte Técnico', 'Computadores lentos e muita pressão sem feedback.', 2500, 2800, false, 2, 2, 2, 2, 2, 3, 1, 2, 2, 3, 1, 1, NOW());
 -- Avaliação Magalu (Ana)
 INSERT INTO estudante_avaliacao (uuid, id_estudante, id_empresa, id_setor, estado_atuacao, modelo_trabalho, data_inicio, titulo_cargo, texto_avaliacao, salario_min, salario_max, anonima, ambiente, aprendizado, beneficios, cultura, efetivacao, entrevista, feedback, infraestrutura, integracao, remuneracao, rotina, lideranca, created_at) VALUES ('aval-13', 2, 11, 1, 'SP', 'Híbrido', '2023-04-01', 'Estagiária Tech', 'Ambiente muito acolhedor e inclusivo.', 2200, 2500, false, 4, 5, 4, 5, 4, 4, 4, 4, 5, 4, 4, 4, NOW());
+
+-- ==========================================================
+-- SEED DE EMPRESA_SETOR
+-- ==========================================================
+
+INSERT INTO empresa_setor (id_empresa, id_setor) VALUES
+(1, 8),
+(2, 2),
+(2, 8),
+(3, 4),
+(3, 8),
+(4, 4),
+(5, 8),
+(5, 1),
+(6, 8);

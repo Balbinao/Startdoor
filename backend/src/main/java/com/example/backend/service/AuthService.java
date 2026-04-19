@@ -46,20 +46,6 @@ public class AuthService implements UserDetailsService {
         user = adminRepository.findByEmail(identifier);
         if (user != null) return user;
         
-        // Fallback: tenta como ID (Long)
-        try {
-            Long id = Long.parseLong(identifier);
-            
-            estudante = estudanteRepository.findById(id);
-            if (estudante.isPresent()) return estudante.get();
-            
-            empresa = empresaRepository.findById(id);
-            if (empresa.isPresent()) return empresa.get();
-            
-            admin = adminRepository.findById(id);
-            if (admin.isPresent()) return admin.get();
-        } catch (NumberFormatException ignored) {}
-        
         throw new UsernameNotFoundException("Usuário não encontrado: " + identifier);
     }
 }
