@@ -166,9 +166,9 @@ export const StudentProfileUpdateForm = () => {
       }
 
       const password = data.senha;
-      if (password) {
+      if (password?.trim()) {
         await modalLoadingAuto(
-          () => updateStudentPassword(Number(userId), password),
+          () => updateStudentPassword(Number(userId), password.trim()),
           MESSAGES_LOADING.UPDATE,
         );
       }
@@ -197,8 +197,7 @@ export const StudentProfileUpdateForm = () => {
         shouldBlockProcess: false,
       });
 
-      // navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
-      navigate(ROUTES_CONST.LOGIN);
+      navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
@@ -227,7 +226,7 @@ export const StudentProfileUpdateForm = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-32">
       <UserBanner type="ESTUDANTE" id={userId} />
 
       <FormWrapper form={form}>
@@ -379,7 +378,7 @@ export const StudentProfileUpdateForm = () => {
       </FormWrapper>
 
       <div className="flex w-full justify-center">
-        <div className="flex w-full max-w-xl flex-col gap-6">
+        <div className="flex w-full flex-col gap-6">
           <h2 className="text-2xl font-semibold">Experiência Acadêmica</h2>
           {academicExperienceCards.map(item => (
             <AcademicExperienceCard key={item.id} item={item} />
@@ -415,7 +414,7 @@ export const StudentProfileUpdateForm = () => {
       </div>
 
       <div className="flex w-full justify-center">
-        <div className="flex w-full max-w-xl flex-col gap-6">
+        <div className="flex w-full flex-col gap-6">
           <h2 className="text-2xl font-semibold">Experiência Profissional</h2>
           {professionalExperienceCards.map(item => (
             <ProfessionalExperienceCard key={item.id} item={item} />

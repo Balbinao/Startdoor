@@ -134,7 +134,7 @@ export const ReviewView = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-32">
       {review?.idEmpresa && <UserBanner type="EMPRESA" id={review.idEmpresa} />}
 
       <div className="flex flex-col gap-10">
@@ -160,7 +160,7 @@ export const ReviewView = () => {
               </span>
               <div className="flex items-center gap-2">
                 {review?.created_at && (
-                  <span className="inline-block max-w-22 truncate text-sm text-(--grey-200) sm:max-w-full">
+                  <span className="inline-block text-sm text-(--grey-200)">
                     {formatDateWithYearOrMonthAgo(review.created_at)}
                   </span>
                 )}

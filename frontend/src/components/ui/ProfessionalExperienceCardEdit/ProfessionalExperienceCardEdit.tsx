@@ -6,6 +6,7 @@ import {
   MESSAGES_RESPONSE,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@hooks/useAuth';
 import { useCompany } from '@hooks/useCompany';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
@@ -20,7 +21,6 @@ import {
   replaceEmptyWithNull,
 } from '@utils/normalizeData';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
 
 interface Props {
@@ -36,8 +36,6 @@ export const ProfessionalExperienceCardEdit = ({
   isNew,
   onRemove,
 }: Props) => {
-  const { id: userId } = useParams<{ id: string }>();
-
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
@@ -47,6 +45,9 @@ export const ProfessionalExperienceCardEdit = ({
     updateProfessionalExperienceCard,
   } = useExperience();
   const { companiesOptions } = useCompany();
+  const { getUserId } = useAuth();
+
+  const userId = getUserId();
 
   const form = useForm<ProfessionalExperienceCardData>({
     resolver: zodResolver(professionalExperienceCardSchema),
@@ -97,7 +98,7 @@ export const ProfessionalExperienceCardEdit = ({
         onRemove?.();
 
         await modalLoadingAuto(
-          () => getProfessionalExperienceCards(Number(userId)),
+          () => getProfessionalExperienceCards(userId),
           MESSAGES_LOADING.GET,
         );
         return;
@@ -107,7 +108,7 @@ export const ProfessionalExperienceCardEdit = ({
       const response = await modalLoadingAuto(
         () =>
           updateProfessionalExperienceCard(
-            Number(userId),
+            Number(item.id),
             professionalExperience,
           ),
         MESSAGES_LOADING.UPDATE,
@@ -122,7 +123,7 @@ export const ProfessionalExperienceCardEdit = ({
       onEdit?.();
 
       await modalLoadingAuto(
-        () => getProfessionalExperienceCards(item.id),
+        () => getProfessionalExperienceCards(userId),
         MESSAGES_LOADING.GET,
       );
     } catch (error: unknown) {

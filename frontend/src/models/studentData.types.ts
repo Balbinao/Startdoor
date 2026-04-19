@@ -10,7 +10,6 @@ export interface IStudent {
   paisOrigem:
     | (typeof DROPDOWN_VALUES_CONST.PAIS_ORIGEM)[number]['value']
     | null;
-  mediaNotaGeral: number | null;
   dataNascimento: string | null;
   modeloTrabalho:
     | (typeof DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO)[number]['value']

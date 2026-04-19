@@ -11,7 +11,7 @@ export const AcademicExperienceCard = ({ item }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="w-full max-w-xl">
+    <div className="w-full">
       {isEditing ? (
         <AcademicExperienceCardEdit
           item={item}

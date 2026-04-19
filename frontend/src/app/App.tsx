@@ -47,11 +47,9 @@ function App() {
             path={ROUTES_CONST.ROOT_PRIVATE}
             element={<PrivateMainLayout />}
           >
-            <Route
-              path={ROUTES_CONST.SEARCH}
-              element={<CompanySearch />}
-            />
             <Route index element={<ProfileRedirect />} />
+
+            <Route path={ROUTES_CONST.SEARCH} element={<CompanySearch />} />
 
             <Route
               path={ROUTES_CONST.STUDENT.PROFILE_URL}
@@ -62,6 +60,10 @@ function App() {
               element={<StudentProfileUpdateForm />}
             />
 
+            <Route
+              path={ROUTES_CONST.REVIEW.REVIEW_CREATE_URL}
+              element={<ReviewForm />}
+            />
             <Route
               path={ROUTES_CONST.REVIEW.REVIEW_UPDADE_URL}
               element={<ReviewForm />}
