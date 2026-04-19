@@ -58,7 +58,7 @@ export const MenuExtraOptions = ({
   }, [open, refs.reference, refs.floating, update]);
 
   return (
-    <div ref={wrapperRef} className="relative">
+    <div ref={wrapperRef} className="relative z-5">
       <div ref={node => refs.setReference(node)} onClick={handleToggle}>
         {children}
       </div>

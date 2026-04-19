@@ -12,8 +12,8 @@ export const ProfileRedirect = () => {
   }
 
   if (userRole === USER_ROLES_CONST.EMPRESA) {
-    return <Navigate to={ROUTES_CONST.COMPANY.PROFILE(userId)} replace />;
+    return <Navigate to={ROUTES_CONST.COMPANY.PROFILE_BY_ID(userId)} replace />;
   }
 
-  return <Navigate to={ROUTES_CONST.STUDENT.PROFILE(userId)} replace />;
+  return <Navigate to={ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId)} replace />;
 };

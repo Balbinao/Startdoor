@@ -1,6 +1,6 @@
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { ITextareaField } from '@models/input.types';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
@@ -21,8 +21,6 @@ export const FieldTextarea = <TFormValues extends FieldValues>({
   value,
   onChange,
 }: Props<TFormValues>) => {
-  const [internalValue, setInternalValue] = useState(value ?? '');
-
   const inputId = `textarea-${name}-${useId()}`;
 
   const render = (
@@ -67,9 +65,7 @@ export const FieldTextarea = <TFormValues extends FieldValues>({
 
   return (
     <FormFieldWrapper<TFormValues> name={name} inputId={inputId} label={label}>
-      {render(internalValue, value => {
-        setInternalValue(value);
-      })}
+      {render(value ?? '', onChange)}
     </FormFieldWrapper>
   );
 };

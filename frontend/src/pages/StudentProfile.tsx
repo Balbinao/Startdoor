@@ -50,7 +50,7 @@ export const StudentProfile = () => {
     getProfessionalExperienceCards,
   } = useExperience();
 
-  const { sectorsItems, getSectors } = useSector();
+  const { sectorsOptions, getSectors } = useSector();
   const { reviewCards, getReviewCardsStudent } = useReview();
   const { getCompanies } = useCompany();
   const { getStudent } = useStudent();
@@ -111,7 +111,7 @@ export const StudentProfile = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-32">
       <UserBanner type="ESTUDANTE" id={Number(urlUserId)} />
       {hasStudentInfo && (
         <div className="flex w-full max-w-3xl flex-col gap-8">
@@ -193,7 +193,7 @@ export const StudentProfile = () => {
                 }
                 title="Setor de Interesse"
                 value={
-                  sectorsItems.find(
+                  sectorsOptions.find(
                     item =>
                       item.value === Number(searchedStudent.setorInteresse),
                   )?.label ?? ''
@@ -242,7 +242,8 @@ export const StudentProfile = () => {
       <div className="flex w-full flex-col gap-8">
         <div className="flex items-center gap-8">
           <span className="text-lg font-semibold whitespace-nowrap">
-            4 Reviews
+            {reviewCards.length}{' '}
+            {reviewCards.length > 1 ? 'Avaliações' : 'Avaliação'}
           </span>
 
           <div className="flex flex-1 gap-4">
@@ -250,7 +251,7 @@ export const StudentProfile = () => {
               <FormField
                 type="select"
                 name="sortSetor"
-                options={sectorsItems}
+                options={sectorsOptions}
               />
             </span>
             <span className="w-56">
@@ -279,9 +280,15 @@ export const StudentProfile = () => {
         />
 
         <div className="flex flex-col gap-6">
-          {reviewCards.map((item, index) => (
-            <ReviewCard key={index} item={item} />
+          {reviewCards.map(item => (
+            <ReviewCard key={item.id} item={item} source="ESTUDANTE" />
           ))}
+
+          {reviewCards.length === 0 && (
+            <span className="empty-message">
+              Nenhuma avaliação encontrada...
+            </span>
+          )}
         </div>
       </div>
     </div>

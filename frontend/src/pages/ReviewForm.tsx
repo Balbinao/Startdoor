@@ -21,7 +21,10 @@ import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useReview } from '@hooks/useReview';
 import { useSector } from '@hooks/useSector';
 import { reviewSchema, type ReviewData } from '@schemas/reviewSchema';
-import { normalizeReviewData } from '@utils/normalizeData';
+import {
+  normalizeReviewData,
+  normalizeReviewPayload,
+} from '@utils/normalizeData';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -39,8 +42,8 @@ export const ReviewForm = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
-  const { sectorsItems, getSectors } = useSector();
-  const { getReview, createReview, updateReview } = useReview();
+  const { sectorsOptions, getSectors } = useSector();
+  const { review, getReview, createReview, updateReview } = useReview();
   const { getCompanies, companiesOptions } = useCompany();
   const { getUserId, getUserRole } = useAuth();
 
@@ -50,14 +53,14 @@ export const ReviewForm = () => {
   const isEditMode = Boolean(urlReviewId);
 
   const form = useForm<ReviewData>({
-    resolver: zodResolver(reviewSchema(sectorsItems)),
+    resolver: zodResolver(reviewSchema(sectorsOptions)),
     defaultValues: {
-      idEmpresa: 0,
-      idSetor: '',
+      empresaId: '',
+      setorId: '',
       estadoAtuacao: '',
       modeloTrabalho: '',
       dataInicio: '',
-      dataFim: undefined,
+      dataFim: '',
       tituloCargo: '',
       textoAvaliacao: '',
       faixaSalarial: {
@@ -125,8 +128,14 @@ export const ReviewForm = () => {
       }
 
       if (isEditMode) {
+        if (!review?.id) {
+          throw new Error(MESSAGES_RESPONSE.WARNING.REVIEW_ID_NOT_FOUND);
+        }
+
+        const nomalizedData = normalizeReviewPayload(data);
+
         const response = await modalLoadingAuto(
-          () => updateReview(userId, data),
+          () => updateReview(review.id, nomalizedData),
           MESSAGES_LOADING.UPDATE,
         );
 
@@ -137,9 +146,12 @@ export const ReviewForm = () => {
           message,
           shouldBlockProcess: false,
         });
+
+        navigate(ROUTES_CONST.REVIEW.REVIEW_VIEW_BY_ID(userId, review.id));
       } else {
+        const nomalizedData = normalizeReviewPayload(data);
         const response = await modalLoadingAuto(
-          () => createReview(userId, data),
+          () => createReview(userId, nomalizedData),
           MESSAGES_LOADING.UPDATE,
         );
 
@@ -150,9 +162,9 @@ export const ReviewForm = () => {
           message,
           shouldBlockProcess: false,
         });
-      }
 
-      navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+        navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId));
+      }
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
@@ -168,9 +180,9 @@ export const ReviewForm = () => {
 
   if (!userId) return <Navigate to={ROUTES_CONST.LOGIN} replace />;
   if (userRole === USER_ROLES_CONST.EMPRESA)
-    return <Navigate to={ROUTES_CONST.COMPANY.PROFILE(userId)} replace />;
+    return <Navigate to={ROUTES_CONST.COMPANY.PROFILE_BY_ID(userId)} replace />;
   if (urlUserId !== String(userId)) {
-    return <Navigate to={ROUTES_CONST.STUDENT.PROFILE(userId)} replace />;
+    return <Navigate to={ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId)} replace />;
   }
 
   if (isLoading) return <></>;
@@ -188,7 +200,7 @@ export const ReviewForm = () => {
           <FormField<ReviewData>
             form={form}
             type="select"
-            name="idEmpresa"
+            name="empresaId"
             label="Empresa"
             options={companiesOptions}
           />
@@ -197,9 +209,9 @@ export const ReviewForm = () => {
             <FormField<ReviewData>
               form={form}
               type="select"
-              name="idSetor"
+              name="setorId"
               label="Setor de Atuação"
-              options={sectorsItems}
+              options={sectorsOptions}
             />
 
             <div className="flex w-full gap-6">

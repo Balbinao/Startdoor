@@ -103,10 +103,7 @@ export const ScoreCard = ({ hasScoreDropdown }: Props) => {
                 <span className="h-full w-0.5 bg-(--grey-600)" />
 
                 <span className="font-medium text-(--yellow-100)">
-                  {new Intl.NumberFormat('pt-BR', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  }).format(item.value)}
+                  {item.value}
                 </span>
               </div>
             );

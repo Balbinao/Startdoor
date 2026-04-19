@@ -1,6 +1,6 @@
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { ICheckboxField } from '@models/input.types';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import {
   Controller,
   type FieldValues,
@@ -23,8 +23,6 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
   value,
   onChange,
 }: Props<TFormValues>) => {
-  const [internalValue, setInternalValue] = useState<boolean>(value ?? false);
-
   const uniqueId = useId();
   const inputId = `checkbox-${name}-${uniqueId}`;
   const symbolId = `checkbox-symbol-${name}-${uniqueId}`;
@@ -88,11 +86,7 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
 
   if (form) {
     return (
-      <FormFieldWrapper<TFormValues>
-        name={name}
-        inputId={inputId}
-        form={form}
-      >
+      <FormFieldWrapper<TFormValues> name={name} inputId={inputId} form={form}>
         <Controller
           name={name}
           control={form.control}
@@ -103,13 +97,8 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper<TFormValues>
-      name={name}
-      inputId={inputId}
-    >
-      {render(internalValue, value => {
-        setInternalValue(value);
-      })}
+    <FormFieldWrapper<TFormValues> name={name} inputId={inputId}>
+      {render(value ?? false, onChange)}
     </FormFieldWrapper>
   );
 };
