@@ -3,6 +3,8 @@ package com.example.backend.openapi;
 import com.example.backend.dto.*;
 import com.example.backend.model.Empresa;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Tag(name = "🏢 Empresas", description = "Operações de CRUD para gerenciamento de empresas")
@@ -188,4 +191,16 @@ public interface EmpresaControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
     })
     ResponseEntity<Void> removerFoto(@PathVariable Long id);
+
+    @Operation(summary = "Pesquisar empresas com filtros")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = EmpresaResponseDTO.class)))),
+            @ApiResponse(responseCode = "401", description = "Token JWT ausente ou inválido", content = @Content)
+    })
+    ResponseEntity<List<EmpresaResponseDTO>> pesquisar(
+            @Parameter(description = "Nota mínima", required = false) BigDecimal nota,
+            @Parameter(description = "Faixa de receita anual", required = false) String receita,
+            @Parameter(description = "Tamanho da empresa", required = false) String tamanho
+    );
 }

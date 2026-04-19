@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -107,5 +108,13 @@ public class EmpresaController implements EmpresaControllerOpenApi {
     public ResponseEntity<Void> removerFoto(@PathVariable Long id) {
         empresaService.removerFoto(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/pesquisa")
+    public ResponseEntity<List<EmpresaResponseDTO>> pesquisar(
+            @RequestParam(required = false) BigDecimal nota,
+            @RequestParam(required = false) String receita,
+            @RequestParam(required = false) String tamanho) {
+        return ResponseEntity.ok(empresaService.pesquisar(nota, receita, tamanho));
     }
 }

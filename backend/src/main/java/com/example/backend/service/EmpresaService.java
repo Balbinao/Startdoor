@@ -10,11 +10,13 @@ import com.example.backend.model.Estudante;
 import com.example.backend.repository.AdminRepository;
 import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
+import com.example.backend.repository.spec.EmpresaSpecs;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -180,5 +182,13 @@ public class EmpresaService {
             empresa.setFotoUrl(null);
             empresaRepository.save(empresa);
         }
+    }
+
+    public List<EmpresaResponseDTO> pesquisar(BigDecimal nota, String receita, String tamanho) {
+        List<Empresa> empresas = empresaRepository.findAll(EmpresaSpecs.filtrar(nota, receita, tamanho));
+
+        return empresas.stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 }
