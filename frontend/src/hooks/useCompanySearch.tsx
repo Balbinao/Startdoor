@@ -299,9 +299,7 @@ const getCompanies = useCallback(async () => {
     companySearchStore.resetFilters();
   };
 
-  const getCompaniesImage = () =>{
 
-  }
 
   return {
     filteredCompanies,
