@@ -1,29 +1,5 @@
 import type { DROPDOWN_VALUES_CONST } from '@constants';
 
-export interface ICompanyCard {
-  id: number;
-  nomeFantasia: string;
-  mediaNotaGeral?: number;
-  setor?: string;
-  tamanhoEmpresa?: string;
-  estadoSede?: string;
-  receitaAnual?: string;
-  numReviews?: number;
-  competencias?: {
-    ambiente?: number;
-    aprendizado?: number;
-    beneficios?: number;
-    cultura?: number;
-    efetivacao?: number;
-    entrevista?: number;
-    feedback?: number;
-    infraestrutura?: number;
-    integracao?: number;
-    remuneracao?: number;
-    rotina?: number;
-    lideranca?: number;
-  };
-}
 
 export interface ICompany {
   id: number;
@@ -45,7 +21,6 @@ export interface ICompany {
   linkSite?: string;
   linkLinkedin?: string;
   linkGupy?: string;
-  fotoUrl?: string;
   competencias?: {
     ambiente?: number;
     aprendizado?: number;
