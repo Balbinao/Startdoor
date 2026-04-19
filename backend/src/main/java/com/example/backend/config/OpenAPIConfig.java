@@ -52,29 +52,65 @@ public class OpenAPIConfig {
                                 * **👑 Administrador**: Acesso total ao sistema (gerenciar usuários, empresas, etc)
                                 
                                 ## 📋 Permissões por Endpoint
-                                 * **GET /setores/** → Público (todos podem ver)
-                                 * **POST /setores** → Apenas ADMIN
-                                 * **PUT /setores/{id}** → Apenas ADMIN
-                                 * **DELETE /setores/{id}** → Apenas ADMIN
-                                 * **GET /empresas/** → Público (todos podem ver)
-                                 * **PUT /empresas/{id}** → Própria empresa ou ADMIN
-                                 * **DELETE /empresas/{id}** → Própria empresa ou ADMIN
-                                 * **GET /estudantes** → Apenas ADMIN
-                                 * **GET /estudantes/{id}** → Próprio estudante ou ADMIN
-                                 * **PUT /estudantes/{id}** → Próprio estudante ou ADMIN
-                                 * **DELETE /estudantes/{id}** → Próprio estudante ou ADMIN
-                                 * **GET /estudantes/notas-condi** → Apenas ADMIN
-                                 * **GET /estudantes/notas-condi/{id}** → Próprio estudante ou ADMIN
-                                 * **PUT /estudantes/notas-condi/{id}** → Próprio estudante ou ADMIN
-                                 * **Notas condicionais são criadas automaticamente ao cadastrar estudante (valor padrão: 0)**
-                                 * **/admin/** → Apenas ADMIN
-                                
+
+                                | Método | Endpoint | Permissão |
+                                |--------|----------|-----------|
+                                | GET | /setores/ | Público |
+                                | POST | /setores/ | ADMIN |
+                                | PUT | /setores/{id} | ADMIN |
+                                | DELETE | /setores/{id} | ADMIN |
+                                | GET | /empresas/ | Público |
+                                | GET | /empresas/{id} | Público |
+                                | PUT | /empresas/{id} | Própria empresa ou ADMIN |
+                                | DELETE | /empresas/{id} | Própria empresa ou ADMIN |
+                                | GET | /estudantes | ADMIN |
+                                | GET | /estudantes/{id} | Próprio estudante ou ADMIN |
+                                | PUT | /estudantes/{id} | Próprio estudante ou ADMIN |
+                                | DELETE | /estudantes/{id} | Próprio estudante ou ADMIN |
+                                | GET | /estudantes/notas-condi | ADMIN |
+                                | GET | /estudantes/notas-condi/{id} | Próprio estudante ou ADMIN |
+                                | PUT | /estudantes/notas-condi/{id} | Próprio estudante ou ADMIN |
+                                | GET | /avaliacoes/estudante/ | Público |
+                                | GET | /avaliacoes/estudante/{id} | Público |
+                                | POST | /avaliacoes/estudante/{id} | ESTUDANTE, ADMIN |
+                                | PUT | /avaliacoes/{id} | ADMIN ou ESTUDANTE (dono) |
+                                | DELETE | /avaliacoes/{id} | ADMIN ou ESTUDANTE (dono) |
+                                | GET | /avaliacoes/{id}/comentarios-estudante | Público |
+                                | POST | /avaliacoes/{id}/comentarios-estudante | ESTUDANTE, ADMIN |
+                                | PUT | /avaliacoes/comentarios-estudante/{id} | ADMIN ou ESTUDANTE (dono) |
+                                | DELETE | /avaliacoes/comentarios-estudante/{id} | ADMIN ou ESTUDANTE (dono) |
+                                | GET | /avaliacoes/{id}/comentarios-empresa | Público |
+                                | POST | /avaliacoes/{id}/comentarios-empresa | EMPRESA, ADMIN |
+                                | PUT | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
+                                | DELETE | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
+                                | GET | /setores/empresa/{id} | Público |
+                                | GET | /admin/ | ADMIN |
+
+
+                                ## 🔒 Anonimato
+
+                                ### Avaliações
+                                - Campo: `anonima` (boolean, obrigatório)
+                                - Quando `true`: Na resposta da API, os dados do estudante (nome, foto, username, ID) retornam como `null`
+                                - Quando `false`: Todos os dados do estudante são retornados normalmente
+
+                                ### Comentários de Estudante
+                                - Campo: `anonima` (boolean, obrigatório)
+                                - Quando `true`: Na resposta da API, os dados do estudante (nome, foto, username, ID) retornam como `null`
+                                - Quando `false`: Todos os dados do estudante são retornados normalmente
+
+                                ### Observações
+                                - O campo `anonima` sempre é retornado na resposta para que o frontend identifique se é anônimo
+                                - Mesmo em avaliações/comentários anônimos, o ID do estudante é armazenado no banco para integridade referencial
+                                - Apenas os dados visíveis são ocultados nas respostas da API
+
                                 ## Funcionalidades
                                 * 🔐 Autenticação com JWT (retorna ID e tipo do usuário)
                                 * 👨‍🎓 Cadastro e gerenciamento de estudantes
                                 * 🏢 Cadastro e gerenciamento de empresas
                                 * 👑 Gerenciamento de administradores
-                                * ⭐ Futuro: Avaliações e notas
+                                * ⭐ Sistema de avaliações de empresas por estudantes
+                                * 💬 Sistema de comentários (estudantes e empresas)
                                 """)
                         .version("1.0.0")
                         .contact(new Contact()
