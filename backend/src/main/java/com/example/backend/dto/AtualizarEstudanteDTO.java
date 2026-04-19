@@ -38,11 +38,6 @@ public record AtualizarEstudanteDTO(
     )
     String paisOrigem,
 
-    @Schema(
-            description = "Média de notas geral",
-            example = "8.5"
-    )
-    BigDecimal mediaNotaGeral,
 
     @Schema(
             description = "Data de nascimento",

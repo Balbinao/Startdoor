@@ -53,9 +53,6 @@ public class Empresa implements UserDetails {
     @Column(name = "foto_url")
     private String fotoUrl;
 
-    @Column(name = "media_nota_geral")
-    private BigDecimal mediaNotaGeral;
-
     @Column(columnDefinition = "TEXT")
     private String biografia;
 

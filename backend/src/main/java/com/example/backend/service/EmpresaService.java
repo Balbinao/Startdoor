@@ -90,7 +90,6 @@ public class EmpresaService {
                 empresa.getNomeFantasia(),
                 empresa.getCnpj(),
                 empresa.getEmail(),
-                empresa.getMediaNotaGeral(),
                 empresa.getBiografia(),
                 empresa.getPaisOrigem(),
                 empresa.getReceitaAnual(),
