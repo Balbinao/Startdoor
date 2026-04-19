@@ -22,3 +22,18 @@ INSERT INTO empresa (uuid, nome_fantasia, cnpj, `user`, email, senha, id_empresa
 INSERT INTO empresa (uuid, nome_fantasia, cnpj, `user`, email, senha, id_empresa_media, biografia, pais_origem, receita_anual, data_fundacao, tamanho_empresa, estado_sede, media_salarial, area_atuacao, link_site, link_linkedin, link_gupy, created_at) VALUES ('uuid-5', 'Stefanini', '77888999000111', 'stefanini', 'rh@stefanini.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.TVu46O3u', 5, 'Consultoria global.', 'Brasil', 'R$500 milhões', '1987-01-01', '10001-50000', 'SP', 4500.00, 'Tecnologia', 'https://stefanini.com', 'https://linkedin.com/stefanini', 'https://stefanini.gupy.io', NOW());
 
 INSERT INTO empresa (uuid, nome_fantasia, cnpj, `user`, email, senha, id_empresa_media, biografia, pais_origem, receita_anual, data_fundacao, tamanho_empresa, estado_sede, media_salarial, area_atuacao, link_site, link_linkedin, link_gupy, created_at) VALUES ('uuid-6', 'Tech Solutions', '00111222000133', 'tech_sol', 'rh@tech.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.TVu46O3u', 6, 'Soluções sob medida.', 'Brasil', 'R$10 milhões', '2015-10-10', '501-1000', 'MG', 4000.00, 'Tecnologia', 'https://tech.io', 'https://linkedin.com/tech', 'https://tech.gupy.io', NOW());
+
+-- ==========================================================
+-- 3. SEED DE EMPRESA_SETOR
+-- ==========================================================
+
+INSERT INTO empresa_setor (id_empresa, id_setor) VALUES
+(1, 8),
+(2, 2),
+(2, 8),
+(3, 4),
+(3, 8),
+(4, 4),
+(5, 8),
+(5, 1),
+(6, 8);
