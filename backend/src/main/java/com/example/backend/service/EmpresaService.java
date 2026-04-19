@@ -1,9 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.AlterarSenhaDTO;
-import com.example.backend.dto.AtualizarEmpresaDTO;
-import com.example.backend.dto.CadastroEmpresaDTO;
-import com.example.backend.dto.EmpresaResponseDTO;
+import com.example.backend.dto.*;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Empresa;
 import com.example.backend.model.Estudante;
@@ -11,6 +8,8 @@ import com.example.backend.repository.AdminRepository;
 import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
 import com.example.backend.repository.spec.EmpresaSpecs;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -183,11 +182,38 @@ public class EmpresaService {
         }
     }
 
-    public List<EmpresaResponseDTO> pesquisar(BigDecimal nota, String receita, String tamanho) {
-        List<Empresa> empresas = empresaRepository.findAll(EmpresaSpecs.filtrar(nota, receita, tamanho));
+    private EmpresaResumoDTO toResumoDTO(Empresa empresa) {
+        String urlCompleta = (empresa.getFotoUrl() != null)
+                ? "http://localhost:8080/fotos/" + empresa.getFotoUrl()
+                : null;
+        return new EmpresaResumoDTO(
+                empresa.getId(),
+                empresa.getUuid(),
+                empresa.getNomeFantasia(),
+                urlCompleta,
+                empresa.getAreaAtuacao(),
+                empresa.getTamanhoEmpresa(),
+                empresa.getEmpresaMedia() != null ? empresa.getEmpresaMedia().getMediaGeral() : BigDecimal.ZERO
+        );
+    }
 
-        return empresas.stream()
-                .map(this::toResponseDTO)
-                .toList();
+    public Page<EmpresaResumoDTO> pesquisar(
+            BigDecimal nota, String receita, String tamanho,
+            Integer ambiente, Integer aprendizado, Integer beneficios,
+            Integer cultura, Integer efetivacao, Integer entrevista,
+            Integer feedback, Integer infra, Integer integracao,
+            Integer remuneracao, Integer rotina, Integer lideranca, Pageable pageable) {
+
+        Page<Empresa> empresasPage = empresaRepository.findAll(
+                EmpresaSpecs.filtrar(
+                        nota, receita, tamanho,
+                        ambiente, aprendizado, beneficios,
+                        cultura, efetivacao, entrevista,
+                        feedback, infra, integracao,
+                        remuneracao, rotina, lideranca
+                ),
+                pageable
+        );
+        return empresasPage.map(this::toResumoDTO);
     }
 }
