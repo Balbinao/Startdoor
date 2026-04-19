@@ -201,7 +201,7 @@ public interface EmpresaControllerOpenApi {
             @ApiResponse(responseCode = "401", description = "Token JWT ausente ou inválido", content = @Content)
     })
     ResponseEntity<Page<EmpresaResumoDTO>> pesquisar(
-
+            @Parameter(description = "Nome da empresa", required = false) String nome,
             @Parameter(description = "Nota média geral mínima", required = false) BigDecimal nota,
             @Parameter(description = "Faixa de receita anual", required = false) String receita,
             @Parameter(description = "Tamanho da empresa", required = false) String tamanho,

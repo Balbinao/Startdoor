@@ -6,6 +6,8 @@ public record EmpresaResumoDTO (
         Long id,
         String uuid,
         String nomeFantasia,
+        String paisOrigem,
+        String estadoSede,
         String fotoUrl,
         String areaAtuacao,
         String tamanhoEmpresa,
