@@ -158,7 +158,7 @@ public class EmpresaService {
 
     public EmpresaResponseDTO atualizarFoto(Long id, MultipartFile arquivo) {
         Empresa empresa = empresaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada"));
 
         if (empresa.getFotoUrl() != null) {
             fotoStorageService.excluir(empresa.getFotoUrl());
@@ -173,7 +173,7 @@ public class EmpresaService {
 
     public void removerFoto(Long id) {
         Empresa empresa = empresaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada"));
 
         if (empresa.getFotoUrl() != null) {
             fotoStorageService.excluir(empresa.getFotoUrl());
@@ -190,6 +190,8 @@ public class EmpresaService {
                 empresa.getId(),
                 empresa.getUuid(),
                 empresa.getNomeFantasia(),
+                empresa.getPaisOrigem(),
+                empresa.getEstadoSede(),
                 urlCompleta,
                 empresa.getAreaAtuacao(),
                 empresa.getTamanhoEmpresa(),
@@ -198,7 +200,7 @@ public class EmpresaService {
     }
 
     public Page<EmpresaResumoDTO> pesquisar(
-            BigDecimal nota, String receita, String tamanho,
+            String nome, BigDecimal nota, String receita, String tamanho,
             Integer ambiente, Integer aprendizado, Integer beneficios,
             Integer cultura, Integer efetivacao, Integer entrevista,
             Integer feedback, Integer infra, Integer integracao,
@@ -206,7 +208,7 @@ public class EmpresaService {
 
         Page<Empresa> empresasPage = empresaRepository.findAll(
                 EmpresaSpecs.filtrar(
-                        nota, receita, tamanho,
+                        nome, nota, receita, tamanho,
                         ambiente, aprendizado, beneficios,
                         cultura, efetivacao, entrevista,
                         feedback, infra, integracao,

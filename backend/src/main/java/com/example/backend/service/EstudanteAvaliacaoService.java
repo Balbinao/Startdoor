@@ -22,15 +22,17 @@ public class EstudanteAvaliacaoService {
     private final EstudanteRepository estudanteRepository;
     private final EmpresaRepository empresaRepository;
     private final SetorRepository setorRepository;
+    private final MediaService mediaService;
 
     public EstudanteAvaliacaoService(EstudanteAvaliacaoRepository avaliacaoRepository,
                                      EstudanteRepository estudanteRepository,
                                      EmpresaRepository empresaRepository,
-                                     SetorRepository setorRepository) {
+                                     SetorRepository setorRepository, MediaService mediaService) {
         this.avaliacaoRepository = avaliacaoRepository;
         this.estudanteRepository = estudanteRepository;
         this.empresaRepository = empresaRepository;
         this.setorRepository = setorRepository;
+        this.mediaService = mediaService;
     }
 
     @Transactional
@@ -72,7 +74,10 @@ public class EstudanteAvaliacaoService {
         avaliacao.setRotina(dto.rotina());
         avaliacao.setLideranca(dto.lideranca());
 
-        return toResponseDTO(avaliacaoRepository.save(avaliacao));
+        EstudanteAvaliacao avaliacaoSalva = avaliacaoRepository.save(avaliacao);
+        mediaService.atualizarMediaEmpresa(empresa.getId());
+
+        return toResponseDTO(avaliacaoSalva);
     }
 
     @Transactional(readOnly = true)
@@ -102,6 +107,7 @@ public class EstudanteAvaliacaoService {
     public EstudanteAvaliacaoResponseDTO atualizar(Long id, EstudanteAvaliacaoDTO dto, String uuidLogado, boolean isAdmin) {
         EstudanteAvaliacao avaliacao = avaliacaoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Avaliação não encontrada"));
+
 
         if (!isAdmin && !avaliacao.getEstudante().getUuid().equals(uuidLogado)) {
             throw new org.springframework.security.access.AccessDeniedException("Você não tem permissão para atualizar esta avaliação");
@@ -139,7 +145,10 @@ public class EstudanteAvaliacaoService {
         if (dto.rotina() != null) avaliacao.setRotina(dto.rotina());
         if (dto.lideranca() != null) avaliacao.setLideranca(dto.lideranca());
 
-        return toResponseDTO(avaliacaoRepository.save(avaliacao));
+        EstudanteAvaliacao atualizada = avaliacaoRepository.save(avaliacao);
+        mediaService.atualizarMediaEmpresa(atualizada.getEmpresa().getId());
+
+        return toResponseDTO(atualizada);
     }
 
     @Transactional
@@ -150,8 +159,10 @@ public class EstudanteAvaliacaoService {
         if (!isAdmin && !avaliacao.getEstudante().getUuid().equals(uuidLogado)) {
             throw new org.springframework.security.access.AccessDeniedException("Você não tem permissão para deletar esta avaliação");
         }
-        
+
+        Long empresaId = avaliacao.getEmpresa().getId();
         avaliacaoRepository.deleteById(id);
+        mediaService.atualizarMediaEmpresa(empresaId);
     }
 
     private void validarDTO(EstudanteAvaliacaoDTO dto) {
