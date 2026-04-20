@@ -52,9 +52,9 @@ export const UserLoginForm = () => {
         MESSAGES_LOADING.LOGIN,
       );
       if (tipo === USER_ROLES_CONST.ESTUDANTE) {
-        navigate(ROUTES_CONST.STUDENT.PROFILE(id));
+        navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(id));
       } else if (tipo === USER_ROLES_CONST.EMPRESA) {
-        navigate(ROUTES_CONST.COMPANY.PROFILE(id));
+        navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(id));
       }
     } catch (error: unknown) {
       const message =

@@ -16,8 +16,8 @@ export const MenuMain = () => {
 
   const profilePath =
     userRole === USER_ROLES_CONST.EMPRESA
-      ? ROUTES_CONST.COMPANY.PROFILE(userId)
-      : ROUTES_CONST.STUDENT.PROFILE(userId);
+      ? ROUTES_CONST.COMPANY.PROFILE_BY_ID(userId)
+      : ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId);
 
   const searchPath = ROUTES_CONST.SEARCH;
 

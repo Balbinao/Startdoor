@@ -402,9 +402,9 @@ export const UserBanner = ({ type, id }: Props) => {
                 if (!userId) return;
 
                 if (type === USER_ROLES_CONST.ESTUDANTE) {
-                  navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+                  navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId));
                 } else {
-                  navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+                  navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(userId));
                 }
               }}
             />
@@ -415,7 +415,7 @@ export const UserBanner = ({ type, id }: Props) => {
                   className="h-full w-full text-(--grey-400)"
                   onClick={() => {
                     if (!userId) return;
-                    navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+                    navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId));
                   }}
                 />
               ) : (
@@ -423,7 +423,7 @@ export const UserBanner = ({ type, id }: Props) => {
                   className="h-full w-full text-(--grey-400)"
                   onClick={() => {
                     if (!userId) return;
-                    navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+                    navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(userId));
                   }}
                 />
               )}

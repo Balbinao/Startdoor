@@ -1,7 +1,7 @@
 import { CalendarEvent, XClose } from '@assets/icons';
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { IInputDate } from '@models/input.types';
-import { useId, useRef, useState } from 'react';
+import { useId, useRef } from 'react';
 import type { FieldValues, PathValue, UseFormReturn } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
@@ -23,7 +23,6 @@ export const FieldDate = <TFormValues extends FieldValues>({
   onChange,
 }: Props<TFormValues>) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [internalValue, setInternalValue] = useState(value ?? '');
 
   const inputId = `date-${name}-${useId()}`;
 
@@ -106,15 +105,9 @@ export const FieldDate = <TFormValues extends FieldValues>({
 
   return (
     <FormFieldWrapper<TFormValues> name={name} inputId={inputId} label={label}>
-      {render(
-        internalValue,
-        value => {
-          setInternalValue(value);
-        },
-        () => {
-          setInternalValue('');
-        },
-      )}
+      {render(value ?? '', onChange, () => {
+        onChange?.('');
+      })}
     </FormFieldWrapper>
   );
 };

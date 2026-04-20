@@ -36,12 +36,18 @@ export const API_CONST = {
       `/experiencias-profissionais/estudante/${id}`,
   },
   REVIEW: {
-    STUDENT_REVIEW_BY_ID: (id: number) => `estudantes/avaliacoes/${id}`,
-    STUDENT_BY_ID_REVIEWS: (id: number) => `estudantes/${id}/avaliacoes`,
-    COMPANY_BY_ID_REVIEW: (id: number) => `estudantes/${id}/avaliacoes`,
+    BY_ID: (id: number) => `/avaliacoes/${id}`,
+    STUDENT_REVIEW_BY_ID: (id: number) => `/avaliacoes/estudante/${id}`,
+    COMPANY_BY_ID_REVIEW: (id: number) => `/avaliacoes/empresa/${id}`,
   },
   COMMENT: {
-    BY_ID: (id: number) => `/comentarios/${id}`,
-    STUDENT_BY_ID: (id: number) => `/comentarios/estudante/${id}`,
+    REVIEW_BY_ID_COMMENTS_STUDENT: (id: number) =>
+      `/avaliacoes/${id}/comentarios-estudante`,
+    REVIEW_BY_ID_COMMENTS_COMPANIES: (id: number) =>
+      `/avaliacoes/${id}/comentarios-empresa`,
+    REVIEW_COMMENTS_STUDENTS_BY_ID: (id: number) =>
+      `/avaliacoes/comentarios-estudante/${id}`,
+    REVIEW_COMMENTS_COMPANIES_BY_ID: (id: number) =>
+      `/avaliacoes/comentarios-empresa/${id}`,
   },
 } as const;

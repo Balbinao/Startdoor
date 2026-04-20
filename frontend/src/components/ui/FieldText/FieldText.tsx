@@ -31,7 +31,6 @@ export const FieldText = <TFormValues extends FieldValues>({
   value,
   onChange,
 }: Props<TFormValues>) => {
-  const [internalValue, setInternalValue] = useState(value ?? '');
   const [showPassword, setShowPassword] = useState(false);
 
   const inputId = `text-${name}-${useId()}`;
@@ -115,9 +114,7 @@ export const FieldText = <TFormValues extends FieldValues>({
 
   return (
     <FormFieldWrapper name={name} inputId={inputId} label={label}>
-      {render(internalValue, value => {
-        setInternalValue(value);
-      })}
+      {render(value ?? '', onChange)}
     </FormFieldWrapper>
   );
 };

@@ -1,103 +1,70 @@
 import { StarFilled } from '@assets/icons';
-import { MESSAGES_LOADING, MESSAGES_RESPONSE, ROUTES_CONST } from '@constants';
-import { useCompany } from '@hooks/useCompany';
-import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
-import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import { useStudent } from '@hooks/useStudent';
-import type {
-  IReviewCardCompanyView,
-  IReviewCardStudentView,
-} from '@models/review.types';
-import { formatDDMMMYYYY } from '@utils/formatData';
+import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
+import type { IReview } from '@models/review.types';
+import { formatDDMMMYYYY, formatToTwoDecimalsAsNumber } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
 import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
-  item: IReviewCardCompanyView | IReviewCardStudentView;
+  item: IReview;
+  source: (typeof USER_ROLES_CONST)[keyof typeof USER_ROLES_CONST];
 }
 
-export const ReviewCard = ({ item }: Props) => {
+export const ReviewCard = ({ item, source }: Props) => {
   const contentRef = useRef<HTMLSpanElement>(null);
   const navigate = useNavigate();
 
-  const modalLoadingAuto = useModalLoadingAuto();
-  const { modalMessageError } = useModalMessageDefault();
-
-  const { students, getStudents } = useStudent();
-  const { companies, getCompanies } = useCompany();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-
   const [shouldCollapse, setShouldCollapse] = useState(false);
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        setIsLoading(true);
+  const reviewScores = [
+    item.ambiente,
+    item.aprendizado,
+    item.beneficios,
+    item.cultura,
+    item.efetivacao,
+    item.entrevista,
+    item.feedback,
+    item.infraestrutura,
+    item.integracao,
+    item.remuneracao,
+    item.rotina,
+    item.lideranca,
+  ];
 
-        await modalLoadingAuto(() => getStudents(), MESSAGES_LOADING.GET);
-        await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
-
-        setIsError(false);
-      } catch (error: unknown) {
-        setIsError(true);
-        await modalMessageError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetch();
-  }, []);
-
-  const isReviewCardFromCompanyPerspective = 'idEstudante' in item;
-
-  const user = isReviewCardFromCompanyPerspective
-    ? students.find(s => s.id === item.idEstudante)
-    : companies.find(c => c.id === item.idEmpresa);
+  const meanReviewScore =
+    reviewScores.reduce((acc, current) => acc + current, 0) /
+    reviewScores.length;
 
   useEffect(() => {
-    if (isLoading || isError || !user) return;
-
     const el = contentRef.current;
     if (!el) return;
-
     const isOverflowing = el.scrollHeight > el.clientHeight;
     setShouldCollapse(isOverflowing);
-  }, [item.textoAvaliacao, isLoading, isError, user]);
-
-  if (!user) {
-    console.error(MESSAGES_RESPONSE.WARNING.USER_NOT_FOUND);
-    return null;
-  }
-
-  if (isLoading) return null;
-  if (isError) return null;
+  }, [item.textoAvaliacao]);
 
   return (
     <div className="relative flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
       <div className="flex items-start gap-3">
         <UserProfilePicture
-          userId={user.id}
+          userId={source === 'ESTUDANTE' ? item.empresaId : item.estudanteId}
           size={64}
-          src={user?.fotoUrl}
-          defaultIconType={
-            isReviewCardFromCompanyPerspective ? 'student' : 'company'
+          src={
+            source === 'ESTUDANTE' ? item.fotoUrlEmpresa : item.fotoUrlEstudante
           }
+          defaultIconType={source === 'ESTUDANTE' ? 'student' : 'company'}
           bgIconWrapperClassName="bg-(--grey-800)"
         />
 
         <div className="flex flex-1 flex-col gap-1">
           <div className="flex flex-1 justify-between">
             <span className="text-lg font-semibold">
-              {'nomeFantasia' in user ? user.nomeFantasia : user.nome}
+              {source === 'ESTUDANTE' ? item.nomeEmpresa : item.nomeEstudante}
             </span>
 
             <span className="text-(--grey-400)">
-              {formatDDMMMYYYY(item.dataPublicacao)}
+              {formatDDMMMYYYY(item.createdAt)}
             </span>
           </div>
 
@@ -105,7 +72,7 @@ export const ReviewCard = ({ item }: Props) => {
             <span>{item.tituloCargo}</span>
             <span className="text-(--grey-400)">•</span>
             <span className="flex items-center gap-1.5">
-              {item.notaMedia}
+              {formatToTwoDecimalsAsNumber(meanReviewScore)}
               <StarFilled
                 width={15}
                 height={15}
@@ -134,7 +101,7 @@ export const ReviewCard = ({ item }: Props) => {
           text="Visualizar"
           onClick={() =>
             navigate(
-              ROUTES_CONST.REVIEW.REVIEW_VIEW_BY_ID(user.id, item.idAvaliacao),
+              ROUTES_CONST.REVIEW.REVIEW_VIEW_BY_ID(item.estudanteId, item.id),
             )
           }
         />
