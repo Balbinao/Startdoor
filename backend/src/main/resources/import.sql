@@ -5,10 +5,11 @@ INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_a
 INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (5, 'user-diego', 'Diego Oliveira', 'diego_dev', 'diego@teste.com', '123', 'https://ui-avatars.com/api/?name=Diego+Oliveira', NOW());
 INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (6, 'user-fernanda', 'Fernanda Lima', 'fer_qa', 'fer@teste.com', '123', 'https://ui-avatars.com/api/?name=Fernanda+Lima', NOW());
 INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (7, 'user-gabriel', 'Gabriel Santos', 'gabs_data', 'gabriel@teste.com', '123', 'https://ui-avatars.com/api/?name=Gabriel+Santos', NOW());
+INSERT INTO estudante_avaliacao (uuid, id_estudante, id_empresa, id_setor, estado_atuacao, modelo_trabalho, data_inicio, titulo_cargo, texto_avaliacao, salario_min, salario_max, anonima, ambiente, aprendizado, beneficios, cultura, efetivacao, entrevista, feedback, infraestrutura, integracao, remuneracao, rotina, lideranca, created_at) VALUES ('aval-16', 1, 16, 1, 'SP', 'Híbrido', '2023-06-01', 'Desenvolvedor Java Jr', 'Benefícios impecáveis (VA/VR de banco é outro nível) e infraestrutura de ponta. A pressão por entregas é constante, mas o aprendizado compensa.', 5000, 6500, false, 4, 5, 5, 4, 5, 4, 4, 5, 4, 5, 3, 4, NOW());
 
--- ==========================================================
 -- 2. MAIS MÉDIAS (Cenários Diversos)
 -- ==========================================================
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at)VALUES (16, 4.30, 4.60, 5.00, 4.20, 4.50, 4.10, 3.90, 4.90, 4.40, 4.80, 3.20, 4.10, 4.33, NOW());
 
 INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (1, 4.50, 5.00, 4.20, 4.80, 4.00, 4.50, 4.30, 4.70, 4.60, 4.10, 4.40, 4.50, 4.47, NOW());
 INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (7, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, NOW());
@@ -38,6 +39,9 @@ INSERT INTO empresa (uuid, nome_fantasia, cnpj, `user`, email, senha, id_empresa
 INSERT INTO empresa (uuid, nome_fantasia, cnpj, `user`, email, senha, id_empresa_media, biografia, pais_origem, receita_anual, data_fundacao, tamanho_empresa, estado_sede, media_salarial, area_atuacao, link_site, link_linkedin, link_gupy, created_at) VALUES ('uuid-13', 'Localiza', '33333333000133', 'localiza', 'rh@localiza.com', '123', 13, 'Cuidamos do caminho.', 'Brasil', 'R$500 milhões', '1973-01-01', '10001-50000', 'MG', 4500.00, 'Serviços', 'https://localiza.com', 'li/localiza', 'gupy/localiza', NOW());
 INSERT INTO empresa (uuid, nome_fantasia, cnpj, `user`, email, senha, id_empresa_media, biografia, pais_origem, receita_anual, data_fundacao, tamanho_empresa, estado_sede, media_salarial, area_atuacao, link_site, link_linkedin, link_gupy, created_at) VALUES ('uuid-14', 'Flow State Tech', '44444444000144', 'flowstate', 'hi@flow.tech', '123', 14, 'Cultura em primeiro lugar.', 'Brasil', 'R$10 milhões', '2020-01-01', '101-500', 'SC', 5000.00, 'Tecnologia', 'https://flow.tech', 'li/flow', 'gupy/flow', NOW());
 INSERT INTO empresa (uuid, nome_fantasia, cnpj, `user`, email, senha, id_empresa_media, biografia, pais_origem, receita_anual, data_fundacao, tamanho_empresa, estado_sede, media_salarial, area_atuacao, link_site, link_linkedin, link_gupy, created_at) VALUES ('uuid-15', 'Old School Outsourcing', '55555555000155', 'oldschool', 'rh@oldschool.com', '123', 15, 'Tradição em entregas.', 'Brasil', 'R$50 milhões', '1995-01-01', '1001-5000', 'PR', 3000.00, 'Tecnologia', 'https://oldschool.com', 'li/oldschool', 'gupy/oldschool', NOW());
+INSERT INTO empresa (uuid, nome_fantasia, cnpj, `user`, email, senha, id_empresa_media, biografia, pais_origem, receita_anual, data_fundacao, tamanho_empresa, estado_sede, media_salarial, area_atuacao, link_site, link_linkedin, link_gupy, created_at) VALUES ('uuid-16', 'Itaú Unibanco', '60701190000104', 'itau', 'carreiras@itau.com.br', '123', 16, 'O maior banco privado do Brasil e uma das maiores empresas do mundo.', 'Brasil', 'R$500 milhões', '1924-12-30', '50001-100000', 'SP', 5500.00, 'Finanças', 'https://itau.com.br', 'li/itau', 'gupy/itau', NOW());
+
+
 
 -- ==========================================================
 
@@ -52,7 +56,7 @@ INSERT INTO estudante_avaliacao (uuid, id_estudante, id_empresa, id_setor, estad
 INSERT INTO estudante_avaliacao (uuid, id_estudante, id_empresa, id_setor, estado_atuacao, modelo_trabalho, data_inicio, titulo_cargo, texto_avaliacao, salario_min, salario_max, anonima, ambiente, aprendizado, beneficios, cultura, efetivacao, entrevista, feedback, infraestrutura, integracao, remuneracao, rotina, lideranca, created_at) VALUES ('aval-12', 7, 15, 1, 'PR', 'Presencial', '2022-12-01', 'Suporte Técnico', 'Computadores lentos e muita pressão sem feedback.', 2500, 2800, false, 2, 2, 2, 2, 2, 3, 1, 2, 2, 3, 1, 1, NOW());
 -- Avaliação Magalu (Ana)
 INSERT INTO estudante_avaliacao (uuid, id_estudante, id_empresa, id_setor, estado_atuacao, modelo_trabalho, data_inicio, titulo_cargo, texto_avaliacao, salario_min, salario_max, anonima, ambiente, aprendizado, beneficios, cultura, efetivacao, entrevista, feedback, infraestrutura, integracao, remuneracao, rotina, lideranca, created_at) VALUES ('aval-13', 2, 11, 1, 'SP', 'Híbrido', '2023-04-01', 'Estagiária Tech', 'Ambiente muito acolhedor e inclusivo.', 2200, 2500, false, 4, 5, 4, 5, 4, 4, 4, 4, 5, 4, 4, 4, NOW());
-
+INSERT INTO estudante_avaliacao (uuid, id_estudante, id_empresa, id_setor, estado_atuacao, modelo_trabalho, data_inicio, titulo_cargo, texto_avaliacao, salario_min, salario_max, anonima, ambiente, aprendizado, beneficios, cultura, efetivacao, entrevista, feedback, infraestrutura, integracao, remuneracao, rotina, lideranca, created_at) VALUES ('aval-16', 1, 16, 1, 'SP', 'Híbrido', '2023-06-01', 'Desenvolvedor Java Jr', 'Benefícios impecáveis (VA/VR de banco é outro nível) e infraestrutura de ponta. A pressão por entregas é constante, mas o aprendizado compensa.', 5000, 6500, false, 4, 5, 5, 4, 5, 4, 4, 5, 4, 5, 3, 4, NOW());
 -- ==========================================================
 -- SEED DE EMPRESA_SETOR
 -- ==========================================================
@@ -66,4 +70,6 @@ INSERT INTO empresa_setor (id_empresa, id_setor) VALUES
 (4, 4),
 (5, 8),
 (5, 1),
-(6, 8);
+(6, 8),
+(16, 1),
+(16, 2);
