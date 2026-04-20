@@ -64,15 +64,27 @@ public class OpenAPIConfig {
                                 | DELETE | /empresas/{id}/setores/{setorId} | ADMIN ou Dono |
                                 | GET | /empresas/ | Público |
                                 | GET | /empresas/{id} | Público |
+                                | GET |	/empresas/pesquisa | Público |
                                 | PUT | /empresas/{id} | Própria empresa ou ADMIN |
+                                | PUT | /empresas/{id}/foto	| ADMIN ou empresa |
+                                | DELETE | /empresas/{id}/foto | ADMIN ou empresa |
                                 | DELETE | /empresas/{id} | Própria empresa ou ADMIN |
                                 | GET | /estudantes | ADMIN |
                                 | GET | /estudantes/{id} | Próprio estudante ou ADMIN |
                                 | PUT | /estudantes/{id} | Próprio estudante ou ADMIN |
+                                | PUT | /estudantes/{id}/foto |	Próprio estudante ou ADMIN
+                                | DELETE | /estudantes/{id}/foto |Próprio estudante ou ADMIN
                                 | DELETE | /estudantes/{id} | Próprio estudante ou ADMIN |
                                 | GET | /estudantes/notas-condi | ADMIN |
                                 | GET | /estudantes/notas-condi/{id} | Próprio estudante ou ADMIN |
                                 | PUT | /estudantes/notas-condi/{id} | Próprio estudante ou ADMIN |
+                                | POST | /experiencias-academicas/estudante/{estudanteId} |	Próprio estudante ou ADMIN
+                                | GET |	/experiencias-academicas/estudante/{estudanteId} | Público
+                                | GET |	/experiencias-academicas/{id} |	Público
+                                | PUT | /experiencias-academicas/{id} | Próprio estudante ou ADMIN
+                                | DELETE | /experiencias-academicas/{id} | Próprio estudante ou ADMIN
+                                | POST| /experiencias-profissionais/estudante/{estudanteId}	| Próprio estudante ou ADMIN
+                                | GET | /experiencias-profissionais/estudante/{estudanteId}	| Público
                                 | GET | /avaliacoes/estudante/ | Público |
                                 | GET | /avaliacoes/estudante/{id} | Público |
                                 | POST | /avaliacoes/estudante/{id} | ESTUDANTE, ADMIN |
