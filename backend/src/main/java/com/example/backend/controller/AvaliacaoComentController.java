@@ -186,7 +186,7 @@ public class AvaliacaoComentController implements AvaliacaoComentControllerOpenA
     private AvaliacaoComentResponseDTO toComentResponseDTO(EstudanteAvaliacaoComent comentario) {
         Boolean anonima = comentario.getAnonima();
 
-        Long estudanteId = anonima ? null : comentario.getEstudante().getId();
+        Long estudanteId = comentario.getEstudante().getId();
         String nomeEstudante = anonima ? null : comentario.getEstudante().getNome();
         String fotoUrlEstudante = anonima ? null : comentario.getEstudante().getFotoUrl();
         String userEstudante = anonima ? null : comentario.getEstudante().getUser();

@@ -121,7 +121,7 @@ export const CompanyProfileUpdateForm = () => {
         });
         if (!confirmedSuccess) return;
 
-        navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+        navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(userId));
       } else {
         throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
       }

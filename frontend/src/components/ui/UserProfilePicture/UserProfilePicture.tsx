@@ -31,9 +31,9 @@ export const UserProfilePicture = ({
           className={`h-full w-full rounded-lg border border-zinc-700 object-cover ${!isAnonymous && 'cursor-pointer'}`}
           onClick={() => {
             if (defaultIconType === 'student') {
-              navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+              navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId));
             } else {
-              navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+              navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(userId));
             }
           }}
         />
@@ -46,7 +46,7 @@ export const UserProfilePicture = ({
               className={`h-full w-full ${!isAnonymous && 'cursor-pointer'} ${bgIconClassName}`}
               onClick={() => {
                 if (!isAnonymous)
-                  navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+                  navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId));
               }}
             />
           ) : (
@@ -54,7 +54,7 @@ export const UserProfilePicture = ({
               className={`h-full w-full ${!isAnonymous && 'cursor-pointer'} ${bgIconClassName}`}
               onClick={() => {
                 if (!isAnonymous)
-                  navigate(ROUTES_CONST.COMPANY.PROFILE(userId));
+                  navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(userId));
               }}
             />
           )}

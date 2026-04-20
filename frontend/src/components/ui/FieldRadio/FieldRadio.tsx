@@ -1,6 +1,6 @@
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { IRadioField } from '@models/input.types';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import {
   Controller,
   type FieldValues,
@@ -23,10 +23,6 @@ export const FieldRadio = <TFormValues extends FieldValues>({
   value,
   onChange,
 }: Props<TFormValues>) => {
-  const [internalValue, setInternalValue] = useState<
-    string | number | undefined
-  >(value);
-
   const uniqueId = useId();
 
   const render = (
@@ -74,7 +70,7 @@ export const FieldRadio = <TFormValues extends FieldValues>({
     return (
       <FormFieldWrapper<TFormValues>
         name={name}
-        inputId={""}
+        inputId={''}
         label={label}
         form={form}
       >
@@ -90,10 +86,8 @@ export const FieldRadio = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper<TFormValues> name={name} inputId={""} label={label}>
-      {render(internalValue, value => {
-        setInternalValue(value);
-      })}
+    <FormFieldWrapper<TFormValues> name={name} inputId={''} label={label}>
+      {render(value ?? undefined, onChange)}
     </FormFieldWrapper>
   );
 };

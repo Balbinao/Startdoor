@@ -1,6 +1,5 @@
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
 import type { IDoubleRangeField, RangeValue } from '@models/input.types';
-import { useState } from 'react';
 import {
   Controller,
   type FieldValues,
@@ -27,10 +26,6 @@ export const FieldDoubleRange = <TFormValues extends FieldValues>({
   disabled,
   // readOnly,
 }: Props<TFormValues>) => {
-  const [internalValue, setInternalValue] = useState<RangeValue>(
-    value ?? { max: minLimit * 0.25, min: maxLimit * 0.65 },
-  );
-
   const handleChange = (
     newValue: RangeValue,
     internalOnChange?: (value: RangeValue) => void,
@@ -160,7 +155,7 @@ export const FieldDoubleRange = <TFormValues extends FieldValues>({
 
   return (
     <FormFieldWrapper<TFormValues> name={name} inputId="">
-      {render(internalValue, value => setInternalValue(value))}
+      {render(value ?? { min: minLimit, max: maxLimit }, onChange)}
     </FormFieldWrapper>
   );
 };

@@ -1,4 +1,4 @@
-import type { ICompanyCard, ICompany } from '@models/companyData.types';
+import type { ICompany } from '@models/companyData.types';
 import Fuse from 'fuse.js'
 import { makeAutoObservable } from 'mobx';
 import type { RootStore } from './RootStore';

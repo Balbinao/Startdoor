@@ -35,7 +35,7 @@ export const CompanyProfile = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
 
-  const { sectorsItems, getSectors } = useSector();
+  const { sectorsOptions, getSectors } = useSector();
 
   const { reviewCards, getReviewCardsCompany } = useReview();
   const { getCompany } = useCompany();
@@ -88,7 +88,7 @@ export const CompanyProfile = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-32">
       <UserBanner type="EMPRESA" id={Number(urlUserId)} />
       {hasCompanyInfo && (
         <div className="flex w-full max-w-3xl flex-col gap-8">
@@ -213,7 +213,7 @@ export const CompanyProfile = () => {
               <FormField
                 type="select"
                 name="sortSetor"
-                options={sectorsItems}
+                options={sectorsOptions}
               />
             </span>
             <span className="w-56">
@@ -233,7 +233,7 @@ export const CompanyProfile = () => {
 
         <div className="flex flex-col gap-6">
           {reviewCards.map(item => (
-            <ReviewCard item={item} />
+            <ReviewCard key={item.id} item={item} source="EMPRESA" />
           ))}
         </div>
       </div>

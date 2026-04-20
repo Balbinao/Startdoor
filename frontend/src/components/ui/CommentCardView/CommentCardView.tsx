@@ -1,16 +1,10 @@
 import { PencilFilled, ThreeDotsVertical, TrashFilled } from '@assets/icons';
-import {
-  MESSAGES_LOADING,
-  MESSAGES_RESPONSE,
-  USER_ROLES_CONST,
-} from '@constants';
+import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import { useComment } from '@hooks/useComment';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import type { ICommentCompany, ICommentStudent } from '@models/comment.types';
-import type { ICompany } from '@models/companyData.types';
-import type { IStudent } from '@models/studentData.types';
+import type { IComment } from '@models/comment.types';
 import { formatDateWithYearOrMonthAgo } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -19,12 +13,11 @@ import type { MenuOption } from '../MenuExtraOptions/MenuExtraOptions';
 import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
-  item: ICommentStudent | ICommentCompany;
-  user: IStudent | ICompany;
+  item: IComment;
   onEdit: () => void;
 }
 
-export const CommentCardView = ({ item, user, onEdit }: Props) => {
+export const CommentCardView = ({ item, onEdit }: Props) => {
   const { reviewId: urlReviewId } = useParams<{ reviewId: string }>();
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -33,7 +26,8 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
   const { getUserId, getUserRole } = useAuth();
-  const { getComments, deleteComment } = useComment();
+  const { getAllReviewComments, deleteCommentStudent, deleteCommentCompany } =
+    useComment();
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [height, setHeight] = useState<string>('0px');
@@ -42,19 +36,7 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
   const userId = getUserId();
   const userRole = getUserRole();
 
-  const isStudentComment = 'idEstudante' in item;
-  const isStudentUser = 'nome' in user;
-
-  const isOwner =
-    (isStudentComment &&
-      item.idEstudante === userId &&
-      userRole === USER_ROLES_CONST.ESTUDANTE) ||
-    (!isStudentComment &&
-      item.idEmpresa === userId &&
-      userRole === USER_ROLES_CONST.EMPRESA);
-
-  const name = isStudentUser ? user.nome : user.nomeFantasia;
-  const username = isStudentUser ? user.user : user.username;
+  const isOwner = item.authorId === userId && item.type === userRole;
 
   const lineHeight = 32;
   const maxLines = 3;
@@ -66,7 +48,7 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
       setHeight(`${fullHeight}px`);
       setShouldCollapse(fullHeight > collapsedHeight);
     }
-  }, [item.texto, collapsedHeight]);
+  }, [item.text, collapsedHeight]);
 
   const onDelete = async (id: number) => {
     try {
@@ -77,21 +59,34 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
       });
       if (!confirmed) return;
 
-      const response = await modalLoadingAuto(
-        () => deleteComment(id),
-        MESSAGES_LOADING.DELETE,
-      );
+      if (item.type === 'ESTUDANTE') {
+        const response = await modalLoadingAuto(
+          () => deleteCommentStudent(id),
+          MESSAGES_LOADING.DELETE,
+        );
 
-      const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE;
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE;
+        await modalMessageSafe({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
+      } else {
+        const response = await modalLoadingAuto(
+          () => deleteCommentCompany(id),
+          MESSAGES_LOADING.DELETE,
+        );
 
-      await modalMessageSafe({
-        type: 'success',
-        message,
-        shouldBlockProcess: false,
-      });
+        const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.DELETE;
+        await modalMessageSafe({
+          type: 'success',
+          message,
+          shouldBlockProcess: false,
+        });
+      }
 
       await modalLoadingAuto(
-        () => getComments(Number(urlReviewId)),
+        () => getAllReviewComments(Number(urlReviewId)),
         MESSAGES_LOADING.GET,
       );
     } catch (error: unknown) {
@@ -119,20 +114,22 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-start gap-3">
-        {user && (
-          <UserProfilePicture
-            userId={user.id}
-            size={64}
-            src={user?.fotoUrl}
-            isAnonymous={item.anonimo}
-            defaultIconType={isStudentUser ? 'student' : 'company'}
-          />
-        )}
+        <UserProfilePicture
+          userId={item.authorId}
+          size={64}
+          src={item.authorPhotoUrl}
+          isAnonymous={item.anonymous}
+          defaultIconType={item.type === 'ESTUDANTE' ? 'student' : 'company'}
+        />
 
         <div className="flex-1 gap-1">
           <div className="flex w-full justify-between">
             <span className="text-lg font-bold">
-              {isOwner ? 'Você' : item.anonimo ? 'Usuário Anônimo' : name}
+              {isOwner
+                ? 'Você'
+                : item.anonymous
+                  ? 'Usuário Anônimo'
+                  : item.authorName}
             </span>
 
             <div className="flex items-center gap-2">
@@ -155,8 +152,8 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
             </div>
           </div>
 
-          {!item.anonimo && (
-            <span className="text-(--grey-200)">@{username}</span>
+          {!item.anonymous && (
+            <span className="text-(--grey-200)">@{item.authorUsername}</span>
           )}
         </div>
       </div>
@@ -170,7 +167,7 @@ export const CommentCardView = ({ item, user, onEdit }: Props) => {
           }}
           className="overflow-hidden leading-8 text-(--grey-200) transition-[height] duration-300 ease-in-out"
         >
-          {item.texto}
+          {item.text}
         </div>
 
         {!isExpanded && shouldCollapse && (

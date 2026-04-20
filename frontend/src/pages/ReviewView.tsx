@@ -1,4 +1,5 @@
 import {
+  CalendarEvent,
   Coin,
   PencilFilled,
   ThreeDotsVertical,
@@ -24,8 +25,7 @@ import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useReview } from '@hooks/useReview';
 import { useSector } from '@hooks/useSector';
-import { useStudent } from '@hooks/useStudent';
-import { formatDateWithYearOrMonthAgo } from '@utils/formatData';
+import { formatDateWithYearOrMonthAgo, formatMMMYYYY } from '@utils/formatData';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -44,8 +44,7 @@ export const ReviewView = () => {
 
   const { getUserId, getUserRole } = useAuth();
   const { review, getReview, deleteReview } = useReview();
-  const { student, getStudent } = useStudent();
-  const { sectorsItems, getSectors } = useSector();
+  const { sectorsOptions, getSectors } = useSector();
 
   const userId = getUserId();
   const userRole = getUserRole();
@@ -62,13 +61,8 @@ export const ReviewView = () => {
           throw new Error(MESSAGES_RESPONSE.WARNING.REVIEW_ID_NOT_FOUND);
         }
 
-        const response = await modalLoadingAuto(
-          () => getReview(Number(urlReviewId)),
-          MESSAGES_LOADING.GET,
-        );
-
         await modalLoadingAuto(
-          () => getStudent(response.idEstudante),
+          () => getReview(Number(urlReviewId)),
           MESSAGES_LOADING.GET,
         );
 
@@ -104,7 +98,7 @@ export const ReviewView = () => {
         message,
         shouldBlockProcess: false,
       });
-      if (userId) navigate(ROUTES_CONST.STUDENT.PROFILE(userId));
+      if (userId) navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId));
     } catch (error: unknown) {
       await modalMessageError(error);
     }
@@ -135,16 +129,16 @@ export const ReviewView = () => {
 
   return (
     <div className="flex h-full flex-1 flex-col items-center gap-32">
-      {review?.idEmpresa && <UserBanner type="EMPRESA" id={review.idEmpresa} />}
+      {review?.empresaId && <UserBanner type="EMPRESA" id={review.empresaId} />}
 
-      <div className="flex flex-col gap-10">
+      <div className="flex w-full flex-col gap-10">
         <div className="flex items-start gap-3">
-          {student && (
+          {review?.estudanteId && (
             <UserProfilePicture
-              userId={student.id}
+              userId={review?.estudanteId}
               size={80}
-              src={student.fotoUrl}
-              isAnonymous={review?.anonima === 1}
+              src={review.fotoUrlEstudante}
+              isAnonymous={review.anonima}
               defaultIconType="student"
             />
           )}
@@ -156,12 +150,12 @@ export const ReviewView = () => {
                   ? 'Você'
                   : review?.anonima
                     ? 'Usuário Anônimo'
-                    : student?.nome}
+                    : review?.nomeEstudante}
               </span>
               <div className="flex items-center gap-2">
-                {review?.created_at && (
+                {review?.createdAt && (
                   <span className="inline-block text-sm text-(--grey-200)">
-                    {formatDateWithYearOrMonthAgo(review.created_at)}
+                    {formatDateWithYearOrMonthAgo(review.createdAt)}
                   </span>
                 )}
                 {isOwner && (
@@ -182,10 +176,10 @@ export const ReviewView = () => {
               </div>
             </div>
             <div className="flex items-center justify-between">
-              {review?.idSetor && (
+              {review?.setorId && (
                 <span className="rounded-md bg-(--purple-600) px-3 py-1.5 font-semibold text-(--purple-300)">
                   {
-                    sectorsItems.find(item => item.value === review.idSetor)
+                    sectorsOptions.find(item => item.value === review.setorId)
                       ?.label
                   }
                 </span>
@@ -221,15 +215,28 @@ export const ReviewView = () => {
             </span>
           )}
 
-          {review?.faixaSalarial && (
-            <div className="w-64">
-              <UserAttribute
-                icon={<Coin width={44} height={44} strokeWidth={1.5} />}
-                title="Faixa Salarial"
-                value={`R$ ${review.faixaSalarial.salarioMin} — R$ ${review.faixaSalarial.salarioMax}`}
-              />
-            </div>
-          )}
+          <div className="flex gap-4">
+            {review?.dataInicio && (
+              <div className="w-72">
+                <UserAttribute
+                  icon={<CalendarEvent width={44} height={44} strokeWidth={1.5} />}
+                  title="Período de Experiência"
+                  value={`${formatMMMYYYY(review.dataInicio)} — ${review?.dataFim ? formatMMMYYYY(review.dataFim) : 'Presente'}`}
+                />
+              </div>
+            )}
+
+            {review?.salarioMin !== undefined &&
+              review?.salarioMax !== undefined && (
+                <div className="w-64">
+                  <UserAttribute
+                    icon={<Coin width={44} height={44} strokeWidth={1.5} />}
+                    title="Faixa Salarial"
+                    value={`R$ ${review?.salarioMin} — R$ ${review?.salarioMax}`}
+                  />
+                </div>
+              )}
+          </div>
 
           <ScoreCard hasScoreDropdown />
         </div>

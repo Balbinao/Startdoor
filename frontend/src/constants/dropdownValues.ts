@@ -347,11 +347,6 @@ export const DROPDOWN_VALUES_CONST = {
   REVIEWS_SORT: [
     { label: 'Ordenado por...', value: '' },
     {
-      label: 'Mais relevantes',
-      value: 'Mais relevantes',
-      desc: 'Avaliações com mais engajamento',
-    },
-    {
       label: 'Mais recentes',
       value: 'Mais recentes',
       desc: 'Avaliações postadas recentemente',

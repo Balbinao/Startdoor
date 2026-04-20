@@ -110,3 +110,7 @@ export function formatDateWithYearOrMonthAgo(dateString: string): string {
 
   return `${month} ${year} (${relative})`;
 }
+
+export const formatToTwoDecimalsAsNumber = (value: number): number => {
+  return Number(value.toFixed(2));
+};

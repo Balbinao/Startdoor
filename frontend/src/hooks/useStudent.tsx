@@ -36,7 +36,6 @@ export const useStudent = () => {
       biografia:
         'Desenvolvedor front-end apaixonado por tecnologia, com interesse em criar interfaces modernas e acessíveis.',
       paisOrigem: 'Brasil', // pode trocar por algum da lista se quiser estritamente dela
-      mediaNotaGeral: 8.7,
       dataNascimento: '1998-05-12',
       modeloTrabalho: 'Remoto',
       estadoAtuacao: 'São Paulo', // pode trocar por um da lista fornecida (ex: 'Bahia', 'Goiás')
