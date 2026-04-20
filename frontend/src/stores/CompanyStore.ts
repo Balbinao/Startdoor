@@ -9,6 +9,7 @@ export class CompanyStore {
   company: ICompany | null = null;
   companies: ICompany[] = [];
   companiesOptions: IInputOption[] = [];
+  companySectors: IInputOption[] = [];
 
   constructor(root: RootStore) {
     this.root = root;
@@ -37,5 +38,13 @@ export class CompanyStore {
 
   get getCompaniesOptions() {
     return this.companiesOptions;
+  }
+
+  setCompaniesSectors = (companiesSectors: IInputOption[]) => {
+    this.companySectors = companiesSectors;
+  };
+
+  get getCompaniesSectors() {
+    return this.companySectors;
   }
 }

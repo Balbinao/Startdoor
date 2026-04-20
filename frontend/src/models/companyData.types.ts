@@ -1,6 +1,5 @@
 import type { DROPDOWN_VALUES_CONST } from '@constants';
 
-
 export interface ICompany {
   id: number;
   nomeFantasia: string;
@@ -60,4 +59,14 @@ export interface ICompanyUpdatePayload {
   linkSite: string | null;
   linkLinkedin: string | null;
   linkGupy: string | null;
+}
+
+export interface ICompanySectors {
+  empresaId: number;
+  setorId: number;
+  nomeSetor: string;
+}
+
+export interface ICompanySectorPayload{
+  setorId: number
 }

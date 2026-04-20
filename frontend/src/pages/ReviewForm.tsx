@@ -19,7 +19,6 @@ import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useReview } from '@hooks/useReview';
-import { useSector } from '@hooks/useSector';
 import { reviewSchema, type ReviewData } from '@schemas/reviewSchema';
 import {
   normalizeReviewData,
@@ -42,9 +41,9 @@ export const ReviewForm = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
-  const { sectorsOptions, getSectors } = useSector();
   const { review, getReview, createReview, updateReview } = useReview();
-  const { getCompanies, companiesOptions } = useCompany();
+  const { companySectors, getCompanies, companiesOptions, getCompanySectors } =
+    useCompany();
   const { getUserId, getUserRole } = useAuth();
 
   const userId = getUserId();
@@ -53,7 +52,7 @@ export const ReviewForm = () => {
   const isEditMode = Boolean(urlReviewId);
 
   const form = useForm<ReviewData>({
-    resolver: zodResolver(reviewSchema(sectorsOptions)),
+    resolver: zodResolver(reviewSchema(companySectors)),
     defaultValues: {
       empresaId: '',
       setorId: '',
@@ -108,7 +107,6 @@ export const ReviewForm = () => {
         }
 
         await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
-        await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
 
         setIsError(false);
       } catch (error: unknown) {
@@ -203,6 +201,13 @@ export const ReviewForm = () => {
             name="empresaId"
             label="Empresa"
             options={companiesOptions}
+            onChange={value => {
+              const companyId = Number(value);
+              modalLoadingAuto(
+                () => getCompanySectors(companyId),
+                MESSAGES_LOADING.GET,
+              );
+            }}
           />
 
           <div className="flex flex-col gap-6">
@@ -211,7 +216,7 @@ export const ReviewForm = () => {
               type="select"
               name="setorId"
               label="Setor de Atuação"
-              options={sectorsOptions}
+              options={companySectors}
             />
 
             <div className="flex w-full gap-6">
