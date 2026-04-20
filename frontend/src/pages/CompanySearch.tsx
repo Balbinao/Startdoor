@@ -152,40 +152,45 @@ useEffect(() => {
         </button>
       </div>
 
-      <div className="flex justify-center items-center gap-4">
-        <FormField
-          type="select"
-          name="nota"
-          options={[...DROPDOWN_VALUES_CONST.NOTA]}
-          value={filters.notaGeralMax || ''}
-          onChange={handleNotaChange}
-          className={SELECT_STYLE}
-          iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
-        />
+<div className="flex flex-wrap justify-center gap-4">
+  <div className="flex-1 min-w-[160px] max-w-[220px]">
+    <FormField
+      type="select"
+      name="nota"
+      options={[...DROPDOWN_VALUES_CONST.NOTA]}
+      value={filters.notaGeralMax || ''}
+      onChange={handleNotaChange}
+      className={`${SELECT_STYLE} w-full`}
+      iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+    />
+  </div>
 
-        <FormField
-          type="select"
-          name="receitaAnual"
-          options={[...DROPDOWN_VALUES_CONST.RECEITA_ANUAL]}
-          value={filters.receitaAnual || ''}
-          onChange={handleReceitaChange}
-          className={SELECT_STYLE}
-          iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
-        />
+  <div className="flex-1 min-w-[160px] max-w-[220px]">
+    <FormField
+      type="select"
+      name="receitaAnual"
+      options={[...DROPDOWN_VALUES_CONST.RECEITA_ANUAL]}
+      value={filters.receitaAnual || ''}
+      onChange={handleReceitaChange}
+      className={`${SELECT_STYLE} w-full`}
+      iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+    />
+  </div>
 
-        <FormField
-          type="select"
-          name="tamanhoEmpresa"
-          options={[...DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA]}
-          value={filters.tamanhoEmpresa || ''}
-          onChange={handleTamanhoChange}
-          className={SELECT_STYLE}
-          iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
-        />
-      </div>
-
+  <div className="flex-1 min-w-[160px] max-w-[220px]">
+    <FormField
+      type="select"
+      name="tamanhoEmpresa"
+      options={[...DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA]}
+      value={filters.tamanhoEmpresa || ''}
+      onChange={handleTamanhoChange}
+      className={`${SELECT_STYLE} w-full`}
+      iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+    />
+  </div>
+</div>
       {showCompetencias && (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 justify-items-center">
           {competenciasFilters.map(key => (
             <div key={key} className={SELECT_WIDTH}>
               <FormField
