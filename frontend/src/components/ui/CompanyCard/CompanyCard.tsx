@@ -9,9 +9,7 @@ interface Props {
 }
 export const CompanyCard = ({ item }: Props) => {
   const navigate = useNavigate();
-
-  const LOREM =
-    'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio facilis suscipit saepe, laborum quibusdam voluptatem quae deleniti earum voluptas assumenda laudantium odit neque placeat, voluptate nam quia eligendi qui amet.';
+  const LOREM = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio facilis suscipit saepe, laborum quibusdam voluptatem quae deleniti earum voluptas assumenda laudantium odit neque placeat, voluptate nam quia eligendi qui amet."
 
   const handleCardClick = () => {
     navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(item.id));
