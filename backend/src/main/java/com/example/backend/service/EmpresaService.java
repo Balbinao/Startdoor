@@ -8,7 +8,9 @@ import com.example.backend.repository.AdminRepository;
 import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
 import com.example.backend.repository.spec.EmpresaSpecs;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -206,17 +208,54 @@ public class EmpresaService {
             Integer cultura, Integer efetivacao, Integer entrevista,
             Integer feedback, Integer infra, Integer integracao,
             Integer remuneracao, Integer rotina, Integer lideranca, Pageable pageable) {
+        if (nome == null || nome.isBlank()) {
+            return empresaRepository.findAll(
+                    EmpresaSpecs.filtrar(null, nota, receita, tamanho, ambiente, aprendizado, beneficios,
+                            cultura, efetivacao, entrevista, feedback, infra, integracao,
+                            remuneracao, rotina, lideranca),
+                    pageable
+            ).map(this::toResumoDTO);
+        }
 
-        Page<Empresa> empresasPage = empresaRepository.findAll(
-                EmpresaSpecs.filtrar(
-                        nome, nota, receita, tamanho,
+        List<Empresa> filtradasPeloBanco = empresaRepository.findAll(
+                EmpresaSpecs.filtrar(null, nota, receita, tamanho,
                         ambiente, aprendizado, beneficios,
                         cultura, efetivacao, entrevista,
                         feedback, infra, integracao,
-                        remuneracao, rotina, lideranca
-                ),
-                pageable
+                        remuneracao, rotina, lideranca)
         );
-        return empresasPage.map(this::toResumoDTO);
+        LevenshteinDistance distance = new LevenshteinDistance();
+        String buscaUsuario = nome.toLowerCase().trim();
+
+        List<EmpresaResumoDTO> resultadoFuzzy = filtradasPeloBanco.stream()
+                .filter(e -> {
+                    if (e.getNomeFantasia() == null) return false;
+                    String nomeBanco = e.getNomeFantasia().toLowerCase().trim();
+
+                    if (nomeBanco.contains(buscaUsuario)) return true;
+
+                    String[] palavrasNome = nomeBanco.split("\\s+");
+                    for (String palavra : palavrasNome) {
+                        if (palavra.length() < 2) continue;
+
+                        if (distance.apply(palavra, buscaUsuario) <= 2) {
+                            return true;
+                        }
+                    }
+                    return false;
+                })
+                .map(this::toResumoDTO)
+                .toList();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), resultadoFuzzy.size());
+
+        if (start > resultadoFuzzy.size()) {
+            return new PageImpl<>(List.of(), pageable, resultadoFuzzy.size());
+        }
+
+        List<EmpresaResumoDTO> paginaSubList = resultadoFuzzy.subList(start, end);
+        return new PageImpl<>(paginaSubList, pageable, resultadoFuzzy.size());
     }
+
 }

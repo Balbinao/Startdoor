@@ -1,6 +1,7 @@
 package com.example.backend.repository.spec;
 
 import com.example.backend.model.Empresa;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -34,7 +35,7 @@ public class EmpresaSpecs {
                 predicates.add(builder.equal(root.get("tamanhoEmpresa"), tamanhoEmpresa));
             }
 
-            var mediaJoin = root.get("empresaMedia");
+            var mediaJoin = root.join("empresaMedia", JoinType.LEFT);
 
             if (notaGeral != null) predicates.add(builder.greaterThanOrEqualTo(mediaJoin.get("mediaGeral"), notaGeral));
             if (ambiente != null) predicates.add(builder.greaterThanOrEqualTo(mediaJoin.get("mediaAmbiente"), ambiente));
