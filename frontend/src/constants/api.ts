@@ -25,6 +25,7 @@ export const API_CONST = {
     BY_ID: (id: number) => `/empresas/${id}`,
     BY_ID_PASSWORD: (id: number) => `/empresas/${id}/senha`,
     BY_ID_PICTURE: (id: number) => `/empresas/${id}/foto`,
+    SEARCH: '/empresas/pesquisa',
   },
   EXPERIENCE: {
     ACADEMIC_BY_ID: (id: number) => `/experiencias-academicas/${id}`,
