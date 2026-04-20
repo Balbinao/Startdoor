@@ -205,7 +205,8 @@ export const CompanyProfile = () => {
       <div className="flex w-full flex-col gap-8">
         <div className="flex items-center gap-8">
           <span className="text-lg font-semibold whitespace-nowrap">
-            4 Reviews
+            {reviewCards.length}{' '}
+            {reviewCards.length > 1 ? 'Avaliações' : 'Avaliação'}
           </span>
 
           <div className="flex flex-1 gap-4">

@@ -2,6 +2,8 @@ import { api } from '@config';
 import { API_CONST } from '@constants';
 import type {
   ICompany,
+  ICompanySectorPayload,
+  ICompanySectors,
   ICompanyUpdatePayload,
 } from '@models/companyData.types';
 import type { ICompanyRegistration } from '@models/registrationLogin.types';
@@ -49,6 +51,23 @@ export const companyService = {
 
   deleteCompanyProfilePicture: async (id: number) => {
     const response = await api.delete(API_CONST.COMPANY.BY_ID_PICTURE(id));
+    return response.data;
+  },
+
+  getCompanySectors: async (id: number): Promise<ICompanySectors[]> => {
+    const response = await api.get(API_CONST.COMPANY.BY_ID_SECTORS(id));
+    return response.data;
+  },
+
+  createCompanySector: async (id: number, setor: ICompanySectorPayload) => {
+    const response = await api.post(API_CONST.COMPANY.BY_ID_SECTORS(id), setor);
+    return response.data;
+  },
+
+  deleteCompanySector: async (id: number, idSector: number) => {
+    const response = await api.delete(
+      API_CONST.COMPANY.BY_ID_SECTORS_BY_ID(id, idSector),
+    );
     return response.data;
   },
 };

@@ -6,7 +6,12 @@ import { FieldSelect } from '@components/ui/FieldSelect';
 import { FieldText } from '@components/ui/FieldText';
 import { FieldTextarea } from '@components/ui/FieldTextarea/FieldTextarea';
 import type { FieldConfig, RangeValue } from '@models/input.types';
-import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import type {
+  FieldValues,
+  Path,
+  RegisterOptions,
+  UseFormReturn,
+} from 'react-hook-form';
 
 type FieldOnChange =
   | { type: 'checkbox'; onChange?: (value: boolean) => void }
@@ -22,6 +27,7 @@ type FieldOnChange =
 
 type Props<TFormValues extends FieldValues> = FieldConfig<TFormValues> & {
   form?: UseFormReturn<TFormValues>;
+  rules?: RegisterOptions<TFormValues, Path<TFormValues>>;
 } & FieldOnChange;
 
 export const FormField = <TFormValues extends FieldValues>(
