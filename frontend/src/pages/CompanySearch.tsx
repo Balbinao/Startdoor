@@ -12,7 +12,7 @@ import { useDebounce } from '@hooks/useDebounce';
 const SELECT_WIDTH = 'w-36';
 const ICON = 18;
 const SELECT_STYLE = 'h-11 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)]';
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 100;
 
 const CompanyCardList = observer(() => {
   const { filteredCompanies } = useCompanySearch();
@@ -55,7 +55,7 @@ export const CompanySearch = observer(() => {
 
   const { getSectors } = useSector();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [showCompetencias, setShowCompetencias] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [competenciasValues, setCompetenciasValues] = useState<Record<string, string>>({});
@@ -63,30 +63,32 @@ export const CompanySearch = observer(() => {
   const debouncedSearchText = useDebounce(searchInput, DEBOUNCE_DELAY);
   const debouncedCompetencias = useDebounce(competenciasValues, DEBOUNCE_DELAY);
 
-  useEffect(() => {
-    getSectors();
-  }, [getSectors]);
+    useEffect(() => {
+      setSearchText(debouncedSearchText);
+    }, [debouncedSearchText]);
 
-  useEffect(() => {
-    const fetch = async () => {
-      setIsLoading(true);
-      await getCompanies();
-      setIsLoading(false);
-    };
-    fetch();
-  }, []);
+useEffect(() => {
+  getSectors();
+}, []);
 
-  useEffect(() => {
-    setSearchText(debouncedSearchText);
-  }, [debouncedSearchText, setSearchText]);
+useEffect(() => {
+  Object.entries(debouncedCompetencias).forEach(([key, value]) => {
+    if (value !== undefined) {
+      setCompetencia(key, Number(value));
+    }
+  });
+}, [debouncedCompetencias]);
 
-  useEffect(() => {
-    Object.entries(debouncedCompetencias).forEach(([key, value]) => {
-      if (value !== undefined) {
-        setCompetencia(key, Number(value));
-      }
-    });
-  }, [debouncedCompetencias, setCompetencia]);
+useEffect(() => {
+  getCompanies();
+}, [
+  filters.searchText,
+  filters.notaGeralMin,
+  filters.notaGeralMax,
+  filters.tamanhoEmpresa,
+  filters.receitaAnual,
+  ...competenciasFilters.map(key => filters[key as keyof typeof filters])
+]);
 
   const handleNotaChange = (value: string | number) => {
     const nota = Number(value);
@@ -95,23 +97,18 @@ export const CompanySearch = observer(() => {
     } else {
       setNotaGeralRange(nota, 5);
     }
-    getCompanies();
   };
 
   const handleCompetenciaChange = (key: string) => (value: string | number) => {
     setCompetenciasValues(prev => ({ ...prev, [key]: String(value) }));
-    setCompetencia(key, Number(value));
-    getCompanies();
   };
 
   const handleTamanhoChange = (value: string | number) => {
     setTamanhoEmpresa(String(value));
-    getCompanies();
   };
 
   const handleReceitaChange = (value: string | number) => {
     setReceitaAnual(String(value));
-    getCompanies();
   };
 
   if (isLoading) {
@@ -206,7 +203,7 @@ export const CompanySearch = observer(() => {
         </div>
       )}
 
-      <CompanyCardList />
+   <CompanyCardList />
     </div>
   );
 });

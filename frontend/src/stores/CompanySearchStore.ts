@@ -1,7 +1,6 @@
 import type { ICompany } from '@models/companyData.types';
 import type { ICompanySearchFilters } from '@models/companySearchData.types';
 import { COMPETENCIAS_FILTERS, COMPETENCIAS_LABELS } from '@models/companySearchData.types';
-import Fuse from 'fuse.js'
 import {RootStore} from '@stores/RootStore'
 import { makeAutoObservable } from 'mobx';
 import { companySearchService } from '@services/companySearchService';
@@ -87,14 +86,6 @@ export class CompanySearchStore {
   }
 
   getFilteredCompanies = (): ICompany[] => {
-    let filtered = this.companies;
-    if (this.filters.searchText) {
-      const fuse = new Fuse(filtered, {
-        keys: ['nomeFantasia'],
-        threshold: 0.3,
-      });
-      filtered = fuse.search(this.filters.searchText).map(r => r.item);
-    }
-    return filtered;
+    return this.companies;
   }
 }
