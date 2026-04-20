@@ -28,6 +28,10 @@ export const companySearchService = {
   ): Promise<ICompany[]> => {
     const params = new URLSearchParams();
 
+    if (filters.searchText) {
+      params.append('nome', filters.searchText);
+    }
+
     if (filters.notaGeralMin > 0) {
       params.append('nota', String(filters.notaGeralMin));
     }
