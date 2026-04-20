@@ -9,6 +9,7 @@ public record EmpresaResumoDTO (
         String paisOrigem,
         String estadoSede,
         String fotoUrl,
+        String biografia,
         String areaAtuacao,
         String tamanhoEmpresa,
         BigDecimal mediaGeral

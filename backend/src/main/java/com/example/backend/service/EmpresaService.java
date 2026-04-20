@@ -193,6 +193,7 @@ public class EmpresaService {
                 empresa.getPaisOrigem(),
                 empresa.getEstadoSede(),
                 urlCompleta,
+                empresa.getBiografia(),
                 empresa.getAreaAtuacao(),
                 empresa.getTamanhoEmpresa(),
                 empresa.getEmpresaMedia() != null ? empresa.getEmpresaMedia().getMediaGeral() : BigDecimal.ZERO
