@@ -28,6 +28,7 @@ export const API_CONST = {
     BY_ID_SECTORS: (id: number) => `/empresas/${id}/setores`,
     BY_ID_SECTORS_BY_ID: (id: number, idSector: number) =>
       `/empresas/${id}/setores/${idSector}`,
+    SEARCH: '/empresas/pesquisa',
   },
   EXPERIENCE: {
     ACADEMIC_BY_ID: (id: number) => `/experiencias-academicas/${id}`,
