@@ -4,12 +4,15 @@ import { useId } from 'react';
 import {
   Controller,
   type FieldValues,
+  type Path,
+  type RegisterOptions,
   type UseFormReturn,
 } from 'react-hook-form';
 import Styles from './FieldCheckbox.module.css';
 
 type Props<TFormValues extends FieldValues> = ICheckboxField<TFormValues> & {
   form?: UseFormReturn<TFormValues>;
+  rules?: RegisterOptions<TFormValues, Path<TFormValues>>;
   value?: boolean;
   onChange?: (value: boolean) => void;
 };
@@ -20,6 +23,7 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
   disabled,
   readOnly,
   form,
+  rules,
   value,
   onChange,
 }: Props<TFormValues>) => {
@@ -90,6 +94,7 @@ export const FieldCheckbox = <TFormValues extends FieldValues>({
         <Controller
           name={name}
           control={form.control}
+          rules={rules}
           render={({ field }) => render(!!field.value, field.onChange)}
         />
       </FormFieldWrapper>

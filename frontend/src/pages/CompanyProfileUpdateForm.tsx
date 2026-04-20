@@ -15,6 +15,7 @@ import { useAuth } from '@hooks/useAuth';
 import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useSector } from '@hooks/useSector';
 import {
   companyProfileUpdateSchema,
   type CompanyProfileUpdateData,
@@ -36,7 +37,16 @@ export const CompanyProfileUpdateForm = () => {
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
   const { getUserId, getUserRole } = useAuth();
-  const { getCompany, updateCompany, updateCompanyPassword } = useCompany();
+  const {
+    companySectors,
+    getCompany,
+    updateCompany,
+    updateCompanyPassword,
+    getCompanySectors,
+    createCompanySector,
+    deleteCompanySector,
+  } = useCompany();
+  const { sectorsOptions, getSectors } = useSector();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -63,11 +73,14 @@ export const CompanyProfileUpdateForm = () => {
     },
   });
   const {
-    handleSubmit,
     reset,
     setError,
     formState: { isSubmitting },
   } = form;
+
+  const formSectors = useForm<Record<string, boolean>>({
+    defaultValues: {},
+  });
 
   useEffect(() => {
     const fetch = async () => {
@@ -79,6 +92,12 @@ export const CompanyProfileUpdateForm = () => {
             MESSAGES_LOADING.GET,
           );
           reset(normalizeCompanyData(response));
+
+          await modalLoadingAuto(() => getSectors(), MESSAGES_LOADING.GET);
+          await modalLoadingAuto(
+            () => getCompanySectors(userId),
+            MESSAGES_LOADING.GET,
+          );
 
           setIsError(false);
         } else {
@@ -93,6 +112,21 @@ export const CompanyProfileUpdateForm = () => {
 
     fetch();
   }, []);
+
+  useEffect(() => {
+    if (!companySectors || !sectorsOptions) return;
+
+    const existing = new Set(companySectors.map(s => s.value));
+    const defaults: Record<string, boolean> = {};
+
+    for (const sector of sectorsOptions) {
+      if (!sector.value) continue;
+
+      defaults[String(sector.value)] = existing.has(Number(sector.value));
+    }
+
+    formSectors.reset(defaults);
+  }, [formSectors, companySectors, sectorsOptions]);
 
   const onSubmit = async (data: CompanyProfileUpdateData) => {
     try {
@@ -138,6 +172,48 @@ export const CompanyProfileUpdateForm = () => {
     }
   };
 
+  const onSubmitSectors = async (data: Record<string, boolean | undefined>) => {
+    try {
+      if (!userId) throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
+
+      const existingSectors = new Set(companySectors.map(s => s.value));
+
+      for (const [sectorId, checked] of Object.entries(data)) {
+        const id = Number(sectorId);
+
+        if (checked) {
+          if (!existingSectors.has(id)) {
+            await modalLoadingAuto(
+              async () =>
+                await createCompanySector(Number(userId), {
+                  setorId: id,
+                }),
+              MESSAGES_LOADING.GET,
+            );
+          }
+        } else {
+          if (existingSectors.has(id)) {
+            await modalLoadingAuto(
+              async () => await deleteCompanySector(Number(userId), id),
+              MESSAGES_LOADING.GET,
+            );
+          }
+        }
+      }
+    } catch (error: unknown) {
+      await modalMessageError(error);
+    }
+  };
+
+  const handleAllSubmits = async () => {
+    await form.handleSubmit(async dataMain => {
+      await formSectors.handleSubmit(async dataSectors => {
+        await onSubmitSectors(dataSectors);
+        await onSubmit(dataMain);
+      })();
+    })();
+  };
+
   if (!userId) return <Navigate to={ROUTES_CONST.LOGIN} replace />;
   if (userRole === USER_ROLES_CONST.ESTUDANTE)
     return (
@@ -158,7 +234,10 @@ export const CompanyProfileUpdateForm = () => {
 
       <FormWrapper form={form}>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={e => {
+            e.preventDefault();
+            handleAllSubmits();
+          }}
           className="flex w-full max-w-3xl flex-col gap-14"
         >
           <div className="flex flex-col gap-12">
@@ -286,6 +365,22 @@ export const CompanyProfileUpdateForm = () => {
                 placeholder="https://empresa.gupy.io"
               />
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 px-10">
+            {sectorsOptions.map(field => {
+              if (field.value === '') return;
+
+              return (
+                <FormField
+                  key={field.value}
+                  form={formSectors}
+                  type="checkbox"
+                  name={String(field.value)}
+                  label={String(field.label)}
+                />
+              );
+            })}
           </div>
 
           <FormErrorMessage />

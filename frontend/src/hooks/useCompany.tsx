@@ -1,5 +1,8 @@
 import { useStore } from '@contexts/store/useStore';
-import type { ICompanyUpdatePayload } from '@models/companyData.types';
+import type {
+  ICompanySectorPayload,
+  ICompanyUpdatePayload,
+} from '@models/companyData.types';
 import type { IInputOption } from '@models/input.types';
 import type { ICompanyRegistration } from '@models/registrationLogin.types';
 import { companyService } from '@services/companyService';
@@ -10,6 +13,7 @@ export const useCompany = () => {
   const company = companyStore.getCompany;
   const companies = companyStore.getCompanies;
   const companiesOptions = companyStore.getCompaniesOptions;
+  const companySectors = companyStore.getCompaniesSectors;
 
   const getCompany = async (id: number) => {
     try {
@@ -116,10 +120,55 @@ export const useCompany = () => {
     }
   };
 
+  const getCompanySectors = async (id: number) => {
+    try {
+      const response = await companyService.getCompanySectors(id);
+      const formatted: IInputOption[] = [
+        { label: 'Selecione...', value: '' },
+        ...response.map(item => ({
+          label: item.nomeSetor,
+          value: item.setorId,
+        })),
+      ];
+
+      companyStore.setCompaniesSectors(formatted);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const createCompanySector = async (
+    id: number,
+    setor: ICompanySectorPayload,
+  ) => {
+    try {
+      const response = await companyService.createCompanySector(id, setor);
+      companyStore.setCompany(response);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const deleteCompanySector = async (id: number, idSector: number) => {
+    try {
+      const response = await companyService.deleteCompanySector(id, idSector);
+      companyStore.setCompany(response);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     company,
     companies,
     companiesOptions,
+    companySectors,
     getCompany,
     getCompanies,
     companyRegistration,
@@ -128,5 +177,8 @@ export const useCompany = () => {
     deleteCompany,
     updateCompanyProfilePicture,
     deleteCompanyProfilePicture,
+    getCompanySectors,
+    createCompanySector,
+    deleteCompanySector,
   };
 };
