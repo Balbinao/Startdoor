@@ -28,7 +28,8 @@ public class EstudanteAvaliacaoController implements EstudanteAvaliacaoControlle
     @PostMapping("/estudante/{estudanteId}")
     @PreAuthorize("hasRole('ESTUDANTE') or hasRole('ADMIN')")
     public ResponseEntity<?> criar(@PathVariable Long estudanteId, @RequestBody @Valid EstudanteAvaliacaoDTO data) {
-        service.criar(estudanteId, data);
+        String uuidLogado = getUuidLogado();
+        service.criar(estudanteId, data, uuidLogado);
         return criarRespostaSucesso("Avaliação criada com sucesso!");
     }
 
