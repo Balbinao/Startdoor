@@ -1,6 +1,6 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
-import type { ICompanySearchFilters, IEmpresaResumoBackend } from '@models/companySearchData.types';
+import type { ICompanySearchFilters, IEmpresaResumoBackend, IPaginatedResponse } from '@models/companySearchData.types';
 import { COMPETENCIAS_FILTERS } from '@models/companySearchData.types';
 import type { ICompany } from '@models/companyData.types';
 
@@ -25,7 +25,7 @@ const mapEmpresaResumo = (empresa: IEmpresaResumoBackend): ICompany => ({
 export const companySearchService = {
   searchCompanies: async (
     filters: ICompanySearchFilters,
-  ): Promise<ICompany[]> => {
+  ): Promise<IPaginatedResponse<ICompany>> => {
     const params = new URLSearchParams();
 
     if (filters.searchText) {
@@ -53,6 +53,12 @@ export const companySearchService = {
     params.append('size', String(filters.size));
 
     const response = await api.get(`${API_CONST.COMPANY.SEARCH}?${params}`);
-    return response.data.content.map(mapEmpresaResumo);
+    return {
+      content: response.data.content.map(mapEmpresaResumo),
+      totalElements: response.data.totalElements,
+      totalPages: response.data.totalPages,
+      number: response.data.number,
+      size: response.data.size,
+    };
   },
 };

@@ -17,13 +17,14 @@ export const useCompanySearch = () => {
     }
   }, [companySearchStore]);
 
+
+
   const setSearchText = (searchText: string) => {
     companySearchStore.setFilter('searchText', searchText);
   };
 
-  const setNotaGeralRange = (min: number, max: number) => {
+  const setNotaGeralRange = (min: number) => {
     companySearchStore.setFilter('notaGeralMin', min);
-    companySearchStore.setFilter('notaGeralMax', max);
   };
 
   const setTamanhoEmpresa = (tamanhoEmpresa: string) => {
@@ -48,5 +49,8 @@ export const useCompanySearch = () => {
     setReceitaAnual,
     setCompetencia,
     competenciasFilters: COMPETENCIAS_FILTERS,
+    isLoading: companySearchStore.getIsLoading,
+    hasMore: companySearchStore.getHasMore,
+    loadMoreCompanies: companySearchStore.loadMoreCompanies,
   };
 };
