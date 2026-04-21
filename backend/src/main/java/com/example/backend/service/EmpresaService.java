@@ -102,6 +102,26 @@ public class EmpresaService {
                 ? "http://localhost:8080/fotos/" + empresa.getFotoUrl()
                 : null;
 
+        EmpresaMediaResponseDTO mediasDto = null;
+        if (empresa.getEmpresaMedia() != null) {
+            var m = empresa.getEmpresaMedia();
+            mediasDto = new EmpresaMediaResponseDTO(
+                    m.getMediaGeral(),
+                    m.getMediaAmbiente(),
+                    m.getMediaAprendizado(),
+                    m.getMediaBeneficios(),
+                    m.getMediaCultura(),
+                    m.getMediaEfetivacao(),
+                    m.getMediaEntrevista(),
+                    m.getMediaFeedback(),
+                    m.getMediaInfraestrutura(),
+                    m.getMediaIntegracao(),
+                    m.getMediaRemuneracao(),
+                    m.getMediaRotina(),
+                    m.getMediaLideranca()
+            );
+        }
+
         return new EmpresaResponseDTO(
                 empresa.getId(),
                 urlCompleta,
@@ -119,7 +139,8 @@ public class EmpresaService {
                 empresa.getLinkSite(),
                 empresa.getLinkLinkedin(),
                 empresa.getLinkGupy(),
-                empresa.getCreatedAt()
+                empresa.getCreatedAt(),
+                mediasDto
         );
     }
 

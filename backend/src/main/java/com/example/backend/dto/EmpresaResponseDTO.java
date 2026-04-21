@@ -21,6 +21,7 @@ public record EmpresaResponseDTO(
         String linkSite,
         String linkLinkedin,
         String linkGupy,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        EmpresaMediaResponseDTO medias
 ) {
 }
