@@ -22,6 +22,7 @@ public record EmpresaResponseDTO(
         String linkLinkedin,
         String linkGupy,
         LocalDateTime createdAt,
-        EmpresaMediaResponseDTO medias
+        EmpresaMediaResponseDTO medias,
+        SalarioResumoDTO salarios
 ) {
 }

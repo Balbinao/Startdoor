@@ -33,6 +33,15 @@ public class EmpresaMedia {
     @Column(name = "media_geral")
     private BigDecimal mediaGeral = BigDecimal.ZERO;
 
+    @Column(name = "salario_min_piso", precision = 10, scale = 2)
+    private BigDecimal salarioMinPiso;
+
+    @Column(name = "salario_max_teto", precision = 10, scale = 2)
+    private BigDecimal salarioMaxTeto;
+
+    @Column(name = "salario_base_medio", precision = 10, scale = 2)
+    private BigDecimal salarioBaseMedio;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

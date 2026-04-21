@@ -101,8 +101,9 @@ public class EmpresaService {
         String urlCompleta = (empresa.getFotoUrl() != null)
                 ? "http://localhost:8080/fotos/" + empresa.getFotoUrl()
                 : null;
-
+        SalarioResumoDTO salarioDto = null;
         EmpresaMediaResponseDTO mediasDto = null;
+
         if (empresa.getEmpresaMedia() != null) {
             var m = empresa.getEmpresaMedia();
             mediasDto = new EmpresaMediaResponseDTO(
@@ -119,6 +120,11 @@ public class EmpresaService {
                     m.getMediaRemuneracao(),
                     m.getMediaRotina(),
                     m.getMediaLideranca()
+            );
+            salarioDto = new SalarioResumoDTO(
+                    m.getSalarioMinPiso(),
+                    m.getSalarioMaxTeto(),
+                    m.getSalarioBaseMedio()
             );
         }
 
@@ -140,7 +146,9 @@ public class EmpresaService {
                 empresa.getLinkLinkedin(),
                 empresa.getLinkGupy(),
                 empresa.getCreatedAt(),
-                mediasDto
+                mediasDto,
+                salarioDto
+
         );
     }
 
