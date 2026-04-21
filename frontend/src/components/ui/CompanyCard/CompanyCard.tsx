@@ -1,5 +1,5 @@
 import { Star, StarFilled } from '@assets/icons';
-import { StudentPfp } from '@assets/images';
+import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
 import { ROUTES_CONST } from '@constants';
 import type { ICompany } from '@models/companyData.types';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 interface Props {
   item: ICompany;
 }
+
+
 export const CompanyCard = ({ item }: Props) => {
   const navigate = useNavigate();
   const LOREM = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio facilis suscipit saepe, laborum quibusdam voluptatem quae deleniti earum voluptas assumenda laudantium odit neque placeat, voluptate nam quia eligendi qui amet."
@@ -22,11 +24,16 @@ export const CompanyCard = ({ item }: Props) => {
     >
       <div className="flex items-start justify-between">
         <div className="flex justify-center gap-3">
-          <img
-            src={item.fotoUrl || StudentPfp}
+          {item.fotoUrl?
+            <img
+            src={item.fotoUrl}
             alt="company logo"
             className="h-14 w-14 rounded-lg object-cover"
-          />
+            /> :  
+            <PhotoCompanyDefault
+             divClassName='h-14 w-14 rounded-lg object-cover bg-(--grey-1200) p-3'
+             />
+          }
 
           <div className="flex flex-col gap-3">
             <h3 className="text-sm font-semibold text-(--grey-100)">
