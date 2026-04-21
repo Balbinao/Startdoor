@@ -11,6 +11,7 @@ export { COMPETENCIAS_FILTERS, COMPETENCIAS_LABELS };
 export class CompanySearchStore {
   companies: ICompany[] = [];
   isLoading = false;
+  hasMore = true;
   root: RootStore;
 
   filters: ICompanySearchFilters = {
@@ -38,7 +39,7 @@ export class CompanySearchStore {
     rotina: 0,
     lideranca: 0,
     page: 0,
-    size: 20,
+    size: 8,
   };
 
   constructor(root: RootStore) {
@@ -62,13 +63,37 @@ export class CompanySearchStore {
     return this.isLoading;
   }
 
+get getHasMore() {
+    return this.hasMore;
+  }
+
   searchCompaniesApi = async () => {
+    this.filters.page = 0;
+    this.companies = [];
+    this.hasMore = true;
     this.setLoading(true);
     try {
-      const data = await companySearchService.searchCompanies(this.filters);
-      this.setCompanies(data);
+      const response = await companySearchService.searchCompanies(this.filters);
+     
+      this.setCompanies(response.content);
+      this.hasMore = response.number + 1 < response.totalPages;
     } catch (error) {
       console.error('Error searching companies:', error);
+    } finally {
+      this.setLoading(false);
+    }
+  };
+
+  loadMoreCompanies = async () => {
+    if (!this.hasMore || this.isLoading) return;
+    this.filters.page += 1;
+    this.setLoading(true);
+    try {
+      const response = await companySearchService.searchCompanies(this.filters);
+      this.companies = [...this.companies, ...response.content];
+      this.hasMore = response.number + 1 < response.totalPages;
+    } catch (error) {
+      console.error('Error loading more companies:', error);
     } finally {
       this.setLoading(false);
     }

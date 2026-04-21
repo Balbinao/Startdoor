@@ -70,3 +70,11 @@ export const COMPETENCIAS_LABELS: Record<string, string> = {
   rotina: 'Rotina',
   lideranca: 'Liderança',
 };
+
+export interface IPaginatedResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
+}

@@ -1,6 +1,7 @@
 import { Search, FilterSelect, FilterCompetence, StarFilled } from '@assets/icons';
 import { CompanyCard } from '@components/ui/CompanyCard';
 import { FormField } from '@components/layout/FormField/FormField';
+import { Spinner } from '@components/ui/Spinner/Spinner';
 import { DROPDOWN_VALUES_CONST } from '@constants';
 import { useCompanySearch } from '@hooks/useCompanySearch';
 import { useSector } from '@hooks/useSector';
@@ -8,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { COMPETENCIAS_LABELS } from '@stores/CompanySearchStore';
 import { useDebounce } from '@hooks/useDebounce';
+import { useInView } from 'react-intersection-observer';
 
 const SELECT_WIDTH = 'w-36';
 const ICON = 18;
@@ -15,28 +17,50 @@ const SELECT_STYLE = 'h-11 border-[var(--grey-600)] bg-[var(--grey-900)] text-[v
 const DEBOUNCE_DELAY = 100;
 
 const CompanyCardList = observer(() => {
-  const { filteredCompanies } = useCompanySearch();
+  const { filteredCompanies, isLoading, hasMore, loadMoreCompanies } = useCompanySearch();
+  const { ref, inView } = useInView({ threshold: 1 });
+
+  useEffect(() => {
+    if (inView && hasMore && !isLoading) {
+      loadMoreCompanies();
+    }
+  }, [inView, hasMore, isLoading]);
 
   return (
     <>
       <div className="flex items-center justify-between">
         <span className="text-sm text-(--grey-400)">
-          {filteredCompanies.length} {filteredCompanies.length === 1 ? 'empresa encontrada' : 'empresas encontradas'}
+          {filteredCompanies.length}{' '}
+          {filteredCompanies.length === 1 ? 'empresa encontrada' : 'empresas encontradas'}
         </span>
       </div>
 
-      {filteredCompanies.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-4 py-20">
-          <Search width={48} height={48} className="text-(--grey-500)" strokeWidth={1} />
-          <p className="text-(--grey-400)">Nenhuma empresa encontrada com os filtros aplicados.</p>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {filteredCompanies.map(company => (
-            <CompanyCard key={company.id} item={company} />
-          ))}
-        </div>
-      )}
+      <div className="min-h-[200px] flex flex-col justify-center">
+
+        {filteredCompanies.length === 0 && !isLoading ? (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <Search width={48} height={48} className="text-(--grey-500)" strokeWidth={1} />
+            <p className="text-(--grey-400)">
+              Nenhuma empresa encontrada com os filtros aplicados.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col gap-4">
+              {filteredCompanies.map(company => (
+                <CompanyCard key={company.id} item={company} />
+              ))}
+            </div>
+            <div ref={ref} className="flex items-center justify-center ">
+              {isLoading && hasMore && (
+                <div className="flex items-center gap-2 text-(--grey-400)">
+                  <Spinner />
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 });
@@ -51,56 +75,47 @@ export const CompanySearch = observer(() => {
     setReceitaAnual,
     setCompetencia,
     competenciasFilters,
-  } = useCompanySearch();
+    filteredCompanies,
+    isLoading,
+   } = useCompanySearch();
 
   const { getSectors } = useSector();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [showCompetencias, setShowCompetencias] = useState(false);
   const [searchInput, setSearchInput] = useState('');
-  const [competenciasValues, setCompetenciasValues] = useState<Record<string, string>>({});
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const debouncedSearchText = useDebounce(searchInput, DEBOUNCE_DELAY);
-  const debouncedCompetencias = useDebounce(competenciasValues, DEBOUNCE_DELAY);
+  
+  useEffect(() => {
+    setSearchText(debouncedSearchText);
+  }, [debouncedSearchText]);
 
-    useEffect(() => {
-      setSearchText(debouncedSearchText);
-    }, [debouncedSearchText]);
+  useEffect(() => {
+    getSectors();
+  }, []);
 
-useEffect(() => {
-  getSectors();
-}, []);
+  useEffect(() => {
+    getCompanies();
+  }, [getCompanies, filters.searchText, filters.notaGeralMin, filters.tamanhoEmpresa, filters.receitaAnual, filters.ambiente, filters.aprendizado, filters.beneficios, filters.cultura, filters.efetivacao, filters.entrevista, filters.feedback, filters.infraestrutura, filters.integracao, filters.remuneracao, filters.rotina, filters.lideranca]);
 
-useEffect(() => {
-  Object.entries(debouncedCompetencias).forEach(([key, value]) => {
-    if (value !== undefined) {
-      setCompetencia(key, Number(value));
-    }
-  });
-}, [debouncedCompetencias]);
+  
 
-useEffect(() => {
-  getCompanies();
-}, [
-  filters.searchText,
-  filters.notaGeralMin,
-  filters.notaGeralMax,
-  filters.tamanhoEmpresa,
-  filters.receitaAnual,
-  ...competenciasFilters.map(key => filters[key as keyof typeof filters])
-]);
+  useEffect(() => {
+    setIsFirstLoad(false);
+  }, []);
 
   const handleNotaChange = (value: string | number) => {
     const nota = Number(value);
     if (value === '' || nota === 0) {
-      setNotaGeralRange(0, 0);
+      setNotaGeralRange(0);
     } else {
-      setNotaGeralRange(nota, 5);
+      setNotaGeralRange(nota);
     }
   };
 
   const handleCompetenciaChange = (key: string) => (value: string | number) => {
-    setCompetenciasValues(prev => ({ ...prev, [key]: String(value) }));
+    setCompetencia(key, Number(value));
   };
 
   const handleTamanhoChange = (value: string | number) => {
@@ -111,7 +126,7 @@ useEffect(() => {
     setReceitaAnual(String(value));
   };
 
-  if (isLoading) {
+  if (isFirstLoad && isLoading && filteredCompanies.length === 0) {
     return (
       <div className="flex w-full flex-col gap-6">
         <div className="flex w-full mb-4 h-20 rounded-xl items-center justify-center bg-(--grey-1100)">
@@ -152,43 +167,44 @@ useEffect(() => {
         </button>
       </div>
 
-<div className="flex flex-wrap justify-center gap-4">
-  <div className="flex-1 min-w-[160px] max-w-[220px]">
-    <FormField
-      type="select"
-      name="nota"
-      options={[...DROPDOWN_VALUES_CONST.NOTA]}
-      value={filters.notaGeralMax || ''}
-      onChange={handleNotaChange}
-      className={`${SELECT_STYLE} w-full`}
-      iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
-    />
-  </div>
+      <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex-1 min-w-[160px] max-w-[220px]">
+          <FormField
+            type="select"
+            name="nota"
+            options={[...DROPDOWN_VALUES_CONST.NOTA]}
+            value={filters.notaGeralMax || ''}
+            onChange={handleNotaChange}
+            className={`${SELECT_STYLE} w-full`}
+            iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+          />
+        </div>
 
-  <div className="flex-1 min-w-[160px] max-w-[220px]">
-    <FormField
-      type="select"
-      name="receitaAnual"
-      options={[...DROPDOWN_VALUES_CONST.RECEITA_ANUAL]}
-      value={filters.receitaAnual || ''}
-      onChange={handleReceitaChange}
-      className={`${SELECT_STYLE} w-full`}
-      iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
-    />
-  </div>
+        <div className="flex-1 min-w-[160px] max-w-[220px]">
+          <FormField
+            type="select"
+            name="receitaAnual"
+            options={[...DROPDOWN_VALUES_CONST.RECEITA_ANUAL]}
+            value={filters.receitaAnual || ''}
+            onChange={handleReceitaChange}
+            className={`${SELECT_STYLE} w-full`}
+            iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+          />
+        </div>
 
-  <div className="flex-1 min-w-[160px] max-w-[220px]">
-    <FormField
-      type="select"
-      name="tamanhoEmpresa"
-      options={[...DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA]}
-      value={filters.tamanhoEmpresa || ''}
-      onChange={handleTamanhoChange}
-      className={`${SELECT_STYLE} w-full`}
-      iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
-    />
-  </div>
-</div>
+        <div className="flex-1 min-w-[160px] max-w-[220px]">
+          <FormField
+            type="select"
+            name="tamanhoEmpresa"
+            options={[...DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA]}
+            value={filters.tamanhoEmpresa || ''}
+            onChange={handleTamanhoChange}
+            className={`${SELECT_STYLE} w-full`}
+            iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+          />
+        </div>
+      </div>
+
       {showCompetencias && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 justify-items-center">
           {competenciasFilters.map(key => (
@@ -208,7 +224,7 @@ useEffect(() => {
         </div>
       )}
 
-   <CompanyCardList />
+      <CompanyCardList />
     </div>
   );
 });
