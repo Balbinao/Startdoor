@@ -36,11 +36,15 @@ public class EstudanteAvaliacaoService {
     }
 
     @Transactional
-    public EstudanteAvaliacaoResponseDTO criar(Long estudanteId, EstudanteAvaliacaoDTO dto) {
+    public EstudanteAvaliacaoResponseDTO criar(Long estudanteId, EstudanteAvaliacaoDTO dto, String uuidLogado) {
         validarDTO(dto);
 
         Estudante estudante = estudanteRepository.findById(estudanteId)
                 .orElseThrow(() -> new ResourceNotFoundException("Estudante não encontrado"));
+
+        if (!estudante.getUuid().equals(uuidLogado)) {
+            throw new org.springframework.security.access.AccessDeniedException("Você só pode criar avaliações para você mesmo");
+        }
 
         Empresa empresa = empresaRepository.findById(dto.idEmpresa())
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada"));
@@ -178,8 +182,10 @@ public class EstudanteAvaliacaoService {
         Boolean anonima = avaliacao.getAnonima();
 
         String nomeEstudante = anonima ? null : avaliacao.getEstudante().getNome();
-        String fotoUrlEstudante = anonima ? null : avaliacao.getEstudante().getFotoUrl();
+        String fotoUrlEstudante = anonima ? null : buildFotoUrl(avaliacao.getEstudante().getFotoUrl());
         String userEstudante = anonima ? null : avaliacao.getEstudante().getUser();
+
+        String fotoUrlEmpresa = buildFotoUrl(avaliacao.getEmpresa().getFotoUrl());
 
         return new EstudanteAvaliacaoResponseDTO(
                 avaliacao.getId(),
@@ -189,7 +195,7 @@ public class EstudanteAvaliacaoService {
                 userEstudante,
                 avaliacao.getEmpresa().getId(),
                 avaliacao.getEmpresa().getNomeFantasia(),
-                avaliacao.getEmpresa().getFotoUrl(),
+                fotoUrlEmpresa,
                 avaliacao.getSetor().getId(),
                 avaliacao.getSetor().getNome(),
                 avaliacao.getEstadoAtuacao(),
@@ -216,5 +222,9 @@ public class EstudanteAvaliacaoService {
                 avaliacao.getCreatedAt(),
                 avaliacao.getUpdatedAt()
         );
+    }
+
+    private String buildFotoUrl(String fotoUrl) {
+        return (fotoUrl != null) ? "http://localhost:8080/fotos/" + fotoUrl : null;
     }
 }

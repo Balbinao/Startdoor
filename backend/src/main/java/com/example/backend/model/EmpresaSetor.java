@@ -26,11 +26,11 @@ public class EmpresaSetor implements Serializable {
     @Column(name = "id_setor")
     private Long setorId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_empresa", insertable = false, updatable = false)
     private Empresa empresa;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_setor", insertable = false, updatable = false)
     private Setor setor;
 
