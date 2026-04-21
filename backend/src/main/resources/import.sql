@@ -15,16 +15,43 @@ INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_benefici
 INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (7, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, NOW());
 INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (8, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, NOW());
 
--- ID 11: Magazine Luiza (Equilibrada/Boa)
-INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (11, 4.20, 4.50, 4.00, 4.60, 4.30, 4.10, 4.00, 4.40, 4.50, 3.90, 3.80, 4.20, 4.21, NOW());
--- ID 12: XP Inc (Paga muito, cobra muito - Rotina Baixa)
-INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (12, 3.50, 4.80, 4.90, 3.00, 4.50, 4.20, 3.50, 4.90, 3.80, 5.00, 1.50, 3.00, 3.88, NOW());
--- ID 13: Localiza (Forte em treinamento)
-INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (13, 4.00, 4.70, 3.80, 4.10, 4.20, 4.00, 4.30, 4.20, 4.40, 3.70, 3.90, 4.00, 4.11, NOW());
--- ID 14: Startup "Flow State" (Cultura 5.0, Benefícios 2.0)
-INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (14, 4.90, 5.00, 2.00, 5.00, 3.00, 4.80, 4.90, 3.50, 5.00, 2.50, 4.50, 4.80, 4.16, NOW());
--- ID 15: "Consultoria Stress" (Tudo abaixo de 3.0)
-INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, created_at) VALUES (15, 2.10, 2.50, 2.00, 1.80, 2.20, 3.00, 1.50, 2.50, 2.00, 2.80, 1.20, 1.50, 2.09, NOW());
+-- Adicionando salario_min_piso, salario_max_teto e salario_base_medio antes do NOW()
+
+-- ID 1: GFT Technologies
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (1, 4.50, 5.00, 4.20, 4.80, 4.00, 4.50, 4.30, 4.70, 4.60, 4.10, 4.40, 4.50, 4.47, 3000.00, 7500.00, 5250.00, NOW());
+
+-- ID 7: Unicórnio Global
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (7, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 5.00, 10000.00, 18000.00, 14000.00, NOW());
+
+-- ID 8: Fábrica de Software X
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (8, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1500.00, 3000.00, 2250.00, NOW());
+
+-- ID 11: Magazine Luiza
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (11, 4.20, 4.50, 4.00, 4.60, 4.30, 4.10, 4.00, 4.40, 4.50, 3.90, 3.80, 4.20, 4.21, 2800.00, 6000.00, 4400.00, NOW());
+
+-- ID 12: XP Inc
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (12, 3.50, 4.80, 4.90, 3.00, 4.50, 4.20, 3.50, 4.90, 3.80, 5.00, 1.50, 3.00, 3.88, 5000.00, 13000.00, 9000.00, NOW());
+
+-- ID 13: Localiza
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (13, 4.00, 4.70, 3.80, 4.10, 4.20, 4.00, 4.30, 4.20, 4.40, 3.70, 3.90, 4.00, 4.11, 2500.00, 5500.00, 4000.00, NOW());
+
+-- ID 14: Flow State Tech
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (14, 4.90, 5.00, 2.00, 5.00, 3.00, 4.80, 4.90, 3.50, 5.00, 2.50, 4.50, 4.80, 4.16, 4000.00, 9000.00, 6500.00, NOW());
+
+-- ID 15: Consultoria Stress
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (15, 2.10, 2.50, 2.00, 1.80, 2.20, 3.00, 1.50, 2.50, 2.00, 2.80, 1.20, 1.50, 2.09, 1800.00, 3200.00, 2500.00, NOW());
+
+-- ID 16: Itaú Unibanco
+INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at)
+VALUES (16, 4.30, 4.60, 5.00, 4.20, 4.50, 4.10, 3.90, 4.90, 4.40, 4.80, 3.20, 4.10, 4.33, 4500.00, 10000.00, 7250.00, NOW());
 
 -- ==========================================================
 -- 3. MAIS EMPRESAS
