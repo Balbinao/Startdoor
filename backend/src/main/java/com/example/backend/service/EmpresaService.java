@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.*;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.model.Empresa;
+import com.example.backend.model.EmpresaMedia;
 import com.example.backend.model.Estudante;
 import com.example.backend.repository.AdminRepository;
 import com.example.backend.repository.EmpresaRepository;
@@ -55,6 +56,22 @@ public class EmpresaService {
         novaEmpresa.setUser(data.email());
         novaEmpresa.setSenha(bCryptPasswordEncoder.encode(data.senha()));
 
+        EmpresaMedia mediaInicial = new EmpresaMedia();
+        mediaInicial.setMediaGeral(BigDecimal.ZERO);
+        mediaInicial.setMediaAmbiente(BigDecimal.ZERO);
+        mediaInicial.setMediaAprendizado(BigDecimal.ZERO);
+        mediaInicial.setMediaBeneficios(BigDecimal.ZERO);
+        mediaInicial.setMediaCultura(BigDecimal.ZERO);
+        mediaInicial.setMediaEfetivacao(BigDecimal.ZERO);
+        mediaInicial.setMediaEntrevista(BigDecimal.ZERO);
+        mediaInicial.setMediaFeedback(BigDecimal.ZERO);
+        mediaInicial.setMediaInfraestrutura(BigDecimal.ZERO);
+        mediaInicial.setMediaIntegracao(BigDecimal.ZERO);
+        mediaInicial.setMediaRemuneracao(BigDecimal.ZERO);
+        mediaInicial.setMediaRotina(BigDecimal.ZERO);
+        mediaInicial.setMediaLideranca(BigDecimal.ZERO);
+
+        novaEmpresa.setEmpresaMedia(mediaInicial);
         empresaRepository.save(novaEmpresa);
     }
 
