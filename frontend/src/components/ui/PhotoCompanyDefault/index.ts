@@ -1,0 +1,1 @@
+export { PhotoCompanyDefault } from './PhotoCompanyDefault';
