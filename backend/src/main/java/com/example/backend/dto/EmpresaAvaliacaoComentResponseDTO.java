@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 public record EmpresaAvaliacaoComentResponseDTO(
         @Schema(description = "ID do comentário", example = "1") Long id,
         @Schema(description = "ID da empresa", example = "1") Long empresaId,
+        @Schema(description = "Username da empresa", example = "empresa@exemplo.com") String usernameEmpresa,
         @Schema(description = "Nome fantasia da empresa", example = "Tech Brasil") String nomeEmpresa,
         @Schema(description = "URL da foto da empresa", example = "https://example.com/logo.png") String fotoUrlEmpresa,
         @Schema(description = "ID da avaliação", example = "1") Long avaliacaoId,
         @Schema(description = "Texto do comentário", example = "Obrigado pelo feedback!") String texto,
-        @Schema(description = "Número de respostas", example = "0") Integer numRespostas,
         @Schema(description = "Data de criação") LocalDateTime createdAt,
         @Schema(description = "Data de atualização") LocalDateTime updatedAt
 ) {}
