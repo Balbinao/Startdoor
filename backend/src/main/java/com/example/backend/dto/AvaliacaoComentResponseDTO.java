@@ -13,7 +13,6 @@ public record AvaliacaoComentResponseDTO(
         @Schema(description = "ID da avaliação", example = "1") Long avaliacaoId,
         @Schema(description = "Texto do comentário", example = "Ótima empresa!") String texto,
         @Schema(description = "Comentário anônimo", example = "false") Boolean anonima,
-        @Schema(description = "Número de respostas", example = "0") Integer numRespostas,
         @Schema(description = "Data de criação") LocalDateTime createdAt,
         @Schema(description = "Data de atualização") LocalDateTime updatedAt
 ) {}

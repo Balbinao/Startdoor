@@ -38,9 +38,6 @@ public class EstudanteAvaliacaoComent {
     @Column(name = "anonima", nullable = false)
     private Boolean anonima = false;
 
-    @Column(name = "num_respostas", nullable = false)
-    private Integer numRespostas = 0;
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

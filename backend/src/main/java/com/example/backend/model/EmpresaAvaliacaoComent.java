@@ -35,9 +35,6 @@ public class EmpresaAvaliacaoComent {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String texto;
 
-    @Column(name = "num_respostas", nullable = false)
-    private Integer numRespostas = 0;
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
