@@ -1,5 +1,4 @@
 import type { DROPDOWN_VALUES_CONST } from '@constants';
-
 export interface ICompany {
   id: number;
   nomeFantasia: string;
@@ -7,34 +6,39 @@ export interface ICompany {
   username: string;
   email: string;
   fotoUrl?: string | null;
-  senha: string;
-  mediaNotaGeral?: number;
   biografia?: string;
-  paisOrigem?: (typeof DROPDOWN_VALUES_CONST.PAIS_ORIGEM)[number]['value'];
-  receitaAnual?: (typeof DROPDOWN_VALUES_CONST.RECEITA_ANUAL)[number]['value'];
-  dataFundacao?: string;
-  tamanhoEmpresa?: (typeof DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA)[number]['value'];
-  estadoSede?: (typeof DROPDOWN_VALUES_CONST.ESTADO_ATUACAO)[number]['value'];
-  mediaSalarial?: number;
+  paisOrigem?: string;
+  receitaAnual?: string;
+  dataFundacao?: string | null;
+  tamanhoEmpresa?: string;
+  estadoSede?: string;
   areaAtuacao?: string;
   linkSite?: string;
   linkLinkedin?: string;
   linkGupy?: string;
-  competencias?: {
-    ambiente?: number;
-    aprendizado?: number;
-    beneficios?: number;
-    cultura?: number;
-    efetivacao?: number;
-    entrevista?: number;
-    feedback?: number;
-    infraestrutura?: number;
-    integracao?: number;
-    remuneracao?: number;
-    rotina?: number;
-    lideranca?: number;
+  createdAt: string;
+
+  medias?: {
+    mediaGeral: number;
+    mediaAmbiente: number;
+    mediaAprendizado: number;
+    mediaBeneficios: number;
+    mediaCultura: number;
+    mediaEfetivacao: number;
+    mediaEntrevista: number;
+    mediaFeedback: number;
+    mediaInfraestrutura: number;
+    mediaIntegracao: number;
+    mediaRemuneracao: number;
+    mediaRotina: number;
+    mediaLideranca: number;
   };
-  setor?: string;
+
+  salarios?: {
+    minimo: number;
+    maximo: number;
+    media: number;
+  };
 }
 
 export interface ICompanyUpdatePayload {
@@ -67,6 +71,6 @@ export interface ICompanySectors {
   nomeSetor: string;
 }
 
-export interface ICompanySectorPayload{
-  setorId: number
+export interface ICompanySectorPayload {
+  setorId: number;
 }

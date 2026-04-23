@@ -52,7 +52,6 @@ export const CompanyProfile = () => {
       searchedCompany.dataFundacao ||
       searchedCompany.tamanhoEmpresa ||
       searchedCompany.estadoSede ||
-      searchedCompany.mediaSalarial ||
       searchedCompany.areaAtuacao);
 
   useEffect(() => {
@@ -88,7 +87,7 @@ export const CompanyProfile = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-1 flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-20">
       <UserBanner type="EMPRESA" id={Number(urlUserId)} />
       {hasCompanyInfo && (
         <div className="flex w-full max-w-3xl flex-col gap-8">
@@ -172,7 +171,7 @@ export const CompanyProfile = () => {
               />
             )}
 
-            {searchedCompany?.mediaSalarial && (
+            {searchedCompany?.salarios?.media && (
               <UserAttribute
                 icon={
                   <Focus
@@ -182,7 +181,7 @@ export const CompanyProfile = () => {
                   />
                 }
                 title="Média Salarial"
-                value={searchedCompany.mediaSalarial}
+                value={searchedCompany.salarios.media}
               />
             )}
 
@@ -217,7 +216,7 @@ export const CompanyProfile = () => {
                 options={sectorsOptions}
               />
             </span>
-            <span className="w-56">
+            <span className="w-36">
               <FormField
                 type="select"
                 name="sortOrder"

@@ -1,25 +1,51 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
-import type { ICompanySearchFilters, IEmpresaResumoBackend, IPaginatedResponse } from '@models/companySearchData.types';
-import { COMPETENCIAS_FILTERS } from '@models/companySearchData.types';
 import type { ICompany } from '@models/companyData.types';
-
-
+import type {
+  ICompanySearchFilters,
+  IEmpresaResumoBackend,
+  IPaginatedResponse,
+} from '@models/companySearchData.types';
+import { COMPETENCIAS_FILTERS } from '@models/companySearchData.types';
 
 const mapEmpresaResumo = (empresa: IEmpresaResumoBackend): ICompany => ({
   id: empresa.id,
   nomeFantasia: empresa.nomeFantasia,
-  fotoUrl: empresa.fotoUrl,
+  fotoUrl: empresa.fotoUrl ?? null,
+
   areaAtuacao: empresa.areaAtuacao ?? undefined,
-  tamanhoEmpresa: empresa.tamanhoEmpresa as ICompany['tamanhoEmpresa'],
-  mediaNotaGeral: empresa.mediaGeral ,
-  paisOrigem: empresa.paisOrigem as ICompany['paisOrigem'],
-  estadoSede: empresa.estadoSede as ICompany['estadoSede'],
-  biografia: empresa.biografia,
+  tamanhoEmpresa: empresa.tamanhoEmpresa ?? undefined,
+  paisOrigem: empresa.paisOrigem ?? undefined,
+  estadoSede: empresa.estadoSede ?? undefined,
+  biografia: empresa.biografia ?? undefined,
+
   cnpj: '',
   username: '',
   email: '',
-  senha: '',
+
+  createdAt: '',
+
+  medias: {
+    mediaGeral: 0,
+    mediaAmbiente: 0,
+    mediaAprendizado: 0,
+    mediaBeneficios: 0,
+    mediaCultura: 0,
+    mediaEfetivacao: 0,
+    mediaEntrevista: 0,
+    mediaFeedback: 0,
+    mediaInfraestrutura: 0,
+    mediaIntegracao: 0,
+    mediaRemuneracao: 0,
+    mediaRotina: 0,
+    mediaLideranca: 0,
+  },
+
+  salarios: {
+    minimo: 0,
+    maximo: 0,
+    media: 0,
+  },
 });
 
 export const companySearchService = {
