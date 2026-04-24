@@ -34,7 +34,7 @@ export const CommentCardEdit = ({ item, onEdit }: Props) => {
     resolver: zodResolver(commentSchema),
     defaultValues: {
       texto: item.text ?? '',
-      anonima: item.anonymous,
+      anonima: item.anonymous ?? false,
     },
   });
 
@@ -42,6 +42,7 @@ export const CommentCardEdit = ({ item, onEdit }: Props) => {
 
   const onSubmit = async (data: CommentData) => {
     try {
+      console.log('aaa');
       if (!urlReviewId) {
         throw new Error(MESSAGES_RESPONSE.WARNING.REVIEW_ID_NOT_FOUND);
       }
@@ -126,12 +127,14 @@ export const CommentCardEdit = ({ item, onEdit }: Props) => {
           </span>
           <div className="flex justify-between">
             <span>
-              <FormField
-                form={form}
-                type="checkbox"
-                name="anonima"
-                label="Postar comentário ANÔNIMO"
-              />
+              {item.type === 'ESTUDANTE' && (
+                <FormField
+                  form={form}
+                  type="checkbox"
+                  name="anonima"
+                  label="Postar comentário ANÔNIMO"
+                />
+              )}
             </span>
 
             <div className="flex gap-4">
