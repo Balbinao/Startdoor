@@ -30,7 +30,7 @@ export interface ICommentCompany {
   empresaId: number;
   nomeEmpresa: string;
   fotoUrlEmpresa: string;
-  userEmpresa: string;
+  usernameEmpresa: string;
   avaliacaoId: number;
   texto: string;
   createdAt: string;
@@ -39,4 +39,20 @@ export interface ICommentCompany {
 export interface ICommentPayload {
   texto: string;
   anonima: boolean;
+}
+
+export interface ICompanyScores {
+  mediaGeral: number;
+  mediaAmbiente: number;
+  mediaAprendizado: number;
+  mediaBeneficios: number;
+  mediaCultura: number;
+  mediaEfetivacao: number;
+  mediaEntrevista: number;
+  mediaFeedback: number;
+  mediaInfraestrutura: number;
+  mediaIntegracao: number;
+  mediaRemuneracao: number;
+  mediaRotina: number;
+  mediaLideranca: number;
 }

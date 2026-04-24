@@ -10,7 +10,7 @@ import {
   MenuExtraOptions,
   type MenuOption,
 } from '@components/ui/MenuExtraOptions/MenuExtraOptions';
-import { ScoreCard } from '@components/ui/ScoreCard';
+import { ScoreMainCard } from '@components/ui/ScoreCard';
 import { UserAttribute } from '@components/ui/UserAttribute';
 import { UserBanner } from '@components/ui/UserBanner';
 import { UserProfilePicture } from '@components/ui/UserProfilePicture';
@@ -128,7 +128,7 @@ export const ReviewView = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-1 flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-20">
       {review?.empresaId && <UserBanner type="EMPRESA" id={review.empresaId} />}
 
       <div className="flex w-full flex-col gap-10">
@@ -215,11 +215,13 @@ export const ReviewView = () => {
             </span>
           )}
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             {review?.dataInicio && (
               <div className="w-72">
                 <UserAttribute
-                  icon={<CalendarEvent width={44} height={44} strokeWidth={1.5} />}
+                  icon={
+                    <CalendarEvent width={44} height={44} strokeWidth={1.5} />
+                  }
                   title="Período de Experiência"
                   value={`${formatMMMYYYY(review.dataInicio)} — ${review?.dataFim ? formatMMMYYYY(review.dataFim) : 'Presente'}`}
                 />
@@ -238,7 +240,7 @@ export const ReviewView = () => {
               )}
           </div>
 
-          <ScoreCard hasScoreDropdown />
+          <ScoreMainCard hasScoreDropdown />
         </div>
       </div>
 

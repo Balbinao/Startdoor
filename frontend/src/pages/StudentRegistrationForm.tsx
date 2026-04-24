@@ -21,6 +21,7 @@ import {
 } from '@schemas/studentRegistrationSchema';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { isValidCPF } from '@utils/validation';
 
 export const StudentRegistrationForm = () => {
   const navigate = useNavigate();
@@ -39,21 +40,6 @@ export const StudentRegistrationForm = () => {
       user: '',
       email: '',
       senha: '',
-      // setor_interesse: '',
-      // nota_condi: {
-      //   ambiente: '',
-      //   aprendizado: '',
-      //   beneficios: '',
-      //   cultura: '',
-      //   efetivacao: '',
-      //   entrevista: '',
-      //   feedback: '',
-      //   infraestrutura: '',
-      //   integracao: '',
-      //   remuneracao: '',
-      //   rotina: '',
-      //   lideranca: '',
-      // },
       acordo: false,
     },
   });
@@ -114,6 +100,29 @@ export const StudentRegistrationForm = () => {
               {fieldsStudentRegistration.map(field => (
                 <FormField form={form} key={field.name} {...field} />
               ))}
+
+              <FormField
+                form={form}
+                type="text"
+                name="cpf"
+                label="CPF"
+                mask="cpf"
+                placeholder="000.000.000-00"
+                onChange={value => {
+                  if (value.length >= 11) {
+                    if (!isValidCPF(value)) {
+                      form.setError('cpf', {
+                        type: 'manual',
+                        message: 'CPF inválido',
+                      });
+                    } else {
+                      form.clearErrors('cpf');
+                    }
+                  } else {
+                    form.clearErrors('cpf');
+                  }
+                }}
+              />
 
               <span className="text-sm">
                 <FormField

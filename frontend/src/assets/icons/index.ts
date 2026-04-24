@@ -13,6 +13,8 @@ export { default as Coin } from './coin.svg?react';
 export { default as ExclamationMark } from './exclamation-mark.svg?react';
 export { default as EyeOff } from './eye-off.svg?react';
 export { default as Eye } from './eye.svg?react';
+export { default as FilterCompetence } from './filter-competence.svg?react';
+export { default as FilterSelect } from './filter-select.svg?react';
 export { default as Filter } from './filter.svg?react';
 export { default as Flag } from './flag.svg?react';
 export { default as Focus } from './focus.svg?react';
@@ -21,6 +23,7 @@ export { default as Heart } from './heart.svg?react';
 export { default as Home } from './home.svg?react';
 export { default as Hourglass } from './hourglass.svg?react';
 export { default as JigSaw } from './jigsaw.svg?react';
+export { default as Lock } from './lock.svg?react';
 export { default as LogoGupy } from './logo-gupy.svg?react';
 export { default as LogoLinkedIn } from './logo-linkedin.svg?react';
 export { default as Logout } from './logout.svg?react';
@@ -49,5 +52,3 @@ export { default as UserFilled } from './user-filled.svg?react';
 export { default as User } from './user.svg?react';
 export { default as World } from './world.svg?react';
 export { default as XClose } from './xclose.svg?react';
-export {default as FilterSelect} from './filter-select.svg?react'
-export {default as FilterCompetence} from './filter-competence.svg?react'

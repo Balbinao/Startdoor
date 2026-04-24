@@ -226,7 +226,7 @@ export const StudentProfileUpdateForm = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-1 flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-20">
       <UserBanner type="ESTUDANTE" id={userId} />
 
       <FormWrapper form={form}>

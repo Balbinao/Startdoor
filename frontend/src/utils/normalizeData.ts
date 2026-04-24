@@ -288,6 +288,7 @@ export const normalizeCompanyComment = (c: ICommentCompany): IComment => ({
   authorId: c.empresaId,
   authorName: c.nomeEmpresa,
   authorPhotoUrl: c.fotoUrlEmpresa,
+  authorUsername: c.usernameEmpresa,
   reviewId: c.avaliacaoId,
   text: c.texto,
   createdAt: c.createdAt,

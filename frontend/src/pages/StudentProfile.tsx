@@ -111,7 +111,7 @@ export const StudentProfile = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-1 flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-20">
       <UserBanner type="ESTUDANTE" id={Number(urlUserId)} />
       {hasStudentInfo && (
         <div className="flex w-full max-w-3xl flex-col gap-8">
@@ -254,7 +254,7 @@ export const StudentProfile = () => {
                 options={sectorsOptions}
               />
             </span>
-            <span className="w-56">
+            <span className="w-36">
               <FormField
                 type="select"
                 name="sortOrder"

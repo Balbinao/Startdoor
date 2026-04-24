@@ -1,5 +1,16 @@
 import type { FieldValues, Path } from 'react-hook-form';
 
+export type InputMask = 'cpf' | 'cnpj' | 'cep' | 'phone' | 'mobile' | 'rg';
+
+export const maskLengths: Partial<Record<InputMask, number>> = {
+  cpf: 11,
+  cnpj: 14,
+  cep: 8,
+  phone: 10,
+  mobile: 11,
+  rg: 9,
+};
+
 type FieldName<T extends FieldValues> = Path<T>;
 
 export type IInputOption = {
@@ -25,6 +36,7 @@ export type ITextField<T extends FieldValues> = IBaseField<T> & {
   value?: string;
   placeholder?: string;
   maxLength?: number;
+  mask?: InputMask;
   iconLeft?: React.ReactNode;
   iconLeftOnClick?: () => void;
   iconRight?: React.ReactNode;

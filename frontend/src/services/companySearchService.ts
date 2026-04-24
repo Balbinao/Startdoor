@@ -1,31 +1,31 @@
 import { api } from '@config';
 import { API_CONST } from '@constants';
-import type { ICompanySearchFilters, IEmpresaResumoBackend, IPaginatedResponse } from '@models/companySearchData.types';
+import type {
+  ICompanySearchFilters,
+  IEmpresaResumoBackend,
+  IPaginatedResponse,
+} from '@models/companySearchData.types';
 import { COMPETENCIAS_FILTERS } from '@models/companySearchData.types';
-import type { ICompany } from '@models/companyData.types';
 
-
-
-const mapEmpresaResumo = (empresa: IEmpresaResumoBackend): ICompany => ({
+const mapEmpresaResumo = (
+  empresa: IEmpresaResumoBackend,
+): IEmpresaResumoBackend => ({
   id: empresa.id,
   nomeFantasia: empresa.nomeFantasia,
-  fotoUrl: empresa.fotoUrl,
-  areaAtuacao: empresa.areaAtuacao ?? undefined,
-  tamanhoEmpresa: empresa.tamanhoEmpresa as ICompany['tamanhoEmpresa'],
-  mediaNotaGeral: empresa.mediaGeral ,
-  paisOrigem: empresa.paisOrigem as ICompany['paisOrigem'],
-  estadoSede: empresa.estadoSede as ICompany['estadoSede'],
-  biografia: empresa.biografia,
-  cnpj: '',
-  username: '',
-  email: '',
-  senha: '',
+  fotoUrl: empresa.fotoUrl ?? null,
+
+  areaAtuacao: empresa.areaAtuacao,
+  tamanhoEmpresa: empresa.tamanhoEmpresa,
+  paisOrigem: empresa.paisOrigem ?? undefined,
+  estadoSede: empresa.estadoSede ?? undefined,
+  biografia: empresa.biografia ?? undefined,
+  mediaGeral: empresa.mediaGeral ?? undefined,
 });
 
 export const companySearchService = {
   searchCompanies: async (
     filters: ICompanySearchFilters,
-  ): Promise<IPaginatedResponse<ICompany>> => {
+  ): Promise<IPaginatedResponse<IEmpresaResumoBackend>> => {
     const params = new URLSearchParams();
 
     if (filters.searchText) {

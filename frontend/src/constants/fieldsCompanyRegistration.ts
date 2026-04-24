@@ -23,11 +23,4 @@ export const fieldsCompanyRegistration: FieldConfig<CompanyRegistrationFormData>
       label: 'Senha',
       placeholder: 'Digite sua senha',
     },
-    {
-      type: 'text',
-      name: 'cnpj',
-      label: 'CNPJ (sem pontos ou traços)',
-      placeholder: 'Digite seu CNPJ',
-      maxLength: 14,
-    },
   ] as const;
