@@ -1,6 +1,7 @@
 import { Eye, EyeOff } from '@assets/icons';
 import { FormFieldWrapper } from '@components/layout/FormFieldWrapper';
-import type { ITextField } from '@models/input.types';
+import { maskLengths, type ITextField } from '@models/input.types';
+import { masks } from '@utils/mask';
 import { useId, useState } from 'react';
 import {
   Controller,
@@ -23,6 +24,7 @@ export const FieldText = <TFormValues extends FieldValues>({
   disabled,
   readOnly,
   maxLength,
+  mask,
   iconLeft,
   iconLeftOnClick,
   iconRight,
@@ -37,6 +39,16 @@ export const FieldText = <TFormValues extends FieldValues>({
 
   const isPassword = type === 'password';
   const inputType = isPassword && showPassword ? 'text' : type;
+
+  const format = (val: string) => {
+    if (!mask) return val;
+    return masks[mask](val);
+  };
+
+  const clean = (val: string) => {
+    console.log(val.replace(/\D/g, ''));
+    return val.replace(/\D/g, '');
+  };
 
   const rightIcon =
     iconRight ??
@@ -62,7 +74,7 @@ export const FieldText = <TFormValues extends FieldValues>({
     <FieldInput
       id={inputId}
       type={inputType}
-      value={currentValue ?? ''}
+      value={format(currentValue)}
       placeholder={placeholder}
       disabled={disabled}
       readOnly={readOnly}
@@ -73,6 +85,11 @@ export const FieldText = <TFormValues extends FieldValues>({
         if (maxLength) {
           val = val.slice(0, maxLength);
         }
+
+        const raw = mask ? clean(val) : val;
+
+        const max = mask ? maskLengths[mask] : undefined;
+        val = raw.slice(0, max);
 
         handleChange?.(val);
         onChange?.(val);

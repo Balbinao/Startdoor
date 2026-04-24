@@ -100,6 +100,15 @@ export const CompanyRegistrationForm = () => {
                 <FormField form={form} key={field.name} {...field} />
               ))}
 
+              <FormField
+                form={form}
+                type="text"
+                name="cnpj"
+                label="CNPJ"
+                placeholder="00.000.000/0000-00"
+                mask="cnpj"
+              />
+
               <span className="text-sm">
                 <FormField
                   form={form}

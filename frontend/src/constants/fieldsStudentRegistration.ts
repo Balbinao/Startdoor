@@ -30,11 +30,4 @@ export const fieldsStudentRegistration: FieldConfig<StudentRegistrationFormData>
       label: 'Senha',
       placeholder: 'Digite sua senha',
     },
-    {
-      type: 'text',
-      name: 'cpf',
-      label: 'CPF (sem pontos ou traços)',
-      placeholder: 'Digite seu CPF',
-      maxLength: 11,
-    },
   ] as const;
