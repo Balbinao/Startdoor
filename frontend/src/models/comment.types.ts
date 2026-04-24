@@ -30,7 +30,7 @@ export interface ICommentCompany {
   empresaId: number;
   nomeEmpresa: string;
   fotoUrlEmpresa: string;
-  userEmpresa: string;
+  usernameEmpresa: string;
   avaliacaoId: number;
   texto: string;
   createdAt: string;

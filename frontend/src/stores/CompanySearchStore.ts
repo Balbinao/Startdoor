@@ -1,15 +1,20 @@
-import type { ICompany } from '@models/companyData.types';
-import type { ICompanySearchFilters } from '@models/companySearchData.types';
-import { COMPETENCIAS_FILTERS, COMPETENCIAS_LABELS } from '@models/companySearchData.types';
-import {RootStore} from '@stores/RootStore'
-import { makeAutoObservable } from 'mobx';
+import type {
+  ICompanySearchFilters,
+  IEmpresaResumoBackend,
+} from '@models/companySearchData.types';
+import {
+  COMPETENCIAS_FILTERS,
+  COMPETENCIAS_LABELS,
+} from '@models/companySearchData.types';
 import { companySearchService } from '@services/companySearchService';
+import { RootStore } from '@stores/RootStore';
+import { makeAutoObservable } from 'mobx';
 
-export type { ICompanySearchFilters };
 export { COMPETENCIAS_FILTERS, COMPETENCIAS_LABELS };
+export type { ICompanySearchFilters };
 
 export class CompanySearchStore {
-  companies: ICompany[] = [];
+  companies: IEmpresaResumoBackend[] = [];
   isLoading = false;
   hasMore = true;
   root: RootStore;
@@ -18,10 +23,10 @@ export class CompanySearchStore {
     searchText: '',
     notaGeralMin: 0,
     notaGeralMax: 0,
-    paisOrigem:'',
-    estadoSede:'',
+    paisOrigem: '',
+    estadoSede: '',
     setorId: 0,
-    biografia:"",
+    biografia: '',
     tamanhoEmpresa: '',
     receitaAnual: '',
     competenciaMin: 0,
@@ -43,11 +48,11 @@ export class CompanySearchStore {
   };
 
   constructor(root: RootStore) {
-      this.root = root
+    this.root = root;
     makeAutoObservable(this);
   }
 
-  setCompanies = (companies: ICompany[]) => {
+  setCompanies = (companies: IEmpresaResumoBackend[]) => {
     this.companies = companies;
   };
 
@@ -63,7 +68,7 @@ export class CompanySearchStore {
     return this.isLoading;
   }
 
-get getHasMore() {
+  get getHasMore() {
     return this.hasMore;
   }
 
@@ -74,7 +79,9 @@ get getHasMore() {
     this.setLoading(true);
     try {
       const response = await companySearchService.searchCompanies(this.filters);
-     
+
+      console.log(response);
+
       this.setCompanies(response.content);
       this.hasMore = response.number + 1 < response.totalPages;
     } catch (error) {
@@ -110,7 +117,7 @@ get getHasMore() {
     return this.filters;
   }
 
-  getFilteredCompanies = (): ICompany[] => {
+  getFilteredCompanies = (): IEmpresaResumoBackend[] => {
     return this.companies;
-  }
+  };
 }

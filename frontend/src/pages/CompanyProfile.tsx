@@ -1,8 +1,8 @@
 import {
   Building,
   Category,
+  Coin,
   Flag,
-  Focus,
   Hourglass,
   Pin,
   Star,
@@ -52,6 +52,7 @@ export const CompanyProfile = () => {
       searchedCompany.dataFundacao ||
       searchedCompany.tamanhoEmpresa ||
       searchedCompany.estadoSede ||
+      searchedCompany?.salarios ||
       searchedCompany.areaAtuacao);
 
   useEffect(() => {
@@ -171,19 +172,30 @@ export const CompanyProfile = () => {
               />
             )}
 
-            {searchedCompany?.salarios?.media && (
-              <UserAttribute
-                icon={
-                  <Focus
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    strokeWidth={STROKE_WIDTH}
-                  />
-                }
-                title="Média Salarial"
-                value={searchedCompany.salarios.media}
-              />
-            )}
+            {searchedCompany?.salarios?.minimo &&
+              searchedCompany?.salarios?.maximo &&
+              searchedCompany?.salarios?.media && (
+                <UserAttribute
+                  icon={
+                    <Coin
+                      width={ICON_SIZE}
+                      height={ICON_SIZE}
+                      strokeWidth={STROKE_WIDTH}
+                    />
+                  }
+                  title="Média Salarial (por mês)"
+                  value={
+                    <>
+                      R$ {searchedCompany.salarios.minimo} — R${' '}
+                      {searchedCompany.salarios.maximo}
+                      <span style={{ opacity: 0.5 }}>
+                        {' '}
+                        (média de R$ {searchedCompany.salarios.media})
+                      </span>
+                    </>
+                  }
+                />
+              )}
 
             {searchedCompany?.areaAtuacao && (
               <UserAttribute
