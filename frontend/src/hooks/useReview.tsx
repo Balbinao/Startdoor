@@ -2,30 +2,62 @@ import { useStore } from '@contexts/store/useStore';
 import type { IReviewPayload } from '@models/review.types';
 import { reviewService } from '@services/reviewService';
 
+export type SortOrder = 'Mais recentes' | 'Mais antigas' | '';
+export type SortSetor = number | '';
+
 export const useReview = () => {
   const { reviewStore } = useStore();
 
   const reviewCards = reviewStore.getReviewCards;
   const review = reviewStore.getReview;
 
-  const getReviewCardsStudent = async (id: number) => {
-    try {
-      const response = await reviewService.getReviewCardsStudent(id);
-      reviewStore.setReviewCards(response);
+  const getReviewCardsStudent = async (
+    id: number,
+    order: SortOrder = '',
+    setorId: SortSetor = '',
+  ) => {
+    const response = await reviewService.getReviewCardsStudent(id);
 
-      return response;
-    } catch (error) {
-      console.error(error);
-      throw error;
+    let filtered = [...response];
+
+    if (setorId !== '') {
+      filtered = filtered.filter(item => item.setorId === setorId);
     }
+
+    filtered.sort((a, b) => {
+      const diff =
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+
+      return order === 'Mais recentes' || order === '' ? diff : -diff;
+    });
+
+    reviewStore.setReviewCards(filtered);
   };
 
-  const getReviewCardsCompany = async (id: number) => {
+  const getReviewCardsCompany = async (
+    id: number,
+    order: SortOrder = '',
+    setorId: SortSetor = '',
+  ) => {
     try {
       const response = await reviewService.getReviewCardsCompany(id);
-      reviewStore.setReviewCards(response);
 
-      return response;
+      let filtered = [...response];
+
+      if (setorId !== '') {
+        filtered = filtered.filter(item => item.setorId === setorId);
+      }
+
+      filtered.sort((a, b) => {
+        const diff =
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+
+        return order === 'Mais recentes' || order === '' ? diff : -diff;
+      });
+
+      reviewStore.setReviewCards(filtered);
+
+      return filtered;
     } catch (error) {
       console.error(error);
       throw error;

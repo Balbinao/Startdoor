@@ -1,3 +1,4 @@
+import { isValidCNPJ } from '@utils/validation';
 import { z } from 'zod';
 
 export const companyRegistrationSchema = z.object({
@@ -6,14 +7,9 @@ export const companyRegistrationSchema = z.object({
     .min(5, 'Nome Fantasia precisa ter pelo menos 5 caracteres')
     .max(60, 'O Nome Fantasia não pode ter mais de 60 caracteres'),
 
-  cnpj: z
-    .string()
-    .regex(/^\d{14}$/, 'CNPJ deve ter exatamente 14 dígitos numéricos'),
-
-  // user: z
-  //   .string()
-  //   .min(8, 'Username precisa ter pelo menos 8 caracteres')
-  //   .max(30, 'Username não pode ter mais de 30 caracteres'),
+  cnpj: z.string().refine(value => isValidCNPJ(value), {
+    message: 'CNPJ inválido',
+  }),
 
   email: z
     .email({ message: 'Email inválido' })
