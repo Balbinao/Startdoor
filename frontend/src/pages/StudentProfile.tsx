@@ -24,7 +24,7 @@ import { useCompany } from '@hooks/useCompany';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import { useReview } from '@hooks/useReview';
+import { useReview, type SortOrder, type SortSetor } from '@hooks/useReview';
 import { useSector } from '@hooks/useSector';
 import { useStudent } from '@hooks/useStudent';
 import type { IStudent } from '@models/studentData.types';
@@ -59,10 +59,13 @@ export const StudentProfile = () => {
   const [isError, setIsError] = useState(true);
 
   const [searchedStudent, setSearchedStudent] = useState<IStudent | null>(null);
+  const [sortOrder, setSortOrder] = useState<SortOrder>('');
+  const [sortSetor, setSortSetor] = useState<SortSetor>('');
 
   const hasStudentInfo =
     searchedStudent &&
-    (searchedStudent.paisOrigem ||
+    (searchedStudent.biografia ||
+      searchedStudent.paisOrigem ||
       searchedStudent.dataNascimento ||
       searchedStudent.modeloTrabalho ||
       searchedStudent.estadoAtuacao ||
@@ -252,18 +255,47 @@ export const StudentProfile = () => {
                 type="select"
                 name="sortSetor"
                 options={sectorsOptions}
+                value={sortSetor}
+                onChange={async (value: string | number) => {
+                  const setorValue: SortSetor =
+                    value === '' ? '' : Number(value);
+
+                  setSortSetor(setorValue);
+
+                  await modalLoadingAuto(
+                    () =>
+                      getReviewCardsStudent(
+                        Number(urlUserId),
+                        sortOrder,
+                        setorValue,
+                      ),
+                    MESSAGES_LOADING.GET,
+                  );
+                }}
               />
             </span>
-            <span className="w-36">
+            <span className="w-56">
               <FormField
                 type="select"
                 name="sortOrder"
-                options={DROPDOWN_VALUES_CONST.REVIEWS_SORT.map(option => ({
-                  ...option,
-                }))}
-                onChange={(selectedValue: string | number) =>
-                  console.log(selectedValue)
-                }
+                value={sortOrder}
+                options={DROPDOWN_VALUES_CONST.REVIEWS_SORT}
+                onChange={async (value: string | number) => {
+                  const orderValue: SortOrder =
+                    value === '' ? '' : (value as Exclude<SortOrder, ''>);
+
+                  setSortOrder(orderValue);
+
+                  await modalLoadingAuto(
+                    () =>
+                      getReviewCardsStudent(
+                        Number(urlUserId),
+                        orderValue,
+                        sortSetor,
+                      ),
+                    MESSAGES_LOADING.GET,
+                  );
+                }}
               />
             </span>
           </div>
