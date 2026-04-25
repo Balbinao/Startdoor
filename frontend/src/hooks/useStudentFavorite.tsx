@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useStore } from '@contexts/store/useStore';
-import type { ICompany } from '@models/companyData.types';
+import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
 import { useAuth } from '@hooks/useAuth';
 
 export const useStudentFavorite = () => {
@@ -16,7 +16,7 @@ export const useStudentFavorite = () => {
     return studentFavoriteStore.isFavorite(empresaId);
   };
 
-  const toggleFavorite =useCallback((empresa: ICompany) => {
+  const toggleFavorite =useCallback((empresa: IEmpresaResumoBackend) => {
   if (!userId) return;
   
   if (isFavorite(empresa.id)) {

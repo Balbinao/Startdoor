@@ -20,7 +20,7 @@ const DEBOUNCE_DELAY = 100;
 const CompanyCardList = observer(() => {
   const { filteredCompanies, isLoading, hasMore, loadMoreCompanies } = useCompanySearch();
   const { isFavorite, toggleFavorite, loadFavorites } = useStudentFavorite();
-  const { ref, inView } = useInView({ threshold: 1 });
+  const { ref, inView } = useInView({ threshold: 0});
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {

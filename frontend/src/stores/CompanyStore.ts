@@ -10,7 +10,6 @@ export class CompanyStore {
   companies: ICompany[] = [];
   companiesOptions: IInputOption[] = [];
   companySectors: IInputOption[] = [];
-
   constructor(root: RootStore) {
     this.root = root;
     makeAutoObservable(this);

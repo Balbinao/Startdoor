@@ -151,6 +151,7 @@ export const ProfessionalExperienceCardEdit = ({
             type="text"
             name="tituloCargo"
             label="Título do Estágio"
+            required={true}
             placeholder="Informe o título do estágio..."
             maxLength={60}
           />
@@ -160,6 +161,7 @@ export const ProfessionalExperienceCardEdit = ({
             type="select"
             name="idEmpresa"
             label="Empresa"
+            required={true}
             options={companiesOptions}
           />
 
@@ -169,6 +171,7 @@ export const ProfessionalExperienceCardEdit = ({
               type="select"
               name="estadoAtuacao"
               label="Estado de Atuação"
+              required={true}
               options={DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => ({
                 ...option,
               }))}
@@ -179,6 +182,7 @@ export const ProfessionalExperienceCardEdit = ({
               type="select"
               name="modeloTrabalho"
               label="Modelo de Trabalho"
+              required={true}
               options={DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.map(
                 option => ({
                   ...option,
@@ -188,7 +192,9 @@ export const ProfessionalExperienceCardEdit = ({
           </div>
 
           <div className="flex flex-col gap-2">
-            <p className="text-(--grey-300)">Período de Trabalho</p>
+            <p className="text-(--grey-300)">
+              Período de Trabalho<span className="ml-1 text-rose-400">*</span>
+            </p>
             <div className="flex gap-4">
               <FormField<ProfessionalExperienceCardData>
                 form={form}
@@ -210,6 +216,7 @@ export const ProfessionalExperienceCardEdit = ({
             name="descricao"
             label="Descrição"
             placeholder="Comente sobre a sua experiência acadêmica..."
+            required={true}
           />
 
           <div className="flex justify-end gap-4">

@@ -22,13 +22,14 @@ export const API_CONST = {
   COMPANY: {
     BASE: '/empresas',
     REGISTRATION: '/empresas/cadastrar/empresa',
+    SEARCH: '/empresas/pesquisa',
     BY_ID: (id: number) => `/empresas/${id}`,
     BY_ID_PASSWORD: (id: number) => `/empresas/${id}/senha`,
     BY_ID_PICTURE: (id: number) => `/empresas/${id}/foto`,
     BY_ID_SECTORS: (id: number) => `/empresas/${id}/setores`,
     BY_ID_SECTORS_BY_ID: (id: number, idSector: number) =>
       `/empresas/${id}/setores/${idSector}`,
-    SEARCH: '/empresas/pesquisa',
+    BY_ID_NOTAS: (id: number) => `/empresas/${id}/notas`,
   },
   EXPERIENCE: {
     ACADEMIC_BY_ID: (id: number) => `/experiencias-academicas/${id}`,

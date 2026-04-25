@@ -1,12 +1,12 @@
-import type { ICompany } from '@models/companyData.types';
 import type { RootStore } from './RootStore';
 import { makeAutoObservable } from 'mobx';
 import type { IStudentFavorite } from '@models/studentFavoriteData.types';
+import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
 
 export class StudentFavoriteStore {
   root: RootStore;
   favorites: IStudentFavorite[] = [];
-  favoriteCompanies: ICompany[] = [];
+  favoriteCompanies: IEmpresaResumoBackend[] = [];
   isLoading = false;
 
   constructor(root: RootStore) {
@@ -19,12 +19,12 @@ export class StudentFavoriteStore {
     return stored ? JSON.parse(stored) : [];
   }
 
-  private getStoredCompanies(): ICompany[] {
+  private getStoredCompanies(): IEmpresaResumoBackend[] {
     const stored = localStorage.getItem('student_favorite_companies');
     return stored ? JSON.parse(stored) : [];
   }
 
-  private saveFavorites(favorites: IStudentFavorite[], companies: ICompany[]) {
+  private saveFavorites(favorites: IStudentFavorite[], companies: IEmpresaResumoBackend[]) {
     localStorage.setItem('student_favorites', JSON.stringify(favorites));
     localStorage.setItem('student_favorite_companies', JSON.stringify(companies));
   }
@@ -34,7 +34,7 @@ export class StudentFavoriteStore {
     this.favoriteCompanies = this.getStoredCompanies();
   }
 
-  addFavorite(empresa: ICompany, estudanteId: number) {
+  addFavorite(empresa: IEmpresaResumoBackend, estudanteId: number) {
     const exists = this.favorites.some(f => f.empresaId === empresa.id && f.estudanteId === estudanteId);
     if (exists) return;
 
@@ -61,7 +61,7 @@ export class StudentFavoriteStore {
     return this.favorites.some(f => f.empresaId === empresaId);
   }
 
-  getFavorites(): ICompany[] {
+  getFavorites(): IEmpresaResumoBackend[] {
     return this.favoriteCompanies;
   }
 

@@ -16,12 +16,13 @@ import {
 } from '@assets/icons';
 import { useReview } from '@hooks/useReview';
 import { useState } from 'react';
+import { ScoreSubCard } from './ScoreSubCard';
 
 interface Props {
   hasScoreDropdown: boolean;
 }
 
-export const ScoreCard = ({ hasScoreDropdown }: Props) => {
+export const ScoreMainCard = ({ hasScoreDropdown }: Props) => {
   const { review } = useReview();
 
   const [open, setOpen] = useState(false);
@@ -81,31 +82,13 @@ export const ScoreCard = ({ hasScoreDropdown }: Props) => {
       {open && (
         <div className="flex flex-wrap gap-4">
           {scores.map((item, index) => {
-            const Icon = item.icon;
-
             return (
-              <div
+              <ScoreSubCard
                 key={index}
-                className="flex w-fit items-center gap-4 rounded-lg border border-(--grey-800) bg-(--grey-900) px-3.5 py-2.5"
-              >
-                <div className="flex gap-2">
-                  <Icon
-                    width={22}
-                    height={22}
-                    strokeWidth={1.6}
-                    className="text-(--grey-300)"
-                  />
-                  <span className="text-sm font-normal text-(--grey-200)">
-                    {item.label}
-                  </span>
-                </div>
-
-                <span className="h-full w-0.5 bg-(--grey-600)" />
-
-                <span className="font-medium text-(--yellow-100)">
-                  {item.value}
-                </span>
-              </div>
+                icon={item.icon}
+                label={item.label}
+                value={item.value}
+              />
             );
           })}
         </div>

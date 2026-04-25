@@ -1,7 +1,7 @@
 interface Props {
   icon: React.ReactNode;
   title: string;
-  value: string | number;
+  value: React.ReactNode;
 }
 
 export const UserAttribute = ({ icon, title, value }: Props) => {

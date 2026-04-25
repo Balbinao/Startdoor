@@ -17,6 +17,7 @@ export const FieldTextarea = <TFormValues extends FieldValues>({
   maxLength,
   disabled,
   readOnly,
+  required,
   form,
   value,
   onChange,
@@ -53,6 +54,7 @@ export const FieldTextarea = <TFormValues extends FieldValues>({
         inputId={inputId}
         label={label}
         form={form}
+        required={required}
       >
         <Controller
           name={name}
@@ -64,7 +66,12 @@ export const FieldTextarea = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper<TFormValues> name={name} inputId={inputId} label={label}>
+    <FormFieldWrapper<TFormValues>
+      name={name}
+      inputId={inputId}
+      label={label}
+      required={required}
+    >
       {render(value ?? '', onChange)}
     </FormFieldWrapper>
   );

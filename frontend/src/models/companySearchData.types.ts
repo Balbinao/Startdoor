@@ -29,7 +29,6 @@ export interface ICompanySearchFilters {
 
 export interface IEmpresaResumoBackend {
   id: number;
-  uuid: string;
   nomeFantasia: string;
   fotoUrl: string | null;
   areaAtuacao: string | null;

@@ -21,6 +21,7 @@ import {
 } from '@schemas/companyRegistrationSchema';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { isValidCNPJ } from '@utils/validation';
 
 export const CompanyRegistrationForm = () => {
   const navigate = useNavigate();
@@ -99,6 +100,30 @@ export const CompanyRegistrationForm = () => {
               {fieldsCompanyRegistration.map(field => (
                 <FormField form={form} key={field.name} {...field} />
               ))}
+
+              <FormField
+                form={form}
+                type="text"
+                name="cnpj"
+                label="CNPJ"
+                placeholder="00.000.000/0000-00"
+                mask="cnpj"
+                required={true}
+                onChange={value => {
+                  if (value.length >= 11) {
+                    if (!isValidCNPJ(value)) {
+                      form.setError('cnpj', {
+                        type: 'manual',
+                        message: 'CNPJ',
+                      });
+                    } else {
+                      form.clearErrors('cnpj');
+                    }
+                  } else {
+                    form.clearErrors('cnpj');
+                  }
+                }}
+              />
 
               <span className="text-sm">
                 <FormField

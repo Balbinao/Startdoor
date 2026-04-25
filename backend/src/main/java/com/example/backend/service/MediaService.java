@@ -33,9 +33,16 @@ public class MediaService {
 
         List<EstudanteAvaliacao> avaliacoes = avaliacaoRepository.findByEmpresaId(empresaId);
         EmpresaMedia media = empresa.getEmpresaMedia();
+        if (media == null) {
+            media = new EmpresaMedia();
+            empresa.setEmpresaMedia(media);
+        }
 
         if (avaliacoes.isEmpty()) {
             zerarMedias(media);
+            media.setSalarioMinPiso(BigDecimal.ZERO);
+            media.setSalarioMaxTeto(BigDecimal.ZERO);
+            media.setSalarioBaseMedio(BigDecimal.ZERO);
         } else {
             media.setMediaAmbiente(calcular(avaliacoes, EstudanteAvaliacao::getAmbiente));
             media.setMediaAprendizado(calcular(avaliacoes, EstudanteAvaliacao::getAprendizado));
@@ -51,8 +58,26 @@ public class MediaService {
             media.setMediaLideranca(calcular(avaliacoes, EstudanteAvaliacao::getLideranca));
 
             media.setMediaGeral(calcularMediaGeral(media));
-        }
 
+            BigDecimal minPiso = avaliacoes.stream()
+                    .map(EstudanteAvaliacao::getSalarioMin)
+                    .min(BigDecimal::compareTo)
+                    .orElse(BigDecimal.ZERO);
+
+            BigDecimal maxTeto = avaliacoes.stream()
+                    .map(EstudanteAvaliacao::getSalarioMax)
+                    .max(BigDecimal::compareTo)
+                    .orElse(BigDecimal.ZERO);
+
+            double mediaBase = avaliacoes.stream()
+                    .mapToDouble(a -> (a.getSalarioMin().doubleValue() + a.getSalarioMax().doubleValue()) / 2)
+                    .average()
+                    .orElse(0.0);
+
+            media.setSalarioMinPiso(minPiso);
+            media.setSalarioMaxTeto(maxTeto);
+            media.setSalarioBaseMedio(BigDecimal.valueOf(mediaBase).setScale(2, RoundingMode.HALF_UP));
+        }
         empresaRepository.save(empresa);
     }
 

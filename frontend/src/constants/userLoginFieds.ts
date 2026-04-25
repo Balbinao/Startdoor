@@ -7,11 +7,13 @@ export const userLoginFields: FieldConfig<UserLoginFormData>[] = [
     name: 'email',
     label: 'Email',
     placeholder: 'meuEmail@email.com',
+    required: true,
   },
   {
     type: 'password',
     name: 'senha',
     label: 'Senha',
     placeholder: 'Digite sua senha',
+    required: true,
   },
 ] as const;

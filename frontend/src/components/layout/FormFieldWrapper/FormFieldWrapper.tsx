@@ -13,6 +13,7 @@ type Props<TFormValues extends FieldValues> = {
   inputId: string;
   label?: string;
   form?: UseFormReturn<TFormValues>;
+  required?: boolean;
   onClick?: () => void;
 };
 
@@ -22,7 +23,8 @@ export const FormFieldWrapper = <TFormValues extends FieldValues>({
   inputId,
   label,
   form,
-  onClick
+  required,
+  onClick,
 }: Props<TFormValues>) => {
   const error = form
     ? (get(form.formState.errors, name) as FieldError | undefined)
@@ -37,6 +39,7 @@ export const FormFieldWrapper = <TFormValues extends FieldValues>({
           className="text-(--grey-300)"
         >
           {label}
+          {required && <span className="ml-1 text-rose-400">*</span>}
         </label>
       )}
 

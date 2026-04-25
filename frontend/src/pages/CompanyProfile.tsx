@@ -1,8 +1,8 @@
 import {
   Building,
   Category,
+  Coin,
   Flag,
-  Focus,
   Hourglass,
   Pin,
   Star,
@@ -19,7 +19,7 @@ import {
 import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
-import { useReview } from '@hooks/useReview';
+import { useReview, type SortOrder, type SortSetor } from '@hooks/useReview';
 import { useSector } from '@hooks/useSector';
 import type { ICompany } from '@models/companyData.types';
 import { formatDateWithAge } from '@utils/formatData';
@@ -44,15 +44,18 @@ export const CompanyProfile = () => {
   const [isError, setIsError] = useState(true);
 
   const [searchedCompany, setSearchedCompany] = useState<ICompany | null>(null);
+  const [sortOrder, setSortOrder] = useState<SortOrder>('');
+  const [sortSetor, setSortSetor] = useState<SortSetor>('');
 
   const hasCompanyInfo =
     searchedCompany &&
-    (searchedCompany.paisOrigem ||
+    (searchedCompany.biografia ||
+      searchedCompany.paisOrigem ||
       searchedCompany.receitaAnual ||
       searchedCompany.dataFundacao ||
       searchedCompany.tamanhoEmpresa ||
       searchedCompany.estadoSede ||
-      searchedCompany.mediaSalarial ||
+      searchedCompany?.salarios ||
       searchedCompany.areaAtuacao);
 
   useEffect(() => {
@@ -88,7 +91,7 @@ export const CompanyProfile = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-1 flex-col items-center gap-32">
+    <div className="flex h-full flex-1 flex-col items-center gap-20">
       <UserBanner type="EMPRESA" id={Number(urlUserId)} />
       {hasCompanyInfo && (
         <div className="flex w-full max-w-3xl flex-col gap-8">
@@ -172,19 +175,30 @@ export const CompanyProfile = () => {
               />
             )}
 
-            {searchedCompany?.mediaSalarial && (
-              <UserAttribute
-                icon={
-                  <Focus
-                    width={ICON_SIZE}
-                    height={ICON_SIZE}
-                    strokeWidth={STROKE_WIDTH}
-                  />
-                }
-                title="Média Salarial"
-                value={searchedCompany.mediaSalarial}
-              />
-            )}
+            {searchedCompany?.salarios?.minimo &&
+              searchedCompany?.salarios?.maximo &&
+              searchedCompany?.salarios?.media && (
+                <UserAttribute
+                  icon={
+                    <Coin
+                      width={ICON_SIZE}
+                      height={ICON_SIZE}
+                      strokeWidth={STROKE_WIDTH}
+                    />
+                  }
+                  title="Média Salarial (por mês)"
+                  value={
+                    <>
+                      R$ {searchedCompany.salarios.minimo} — R${' '}
+                      {searchedCompany.salarios.maximo}
+                      <span style={{ opacity: 0.5 }}>
+                        {' '}
+                        (média de R$ {searchedCompany.salarios.media})
+                      </span>
+                    </>
+                  }
+                />
+              )}
 
             {searchedCompany?.areaAtuacao && (
               <UserAttribute
@@ -215,18 +229,49 @@ export const CompanyProfile = () => {
                 type="select"
                 name="sortSetor"
                 options={sectorsOptions}
+                value={sortSetor}
+                onChange={async (value: string | number) => {
+                  const setorValue: SortSetor =
+                    value === '' ? '' : Number(value);
+
+                  setSortSetor(setorValue);
+
+                  await modalLoadingAuto(
+                    () =>
+                      getReviewCardsCompany(
+                        Number(urlUserId),
+                        sortOrder,
+                        setorValue,
+                      ),
+                    MESSAGES_LOADING.GET,
+                  );
+                }}
               />
             </span>
             <span className="w-56">
               <FormField
                 type="select"
                 name="sortOrder"
+                value={sortOrder}
                 options={DROPDOWN_VALUES_CONST.REVIEWS_SORT.map(option => ({
                   ...option,
                 }))}
-                onChange={(selectedValue: string | number) =>
-                  console.log(selectedValue)
-                }
+                onChange={async (value: string | number) => {
+                  const orderValue: SortOrder =
+                    value === '' ? '' : (value as Exclude<SortOrder, ''>);
+
+                  setSortOrder(orderValue);
+
+                  await modalLoadingAuto(
+                    () =>
+                      getReviewCardsCompany(
+                        Number(urlUserId),
+                        orderValue,
+                        sortSetor,
+                      ),
+                    MESSAGES_LOADING.GET,
+                  );
+                }}
               />
             </span>
           </div>

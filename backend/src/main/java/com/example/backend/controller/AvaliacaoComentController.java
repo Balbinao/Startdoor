@@ -188,7 +188,7 @@ public class AvaliacaoComentController implements AvaliacaoComentControllerOpenA
 
         Long estudanteId = comentario.getEstudante().getId();
         String nomeEstudante = anonima ? null : comentario.getEstudante().getNome();
-        String fotoUrlEstudante = anonima ? null : comentario.getEstudante().getFotoUrl();
+        String fotoUrlEstudante = anonima ? null : buildFotoUrl(comentario.getEstudante().getFotoUrl());
         String userEstudante = anonima ? null : comentario.getEstudante().getUser();
 
         return new AvaliacaoComentResponseDTO(
@@ -200,24 +200,29 @@ public class AvaliacaoComentController implements AvaliacaoComentControllerOpenA
                 comentario.getAvaliacao().getId(),
                 comentario.getTexto(),
                 comentario.getAnonima(),
-                comentario.getNumRespostas(),
                 comentario.getCreatedAt(),
                 comentario.getUpdatedAt()
         );
     }
 
     private EmpresaAvaliacaoComentResponseDTO toEmpresaComentResponseDTO(EmpresaAvaliacaoComent comentario) {
+        String fotoUrlEmpresa = buildFotoUrl(comentario.getEmpresa().getFotoUrl());
+
         return new EmpresaAvaliacaoComentResponseDTO(
                 comentario.getId(),
                 comentario.getEmpresa().getId(),
+                comentario.getEmpresa().getUser(),
                 comentario.getEmpresa().getNomeFantasia(),
-                comentario.getEmpresa().getFotoUrl(),
+                fotoUrlEmpresa,
                 comentario.getAvaliacao().getId(),
                 comentario.getTexto(),
-                comentario.getNumRespostas(),
                 comentario.getCreatedAt(),
                 comentario.getUpdatedAt()
         );
+    }
+
+    private String buildFotoUrl(String fotoUrl) {
+        return (fotoUrl != null) ? "http://localhost:8080/fotos/" + fotoUrl : null;
     }
 
     private ResponseEntity<?> criarRespostaSucesso(String mensagem) {

@@ -16,6 +16,7 @@ export const FieldDate = <TFormValues extends FieldValues>({
   label,
   disabled,
   readOnly,
+  required,
   min,
   max,
   form,
@@ -86,6 +87,7 @@ export const FieldDate = <TFormValues extends FieldValues>({
         inputId={inputId}
         label={label}
         form={form}
+        required={required}
       >
         <Controller
           name={name}
@@ -104,7 +106,12 @@ export const FieldDate = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper<TFormValues> name={name} inputId={inputId} label={label}>
+    <FormFieldWrapper<TFormValues>
+      name={name}
+      inputId={inputId}
+      label={label}
+      required={required}
+    >
       {render(value ?? '', onChange, () => {
         onChange?.('');
       })}
