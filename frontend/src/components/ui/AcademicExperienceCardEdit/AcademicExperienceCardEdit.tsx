@@ -6,6 +6,7 @@ import {
   MESSAGES_RESPONSE,
 } from '@constants';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@hooks/useAuth';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -20,7 +21,6 @@ import {
 } from '@utils/normalizeData';
 import { useForm } from 'react-hook-form';
 import { SupportButton } from '../SupportButton';
-import { useAuth } from '@hooks/useAuth';
 
 interface Props {
   item: IAcademicExperience;
@@ -144,6 +144,7 @@ export const AcademicExperienceCardEdit = ({
             label="Título do Ensino"
             placeholder="Informe o título do ensino..."
             maxLength={60}
+            required={true}
           />
 
           <FormField<AcademicExperienceCardData>
@@ -153,6 +154,7 @@ export const AcademicExperienceCardEdit = ({
             label="Nome da Escola"
             placeholder="Informe o nome da escola..."
             maxLength={60}
+            required={true}
           />
 
           <div className="flex w-full gap-6">
@@ -164,6 +166,7 @@ export const AcademicExperienceCardEdit = ({
               options={DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => ({
                 ...option,
               }))}
+              required={true}
             />
 
             <FormField<AcademicExperienceCardData>
@@ -176,11 +179,14 @@ export const AcademicExperienceCardEdit = ({
                   ...option,
                 }),
               )}
+              required={true}
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <p className="text-(--grey-300)">Período Escolar</p>
+            <p className="text-(--grey-300)">
+              Período Escolar<span className="ml-1 text-rose-400">*</span>
+            </p>
             <div className="flex gap-4">
               <FormField<AcademicExperienceCardData>
                 form={form}
@@ -202,6 +208,7 @@ export const AcademicExperienceCardEdit = ({
             name="descricao"
             label="Descrição"
             placeholder="Comente sobre a sua experiência acadêmica..."
+            required={true}
           />
 
           <div className="flex justify-end gap-4">

@@ -27,6 +27,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
   label,
   disabled,
   readOnly,
+  required,
   options,
   iconLeft,
   form,
@@ -152,6 +153,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
         inputId={inputId}
         label={label}
         form={form}
+        required={required}
         onClick={() => {
           buttonRef.current?.click();
         }}
@@ -170,6 +172,7 @@ export const FieldSelect = <TFormValues extends FieldValues>({
       name={name}
       inputId={inputId}
       label={label}
+      required={required}
       onClick={() => {
         buttonRef.current?.click();
       }}

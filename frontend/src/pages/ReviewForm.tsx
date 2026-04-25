@@ -201,6 +201,7 @@ export const ReviewForm = () => {
             name="empresaId"
             label="Empresa"
             options={companiesOptions}
+            required={true}
             onChange={value => {
               const companyId = Number(value);
               modalLoadingAuto(
@@ -217,6 +218,7 @@ export const ReviewForm = () => {
               name="setorId"
               label="Setor de Atuação"
               options={companySectors}
+              required={true}
             />
 
             <div className="flex w-full gap-6">
@@ -225,6 +227,7 @@ export const ReviewForm = () => {
                 type="select"
                 name="estadoAtuacao"
                 label="Estado de Atuação"
+                required={true}
                 options={DROPDOWN_VALUES_CONST.ESTADO_ATUACAO.map(option => ({
                   ...option,
                 }))}
@@ -235,6 +238,7 @@ export const ReviewForm = () => {
                 type="select"
                 name="modeloTrabalho"
                 label="Modelo de Trabalho"
+                required={true}
                 options={DROPDOWN_VALUES_CONST.MODELO_TRABALHO_ENSINO.map(
                   option => ({
                     ...option,
@@ -244,7 +248,9 @@ export const ReviewForm = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-(--grey-300)">Período do Estágio</p>
+              <p className="text-(--grey-300)">
+                Período do Estágio<span className="ml-1 text-rose-400">*</span>
+              </p>
               <div className="flex gap-4">
                 <FormField<ReviewData>
                   form={form}
@@ -264,6 +270,7 @@ export const ReviewForm = () => {
               name="tituloCargo"
               label="Nome do Estágio"
               placeholder="Escreva o nome do estágio..."
+              required={true}
             />
 
             <FormField<ReviewData>
@@ -272,6 +279,7 @@ export const ReviewForm = () => {
               name="textoAvaliacao"
               label="Avaliação do Estágio"
               placeholder="Descreva sua experiência no estágio..."
+              required={true}
             />
           </div>
 
@@ -303,6 +311,7 @@ export const ReviewForm = () => {
                 type="select"
                 name={name}
                 label={label}
+                required={true}
                 options={DROPDOWN_VALUES_CONST.NOTA}
                 iconLeft={
                   <StarFilled
