@@ -10,6 +10,8 @@ export const ROUTES_CONST = {
     PROFILE_BY_ID: (id: string | number) => `/perfil-estudante/${id}`,
     PROFILE_UPDATE_URL: '/perfil-estudante/:id/alterar',
     PROFILE_UPDATE: (id: string | number) => `/perfil-estudante/${id}/alterar`,
+    PROFILE_FAVORITE_URL: '/perfil-estudante/:id/favoritos',
+    PROFILE_FAVORITE:(id: string | number) =>  `/perfil-estudante/${id}/favoritos`
   },
 
   COMPANY: {

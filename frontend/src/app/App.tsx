@@ -9,7 +9,7 @@ import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
 import { CompanySearch } from '@pages/CompanySearch';
 import { ReviewForm } from '@pages/ReviewForm';
 import { ReviewView } from '@pages/ReviewView';
-// import { ReviewView } from '@pages/ReviewView';
+import { StudentFavorite } from '@pages/StudentFavorite';
 import { StudentProfile } from '@pages/StudentProfile';
 import { StudentProfileUpdateForm } from '@pages/StudentProfileUpdateForm';
 import { StudentRegistrationForm } from '@pages/StudentRegistrationForm';
@@ -50,6 +50,11 @@ function App() {
             <Route index element={<ProfileRedirect />} />
 
             <Route path={ROUTES_CONST.SEARCH} element={<CompanySearch />} />
+
+            <Route
+              path={ROUTES_CONST.STUDENT.PROFILE_FAVORITE_URL}
+              element={<StudentFavorite />}
+            />
 
             <Route
               path={ROUTES_CONST.STUDENT.PROFILE_URL}

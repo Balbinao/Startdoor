@@ -13,7 +13,6 @@ const mapEmpresaResumo = (
   id: empresa.id,
   nomeFantasia: empresa.nomeFantasia,
   fotoUrl: empresa.fotoUrl ?? null,
-
   areaAtuacao: empresa.areaAtuacao,
   tamanhoEmpresa: empresa.tamanhoEmpresa,
   paisOrigem: empresa.paisOrigem ?? undefined,

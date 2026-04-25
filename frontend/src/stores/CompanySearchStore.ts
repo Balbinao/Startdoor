@@ -56,6 +56,10 @@ export class CompanySearchStore {
     this.companies = companies;
   };
 
+  setHasMore = (value: boolean) => {
+    this.hasMore = value;
+  };
+
   get getCompanies() {
     return this.companies;
   }
@@ -74,8 +78,8 @@ export class CompanySearchStore {
 
   searchCompaniesApi = async () => {
     this.filters.page = 0;
-    this.companies = [];
-    this.hasMore = true;
+    this.setCompanies([]);
+    this.setHasMore(true);
     this.setLoading(true);
     try {
       const response = await companySearchService.searchCompanies(this.filters);
@@ -83,7 +87,7 @@ export class CompanySearchStore {
       console.log(response);
 
       this.setCompanies(response.content);
-      this.hasMore = response.number + 1 < response.totalPages;
+      this.setHasMore(response.number + 1 < response.totalPages);
     } catch (error) {
       console.error('Error searching companies:', error);
     } finally {
@@ -97,8 +101,8 @@ export class CompanySearchStore {
     this.setLoading(true);
     try {
       const response = await companySearchService.searchCompanies(this.filters);
-      this.companies = [...this.companies, ...response.content];
-      this.hasMore = response.number + 1 < response.totalPages;
+      this.setCompanies([...this.companies, ...response.content]);
+      this.setHasMore(response.number + 1 < response.totalPages);
     } catch (error) {
       console.error('Error loading more companies:', error);
     } finally {

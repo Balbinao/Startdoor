@@ -5,6 +5,7 @@ import { Spinner } from '@components/ui/Spinner/Spinner';
 import { DROPDOWN_VALUES_CONST } from '@constants';
 import { useCompanySearch } from '@hooks/useCompanySearch';
 import { useSector } from '@hooks/useSector';
+import { useStudentFavorite } from '@hooks/useStudentFavorite';
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { COMPETENCIAS_LABELS } from '@stores/CompanySearchStore';
@@ -18,7 +19,16 @@ const DEBOUNCE_DELAY = 100;
 
 const CompanyCardList = observer(() => {
   const { filteredCompanies, isLoading, hasMore, loadMoreCompanies } = useCompanySearch();
-  const { ref, inView } = useInView({ threshold: 1 });
+  const { isFavorite, toggleFavorite, loadFavorites } = useStudentFavorite();
+  const { ref, inView } = useInView({ threshold: 0});
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (!initialized && filteredCompanies.length > 0) {
+      loadFavorites();
+      setInitialized(true);
+    }
+  }, [initialized, filteredCompanies.length]);
 
   useEffect(() => {
     if (inView && hasMore && !isLoading) {
@@ -48,7 +58,12 @@ const CompanyCardList = observer(() => {
           <>
             <div className="flex flex-col gap-4">
               {filteredCompanies.map(company => (
-                <CompanyCard key={company.id} item={company} />
+                <CompanyCard 
+                  key={company.id} 
+                  item={company}
+                  isFavorite={isFavorite(company.id)}
+                  onFavoriteClick={() => toggleFavorite(company)}
+                />
               ))}
             </div>
             <div ref={ref} className="flex items-center justify-center ">
@@ -96,14 +111,18 @@ export const CompanySearch = observer(() => {
   }, []);
 
   useEffect(() => {
-    getCompanies();
-  }, [getCompanies, filters.searchText, filters.notaGeralMin, filters.tamanhoEmpresa, filters.receitaAnual, filters.ambiente, filters.aprendizado, filters.beneficios, filters.cultura, filters.efetivacao, filters.entrevista, filters.feedback, filters.infraestrutura, filters.integracao, filters.remuneracao, filters.rotina, filters.lideranca]);
-
-  
-
-  useEffect(() => {
-    setIsFirstLoad(false);
-  }, []);
+    const fetch = async () => {
+      try {
+        await getCompanies();
+        if (isFirstLoad) {
+          setIsFirstLoad(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetch();
+  }, [filters.searchText, filters.notaGeralMin, filters.tamanhoEmpresa, filters.receitaAnual, filters.ambiente, filters.aprendizado, filters.beneficios, filters.cultura, filters.efetivacao, filters.entrevista, filters.feedback, filters.infraestrutura, filters.integracao, filters.remuneracao, filters.rotina, filters.lideranca, isFirstLoad]);
 
   const handleNotaChange = (value: string | number) => {
     const nota = Number(value);

@@ -6,15 +6,25 @@ import { useNavigate } from 'react-router-dom';
 
 interface Props {
   item: IEmpresaResumoBackend;
+  isFavorite?: boolean;
+  onFavoriteClick?: (e: React.MouseEvent) => void;
 }
 
-export const CompanyCard = ({ item }: Props) => {
+
+export const CompanyCard = ({ item, isFavorite, onFavoriteClick }: Props) => {
   const navigate = useNavigate();
   const LOREM =
     'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio facilis suscipit saepe, laborum quibusdam voluptatem quae deleniti earum voluptas assumenda laudantium odit neque placeat, voluptate nam quia eligendi qui amet.';
 
   const handleCardClick = () => {
     navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(item.id));
+  };
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onFavoriteClick) {
+      onFavoriteClick(e);
+    }
   };
 
   return (
@@ -48,11 +58,13 @@ export const CompanyCard = ({ item }: Props) => {
         </div>
 
         <div className="flex flex-col gap-3">
-          <Star
-            width={16}
-            height={16}
-            className="self-end text-(--yellow-100)"
-          />
+          <button onClick={handleFavoriteClick} className='self-end'>
+            <Star
+              width={16}
+              height={16}
+              className={`text-(--yellow-100) ${isFavorite ? 'fill-yellow-500' : ''}`}
+            />
+          </button>
           {item.paisOrigem && item.estadoSede && (
             <div className="text-xs text-(--grey-400)">
               {item.paisOrigem + ', ' + item.estadoSede}
