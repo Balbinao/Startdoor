@@ -10,6 +10,7 @@ import {
   TrashFilled,
   UserFilled,
   World,
+  Star
 } from '@assets/icons';
 import {
   MESSAGES_LOADING,
@@ -173,6 +174,11 @@ export const UserBanner = ({ type, id }: Props) => {
       : type === USER_ROLES_CONST.EMPRESA
         ? ROUTES_CONST.COMPANY.PROFILE_UPDATE(userId!)
         : null;
+        
+const favoriteProfileRoute =
+    type === USER_ROLES_CONST.ESTUDANTE
+      ? ROUTES_CONST.STUDENT.PROFILE_FAVORITE(userId!)
+      :  null;
 
   const showUpdateView = location.pathname === editProfileRoute;
   const showEditLink =
@@ -329,8 +335,14 @@ export const UserBanner = ({ type, id }: Props) => {
   const handleLogout = () => logout();
 
   const menuOptions = [
-    showEditLink && {
-      text: 'Alterar dados',
+    showEditLink && 
+      { text: 'Favoritos',
+      icon: (
+        <Star width={18} height={18} className="text-(--grey-200)" />
+      ),
+      onClick: () => favoriteProfileRoute && navigate(favoriteProfileRoute),
+    },
+     { text: 'Alterar dados',
       icon: (
         <PencilFilled width={18} height={18} className="text-(--grey-200)" />
       ),
