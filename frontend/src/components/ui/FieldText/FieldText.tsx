@@ -23,6 +23,7 @@ export const FieldText = <TFormValues extends FieldValues>({
   type,
   disabled,
   readOnly,
+  required,
   maxLength,
   mask,
   iconLeft,
@@ -119,7 +120,13 @@ export const FieldText = <TFormValues extends FieldValues>({
 
   if (form) {
     return (
-      <FormFieldWrapper name={name} inputId={inputId} label={label} form={form}>
+      <FormFieldWrapper
+        name={name}
+        inputId={inputId}
+        label={label}
+        form={form}
+        required={required}
+      >
         <Controller
           name={name}
           control={form.control}
@@ -130,7 +137,12 @@ export const FieldText = <TFormValues extends FieldValues>({
   }
 
   return (
-    <FormFieldWrapper name={name} inputId={inputId} label={label}>
+    <FormFieldWrapper
+      name={name}
+      inputId={inputId}
+      label={label}
+      required={required}
+    >
       {render(value ?? '', onChange)}
     </FormFieldWrapper>
   );

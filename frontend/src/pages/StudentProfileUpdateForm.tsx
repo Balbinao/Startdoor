@@ -243,6 +243,7 @@ export const StudentProfileUpdateForm = () => {
                 label="Nome completo"
                 placeholder="Digite seu nome"
                 maxLength={60}
+                required={true}
               />
 
               <FormField<StudentProfileUpdateData>
@@ -252,6 +253,7 @@ export const StudentProfileUpdateForm = () => {
                 label="Username"
                 placeholder="Digite seu username"
                 maxLength={30}
+                required={true}
               />
 
               <FormField<StudentProfileUpdateData>
@@ -261,6 +263,7 @@ export const StudentProfileUpdateForm = () => {
                 label="Email"
                 placeholder="Digite seu email"
                 maxLength={50}
+                required={true}
               />
 
               <FormField<StudentProfileUpdateData>

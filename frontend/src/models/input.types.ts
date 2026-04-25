@@ -29,6 +29,7 @@ type IBaseField<T extends FieldValues> = {
   label?: string;
   disabled?: boolean;
   readOnly?: boolean;
+  required?: boolean;
 };
 
 export type ITextField<T extends FieldValues> = IBaseField<T> & {

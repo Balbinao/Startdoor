@@ -108,6 +108,7 @@ export const CompanyRegistrationForm = () => {
                 label="CNPJ"
                 placeholder="00.000.000/0000-00"
                 mask="cnpj"
+                required={true}
                 onChange={value => {
                   if (value.length >= 11) {
                     if (!isValidCNPJ(value)) {

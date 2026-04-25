@@ -19,9 +19,9 @@ import {
   studentRegistrationSchema,
   type StudentRegistrationFormData,
 } from '@schemas/studentRegistrationSchema';
+import { isValidCPF } from '@utils/validation';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { isValidCPF } from '@utils/validation';
 
 export const StudentRegistrationForm = () => {
   const navigate = useNavigate();
@@ -108,6 +108,7 @@ export const StudentRegistrationForm = () => {
                 label="CPF"
                 mask="cpf"
                 placeholder="000.000.000-00"
+                required={true}
                 onChange={value => {
                   if (value.length >= 11) {
                     if (!isValidCPF(value)) {
