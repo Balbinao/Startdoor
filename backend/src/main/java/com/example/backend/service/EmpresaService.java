@@ -234,6 +234,12 @@ public class EmpresaService {
         String urlCompleta = (empresa.getFotoUrl() != null)
                 ? "http://localhost:8080/fotos/" + empresa.getFotoUrl()
                 : null;
+
+        BigDecimal notaGeral = BigDecimal.ZERO;
+        if (empresa.getEmpresaMedia() != null) {
+            notaGeral = empresa.getEmpresaMedia().getMediaGeral();
+        }
+
         return new EmpresaResumoDTO(
                 empresa.getId(),
                 empresa.getUuid(),
@@ -244,7 +250,7 @@ public class EmpresaService {
                 empresa.getBiografia(),
                 empresa.getAreaAtuacao(),
                 empresa.getTamanhoEmpresa(),
-                empresa.getEmpresaMedia() != null ? empresa.getEmpresaMedia().getMediaGeral() : BigDecimal.ZERO
+                notaGeral
         );
     }
 
