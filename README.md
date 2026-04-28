@@ -1,4 +1,6 @@
-# Startdoor
+<p align="center">
+  <img src="assets/startdoor_logo1_s_correto_banner.svg" alt="Startdoor Logo" />
+</p>
 
 <p align="center">
   <b>Plataforma web colaborativa dedicada à avaliação e ao compartilhamento de experiências de estágio.</b>
