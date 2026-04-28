@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -102,6 +103,15 @@ public class Estudante implements UserDetails {
     @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<EstudanteAvaliacaoComent> comentarios;
+
+    @ManyToMany
+    @JoinTable(
+            name = "estudante_empresa_fav",
+            joinColumns = @JoinColumn(name = "id_estudante"),
+            inverseJoinColumns = @JoinColumn(name = "id_empresa")
+    )
+    private List<Empresa> empresasFavoritas = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
