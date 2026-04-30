@@ -14,6 +14,8 @@ export const API_CONST = {
     BY_ID: (id: number) => `/estudantes/${id}`,
     BY_ID_PASSWORD: (id: number) => `/estudantes/${id}/senha`,
     BY_ID_PICTURE: (id: number) => `/estudantes/${id}/foto`,
+    BY_ID_FAVORITE: (id: number) => `/favoritos/${id}`,
+    FAVORITES:'/favoritos'
   },
   CONDITIONAL_SCORE: {
     BASE: '/estudantes/notas-condi',

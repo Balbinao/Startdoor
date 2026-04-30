@@ -13,7 +13,7 @@ const FavoriteCardList = observer(() => {
 
   useEffect(() => {
     loadFavorites();
-  }, [loadFavorites]);
+  }, []);
 
   return (
     <>

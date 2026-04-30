@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { useStore } from '@contexts/store/useStore';
 import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
 import { useAuth } from '@hooks/useAuth';
@@ -16,20 +15,15 @@ export const useStudentFavorite = () => {
     return studentFavoriteStore.isFavorite(empresaId);
   };
 
-  const toggleFavorite =useCallback((empresa: IEmpresaResumoBackend) => {
-  if (!userId) return;
-  
-  if (isFavorite(empresa.id)) {
-    studentFavoriteStore.removeFavorite(empresa.id, userId);
-  } else {
-    studentFavoriteStore.addFavorite(empresa, userId);
-  }
-}, [userId, isFavorite]);
+  const toggleFavorite = (empresa: IEmpresaResumoBackend) => {
+    if (!userId) return;
+    studentFavoriteStore.toggleFavorite(empresa);
+  };
 
-  const loadFavorites = useCallback(() => {
-  if (!userId) return;
-  studentFavoriteStore.loadFavorites(userId);
-}, [userId]);
+  const loadFavorites = () => {
+    if (!userId) return;
+    studentFavoriteStore.loadFavorites();
+  };
 
   return {
     favorites,

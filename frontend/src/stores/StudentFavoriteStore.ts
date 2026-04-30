@@ -1,12 +1,11 @@
+import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
 import type { RootStore } from './RootStore';
 import { makeAutoObservable } from 'mobx';
-import type { IStudentFavorite } from '@models/studentFavoriteData.types';
-import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
+import { studentFavoriteService } from '@services/studentFavoriteService';
 
 export class StudentFavoriteStore {
   root: RootStore;
-  favorites: IStudentFavorite[] = [];
-  favoriteCompanies: IEmpresaResumoBackend[] = [];
+  favorites: IEmpresaResumoBackend[] = [];
   isLoading = false;
 
   constructor(root: RootStore) {
@@ -14,56 +13,51 @@ export class StudentFavoriteStore {
     makeAutoObservable(this);
   }
 
-  private getStoredFavorites(): IStudentFavorite[] {
-    const stored = localStorage.getItem('student_favorites');
-    return stored ? JSON.parse(stored) : [];
-  }
+  setFavorites = (favorites: IEmpresaResumoBackend[]) => {
+    this.favorites = favorites;
+  };
 
-  private getStoredCompanies(): IEmpresaResumoBackend[] {
-    const stored = localStorage.getItem('student_favorite_companies');
-    return stored ? JSON.parse(stored) : [];
-  }
+  setLoading = (loading: boolean) => {
+    this.isLoading = loading;
+  };
 
-  private saveFavorites(favorites: IStudentFavorite[], companies: IEmpresaResumoBackend[]) {
-    localStorage.setItem('student_favorites', JSON.stringify(favorites));
-    localStorage.setItem('student_favorite_companies', JSON.stringify(companies));
-  }
+  loadFavorites = async () => {
+    this.setLoading(true);
+    try {
+      const companies = await studentFavoriteService.getFavorites();
+      this.setFavorites(companies);
+    } catch (error) {
+      console.error('Error loading favorites:', error);
+      throw error;
+    } finally {
+      this.setLoading(false);
+    }
+  };
 
-  loadFavorites(estudanteId: number) {
-    this.favorites = this.getStoredFavorites().filter(f => f.estudanteId === estudanteId);
-    this.favoriteCompanies = this.getStoredCompanies();
-  }
+  toggleFavorite = async (empresa: IEmpresaResumoBackend) => {
+    try {
+      const isNowFavorite = await studentFavoriteService.toggleFavorite(empresa.id);
 
-  addFavorite(empresa: IEmpresaResumoBackend, estudanteId: number) {
-    const exists = this.favorites.some(f => f.empresaId === empresa.id && f.estudanteId === estudanteId);
-    if (exists) return;
+      if (isNowFavorite) {
+        if (!this.favorites.some(f => f.id === empresa.id)) {
+          this.setFavorites([...this.favorites, empresa]);
+        }
+      } else {
+        this.setFavorites(this.favorites.filter(f => f.id !== empresa.id));
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      throw error;
+    }
+  };
 
-    const newFavorite: IStudentFavorite = {
-      id: Date.now(),
-      empresaId: empresa.id,
-      estudanteId,
-    };
+  isFavorite = (empresaId: number): boolean => {
+    return this.favorites.some(f => f.id === empresaId);
+  };
 
-    this.favorites = [...this.favorites, newFavorite];
-    this.favoriteCompanies = [...this.favoriteCompanies, empresa];
-    this.saveFavorites(this.favorites, this.favoriteCompanies);
-  }
-
-  removeFavorite(empresaId: number, estudanteId: number) {
-    this.favorites = this.favorites.filter(
-      f => !(f.empresaId === empresaId && f.estudanteId === estudanteId)
-    );
-    this.favoriteCompanies = this.favoriteCompanies.filter(c => c.id !== empresaId);
-    this.saveFavorites(this.favorites, this.favoriteCompanies);
-  }
-
-  isFavorite(empresaId: number): boolean {
-    return this.favorites.some(f => f.empresaId === empresaId);
-  }
-
-  getFavorites(): IEmpresaResumoBackend[] {
-    return this.favoriteCompanies;
-  }
+  getFavorites = (): IEmpresaResumoBackend[] => {
+    return this.favorites;
+  };
 
   get isFavoriteLoading() {
     return this.isLoading;
