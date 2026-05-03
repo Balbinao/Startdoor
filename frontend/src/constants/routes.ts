@@ -3,6 +3,14 @@ export const ROUTES_CONST = {
 
   SEARCH: '/pesquisar',
 
+  RECOMMENDATION: {
+    COMPANY_RECOMMENDATION: `/recomendacao`,
+  },
+
+  STATISTICS: {
+    STATISTICS_ANALYSIS: '/estatistica',
+  },
+
   STUDENT: {
     REGISTRATION: '/cadastro-estudante',
     UNIQUE: 'estudante',
@@ -11,7 +19,8 @@ export const ROUTES_CONST = {
     PROFILE_UPDATE_URL: '/perfil-estudante/:id/alterar',
     PROFILE_UPDATE: (id: string | number) => `/perfil-estudante/${id}/alterar`,
     PROFILE_FAVORITE_URL: '/perfil-estudante/:id/favoritos',
-    PROFILE_FAVORITE:(id: string | number) =>  `/perfil-estudante/${id}/favoritos`
+    PROFILE_FAVORITE: (id: string | number) =>
+      `/perfil-estudante/${id}/favoritos`,
   },
 
   COMPANY: {
@@ -32,10 +41,6 @@ export const ROUTES_CONST = {
     REVIEW_UPDADE_URL: '/perfil-estudante/:id/avaliacao/:reviewId/alterar',
     REVIEW_UPDADE_BY_ID: (id: string | number, reviewId: string | number) =>
       `/perfil-estudante/${id}/avaliacao/${reviewId}/alterar`,
-  },
-
-  STATISTICS: {
-    STATISTICS_ANALYSIS: "/analise-estatistica",
   },
 
   ROOT_PRIVATE: '/',

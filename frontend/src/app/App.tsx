@@ -5,6 +5,7 @@ import { PublicMainLayout } from '@components/layout/PublicMainLayout';
 import { ROUTES_CONST } from '@constants';
 import { CompanyProfile } from '@pages/CompanyProfile';
 import { CompanyProfileUpdateForm } from '@pages/CompanyProfileUpdateForm';
+import { CompanyRecommendation } from '@pages/CompanyRecommendation';
 import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
 import { CompanySearch } from '@pages/CompanySearch';
 import { ReviewForm } from '@pages/ReviewForm';
@@ -55,6 +56,11 @@ function App() {
             <Route
               path={ROUTES_CONST.STUDENT.PROFILE_FAVORITE_URL}
               element={<StudentFavorite />}
+            />
+
+            <Route
+              path={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION}
+              element={<CompanyRecommendation />}
             />
 
             <Route

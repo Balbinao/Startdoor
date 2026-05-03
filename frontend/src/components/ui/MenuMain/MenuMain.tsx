@@ -33,7 +33,12 @@ export const MenuMain = () => {
         <Search width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
 
-      <NavLink to={'/'} className={`p-2.5`}>
+      <NavLink
+        to={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION}
+        className={({ isActive }) =>
+          `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
+        }
+      >
         <Compass width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
 

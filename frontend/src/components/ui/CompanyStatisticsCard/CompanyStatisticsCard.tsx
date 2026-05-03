@@ -33,7 +33,7 @@ export const CompanyStatisticsCard = ({ company }: Props) => {
             )}
           </div>
 
-          <div className="flex justify-between text-(--grey-400)">
+          <div className="flex justify-between font-normal text-(--grey-400)">
             {company.estadoSede && <span>{company.estadoSede}, Brasil.</span>}
             {company.dataFundacao && (
               <span>{formatDateWithAge(company.dataFundacao)}</span>
