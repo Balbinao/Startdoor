@@ -17,7 +17,9 @@ export const useCompanySearch = () => {
     }
   }, [companySearchStore]);
 
-
+const resetFilters =()=>{
+  companySearchStore.resetFilters()
+}
 
   const setSearchText = (searchText: string) => {
     companySearchStore.setFilter('searchText', searchText);
@@ -35,7 +37,7 @@ export const useCompanySearch = () => {
     companySearchStore.setFilter('receitaAnual', receitaAnual);
   };
 
-  const setCompetencia = (key: string, value: number) => {
+  const setCompetencia = (key: string, value: number ) => {
     companySearchStore.setFilter(key as keyof typeof filters, value);
   };
 
@@ -52,5 +54,6 @@ export const useCompanySearch = () => {
     isLoading: companySearchStore.getIsLoading,
     hasMore: companySearchStore.getHasMore,
     loadMoreCompanies: companySearchStore.loadMoreCompanies,
+    resetFilters
   };
 };
