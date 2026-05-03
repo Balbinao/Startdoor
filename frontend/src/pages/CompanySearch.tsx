@@ -92,6 +92,7 @@ export const CompanySearch = observer(() => {
     competenciasFilters,
     filteredCompanies,
     isLoading,
+    resetFilters
    } = useCompanySearch();
 
   const { getSectors } = useSector();
@@ -103,6 +104,10 @@ export const CompanySearch = observer(() => {
   const debouncedSearchText = useDebounce(searchInput, DEBOUNCE_DELAY);
   
   useEffect(() => {
+  resetFilters();
+}, []);
+
+  useEffect(() => {
     setSearchText(debouncedSearchText);
   }, [debouncedSearchText]);
 
@@ -110,6 +115,7 @@ export const CompanySearch = observer(() => {
     getSectors();
   }, []);
 
+  
   useEffect(() => {
     const fetch = async () => {
       try {

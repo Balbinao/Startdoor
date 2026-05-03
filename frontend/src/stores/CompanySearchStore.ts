@@ -19,33 +19,37 @@ export class CompanySearchStore {
   hasMore = true;
   root: RootStore;
 
-  filters: ICompanySearchFilters = {
-    searchText: '',
-    notaGeralMin: 0,
-    notaGeralMax: 0,
-    paisOrigem: '',
-    estadoSede: '',
-    setorId: 0,
-    biografia: '',
-    tamanhoEmpresa: '',
-    receitaAnual: '',
-    competenciaMin: 0,
-    competenciaMax: 5,
-    ambiente: 0,
-    aprendizado: 0,
-    beneficios: 0,
-    cultura: 0,
-    efetivacao: 0,
-    entrevista: 0,
-    feedback: 0,
-    infraestrutura: 0,
-    integracao: 0,
-    remuneracao: 0,
-    rotina: 0,
-    lideranca: 0,
-    page: 0,
-    size: 8,
-  };
+  defaultFilters: ICompanySearchFilters = {
+  searchText: '',
+  notaGeralMin: 0,
+  notaGeralMax: 0,
+  paisOrigem: '',
+  estadoSede: '',
+  setorId: 0,
+  biografia: '',
+  tamanhoEmpresa: '',
+  receitaAnual: '',
+  competenciaMin: 0,
+  competenciaMax: 5,
+  ambiente: 0,
+  aprendizado: 0,
+  beneficios: 0,
+  cultura: 0,
+  efetivacao: 0,
+  entrevista: 0,
+  feedback: 0,
+  infraestrutura: 0,
+  integracao: 0,
+  remuneracao: 0,
+  rotina: 0,
+  lideranca: 0,
+  page: 0,
+  size: 8,
+};
+
+filters: ICompanySearchFilters = { ...this.defaultFilters };
+
+
 
   constructor(root: RootStore) {
     this.root = root;
@@ -120,6 +124,12 @@ export class CompanySearchStore {
   get getFilters() {
     return this.filters;
   }
+  resetFilters = () => {
+  this.filters = { ...this.defaultFilters };
+  this.setCompanies([]);
+  this.setHasMore(true);
+};
+
 
   getFilteredCompanies = (): IEmpresaResumoBackend[] => {
     return this.companies;
