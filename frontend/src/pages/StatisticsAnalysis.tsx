@@ -126,8 +126,8 @@ export const StatisticsAnalysis = () => {
     <div className="flex min-h-full flex-1 flex-col gap-22">
       <PageTitle title="Análise de Estatísticas" />
 
-      <div className="flex gap-4">
-        <div className="w-full">
+      <div className="flex flex-wrap gap-4">
+        <div className="min-w-3xs flex-1">
           <FormField
             type="select"
             name="firstCompany"
@@ -144,7 +144,7 @@ export const StatisticsAnalysis = () => {
           />
         </div>
 
-        <div className="w-full">
+        <div className="min-w-3xs flex-1">
           <FormField
             type="select"
             name="secondCompany"

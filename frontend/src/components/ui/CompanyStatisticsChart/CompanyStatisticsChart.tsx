@@ -147,15 +147,15 @@ const LegendBadges = ({
             key={key}
             type="button"
             onClick={() => onToggle(key)}
-            className={`flex items-center gap-2 rounded-full border border-(--grey-800) bg-(--grey-1000) px-5 py-2 text-sm text-(--grey-200) transition ${
+            className={`flex max-w-36 items-center gap-2 overflow-hidden rounded-full border border-(--grey-800) bg-(--grey-1000) px-5 py-2 text-sm text-(--grey-200) transition md:max-w-56 ${
               !visibility[key] && 'opacity-40'
             }`}
           >
             <span
-              className="h-2 w-2 rounded-full"
+              className="h-2 w-2 shrink-0 rounded-full"
               style={{ backgroundColor: color }}
             />
-            {label}
+            <span className="truncate">{label}</span>
           </button>
         ),
     )}
@@ -208,6 +208,7 @@ export const CompanyStatisticsChart = ({
 
   const options: ChartOptions<'radar'> = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       r: {
         beginAtZero: true,
@@ -254,7 +255,7 @@ export const CompanyStatisticsChart = ({
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-8">
       <LegendBadges
         items={sources.map(({ key, label, color }) => ({
           key,
@@ -265,7 +266,9 @@ export const CompanyStatisticsChart = ({
         onToggle={toggleVisibility}
       />
 
-      <Radar data={data} options={options} />
+      <div className="h-75 md:h-100 lg:h-125">
+        <Radar style={{ maxWidth: '100%' }} data={data} options={options} />
+      </div>
     </div>
   );
 };
