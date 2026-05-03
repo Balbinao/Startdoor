@@ -24,6 +24,7 @@ const CompanyCardList = observer(() => {
 
   useEffect(() => {
     if (!initialized && filteredCompanies.length > 0) {
+      console.log(loadFavorites())
       loadFavorites();
       setInitialized(true);
     }
@@ -57,8 +58,8 @@ const CompanyCardList = observer(() => {
           <>
             <div className="flex flex-col gap-4">
               {filteredCompanies.map(company => (
-                <CompanyCard 
-                  key={company.id} 
+                <CompanyCard
+                  key={company.id}
                   item={company}
                   isFavorite={isFavorite(company.id)}
                   onFavoriteClick={() => toggleFavorite(company)}
@@ -99,7 +100,7 @@ export const CompanySearch = observer(() => {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const debouncedSearchText = useDebounce(searchInput, DEBOUNCE_DELAY);
-  
+
   useEffect(() => {
   resetFilters();
 }, []);

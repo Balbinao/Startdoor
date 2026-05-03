@@ -18,6 +18,7 @@ export { default as FilterSelect } from './filter-select.svg?react';
 export { default as Filter } from './filter.svg?react';
 export { default as Flag } from './flag.svg?react';
 export { default as Focus } from './focus.svg?react';
+export { default as GeminiLogo } from './gemini.svg?react';
 export { default as Graph } from './graph.svg?react';
 export { default as Heart } from './heart.svg?react';
 export { default as Home } from './home.svg?react';

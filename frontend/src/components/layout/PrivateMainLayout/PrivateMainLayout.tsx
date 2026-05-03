@@ -16,7 +16,7 @@ export const PrivateMainLayout = () => {
       >
         <ChevronsLeft width={28} height={28} />
       </button>
-      <div className="flex w-full max-w-2xl flex-1 items-center justify-center pb-16">
+      <div className="flex w-full max-w-2xl flex-1 items-center justify-center pb-24 sm:pb-16">
         <Outlet />
         <div className="fixed bottom-3.5 left-1/2 -translate-x-1/2">
           <MenuMain />

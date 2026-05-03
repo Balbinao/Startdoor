@@ -14,6 +14,7 @@ export const useStudent = () => {
   const student = studentStore.getStudent;
   const students = studentStore.getStudents;
   const studentsOptions = studentStore.getStudentsOptions;
+  const conditinalScore = studentStore.getConditionalScore;
 
   const getStudent = async (id: number) => {
     try {
@@ -173,6 +174,7 @@ export const useStudent = () => {
     student,
     students,
     studentsOptions,
+    conditinalScore,
     getStudent,
     getStudents,
     studentRegistration,

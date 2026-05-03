@@ -99,7 +99,9 @@ export const CommentCardEdit = ({ item, onEdit }: Props) => {
 
         <div className="flex-1 gap-1">
           <div className="w-fullx flex justify-between">
-            <span className="text-lg font-bold">{item.authorName}</span>
+            <span className="text-lg font-bold">
+              {item.authorName ?? 'Usuário Anônimo'}
+            </span>
 
             <div className="flex items-center gap-2">
               <span className="text-sm text-(--grey-200)">
@@ -108,7 +110,9 @@ export const CommentCardEdit = ({ item, onEdit }: Props) => {
             </div>
           </div>
 
-          <span className="text-(--grey-200)">@{item.authorUsername}</span>
+          {item.authorUsername && (
+            <span className="text-(--grey-200)">@{item.authorUsername}</span>
+          )}
         </div>
       </div>
 

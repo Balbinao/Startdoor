@@ -5,10 +5,12 @@ import { PublicMainLayout } from '@components/layout/PublicMainLayout';
 import { ROUTES_CONST } from '@constants';
 import { CompanyProfile } from '@pages/CompanyProfile';
 import { CompanyProfileUpdateForm } from '@pages/CompanyProfileUpdateForm';
+import { CompanyRecommendation } from '@pages/CompanyRecommendation';
 import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
 import { CompanySearch } from '@pages/CompanySearch';
 import { ReviewForm } from '@pages/ReviewForm';
 import { ReviewView } from '@pages/ReviewView';
+import { StatisticsAnalysis } from '@pages/StatisticsAnalysis';
 import { StudentFavorite } from '@pages/StudentFavorite';
 import { StudentProfile } from '@pages/StudentProfile';
 import { StudentProfileUpdateForm } from '@pages/StudentProfileUpdateForm';
@@ -57,6 +59,11 @@ function App() {
             />
 
             <Route
+              path={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION}
+              element={<CompanyRecommendation />}
+            />
+
+            <Route
               path={ROUTES_CONST.STUDENT.PROFILE_URL}
               element={<StudentProfile />}
             />
@@ -76,6 +83,11 @@ function App() {
             <Route
               path={ROUTES_CONST.REVIEW.REVIEW_VIEW_URL}
               element={<ReviewView />}
+            />
+
+            <Route
+              path={ROUTES_CONST.STATISTICS.STATISTICS_ANALYSIS}
+              element={<StatisticsAnalysis />}
             />
 
             <Route

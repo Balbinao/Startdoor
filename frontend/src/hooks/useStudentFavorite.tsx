@@ -1,6 +1,6 @@
 import { useStore } from '@contexts/store/useStore';
-import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
 import { useAuth } from '@hooks/useAuth';
+import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
 
 export const useStudentFavorite = () => {
   const { studentFavoriteStore } = useStore();
