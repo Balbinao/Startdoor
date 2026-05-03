@@ -1,9 +1,10 @@
 import { Star } from '@assets/icons';
 import { CompanyCard } from '@components/ui/CompanyCard';
-import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
+import { ROUTES_CONST, USER_ROLES_CONST, MESSAGES_LOADING } from '@constants';
 import { useStudentFavorite } from '@hooks/useStudentFavorite';
 import { useAuth } from '@hooks/useAuth';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
@@ -11,8 +12,24 @@ import { useNavigate } from 'react-router-dom';
 const FavoriteCardList = observer(() => {
   const { favorites, isFavorite, toggleFavorite, loadFavorites } = useStudentFavorite();
 
+  const modalLoadingAuto = useModalLoadingAuto();
+  const { modalMessageError } = useModalMessageDefault();
+
   useEffect(() => {
-    loadFavorites();
+    const fetch = async () => {
+      try {
+        await modalLoadingAuto(
+          async () => {
+            await loadFavorites();
+          },
+          MESSAGES_LOADING.GET || 'Carregando favoritos...',
+        );
+      } catch (error) {
+        await modalMessageError(error);
+      }
+    };
+
+    fetch();
   }, []);
 
   return (
@@ -20,7 +37,9 @@ const FavoriteCardList = observer(() => {
       <div className="flex items-center justify-between">
         <span className="text-sm text-(--grey-400)">
           {favorites.length}{' '}
-          {favorites.length === 1 ? 'empresa favorita' : 'empresas favoritas'}
+          {favorites.length === 1
+            ? 'empresa favorita'
+            : 'empresas favoritas'}
         </span>
       </div>
 
@@ -52,38 +71,52 @@ const FavoriteCardList = observer(() => {
 export const StudentFavorite = observer(() => {
   const { getUserRole } = useAuth();
   const { modalMessageError } = useModalMessageDefault();
+  const modalLoadingAuto = useModalLoadingAuto();
   const navigate = useNavigate();
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(true);
 
   useEffect(() => {
-    const role = getUserRole();
-    if (role !== USER_ROLES_CONST.ESTUDANTE) {
-      modalMessageError({
-        message: 'Apenas estudantes podem acessar esta página.',
-        status: 403,
-      });
-      navigate(ROUTES_CONST.SEARCH, { replace: true });
-    }
-    setIsFirstLoad(false);
-  }, [getUserRole, modalMessageError, navigate]);
+    const fetch = async () => {
+      try {
+        setIsLoading(true);
 
-  if (isFirstLoad) {
-    return (
-      <div className="flex w-full flex-col gap-6">
-        <div className="flex w-full mb-4 h-20 rounded-xl items-center justify-center bg-(--grey-1100)">
-          <h1 className="text-2xl font-semibold text-(--grey-300)">Empresas Favoritas</h1>
-        </div>
-        <div className="flex items-center justify-center py-20">
-          <span className="text-(--grey-300)">Carregando...</span>
-        </div>
-      </div>
-    );
-  }
+        await modalLoadingAuto(
+          async () => {
+            const role = getUserRole();
+
+            if (role !== USER_ROLES_CONST.ESTUDANTE) {
+              throw {
+                message: 'Apenas estudantes podem acessar esta página.',
+                status: 403,
+              };
+            }
+          },
+          MESSAGES_LOADING.GET || 'Carregando...',
+        );
+
+        setIsError(false);
+      } catch (error: unknown) {
+        await modalMessageError(error);
+        navigate(ROUTES_CONST.SEARCH, { replace: true });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetch();
+  }, []);
+
+  if (isLoading) return <></>;
+  if (isError) return <></>;
 
   return (
     <div className="flex w-full flex-col gap-6">
       <div className="flex w-full mb-4 h-20 rounded-xl items-center justify-center bg-(--grey-1100)">
-        <h1 className="text-2xl font-semibold text-(--grey-300)">Empresas Favoritas</h1>
+        <h1 className="text-2xl font-semibold text-(--grey-300)">
+          Empresas Favoritas
+        </h1>
       </div>
 
       <FavoriteCardList />
