@@ -41,8 +41,19 @@ export const MenuMain = () => {
         <Home width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
 
-      <NavLink to={'/'} className={`p-2.5`}>
-        <Graph width={ICON_SIZE} height={ICON_SIZE} />
+      <NavLink
+        to={ROUTES_CONST.STATISTICS.STATISTICS_ANALYSIS}
+        className={({ isActive }) =>
+          `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
+        }
+      >
+        {({ isActive }) => (
+          <Graph
+            width={ICON_SIZE}
+            height={ICON_SIZE}
+            className={isActive ? 'text-green-50' : ''}
+          />
+        )}
       </NavLink>
 
       <NavLink

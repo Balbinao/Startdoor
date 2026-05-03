@@ -9,6 +9,7 @@ import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
 import { CompanySearch } from '@pages/CompanySearch';
 import { ReviewForm } from '@pages/ReviewForm';
 import { ReviewView } from '@pages/ReviewView';
+import { StatisticsAnalysis } from '@pages/StatisticsAnalysis';
 import { StudentFavorite } from '@pages/StudentFavorite';
 import { StudentProfile } from '@pages/StudentProfile';
 import { StudentProfileUpdateForm } from '@pages/StudentProfileUpdateForm';
@@ -76,6 +77,11 @@ function App() {
             <Route
               path={ROUTES_CONST.REVIEW.REVIEW_VIEW_URL}
               element={<ReviewView />}
+            />
+
+            <Route
+              path={ROUTES_CONST.STATISTICS.STATISTICS_ANALYSIS}
+              element={<StatisticsAnalysis />}
             />
 
             <Route

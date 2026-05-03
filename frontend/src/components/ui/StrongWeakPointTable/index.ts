@@ -1,0 +1,1 @@
+export { StrongWeakPointTable } from './StrongWeakPointTable';

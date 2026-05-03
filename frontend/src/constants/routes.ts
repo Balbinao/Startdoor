@@ -34,6 +34,10 @@ export const ROUTES_CONST = {
       `/perfil-estudante/${id}/avaliacao/${reviewId}/alterar`,
   },
 
+  STATISTICS: {
+    STATISTICS_ANALYSIS: "/analise-estatistica",
+  },
+
   ROOT_PRIVATE: '/',
   ROOT_PUBLIC: '/',
 } as const;

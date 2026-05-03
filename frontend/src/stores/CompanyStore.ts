@@ -7,6 +7,9 @@ export class CompanyStore {
   root: RootStore;
 
   company: ICompany | null = null;
+  statisticsFirstCompany: ICompany | null = null;
+  statisticsSecondCompany: ICompany | null = null;
+
   companies: ICompany[] = [];
   companiesOptions: IInputOption[] = [];
   companySectors: IInputOption[] = [];
@@ -21,6 +24,22 @@ export class CompanyStore {
 
   get getCompany() {
     return this.company;
+  }
+
+  setStatisticsFirstCompany = (company: ICompany) => {
+    this.statisticsFirstCompany = company;
+  };
+
+  get getStatisticsFirstCompany() {
+    return this.statisticsFirstCompany;
+  }
+
+  setStatisticsSecondCompany = (company: ICompany) => {
+    this.statisticsSecondCompany = company;
+  };
+
+  get getStatisticsSecondCompany() {
+    return this.statisticsSecondCompany;
   }
 
   setCompanies = (companies: ICompany[]) => {
