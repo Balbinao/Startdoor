@@ -4,7 +4,6 @@ import { FormField } from '@components/layout/FormField/FormField';
 import { Spinner } from '@components/ui/Spinner/Spinner';
 import { DROPDOWN_VALUES_CONST } from '@constants';
 import { useCompanySearch } from '@hooks/useCompanySearch';
-import { useSector } from '@hooks/useSector';
 import { useStudentFavorite } from '@hooks/useStudentFavorite';
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
@@ -95,9 +94,7 @@ export const CompanySearch = observer(() => {
     resetFilters
    } = useCompanySearch();
 
-  const { getSectors } = useSector();
-
-  const [showCompetencias, setShowCompetencias] = useState(false);
+   const [showCompetencias, setShowCompetencias] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
@@ -111,11 +108,6 @@ export const CompanySearch = observer(() => {
     setSearchText(debouncedSearchText);
   }, [debouncedSearchText]);
 
-  useEffect(() => {
-    getSectors();
-  }, []);
-
-  
   useEffect(() => {
     const fetch = async () => {
       try {

@@ -413,33 +413,34 @@ const favoriteProfileRoute =
 
   const handleLogout = () => logout();
 
-  const menuOptions = [
-    showEditLink && 
-      { text: 'Favoritos',
-      icon: (
-        <Star width={18} height={18} className="text-(--grey-200)" />
-      ),
-      onClick: () => favoriteProfileRoute && navigate(favoriteProfileRoute),
-    },
-     { text: 'Alterar dados',
-      icon: (
-        <PencilFilled width={18} height={18} className="text-(--grey-200)" />
-      ),
-      onClick: () => editProfileRoute && navigate(editProfileRoute),
-    },
-    {
-      text: 'Excluir conta',
-      icon: (
-        <TrashFilled width={18} height={18} className="text-(--grey-200)" />
-      ),
-      onClick: handleDeleteAccount,
-    },
-    {
-      text: 'Sair',
-      icon: <Logout width={18} height={18} className="text-(--grey-200)" />,
-      onClick: handleLogout,
-    },
-  ].filter(Boolean) as MenuOption[];
+ const menuOptions = [
+  showEditLink && favoriteProfileRoute && {
+    text: 'Favoritos',
+    icon: (
+      <Star width={18} height={18} className="text-(--grey-200)" />
+    ),
+    onClick: () => navigate(favoriteProfileRoute),
+  },
+  showEditLink && {
+    text: 'Alterar dados',
+    icon: (
+      <PencilFilled width={18} height={18} className="text-(--grey-200)" />
+    ),
+    onClick: () => editProfileRoute && navigate(editProfileRoute),
+  },
+  {
+    text: 'Excluir conta',
+    icon: (
+      <TrashFilled width={18} height={18} className="text-(--grey-200)" />
+    ),
+    onClick: handleDeleteAccount,
+  },
+  {
+    text: 'Sair',
+    icon: <Logout width={18} height={18} className="text-(--grey-200)" />,
+    onClick: handleLogout,
+  },
+].filter(Boolean) as MenuOption[];
 
   if (isLoading) return <></>;
   if (isError) return <></>;
