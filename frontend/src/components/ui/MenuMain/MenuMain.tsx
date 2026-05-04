@@ -20,6 +20,7 @@ export const MenuMain = () => {
       : ROUTES_CONST.STUDENT.PROFILE_BY_ID(userId);
 
   const searchPath = ROUTES_CONST.SEARCH;
+  const homePath = ROUTES_CONST.HOME;
 
   const isProfileActive = location.pathname.startsWith(profilePath);
   const isSearchActive = location.pathname.startsWith(searchPath);
@@ -42,7 +43,7 @@ export const MenuMain = () => {
         <Compass width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
 
-      <NavLink to={'/'} className={`p-2.5`}>
+      <NavLink to={homePath} className={`p-2.5`}>
         <Home width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
 
