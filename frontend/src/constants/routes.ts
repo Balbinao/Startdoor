@@ -1,6 +1,7 @@
 export const ROUTES_CONST = {
   LOGIN: '/login',
 
+  HOME: '/home',
   SEARCH: '/pesquisar',
 
   STUDENT: {

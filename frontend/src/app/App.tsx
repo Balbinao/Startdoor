@@ -6,6 +6,7 @@ import { ROUTES_CONST } from '@constants';
 import { CompanyProfile } from '@pages/CompanyProfile';
 import { CompanyProfileUpdateForm } from '@pages/CompanyProfileUpdateForm';
 import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
+import { Home } from '@pages/Home';
 import { CompanySearch } from '@pages/CompanySearch';
 import { ReviewForm } from '@pages/ReviewForm';
 import { ReviewView } from '@pages/ReviewView';
@@ -50,6 +51,11 @@ function App() {
             <Route index element={<ProfileRedirect />} />
 
             <Route path={ROUTES_CONST.SEARCH} element={<CompanySearch />} />
+
+            <Route
+              path={ROUTES_CONST.HOME}
+              element={<Home/>}
+            />
 
             <Route
               path={ROUTES_CONST.STUDENT.PROFILE_FAVORITE_URL}
