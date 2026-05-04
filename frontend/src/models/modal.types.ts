@@ -1,8 +1,11 @@
+import type { CSSProperties, ReactNode } from 'react';
+
 export type MessageType = 'success' | 'error' | 'warning' | 'info';
 
 type Base = {
   type: MessageType;
-  message: string;
+  message: ReactNode;
+  styles?: CSSProperties;
 };
 
 export type ModalMessageOptions =

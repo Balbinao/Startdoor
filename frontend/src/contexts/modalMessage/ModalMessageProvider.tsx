@@ -57,6 +57,7 @@ export const ModalMessageProvider = ({ children }: { children: ReactNode }) => {
           onClose={handleClose}
           onConfirm={handleConfirm}
           shouldAcknowledge={modal.shouldAcknowledge}
+          styles={modal.styles}
         />
       )}
     </ModalMessageContext.Provider>
