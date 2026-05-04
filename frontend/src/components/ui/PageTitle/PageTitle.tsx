@@ -1,11 +1,16 @@
-import { ChevronsLeft } from '@assets/icons';
+import { ChevronsLeft, InfoSquaredRounded } from '@assets/icons';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
+import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
   title: string;
+  modalMessage?: ReactNode;
 }
 
-export const PageTitle = ({ title }: Props) => {
+export const PageTitle = ({ title, modalMessage }: Props) => {
+  const { modalMessageSafe } = useModalMessageDefault();
+
   const navigate = useNavigate();
 
   return (
@@ -19,7 +24,33 @@ export const PageTitle = ({ title }: Props) => {
       >
         <ChevronsLeft width={28} height={28} />
       </button>
-      <span className="text-2xl font-semibold text-(--grey-200)">{title}</span>
+
+      <span className="block max-w-full truncate text-2xl font-semibold text-(--grey-200)">
+        {title}
+      </span>
+
+      {modalMessage && (
+        <button className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer">
+          <InfoSquaredRounded
+            width={28}
+            height={28}
+            onClick={async () =>
+              await modalMessageSafe({
+                type: 'info',
+                message: modalMessage,
+                shouldBlockProcess: false,
+                styles: {
+                  width: '100%',
+                  maxWidth: 672,
+                  height: '100%',
+                  maxHeight: 576,
+                },
+              })
+            }
+            className="text-(--grey-400) transition hover:text-(--blue-100)"
+          />
+        </button>
+      )}
     </div>
   );
 };

@@ -23,6 +23,7 @@ export { default as Graph } from './graph.svg?react';
 export { default as Heart } from './heart.svg?react';
 export { default as Home } from './home.svg?react';
 export { default as Hourglass } from './hourglass.svg?react';
+export { default as InfoSquaredRounded } from './info-square-rounded.svg?react';
 export { default as JigSaw } from './jigsaw.svg?react';
 export { default as Lock } from './lock.svg?react';
 export { default as LogoGupy } from './logo-gupy.svg?react';
