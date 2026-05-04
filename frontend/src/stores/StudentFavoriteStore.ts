@@ -1,7 +1,7 @@
 import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
-import type { RootStore } from './RootStore';
-import { makeAutoObservable } from 'mobx';
 import { studentFavoriteService } from '@services/studentFavoriteService';
+import { makeAutoObservable } from 'mobx';
+import type { RootStore } from './RootStore';
 
 export class StudentFavoriteStore {
   root: RootStore;
@@ -36,7 +36,9 @@ export class StudentFavoriteStore {
 
   toggleFavorite = async (empresa: IEmpresaResumoBackend) => {
     try {
-      const isNowFavorite = await studentFavoriteService.toggleFavorite(empresa.id);
+      const isNowFavorite = await studentFavoriteService.toggleFavorite(
+        empresa.id,
+      );
 
       if (isNowFavorite) {
         if (!this.favorites.some(f => f.id === empresa.id)) {

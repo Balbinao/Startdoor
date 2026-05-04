@@ -37,6 +37,7 @@ export const normalizeStudentData = (
   studentData: IStudent,
   notaCondiData: IConditionalScore,
 ): StudentProfileUpdateData => {
+  console.log(notaCondiData);
   return {
     nome: studentData.nome ?? '',
     user: studentData.user ?? '',
@@ -63,18 +64,18 @@ export const normalizeStudentData = (
     habilidadesPrincipais: studentData.habilidadesPrincipais ?? '',
     linkSite: studentData.linkSite ?? undefined,
     linkLinkedin: studentData.linkLinkedin ?? undefined,
-    ambiente: notaCondiData.ambiente,
-    aprendizado: notaCondiData.aprendizado,
-    beneficios: notaCondiData.beneficios,
-    cultura: notaCondiData.cultura,
-    efetivacao: notaCondiData.efetivacao,
-    entrevista: notaCondiData.entrevista,
-    feedback: notaCondiData.feedback,
-    infraestrutura: notaCondiData.infraestrutura,
-    integracao: notaCondiData.integracao,
-    remuneracao: notaCondiData.remuneracao,
-    rotina: notaCondiData.rotina,
-    lideranca: notaCondiData.lideranca,
+    ambiente: notaCondiData.ambiente || '',
+    aprendizado: notaCondiData.aprendizado || '',
+    beneficios: notaCondiData.beneficios || '',
+    cultura: notaCondiData.cultura || '',
+    efetivacao: notaCondiData.efetivacao || '',
+    entrevista: notaCondiData.entrevista || '',
+    feedback: notaCondiData.feedback || '',
+    infraestrutura: notaCondiData.infraestrutura || '',
+    integracao: notaCondiData.integracao || '',
+    remuneracao: notaCondiData.remuneracao || '',
+    rotina: notaCondiData.rotina || '',
+    lideranca: notaCondiData.lideranca || '',
   };
 };
 

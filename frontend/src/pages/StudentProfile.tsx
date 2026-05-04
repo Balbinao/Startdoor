@@ -114,7 +114,7 @@ export const StudentProfile = () => {
   if (isError) return <></>;
 
   return (
-    <div className="flex h-full flex-1 flex-col items-center gap-20">
+    <div className="flex h-full flex-1 flex-col items-center gap-12">
       <UserBanner type="ESTUDANTE" id={Number(urlUserId)} />
       {hasStudentInfo && (
         <div className="flex w-full max-w-3xl flex-col gap-8">
@@ -242,15 +242,15 @@ export const StudentProfile = () => {
         </div>
       )}
 
-      <div className="flex w-full flex-col gap-8">
+      <div className="flex w-full flex-col gap-8 mt-12">
         <div className="flex items-center gap-8">
           <span className="text-lg font-semibold whitespace-nowrap">
             {reviewCards.length}{' '}
             {reviewCards.length > 1 ? 'Avaliações' : 'Avaliação'}
           </span>
 
-          <div className="flex flex-1 gap-4">
-            <span className="flex-1">
+          <div className="flex flex-1 flex-wrap gap-4">
+            <span className="min-w-50 flex-1">
               <FormField
                 type="select"
                 name="sortSetor"
@@ -274,7 +274,7 @@ export const StudentProfile = () => {
                 }}
               />
             </span>
-            <span className="w-56">
+            <span className="min-w-50 flex-1">
               <FormField
                 type="select"
                 name="sortOrder"

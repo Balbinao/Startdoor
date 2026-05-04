@@ -103,6 +103,11 @@ export const ReviewForm = () => {
             MESSAGES_LOADING.GET,
           );
 
+          await modalLoadingAuto(
+            () => getCompanySectors(response.empresaId),
+            MESSAGES_LOADING.GET,
+          );
+
           reset(normalizeReviewData(response));
         }
 
