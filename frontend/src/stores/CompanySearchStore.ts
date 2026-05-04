@@ -80,39 +80,41 @@ filters: ICompanySearchFilters = { ...this.defaultFilters };
     return this.hasMore;
   }
 
-  searchCompaniesApi = async () => {
-    this.filters.page = 0;
-    this.setCompanies([]);
-    this.setHasMore(true);
-    this.setLoading(true);
-    try {
-      const response = await companySearchService.searchCompanies(this.filters);
+   searchCompaniesApi = async () => {
+     this.filters.page = 0;
+     this.setCompanies([]);
+     this.setHasMore(true);
+     this.setLoading(true);
+     try {
+       const response = await companySearchService.searchCompanies(this.filters);
 
-      console.log(response);
+       console.log(response);
 
-      this.setCompanies(response.content);
-      this.setHasMore(response.number + 1 < response.totalPages);
-    } catch (error) {
-      console.error('Error searching companies:', error);
-    } finally {
-      this.setLoading(false);
-    }
-  };
+       this.setCompanies(response.content);
+       this.setHasMore(response.number + 1 < response.totalPages);
+     } catch (error) {
+       console.error('Error searching companies:', error);
+       throw error;
+     } finally {
+       this.setLoading(false);
+     }
+   };
 
-  loadMoreCompanies = async () => {
-    if (!this.hasMore || this.isLoading) return;
-    this.filters.page += 1;
-    this.setLoading(true);
-    try {
-      const response = await companySearchService.searchCompanies(this.filters);
-      this.setCompanies([...this.companies, ...response.content]);
-      this.setHasMore(response.number + 1 < response.totalPages);
-    } catch (error) {
-      console.error('Error loading more companies:', error);
-    } finally {
-      this.setLoading(false);
-    }
-  };
+   loadMoreCompanies = async () => {
+     if (!this.hasMore || this.isLoading) return;
+     this.filters.page += 1;
+     this.setLoading(true);
+     try {
+       const response = await companySearchService.searchCompanies(this.filters);
+       this.setCompanies([...this.companies, ...response.content]);
+       this.setHasMore(response.number + 1 < response.totalPages);
+     } catch (error) {
+       console.error('Error loading more companies:', error);
+       throw error;
+     } finally {
+       this.setLoading(false);
+     }
+   };
 
   setFilter = <K extends keyof ICompanySearchFilters>(
     key: K,

@@ -9,12 +9,13 @@ import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { COMPETENCIAS_LABELS } from '@stores/CompanySearchStore';
 import { useDebounce } from '@hooks/useDebounce';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useInView } from 'react-intersection-observer';
 
 const SELECT_WIDTH = 'w-36';
 const ICON = 18;
 const SELECT_STYLE = 'h-11 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)]';
-const DEBOUNCE_DELAY = 100;
+const DEBOUNCE_DELAY = 300;
 
 const CompanyCardList = observer(() => {
   const { filteredCompanies, isLoading, hasMore, loadMoreCompanies } = useCompanySearch();
@@ -98,29 +99,30 @@ export const CompanySearch = observer(() => {
   const [searchInput, setSearchInput] = useState('');
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  const debouncedSearchText = useDebounce(searchInput, DEBOUNCE_DELAY);
-  
-  useEffect(() => {
-  resetFilters();
-}, []);
+   const debouncedSearchText = useDebounce(searchInput, DEBOUNCE_DELAY);
+   const { modalMessageError } = useModalMessageDefault();
+   
+   useEffect(() => {
+   resetFilters();
+ }, []);
 
   useEffect(() => {
     setSearchText(debouncedSearchText);
   }, [debouncedSearchText]);
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        await getCompanies();
-        if (isFirstLoad) {
-          setIsFirstLoad(false);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetch();
-  }, [filters.searchText, filters.notaGeralMin, filters.tamanhoEmpresa, filters.receitaAnual, filters.ambiente, filters.aprendizado, filters.beneficios, filters.cultura, filters.efetivacao, filters.entrevista, filters.feedback, filters.infraestrutura, filters.integracao, filters.remuneracao, filters.rotina, filters.lideranca, isFirstLoad]);
+   useEffect(() => {
+     const fetch = async () => {
+       try {
+         await getCompanies();
+         if (isFirstLoad) {
+           setIsFirstLoad(false);
+         }
+       } catch (error) {
+         await modalMessageError(error);
+       }
+     };
+     fetch();
+   }, [filters.searchText, filters.notaGeralMin, filters.tamanhoEmpresa, filters.receitaAnual, filters.ambiente, filters.aprendizado, filters.beneficios, filters.cultura, filters.efetivacao, filters.entrevista, filters.feedback, filters.infraestrutura, filters.integracao, filters.remuneracao, filters.rotina, filters.lideranca, isFirstLoad]);
 
   const handleNotaChange = (value: string | number) => {
     const nota = Number(value);
@@ -143,18 +145,18 @@ export const CompanySearch = observer(() => {
     setReceitaAnual(String(value));
   };
 
-  if (isFirstLoad && isLoading && filteredCompanies.length === 0) {
-    return (
-      <div className="flex w-full flex-col gap-6">
-        <div className="flex w-full mb-4 h-20 rounded-xl items-center justify-center bg-(--grey-1100)">
-          <h1 className="text-2xl font-semibold text-(--grey-300)">Pesquisar Empresas</h1>
-        </div>
-        <div className="flex items-center justify-center py-20">
-          <span className="text-(--grey-300)">Carregando...</span>
-        </div>
-      </div>
-    );
-  }
+  // if (isFirstLoad && isLoading && filteredCompanies.length === 0) {
+  //   return (
+  //     <div className="flex w-full flex-col gap-6">
+  //       <div className="flex w-full mb-4 h-20 rounded-xl items-center justify-center bg-(--grey-1100)">
+  //         <h1 className="text-2xl font-semibold text-(--grey-300)">Pesquisar Empresas</h1>
+  //       </div>
+  //       <div className="flex items-center justify-center py-20">
+  //         <span className="text-(--grey-300)">Carregando...</span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex w-full flex-col gap-6">
