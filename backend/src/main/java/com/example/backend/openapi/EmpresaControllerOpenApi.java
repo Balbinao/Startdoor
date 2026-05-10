@@ -218,6 +218,9 @@ public interface EmpresaControllerOpenApi {
             @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
                     content = @Content(examples = @ExampleObject(
                             value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "403", description = "Acesso negado — apenas própria empresa ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
             @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
                     content = @Content(examples = @ExampleObject(
                             value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
@@ -237,6 +240,9 @@ public interface EmpresaControllerOpenApi {
             @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
                     content = @Content(examples = @ExampleObject(
                             value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "403", description = "Acesso negado — apenas própria empresa ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
             @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
                     content = @Content(examples = @ExampleObject(
                             value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
@@ -292,6 +298,9 @@ public interface EmpresaControllerOpenApi {
         @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
             content = @Content(examples = @ExampleObject(
                 value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+        @ApiResponse(responseCode = "403", description = "Acesso negado — apenas ADMIN ou própria empresa",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
         @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
             content = @Content(examples = @ExampleObject(
                 value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
@@ -306,6 +315,9 @@ public interface EmpresaControllerOpenApi {
         @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
             content = @Content(examples = @ExampleObject(
                 value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+        @ApiResponse(responseCode = "403", description = "Acesso negado — apenas ADMIN ou própria empresa",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
         @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
             content = @Content(examples = @ExampleObject(
                 value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))

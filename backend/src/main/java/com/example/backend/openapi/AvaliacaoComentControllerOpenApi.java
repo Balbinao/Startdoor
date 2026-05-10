@@ -24,13 +24,7 @@ public interface AvaliacaoComentControllerOpenApi {
     @Operation(summary = "Listar comentários de estudantes", description = "Retorna todos os comentários de estudantes em uma avaliação")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Comentários retornados com sucesso",
-            content = @Content(schema = @Schema(implementation = AvaliacaoComentResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
-            content = @Content(examples = @ExampleObject(
-                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
-        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
-            content = @Content(examples = @ExampleObject(
-                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
+            content = @Content(schema = @Schema(implementation = AvaliacaoComentResponseDTO.class)))
     })
     @GetMapping("/{avaliacaoId}/comentarios-estudante")
     ResponseEntity<List<AvaliacaoComentResponseDTO>> listarComentarios(
@@ -110,13 +104,7 @@ public interface AvaliacaoComentControllerOpenApi {
     @Operation(summary = "Listar comentários da empresa", description = "Retorna todos os comentários da empresa em uma avaliação")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Comentários retornados com sucesso",
-            content = @Content(schema = @Schema(implementation = EmpresaAvaliacaoComentResponseDTO.class))),
-        @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
-            content = @Content(examples = @ExampleObject(
-                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
-        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
-            content = @Content(examples = @ExampleObject(
-                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
+            content = @Content(schema = @Schema(implementation = EmpresaAvaliacaoComentResponseDTO.class)))
     })
     @GetMapping("/{avaliacaoId}/comentarios-empresa")
     ResponseEntity<List<EmpresaAvaliacaoComentResponseDTO>> listarComentariosEmpresa(

@@ -48,7 +48,7 @@ public interface FavoritoControllerOpenApi {
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado — apenas estudante autenticado",
+                    description = "Acesso negado — apenas usuário autenticado",
                     content = @Content(examples = @ExampleObject(
                             value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
                     ))
@@ -108,7 +108,7 @@ public interface FavoritoControllerOpenApi {
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado — apenas estudante autenticado",
+                    description = "Acesso negado — apenas usuário autenticado",
                     content = @Content(examples = @ExampleObject(
                             value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
                     ))
