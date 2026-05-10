@@ -63,15 +63,19 @@ public class OpenAPIConfig {
                                 | POST | /empresas/{id}/setores | ADMIN ou Dono |
                                 | DELETE | /empresas/{id}/setores/{setorId} | ADMIN ou Dono |
                                 | GET | /empresas/ | Público |
+                                | POST | /empresas/cadastrar/empresa | Público |
                                 | GET | /empresas/{id} | Público |
                                 | GET |	/empresas/pesquisa | Público |
                                 | PUT | /empresas/{id} | Própria empresa ou ADMIN |
                                 | PUT | /empresas/{id}/foto	| ADMIN ou empresa |
                                 | DELETE | /empresas/{id}/foto | ADMIN ou empresa |
                                 | DELETE | /empresas/{id} | Própria empresa ou ADMIN |
+                                | PATCH | /empresas/{id}/senha | Própria empresa ou ADMIN |
                                 | GET | /estudantes | ADMIN |
                                 | GET | /estudantes/{id} | Próprio estudante ou ADMIN |
                                 | PUT | /estudantes/{id} | Próprio estudante ou ADMIN |
+                                | PATCH | /estudantes/{id}/senha | Próprio estudante ou ADMIN |
+                                | POST | /estudantes/cadastrar/estudante | Público |
                                 | PUT | /estudantes/{id}/foto |	Próprio estudante ou ADMIN
                                 | DELETE | /estudantes/{id}/foto |Próprio estudante ou ADMIN
                                 | DELETE | /estudantes/{id} | Próprio estudante ou ADMIN |
@@ -85,6 +89,9 @@ public class OpenAPIConfig {
                                 | DELETE | /experiencias-academicas/{id} | Próprio estudante ou ADMIN
                                 | POST| /experiencias-profissionais/estudante/{estudanteId}	| Próprio estudante ou ADMIN
                                 | GET | /experiencias-profissionais/estudante/{estudanteId}	| Público
+                                | GET | /experiencias-profissionais/{id} | Autenticado |
+                                | PUT | /experiencias-profissionais/{id} | Próprio estudante ou ADMIN |
+                                | DELETE | /experiencias-profissionais/{id} | Próprio estudante ou ADMIN |
                                 | GET | /avaliacoes/estudante/ | Público |
                                 | GET | /avaliacoes/estudante/{id} | Público |
                                 | POST | /avaliacoes/estudante/{id} | ESTUDANTE, ADMIN |
@@ -99,6 +106,10 @@ public class OpenAPIConfig {
                                 | PUT | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
                                 | DELETE | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
                                 | GET | /admin/ | ADMIN |
+                                | POST | /auth/login | Público |
+                                | POST | /favoritos/{empresaId} | Autenticado |
+                                | GET | /favoritos | Autenticado |
+                                | POST | /recomendacoes/ia/gerar | Próprio estudante ou ADMIN |
 
 
                                 ## 🔒 Anonimato
