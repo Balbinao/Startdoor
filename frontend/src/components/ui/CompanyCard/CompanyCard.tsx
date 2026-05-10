@@ -1,20 +1,22 @@
 import { Star, StarFilled } from '@assets/icons';
 import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
-import { ROUTES_CONST } from '@constants';
-import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
+import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
+import { useAuth } from '@hooks/useAuth';
+import type { ICompanySearchItem } from '@models/companySearchData.types';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  item: IEmpresaResumoBackend;
+  item: ICompanySearchItem;
   isFavorite?: boolean;
-  onFavoriteClick?: (e: React.MouseEvent) => void;
+  onToggleFavorite?: (id: number) => void;
 }
 
-
-export const CompanyCard = ({ item, isFavorite, onFavoriteClick }: Props) => {
+export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
   const navigate = useNavigate();
-  const LOREM =
-    'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio facilis suscipit saepe, laborum quibusdam voluptatem quae deleniti earum voluptas assumenda laudantium odit neque placeat, voluptate nam quia eligendi qui amet.';
+
+  const { getUserRole } = useAuth();
+
+  const isCompany = getUserRole() === USER_ROLES_CONST.EMPRESA;
 
   const handleCardClick = () => {
     navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(item.id));
@@ -22,9 +24,7 @@ export const CompanyCard = ({ item, isFavorite, onFavoriteClick }: Props) => {
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (onFavoriteClick) {
-      onFavoriteClick(e);
-    }
+    if (onToggleFavorite) onToggleFavorite(item.id);
   };
 
   return (
@@ -58,13 +58,15 @@ export const CompanyCard = ({ item, isFavorite, onFavoriteClick }: Props) => {
         </div>
 
         <div className="flex flex-col gap-3">
-          <button onClick={handleFavoriteClick} className='self-end'>
-            <Star
-              width={16}
-              height={16}
-              className={`text-(--yellow-100) ${isFavorite ? 'fill-yellow-500' : ''}`}
-            />
-          </button>
+          {!isCompany && (
+            <button onClick={handleFavoriteClick} className="self-end">
+              <Star
+                width={16}
+                height={16}
+                className={`text-(--yellow-100) ${isFavorite ? 'fill-yellow-500' : ''}`}
+              />
+            </button>
+          )}
           {item.paisOrigem && item.estadoSede && (
             <div className="text-xs text-(--grey-400)">
               {item.paisOrigem + ', ' + item.estadoSede}
@@ -73,9 +75,11 @@ export const CompanyCard = ({ item, isFavorite, onFavoriteClick }: Props) => {
         </div>
       </div>
 
-      <p className="text-xs leading-relaxed text-(--grey-200)">
-        {item.biografia || LOREM}
-      </p>
+      {item.biografia && (
+        <p className="text-xs leading-relaxed text-(--grey-200)">
+          {item.biografia}
+        </p>
+      )}
 
       {item.mediaGeral !== undefined && item.mediaGeral > 0 && (
         <div className="flex w-fit items-center gap-2 rounded-lg bg-(--grey-900) px-3 py-1.5">

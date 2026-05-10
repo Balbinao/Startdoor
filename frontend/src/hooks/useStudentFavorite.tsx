@@ -1,35 +1,28 @@
-import { useStore } from '@contexts/store/useStore';
-import { useAuth } from '@hooks/useAuth';
-import type { IEmpresaResumoBackend } from '@models/companySearchData.types';
+import { studentFavoriteService } from '@services/studentFavoriteService';
 
 export const useStudentFavorite = () => {
-  const { studentFavoriteStore } = useStore();
-  const { getUserId } = useAuth();
-
-  const userId = getUserId();
-
-  const favorites = studentFavoriteStore.getFavorites();
-  const isLoading = studentFavoriteStore.isFavoriteLoading;
-
-  const isFavorite = (empresaId: number): boolean => {
-    return studentFavoriteStore.isFavorite(empresaId);
+  const getFavorites = async () => {
+    try {
+      const response = await studentFavoriteService.getFavorites();
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
-  const toggleFavorite = (empresa: IEmpresaResumoBackend) => {
-    if (!userId) return;
-    studentFavoriteStore.toggleFavorite(empresa);
-  };
-
-  const loadFavorites = () => {
-    if (!userId) return;
-    studentFavoriteStore.loadFavorites();
+  const toggleFavorite = async (empresaId: number) => {
+    try {
+      const response = await studentFavoriteService.toggleFavorite(empresaId);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
   return {
-    favorites,
-    isLoading,
-    isFavorite,
+    getFavorites,
     toggleFavorite,
-    loadFavorites,
   };
 };

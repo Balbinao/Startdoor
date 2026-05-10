@@ -21,5 +21,6 @@ export const MESSAGES_RESPONSE = {
   },
   ERROR: {
     SERVER: 'Parece que houve um erro no servidor!',
+    NO_ACCESS: 'Seu usuário não possui acesso a essa página!',
   },
 } as const;

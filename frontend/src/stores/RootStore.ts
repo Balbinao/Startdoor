@@ -6,7 +6,6 @@ import { ReviewStore } from './ReviewStore';
 import { SectorStore } from './SectorStore';
 import { StudentStore } from './StudentStore';
 import { CompanySearchStore } from './CompanySearchStore';
-import { StudentFavoriteStore } from './StudentFavoriteStore';
 
 export class RootStore {
   authStore: AuthStore;
@@ -17,7 +16,6 @@ export class RootStore {
   studentStore: StudentStore;
   commentStore: CommentStore;
   companySearchStore: CompanySearchStore;
-  studentFavoriteStore: StudentFavoriteStore;
 
   constructor() {
     this.authStore = new AuthStore(this);
@@ -28,7 +26,6 @@ export class RootStore {
     this.studentStore = new StudentStore(this);
     this.commentStore = new CommentStore(this);
     this.companySearchStore = new CompanySearchStore(this);
-    this.studentFavoriteStore = new StudentFavoriteStore(this);
   }
 }
 

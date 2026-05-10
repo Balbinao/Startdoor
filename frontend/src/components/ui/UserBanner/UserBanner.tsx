@@ -19,12 +19,12 @@ import {
   PictureScan,
   School,
   SpeechBubble,
+  Star,
   StarFilled,
   TrashFilled,
   TrendingUp,
   UserFilled,
   World,
-  Star
 } from '@assets/icons';
 import {
   MESSAGES_LOADING,
@@ -190,11 +190,11 @@ export const UserBanner = ({ type, id }: Props) => {
       : type === USER_ROLES_CONST.EMPRESA
         ? ROUTES_CONST.COMPANY.PROFILE_UPDATE(userId!)
         : null;
-        
-const favoriteProfileRoute =
+
+  const favoriteProfileRoute =
     type === USER_ROLES_CONST.ESTUDANTE
       ? ROUTES_CONST.STUDENT.PROFILE_FAVORITE(userId!)
-      :  null;
+      : null;
 
   const showUpdateView = location.pathname === editProfileRoute;
   const showEditLink =
@@ -413,34 +413,39 @@ const favoriteProfileRoute =
 
   const handleLogout = () => logout();
 
- const menuOptions = [
-  showEditLink && favoriteProfileRoute && {
-    text: 'Favoritos',
-    icon: (
-      <Star width={18} height={18} className="text-(--grey-200)" />
-    ),
-    onClick: () => navigate(favoriteProfileRoute),
-  },
-  showEditLink && {
-    text: 'Alterar dados',
-    icon: (
-      <PencilFilled width={18} height={18} className="text-(--grey-200)" />
-    ),
-    onClick: () => editProfileRoute && navigate(editProfileRoute),
-  },
-  {
-    text: 'Excluir conta',
-    icon: (
-      <TrashFilled width={18} height={18} className="text-(--grey-200)" />
-    ),
-    onClick: handleDeleteAccount,
-  },
-  {
-    text: 'Sair',
-    icon: <Logout width={18} height={18} className="text-(--grey-200)" />,
-    onClick: handleLogout,
-  },
-].filter(Boolean) as MenuOption[];
+  const menuOptions = [
+    showEditLink &&
+      favoriteProfileRoute && {
+        text: 'Favoritos',
+        icon: (
+          <Star
+            width={18}
+            height={18}
+            className="fill-(--grey-200) text-(--grey-200)"
+          />
+        ),
+        onClick: () => navigate(favoriteProfileRoute),
+      },
+    showEditLink && {
+      text: 'Alterar dados',
+      icon: (
+        <PencilFilled width={18} height={18} className="text-(--grey-200)" />
+      ),
+      onClick: () => editProfileRoute && navigate(editProfileRoute),
+    },
+    {
+      text: 'Excluir conta',
+      icon: (
+        <TrashFilled width={18} height={18} className="text-(--grey-200)" />
+      ),
+      onClick: handleDeleteAccount,
+    },
+    {
+      text: 'Sair',
+      icon: <Logout width={18} height={18} className="text-(--grey-200)" />,
+      onClick: handleLogout,
+    },
+  ].filter(Boolean) as MenuOption[];
 
   if (isLoading) return <></>;
   if (isError) return <></>;

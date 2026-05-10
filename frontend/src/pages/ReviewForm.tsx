@@ -207,7 +207,7 @@ export const ReviewForm = () => {
             label="Empresa"
             options={companiesOptions}
             required={true}
-            onChange={value => {
+            onChange={(value: string | number) => {
               const companyId = Number(value);
               modalLoadingAuto(
                 () => getCompanySectors(companyId),
