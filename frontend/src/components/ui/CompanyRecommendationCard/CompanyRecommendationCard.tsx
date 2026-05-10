@@ -1,7 +1,9 @@
 import { GeminiLogo, Star, StarFilled } from '@assets/icons';
 import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
+import { ROUTES_CONST } from '@constants';
 import type { ICompanyRecommendation } from '@models/statisticsRecommendation.types';
 import { formatDateWithAge } from '@utils/formatData';
+import { Link } from 'react-router-dom';
 
 interface Props {
   recommendation: ICompanyRecommendation;
@@ -96,13 +98,13 @@ export const CompanyRecommendationCard = ({
           </div>
         </div>
 
-        <button
-          onClick={e => e.stopPropagation()}
+        <Link
+          to={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION_ANALYSIS}
           className="flex cursor-pointer items-center gap-2 rounded-lg border border-(--purple-500) bg-(--purple-600) px-3 py-2 font-medium text-(--purple-200) transition-colors hover:bg-(--purple-500)"
         >
           <GeminiLogo width={18} height={18} />
           Ver Recomendação
-        </button>
+        </Link>
       </div>
     </div>
   );
