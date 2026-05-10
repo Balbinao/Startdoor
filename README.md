@@ -8,9 +8,9 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow?style=for-the-badge&logo=progress"/>
-   <img src="https://img.shields.io/badge/%20Trabalho%20Acadêmico-FATEC%20Ipiranga-8B0000?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge&logo=open-source-initiative"/>
-  <img src="https://img.shields.io/badge/AI-Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
+   <a href="https://fatecipiranga.cps.sp.gov.br/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/%20Trabalho%20Acadêmico-FATEC%20Ipiranga-8B0000?style=for-the-badge"/></a>
+   <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge&logo=open-source-initiative"/></a>
+   <a href="https://ai.google.dev/gemini-api" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/AI-Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/></a>
 </p>
 
 <br>
@@ -91,6 +91,36 @@ Clique no botão abaixo para acessar o protótipo feito no figma.
 
 O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recomendações personalizadas de empresas para cada estudante.
 
+### Configuração da API Key (Google Gemini)
+
+Para utilizar as recomendações com IA, é necessário gerar uma chave de API do Google Gemini:
+
+1. Acesse [https://aistudio.google.com/apikey](https://aistudio.google.com/apikey)
+2. Faça login com sua conta Google
+3. Clique em **"Create API Key"**
+4. Selecione ou crie um projeto no Google Cloud
+5. Copie a chave gerada
+
+**No ambiente de desenvolvimento local:**
+
+Edite o arquivo `backend/src/main/resources/application-local.properties`:
+```properties
+gemini.api.key=sua-chave-aqui
+```
+Substitua `sua-chave-aqui` pela chave real.
+
+**Via Docker Compose:**
+
+A variável `GEMINI_API_KEY` já existe no `docker-compose.yml` — basta substituir `sua-chave-aqui` pela chave real:
+```yaml
+environment:
+  - GEMINI_API_KEY=sua-chave-aqui
+```
+
+**Planos Gratuitos:**
+- O Gemini API possui um **nível gratuito** (free tier) com limites de requisições por dia (RPD)
+- Consulte [https://ai.google.dev/pricing](https://ai.google.dev/pricing) para limites atualizados
+
 ### Como funciona?
 
 1. O sistema analisa as **notas condicionais** do estudante (suas preferências)
@@ -100,6 +130,37 @@ O sistema utiliza **Inteligência Artificial (Google Gemini)** para gerar recome
 ### Exemplo de recomendação gerada por IA:
 
 > *"Como você mencionou em seu perfil que valoriza **autonomia** e busca o setor de **Tecnologia**, a Empresa X é recomendada pois sua nota em 'Autonomia' (4.5) supera sua nota condicional (3.0)."*
+
+### Fluxo Técnico da Recomendação
+
+1. **Requisição:** `POST /recomendacoes/ia/gerar` com `{ estudanteId, empresaId }` no body
+2. **Autorização:** Apenas ADMIN ou o próprio estudante (via `@estudanteSecurity.isOwner`)
+3. **Validação:** Verifica se a `GEMINI_API_KEY` está configurada — senão retorna **503**
+4. **Busca dos dados:** Carrega `Estudante`, `Empresa` e os setores da empresa no banco — se não encontrados, retorna **404**
+5. **Montagem do prompt:** Constrói um texto estruturado com:
+
+    **Dados do Estudante:**
+    - Nome, Biografia, Modelo de Trabalho Preferido, Setor de Interesse
+    - Notas Condicionais (0–5): Ambiente, Aprendizado, Benefícios, Cultura, Efetivação, Entrevista, Feedback, Infraestrutura, Integração, Remuneração, Rotina, Liderança
+
+    **Dados da Empresa:**
+    - Nome, Biografia, Área de Atuação, Setores, Porte, Estado
+    - Médias Reais (0–5) nas mesmas 12 competências + Média Geral
+
+6. **Chamada à API Gemini:** Envia o prompt via HTTP POST com timeout de 30s
+7. **Tratamento da resposta:**
+    - Status ≠ 200 → **502** (Bad Gateway)
+    - Conteúdo bloqueado por segurança (`SAFETY`/`PROHIBITED`) → erro de conteúdo bloqueado
+    - Resposta válida → extrai o texto gerado
+8. **Retorno:** `{ "texto": "..." }` com o texto personalizado em português
+
+### Regras do Prompt
+
+- Tom pessoal e acolhedor, em português brasileiro
+- Começa citando algo da biografia ou preferências (sem mencionar o nome)
+- Destaca 2–3 competências onde a média da empresa **supera** a nota condicional do estudante, comparando os valores
+- Menciona compatibilidade com os setores/área de atuação quando relevante
+- Máximo de 4 a 5 frases, sem markdown ou saudações
 
 ### Regras de Negócio aplicadas:
 
@@ -202,7 +263,7 @@ API responsável pelas regras de negócio, autenticação com **JWT** e fornecim
 <p>As imagens do projeto podem ser executadas em qualquer ambiente com <b>Docker Desktop</b> instalado, sem necessidade de instalar Java, Node.js ou configurar banco de dados manualmente.</p>
 <h4>Fluxo de Uso:</h4>
 <ol>
-  <li><b>Pré-requisito:</b> Instalar o <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a></li>
+  <li><b>Pré-requisito:</b> Instalar o <a href="https://www.docker.com/products/docker-desktop/">Docker</a></li>
   <li><b>Criar arquivo</b> <code>docker-compose.yml</code> com o conteúdo abaixo</li>
   <h4>docker-compose.yml:</h4>
 <pre><code>version: '3.8'
@@ -220,14 +281,11 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - GEMINI_API_KEY=sua-chave-aqui
   frontend:
     image: startdoor/startdoor-frontend:latest
     ports:
-      - "5173:5173"</code></pre>
-  <li><b>Baixar imagens:</b>
-    <pre><code>docker pull startdoor/startdoor-backend:latest
-docker pull startdoor/startdoor-frontend:latest</code></pre>
-  </li>
+      - "5173:80"</code></pre>
   <li><b>Executar:</b> 
     <code>docker-compose up -d</code></li>
   <li><b>Acessar o projeto:</b>
@@ -244,12 +302,15 @@ docker pull startdoor/startdoor-frontend:latest</code></pre>
     <td><b>Backend API</b></td>
     <td><a href="http://localhost:8080">http://localhost:8080</a></td>
   </tr>
+  <tr>
+    <td><b>Swagger UI</b></td>
+    <td><a href="http://localhost:8080/swagger-ui/index.html">http://localhost:8080/swagger-ui/index.html</a></td>
+  </tr>
 </table>
 </ol>
 <h4>Notas:</h4>
 <ul>
   <li>Todas as imagens são atualizadas automaticamente a cada push na branch <code>main</code></li>
-  <li>Para atualizar, basta rodar <code>docker-compose pull && docker-compose up -d</code></li>
   <li>O banco MySQL é criado automaticamente na primeira execução</li>
 </ul>
 <br>
