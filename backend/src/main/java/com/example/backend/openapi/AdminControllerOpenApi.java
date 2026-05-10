@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @Tag(name = "👑 Administradores", description = "Operações exclusivas para administradores (requer role ADMIN)")
+@SecurityRequirement(name = "Bearer Authentication")
 public interface AdminControllerOpenApi {
 
     @Operation(summary = "Criar novo administrador")
@@ -40,14 +42,25 @@ public interface AdminControllerOpenApi {
                     )
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Não autorizado",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    description = "Acesso negado — apenas ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> criarAdmin(CadastroAdminDTO data);
@@ -60,14 +73,25 @@ public interface AdminControllerOpenApi {
                     content = @Content(schema = @Schema(implementation = Admin.class))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Não autorizado",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    description = "Acesso negado — apenas ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<List<Admin>> listarAdmins();
@@ -81,18 +105,29 @@ public interface AdminControllerOpenApi {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Administrador não encontrado",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Não autorizado",
+                    description = "Administrador não encontrado (sem corpo na resposta)",
                     content = @Content
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Acesso negado — apenas ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> buscarAdmin(Long id);
@@ -118,19 +153,32 @@ public interface AdminControllerOpenApi {
                     )
             ),
             @ApiResponse(
-                    responseCode = "404",
+                    responseCode = "400",
                     description = "Administrador não encontrado",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Não autorizado",
-                    content = @Content
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"Admin não encontrado\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Acesso negado — apenas ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> atualizarAdmin(Long id, CadastroAdminDTO data);
@@ -156,14 +204,25 @@ public interface AdminControllerOpenApi {
                     )
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Não autorizado",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    description = "Acesso negado — apenas ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> deletarAdmin(Long id);

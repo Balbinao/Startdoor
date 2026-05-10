@@ -41,7 +41,7 @@ public interface EmpresaControllerOpenApi {
                     description = "Erro de validação",
                     content = @Content(
                             examples = {
-                                    @ExampleObject(name = "Email duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"E-mail corporativo já cadastrado\"}"),
+                                    @ExampleObject(name = "Email duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"E-mail corporativo já cadastrado no sistema\"}"),
                                     @ExampleObject(name = "CNPJ duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"CNPJ já cadastrado\"}")
                             }
                     )
@@ -57,9 +57,11 @@ public interface EmpresaControllerOpenApi {
                     content = @Content(schema = @Schema(implementation = Empresa.class))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<List<EmpresaResponseDTO>> listar();
@@ -77,9 +79,11 @@ public interface EmpresaControllerOpenApi {
                     content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Empresa não encontrada com o ID: 1\"}"))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<EmpresaResponseDTO> buscar(Long id);
@@ -100,18 +104,29 @@ public interface EmpresaControllerOpenApi {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Dados inválidos",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"Erro de validação\"}"))
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    description = "E-mail já em uso",
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"Este e-mail já está em uso por outro no sistema.\"}"))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas própria empresa ou ADMIN",
-                    content = @Content
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Acesso negado — apenas própria empresa ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> atualizar(Long id, AtualizarEmpresaDTO data);
@@ -130,14 +145,25 @@ public interface EmpresaControllerOpenApi {
                     content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Empresa não encontrada com o ID: 1\"}"))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas própria empresa ou ADMIN",
-                    content = @Content
+                    description = "Acesso negado — apenas própria empresa ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> deletar(Long id);
@@ -157,17 +183,28 @@ public interface EmpresaControllerOpenApi {
             @ApiResponse(
                     responseCode = "404",
                     description = "Empresa não encontrada",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":404,\"message\":\"Empresa não encontrada com o ID: 1\"}"))
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":404,\"message\":\"Empresa não encontrada\"}"))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas a própria empresa ou ADMIN pode alterar a senha",
-                    content = @Content
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Acesso negado — apenas a própria empresa ou ADMIN pode alterar a senha",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> alterarSenha(Long id, AlterarSenhaDTO data);
@@ -177,7 +214,13 @@ public interface EmpresaControllerOpenApi {
             @ApiResponse(responseCode = "200", description = "Logo atualizado com sucesso",
                     content = @Content(schema = @Schema(implementation = EmpresaResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Arquivo inválido (deve ser imagem)"),
-            @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada"),
+            @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<EmpresaResponseDTO> uploadFoto(
             @PathVariable Long id,
@@ -190,7 +233,13 @@ public interface EmpresaControllerOpenApi {
     @Operation(summary = "Remover logo da empresa")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Foto removida com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada"),
+            @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<Void> removerFoto(@PathVariable Long id);
 
@@ -198,7 +247,11 @@ public interface EmpresaControllerOpenApi {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pesquisa realizada com sucesso",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = EmpresaResumoDTO.class)))),
-            @ApiResponse(responseCode = "401", description = "Token JWT ausente ou inválido", content = @Content)
+            @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
+            )
     })
     ResponseEntity<Page<EmpresaResumoDTO>> pesquisar(
             @Parameter(description = "Nome da empresa", required = false) String nome,
@@ -223,7 +276,10 @@ public interface EmpresaControllerOpenApi {
     @Operation(summary = "Listar setores de uma empresa")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Lista de setores retornada com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+        @ApiResponse(responseCode = "404", description = "Empresa não encontrada"),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<List<EmpresaSetorResponseDTO>> listarSetoresDaEmpresa(Long id);
 
@@ -232,7 +288,13 @@ public interface EmpresaControllerOpenApi {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Setor adicionado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Empresa ou Setor não encontrado"),
-        @ApiResponse(responseCode = "409", description = "Setor já associado à empresa")
+        @ApiResponse(responseCode = "409", description = "Setor já associado à empresa"),
+        @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<EmpresaSetorResponseDTO> adicionarSetor(Long id, AdicionarSetorEmpresaDTO data);
 
@@ -240,7 +302,13 @@ public interface EmpresaControllerOpenApi {
     @PreAuthorize("hasRole('ADMIN') or @empresaSecurity.isOwner(#id)")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Setor removido com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Vínculo não encontrado")
+        @ApiResponse(responseCode = "404", description = "Vínculo não encontrado"),
+        @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<Void> removerSetor(Long id, Long setorId);
 }

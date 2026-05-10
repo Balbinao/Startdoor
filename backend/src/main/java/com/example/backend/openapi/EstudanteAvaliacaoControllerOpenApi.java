@@ -5,9 +5,11 @@ import com.example.backend.dto.EstudanteAvaliacaoResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +17,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "⭐ Avaliações", description = "Endpoints para gerenciamento de avaliações de estudantes sobre empresas")
+@SecurityRequirement(name = "Bearer Authentication")
 public interface EstudanteAvaliacaoControllerOpenApi {
 
     @Operation(summary = "Criar avaliação", description = "Cria uma nova avaliação de um estudante sobre uma empresa")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Avaliação criada com sucesso"),
+        @ApiResponse(responseCode = "200", description = "Avaliação criada com sucesso",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":200,\"message\":\"Avaliação criada com sucesso!\"}"))),
         @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content),
-        @ApiResponse(responseCode = "401", description = "Não autenticado", content = @Content),
-        @ApiResponse(responseCode = "403", description = "Acesso negado", content = @Content)
+        @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+        @ApiResponse(responseCode = "403", description = "Acesso negado — sem permissão",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     @PostMapping("/estudante/{estudanteId}")
     ResponseEntity<?> criar(
@@ -31,7 +43,11 @@ public interface EstudanteAvaliacaoControllerOpenApi {
 
     @Operation(summary = "Listar avaliações por empresa", description = "Retorna todas as avaliações de uma empresa")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Avaliações retornadas com sucesso")
+        @ApiResponse(responseCode = "200", description = "Avaliações retornadas com sucesso",
+            content = @Content(schema = @Schema(implementation = EstudanteAvaliacaoResponseDTO.class))),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     @GetMapping("/empresa/{empresaId}")
     ResponseEntity<List<EstudanteAvaliacaoResponseDTO>> listarPorEmpresa(
@@ -39,8 +55,14 @@ public interface EstudanteAvaliacaoControllerOpenApi {
 
     @Operation(summary = "Buscar avaliação por ID", description = "Retorna uma avaliação específica")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Avaliação retornada com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Avaliação não encontrada", content = @Content)
+        @ApiResponse(responseCode = "200", description = "Avaliação retornada com sucesso",
+            content = @Content(schema = @Schema(implementation = EstudanteAvaliacaoResponseDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Avaliação não encontrada",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":404,\"message\":\"Avaliação não encontrada\"}"))),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     @GetMapping("/{id}")
     ResponseEntity<EstudanteAvaliacaoResponseDTO> buscar(
@@ -48,7 +70,11 @@ public interface EstudanteAvaliacaoControllerOpenApi {
 
     @Operation(summary = "Listar avaliações por estudante", description = "Retorna todas as avaliações de um estudante")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Avaliações retornadas com sucesso")
+        @ApiResponse(responseCode = "200", description = "Avaliações retornadas com sucesso",
+            content = @Content(schema = @Schema(implementation = EstudanteAvaliacaoResponseDTO.class))),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     @GetMapping("/estudante/{estudanteId}")
     ResponseEntity<List<EstudanteAvaliacaoResponseDTO>> listarPorEstudante(
@@ -56,8 +82,21 @@ public interface EstudanteAvaliacaoControllerOpenApi {
 
     @Operation(summary = "Atualizar avaliação", description = "Atualiza uma avaliação existente")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Avaliação atualizada com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Avaliação não encontrada", content = @Content)
+        @ApiResponse(responseCode = "200", description = "Avaliação atualizada com sucesso",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":200,\"message\":\"Avaliação atualizada com sucesso!\"}"))),
+        @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+        @ApiResponse(responseCode = "403", description = "Acesso negado — sem permissão",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
+        @ApiResponse(responseCode = "404", description = "Avaliação não encontrada",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":404,\"message\":\"Avaliação não encontrada\"}"))),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     @PutMapping("/{id}")
     ResponseEntity<?> atualizar(
@@ -66,8 +105,19 @@ public interface EstudanteAvaliacaoControllerOpenApi {
 
     @Operation(summary = "Deletar avaliação", description = "Remove uma avaliação")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Avaliação removida com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Avaliação não encontrada", content = @Content)
+        @ApiResponse(responseCode = "204", description = "Avaliação removida com sucesso", content = @Content),
+        @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+        @ApiResponse(responseCode = "403", description = "Acesso negado — sem permissão",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
+        @ApiResponse(responseCode = "404", description = "Avaliação não encontrada",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":404,\"message\":\"Avaliação não encontrada\"}"))),
+        @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+            content = @Content(examples = @ExampleObject(
+                value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     @DeleteMapping("/{id}")
     ResponseEntity<?> deletar(

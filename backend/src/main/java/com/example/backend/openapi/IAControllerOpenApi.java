@@ -34,7 +34,7 @@ public interface IAControllerOpenApi {
                             @ExampleObject(
                                     name = "Erro de validação",
                                     summary = "Campos obrigatórios não informados",
-                                    value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":400,\"message\":\"estudanteId: must not be null\"}"
+                                    value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":400,\"message\":\"must not be null\"}"
                             ),
                             @ExampleObject(
                                     name = "Conteúdo bloqueado pela IA",
@@ -49,10 +49,10 @@ public interface IAControllerOpenApi {
                     })
             ),
             @ApiResponse(
-                    responseCode = "401",
+                    responseCode = "403",
                     description = "Token JWT ausente, inválido ou expirado",
                     content = @Content(examples = @ExampleObject(
-                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":401,\"message\":\"Token JWT ausente ou inválido\"}"
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
                     ))
             ),
             @ApiResponse(
