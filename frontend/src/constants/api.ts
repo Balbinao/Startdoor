@@ -35,7 +35,9 @@ export const API_CONST = {
   },
   RECOMMENDATION: {
     COMPANY_RECOMMENDATION: `/api/matches/recomendacoes`,
-    COMPANY_RECOMMENDATION_ANALYSIS: (id: number) => `/api/matches/empresa/${id}`,
+    COMPANY_RECOMMENDATION_ANALYSIS: `/recomendacoes/ia/gerar`,
+    COMPANY_STATISTIC_STRONG_WEAK_POINT: (id: number) =>
+      `/api/matches/empresa/${id}`,
   },
   EXPERIENCE: {
     ACADEMIC_BY_ID: (id: number) => `/experiencias-academicas/${id}`,

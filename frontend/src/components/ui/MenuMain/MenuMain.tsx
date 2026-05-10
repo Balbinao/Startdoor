@@ -35,7 +35,7 @@ export const MenuMain = () => {
       </NavLink>
       {!(userRole === USER_ROLES_CONST.EMPRESA) && (
         <NavLink
-          to={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION}
+          to={ROUTES_CONST.STATISTICS_RECOMMENDATION.COMPANY_RECOMMENDATION}
           className={({ isActive }) =>
             `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
           }
@@ -53,7 +53,7 @@ export const MenuMain = () => {
       </NavLink>
       {!(userRole === USER_ROLES_CONST.EMPRESA) && (
         <NavLink
-          to={ROUTES_CONST.STATISTICS.STATISTICS_ANALYSIS}
+          to={ROUTES_CONST.STATISTICS_RECOMMENDATION.COMPANY_STATISTIC_ANALYSIS}
           className={({ isActive }) =>
             `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
           }

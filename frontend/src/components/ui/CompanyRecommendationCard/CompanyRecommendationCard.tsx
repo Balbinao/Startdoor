@@ -3,17 +3,18 @@ import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
 import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import type { ICompanyRecommendation } from '@models/statisticRecommendation.types';
-import { formatDateWithAge } from '@utils/formatData';
 import { Link } from 'react-router-dom';
 
 interface Props {
   recommendation: ICompanyRecommendation;
+  studentId: number;
   isFavorite?: boolean;
   onToggleFavorite?: (id: number) => void;
 }
 
 export const CompanyRecommendationCard = ({
   recommendation,
+  studentId,
   isFavorite,
   onToggleFavorite,
 }: Props) => {
@@ -51,9 +52,9 @@ export const CompanyRecommendationCard = ({
                 <span>{recommendation.estadoSede}, Brasil</span>
               )}
 
-              {recommendation.dataFundacao && (
+              {/* {recommendation.dataFundacao && (
                 <span>{formatDateWithAge(recommendation.dataFundacao)}</span>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -98,13 +99,16 @@ export const CompanyRecommendationCard = ({
 
           <div className="w-fit rounded-lg border border-(--grey-800) bg-(--grey-900) px-3 py-2">
             <span className="flex items-center font-bold text-(--blue-100)">
-              {recommendation.porcentagemCompatibilidade}%
+              {recommendation.percentualMatch}%
             </span>
           </div>
         </div>
 
         <Link
-          to={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION_ANALYSIS}
+          to={ROUTES_CONST.STATISTICS_RECOMMENDATION.COMPANY_RECOMMENDATION_ANALYSIS(
+            studentId,
+            recommendation.id,
+          )}
           className="flex cursor-pointer items-center gap-2 rounded-lg border border-(--purple-500) bg-(--purple-600) px-3 py-2 font-medium text-(--purple-200) transition-colors hover:bg-(--purple-500)"
         >
           <GeminiLogo width={18} height={18} />

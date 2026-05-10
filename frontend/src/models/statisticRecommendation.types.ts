@@ -20,3 +20,7 @@ export interface ICompanyRecommendation {
   mediaGeral?: number;
   percentualMatch: number;
 }
+
+export interface ICompanyRecommendationAnalysis {
+  textoJustificativa: string;
+}

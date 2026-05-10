@@ -1,6 +1,6 @@
 import { CompanyRecommendationCard } from '@components/ui/CompanyRecommendationCard';
 import { PageTitle } from '@components/ui/PageTitle';
-import { MESSAGES_LOADING } from '@constants';
+import { MESSAGES_LOADING, MESSAGES_RESPONSE } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -37,8 +37,12 @@ export const CompanyRecommendation = () => {
     );
 
   useEffect(() => {
-    const fetchFavorites = async () => {
+    const fetch = async () => {
       try {
+        if (!userId) {
+          throw new Error(MESSAGES_RESPONSE.WARNING.USER_ID_NOT_FOUND);
+        }
+
         await modalLoadingAuto(
           () => getConditionalScore(Number(userId)),
           MESSAGES_LOADING.GET,
@@ -57,7 +61,7 @@ export const CompanyRecommendation = () => {
       }
     };
 
-    fetchFavorites();
+    fetch();
   }, []);
 
   useEffect(() => {
@@ -167,12 +171,14 @@ export const CompanyRecommendation = () => {
           </div>
         )}
 
-        {canLoadRecommendedCompanies &&
+        {userId &&
+          canLoadRecommendedCompanies &&
           recommendedCompanies.map(item => {
             return (
               <CompanyRecommendationCard
                 key={item.id}
                 recommendation={item}
+                studentId={userId}
                 isFavorite={favorites.some(favorite => favorite.id === item.id)}
                 onToggleFavorite={handleToggleFavorite}
               />

@@ -23,8 +23,26 @@ export const useStatisticRecommendation = () => {
     }
   };
 
+  const getCompanyRecommendationAnalysis = async (
+    studentId: number,
+    companyId: number,
+  ) => {
+    try {
+      const response =
+        await statisticRecommendationService.getCompanyRecommendationAnalysis(
+          studentId,
+          companyId,
+        );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     getStrongWeakPoints,
     getCompanyRecommendations,
+    getCompanyRecommendationAnalysis,
   };
 };
