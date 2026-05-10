@@ -1,17 +1,21 @@
 import { CompanyRecommendationCard } from '@components/ui/CompanyRecommendationCard';
 import { PageTitle } from '@components/ui/PageTitle';
-import { MESSAGES_LOADING, USER_ROLES_CONST } from '@constants';
+import { MESSAGES_LOADING } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useStatisticRecommendation } from '@hooks/useStatisticRecommendation';
+import { useStudent } from '@hooks/useStudent';
 import { useStudentFavorite } from '@hooks/useStudentFavorite';
 import type { ICompanyRecommendation } from '@models/statisticRecommendation.types';
 import { useEffect, useState } from 'react';
 
 export const CompanyRecommendation = () => {
+  const { getCompanyRecommendations } = useStatisticRecommendation();
   const { getFavorites, toggleFavorite } = useStudentFavorite();
+  const { conditinalScore, getConditionalScore } = useStudent();
 
-  const { getUserRole } = useAuth();
+  const { getUserId } = useAuth();
 
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
@@ -19,14 +23,26 @@ export const CompanyRecommendation = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
+  const [recommendedCompanies, setRecommendedCompanies] = useState<
+    ICompanyRecommendation[]
+  >([]);
   const [favorites, setFavorites] = useState<{ id: number }[]>([]);
 
-  const isCompany = getUserRole() === USER_ROLES_CONST.EMPRESA;
+  const userId = getUserId();
+
+  const canLoadRecommendedCompanies =
+    conditinalScore &&
+    Object.values(conditinalScore).every(
+      value => value !== 0 && value !== undefined && value !== null,
+    );
 
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        if (isCompany) return;
+        await modalLoadingAuto(
+          () => getConditionalScore(Number(userId)),
+          MESSAGES_LOADING.GET,
+        );
 
         const favorites = await modalLoadingAuto(
           () => getFavorites(),
@@ -44,46 +60,23 @@ export const CompanyRecommendation = () => {
     fetchFavorites();
   }, []);
 
-  const companyRecommendationsMock: ICompanyRecommendation[] = [
-    {
-      id: 1,
-      nomeFantasia: 'TechNova Solutions',
-      estadoSede: 'SP',
-      dataFundacao: '2015-03-20',
-      biografia:
-        'Empresa focada em soluções inovadoras de tecnologia e transformação digital.',
-      mediaGeral: 4.5,
-      porcentagemCompatibilidade: 92,
-    },
-    {
-      id: 2,
-      nomeFantasia: 'GreenFuture Energia',
-      estadoSede: 'MG',
-      dataFundacao: '2010-08-12',
-      biografia: 'Especializada em energia renovável e sustentabilidade.',
-      mediaGeral: 4.2,
-      porcentagemCompatibilidade: 85,
-    },
-    {
-      id: 3,
-      nomeFantasia: 'HealthPlus Clínica',
-      estadoSede: 'RJ',
-      dataFundacao: null,
-      biografia: 'Rede de clínicas voltadas ao bem-estar e saúde preventiva.',
-      mediaGeral: 4.0,
-      porcentagemCompatibilidade: 78,
-    },
-    {
-      id: 9,
-      nomeFantasia: 'EduTech Brasil',
-      estadoSede: 'PR',
-      dataFundacao: '2018-01-05',
-      biografia:
-        'Plataforma educacional com foco em ensino digital e acessível.',
-      mediaGeral: 4.7,
-      porcentagemCompatibilidade: 95,
-    },
-  ];
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        if (!canLoadRecommendedCompanies) return;
+
+        const response = await modalLoadingAuto(
+          () => getCompanyRecommendations(),
+          MESSAGES_LOADING.GET,
+        );
+        setRecommendedCompanies(response);
+      } catch (error) {
+        await modalMessageError(error);
+      }
+    };
+
+    fetch();
+  }, [canLoadRecommendedCompanies]);
 
   const handleToggleFavorite = async (companyId: number) => {
     try {
@@ -164,17 +157,27 @@ export const CompanyRecommendation = () => {
     <div className="flex min-h-full flex-1 flex-col gap-22">
       <PageTitle title="Recomendação de Empresas" modalMessage={modalMessage} />
 
-      <div className="flex flex-col gap-8">
-        {companyRecommendationsMock.map(item => {
-          return (
-            <CompanyRecommendationCard
-              key={item.id}
-              recommendation={item}
-              isFavorite={favorites.some(favorite => favorite.id === item.id)}
-              onToggleFavorite={handleToggleFavorite}
-            />
-          );
-        })}
+      <div className="flex flex-1 flex-col gap-8">
+        {!canLoadRecommendedCompanies && (
+          <div className="mb-32 flex flex-1 items-center justify-center">
+            <span className="block w-96 text-center font-normal text-(--grey-500)">
+              Para visualizar as recomendações, por favor defina todas as notas
+              condicionais em seu perfil...
+            </span>
+          </div>
+        )}
+
+        {canLoadRecommendedCompanies &&
+          recommendedCompanies.map(item => {
+            return (
+              <CompanyRecommendationCard
+                key={item.id}
+                recommendation={item}
+                isFavorite={favorites.some(favorite => favorite.id === item.id)}
+                onToggleFavorite={handleToggleFavorite}
+              />
+            );
+          })}
       </div>
     </div>
   );

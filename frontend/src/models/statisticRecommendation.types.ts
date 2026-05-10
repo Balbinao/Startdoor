@@ -15,8 +15,8 @@ export interface ICompanyRecommendation {
   fotoUrl?: string | null;
   nomeFantasia: string;
   estadoSede?: string;
-  dataFundacao?: string | null;
+  paisOrigem?: string;
   biografia?: string;
   mediaGeral?: number;
-  porcentagemCompatibilidade: number;
+  percentualMatch: number;
 }

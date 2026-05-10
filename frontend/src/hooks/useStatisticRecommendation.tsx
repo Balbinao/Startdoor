@@ -12,7 +12,19 @@ export const useStatisticRecommendation = () => {
     }
   };
 
+  const getCompanyRecommendations = async () => {
+    try {
+      const response =
+        await statisticRecommendationService.getCompanyRecommendations();
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     getStrongWeakPoints,
+    getCompanyRecommendations,
   };
 };
