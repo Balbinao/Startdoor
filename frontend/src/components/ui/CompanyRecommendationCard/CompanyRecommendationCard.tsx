@@ -1,7 +1,10 @@
 import { GeminiLogo, Star, StarFilled } from '@assets/icons';
 import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
+import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
+import { useAuth } from '@hooks/useAuth';
 import type { ICompanyRecommendation } from '@models/statisticsRecommendation.types';
 import { formatDateWithAge } from '@utils/formatData';
+import { Link } from 'react-router-dom';
 
 interface Props {
   recommendation: ICompanyRecommendation;
@@ -14,6 +17,10 @@ export const CompanyRecommendationCard = ({
   isFavorite,
   onToggleFavorite,
 }: Props) => {
+  const { getUserRole } = useAuth();
+
+  const isCompany = getUserRole() === USER_ROLES_CONST.EMPRESA;
+
   const handleFavoriteClick = () => {
     if (onToggleFavorite) {
       onToggleFavorite(recommendation.id);
@@ -21,7 +28,7 @@ export const CompanyRecommendationCard = ({
   };
 
   return (
-    <div className="flex w-full flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1000) p-4">
+    <div className="flex w-full flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1100) p-4">
       <div className="flex items-start justify-between">
         <div className="flex gap-3">
           {recommendation.fotoUrl ? (
@@ -52,15 +59,18 @@ export const CompanyRecommendationCard = ({
         </div>
 
         <div className="flex flex-col items-end gap-3">
-          <button onClick={handleFavoriteClick} className="self-end">
-            <Star
-              width={16}
-              height={16}
-              className={`text-(--yellow-100) ${
-                isFavorite ? 'fill-yellow-500' : ''
-              }`}
-            />
-          </button>
+          {!isCompany && (
+            <button
+              onClick={handleFavoriteClick}
+              className="cursor-pointer self-end p-1"
+            >
+              <Star
+                width={20}
+                height={20}
+                className={`text-(--yellow-100) ${isFavorite ? 'fill-yellow-500' : ''}`}
+              />
+            </button>
+          )}
         </div>
       </div>
 
@@ -93,13 +103,13 @@ export const CompanyRecommendationCard = ({
           </div>
         </div>
 
-        <button
-          onClick={e => e.stopPropagation()}
+        <Link
+          to={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION_ANALYSIS}
           className="flex cursor-pointer items-center gap-2 rounded-lg border border-(--purple-500) bg-(--purple-600) px-3 py-2 font-medium text-(--purple-200) transition-colors hover:bg-(--purple-500)"
         >
           <GeminiLogo width={18} height={18} />
           Ver Recomendação
-        </button>
+        </Link>
       </div>
     </div>
   );

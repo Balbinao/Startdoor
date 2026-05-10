@@ -1,6 +1,7 @@
 import { CompanyRecommendationCard } from '@components/ui/CompanyRecommendationCard';
 import { PageTitle } from '@components/ui/PageTitle';
-import { MESSAGES_LOADING } from '@constants';
+import { MESSAGES_LOADING, USER_ROLES_CONST } from '@constants';
+import { useAuth } from '@hooks/useAuth';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentFavorite } from '@hooks/useStudentFavorite';
@@ -10,6 +11,8 @@ import { useEffect, useState } from 'react';
 export const CompanyRecommendation = () => {
   const { getFavorites, toggleFavorite } = useStudentFavorite();
 
+  const { getUserRole } = useAuth();
+
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
 
@@ -18,9 +21,13 @@ export const CompanyRecommendation = () => {
 
   const [favorites, setFavorites] = useState<{ id: number }[]>([]);
 
+  const isCompany = getUserRole() === USER_ROLES_CONST.EMPRESA;
+
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
+        if (isCompany) return;
+
         const favorites = await modalLoadingAuto(
           () => getFavorites(),
           MESSAGES_LOADING.GET,
@@ -95,7 +102,7 @@ export const CompanyRecommendation = () => {
   };
 
   const modalMessage = (
-    <div className="flex flex-col gap-12 text-(--grey-200)">
+    <div className="flex flex-col gap-12 leading-8 text-(--grey-200)">
       <div className="flex flex-col gap-3">
         <h1 className="text-lg font-medium">Sistema de recomendação</h1>
         <p>

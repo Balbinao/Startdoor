@@ -6,6 +6,7 @@ export const ROUTES_CONST = {
 
   RECOMMENDATION: {
     COMPANY_RECOMMENDATION: `/recomendacao`,
+    COMPANY_RECOMMENDATION_ANALYSIS: `/recomendacao/analise`,
   },
 
   STATISTICS: {

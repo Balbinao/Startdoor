@@ -6,9 +6,10 @@ import { ROUTES_CONST } from '@constants';
 import { CompanyProfile } from '@pages/CompanyProfile';
 import { CompanyProfileUpdateForm } from '@pages/CompanyProfileUpdateForm';
 import { CompanyRecommendation } from '@pages/CompanyRecommendation';
+import { CompanyRecommendationAnalysis } from '@pages/CompanyRecommendationAnalysis';
 import { CompanyRegistrationForm } from '@pages/CompanyRegistrationForm';
-import { Home } from '@pages/Home';
 import { CompanySearch } from '@pages/CompanySearch';
+import { Home } from '@pages/Home';
 import { ReviewForm } from '@pages/ReviewForm';
 import { ReviewView } from '@pages/ReviewView';
 import { StatisticsAnalysis } from '@pages/StatisticsAnalysis';
@@ -54,10 +55,7 @@ function App() {
 
             <Route path={ROUTES_CONST.SEARCH} element={<CompanySearch />} />
 
-            <Route
-              path={ROUTES_CONST.HOME}
-              element={<Home/>}
-            />
+            <Route path={ROUTES_CONST.HOME} element={<Home />} />
 
             <Route
               path={ROUTES_CONST.STUDENT.PROFILE_FAVORITE_URL}
@@ -67,6 +65,11 @@ function App() {
             <Route
               path={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION}
               element={<CompanyRecommendation />}
+            />
+
+            <Route
+              path={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION_ANALYSIS}
+              element={<CompanyRecommendationAnalysis />}
             />
 
             <Route

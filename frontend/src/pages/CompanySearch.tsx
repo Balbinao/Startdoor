@@ -8,7 +8,12 @@ import { FormField } from '@components/layout/FormField/FormField';
 import { CompanyCard } from '@components/ui/CompanyCard';
 import { PageTitle } from '@components/ui/PageTitle';
 import { Spinner } from '@components/ui/Spinner/Spinner';
-import { DROPDOWN_VALUES_CONST, MESSAGES_LOADING } from '@constants';
+import {
+  DROPDOWN_VALUES_CONST,
+  MESSAGES_LOADING,
+  USER_ROLES_CONST,
+} from '@constants';
+import { useAuth } from '@hooks/useAuth';
 import { useCompanySearch } from '@hooks/useCompanySearch';
 import { useDebounce } from '@hooks/useDebounce';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
@@ -18,7 +23,7 @@ import {
   type ICompanySearchFilters,
   type ICompanySearchItem,
 } from '@models/companySearchData.types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const ICON = 18;
 
@@ -56,6 +61,8 @@ export const CompanySearch = () => {
   const { storedFilters, getCompaniesSearch } = useCompanySearch();
   const { getFavorites, toggleFavorite } = useStudentFavorite();
 
+  const { getUserRole } = useAuth();
+
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
 
@@ -71,7 +78,14 @@ export const CompanySearch = () => {
   const [nomeInput, setNomeInput] = useState(filters.nome || '');
   const debouncedNome = useDebounce(nomeInput, 400);
 
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+
   const [favorites, setFavorites] = useState<{ id: number }[]>([]);
+
+  const isCompany = getUserRole() === USER_ROLES_CONST.EMPRESA;
 
   useEffect(() => {
     const fetchInitial = async () => {
@@ -80,12 +94,14 @@ export const CompanySearch = () => {
           () => getCompaniesSearch(filters),
           MESSAGES_LOADING.GET,
         );
-        const favorites = await modalLoadingAuto(
-          () => getFavorites(),
-          MESSAGES_LOADING.GET,
-        );
+        if (!isCompany) {
+          const favorites = await modalLoadingAuto(
+            () => getFavorites(),
+            MESSAGES_LOADING.GET,
+          );
+          setFavorites(favorites.map(item => ({ id: item.id })));
+        }
         setSearchedCompanies(response.content);
-        setFavorites(favorites.map(item => ({ id: item.id })));
       } catch (error) {
         setIsError(true);
         await modalMessageError(error);
@@ -98,11 +114,12 @@ export const CompanySearch = () => {
   }, []);
 
   useEffect(() => {
-    if (initialLoading) return;
     const fetchReactive = async () => {
       try {
         setSearchingLoading(true);
-        const response = await getCompaniesSearch(filters);
+        setPage(0);
+
+        const response = await fetchCompanies(0, false);
         setSearchedCompanies(response.content);
       } catch (error) {
         await modalMessageError(error);
@@ -111,7 +128,7 @@ export const CompanySearch = () => {
       }
     };
 
-    fetchReactive();
+    if (!initialLoading) fetchReactive();
   }, [filters]);
 
   useEffect(() => {
@@ -120,6 +137,68 @@ export const CompanySearch = () => {
       nome: debouncedNome || undefined,
     }));
   }, [debouncedNome]);
+
+  useEffect(() => {
+    if (initialLoading) return;
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        const target = entries[0];
+
+        console.log('📍 Observer triggered:', {
+          isIntersecting: target?.isIntersecting,
+          page,
+          totalPages,
+        });
+
+        if (!target?.isIntersecting) return;
+        if (searchingLoading || isFetchingMore) return;
+        if (page >= totalPages - 1) return;
+
+        loadMore();
+      },
+      {
+        root: null,
+        rootMargin: '200px',
+        threshold: 0,
+      },
+    );
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [initialLoading, page, totalPages, searchingLoading, isFetchingMore]);
+
+  const fetchCompanies = async (nextPage: number, append = false) => {
+    const response = await getCompaniesSearch({
+      ...filters,
+      page: nextPage,
+    });
+
+    setTotalPages(response.totalPages);
+
+    setSearchedCompanies(prev =>
+      append ? [...prev, ...response.content] : response.content,
+    );
+
+    return response;
+  };
+
+  const loadMore = async () => {
+    if (page >= totalPages - 1) return;
+    try {
+      setIsFetchingMore(true);
+      const nextPage = page + 1;
+      await fetchCompanies(nextPage, true);
+      setPage(nextPage);
+    } catch (error) {
+      await modalMessageError(error);
+    } finally {
+      setIsFetchingMore(false);
+    }
+  };
 
   const handleFilterCompetenceScore =
     (key: keyof ICompanySearchFilters) => (value: string | number) => {
@@ -278,29 +357,29 @@ export const CompanySearch = () => {
         </div>
       )}
 
-      <div className="flex flex-1 flex-col gap-4">
-        <span className="text-sm text-(--grey-400)">
+      <div className="flex flex-1 flex-col gap-3">
+        <span className="text-(--grey-400)">
           {searchedCompanies.length}{' '}
           {searchedCompanies.length === 1
             ? 'empresa encontrada'
             : 'empresas encontradas'}
         </span>
-        {!searchingLoading && (
+        {!searchingLoading && !isFetchingMore && (
           <div className="flex flex-1 flex-col justify-center">
             {searchedCompanies.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-4">
                 <Search
                   width={48}
                   height={48}
-                  className="text-(--grey-500)"
+                  className="text-(--grey-800)"
                   strokeWidth={1}
                 />
-                <p className="text-(--grey-400)">
+                <p className="text-(--grey-500)">
                   Nenhuma empresa encontrada com os filtros aplicados.
                 </p>
               </div>
             ) : (
-              <div className="flex flex-1 flex-col gap-4">
+              <div className="flex flex-1 flex-col gap-6">
                 {searchedCompanies.map(company => (
                   <CompanyCard
                     key={company.id}
@@ -314,7 +393,9 @@ export const CompanySearch = () => {
           </div>
         )}
 
-        {searchingLoading && (
+        <div ref={sentinelRef} className="h-10" />
+
+        {(searchingLoading || isFetchingMore) && (
           <div className="flex flex-1 items-center justify-center">
             <Spinner />
           </div>

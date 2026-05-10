@@ -91,21 +91,17 @@ export const StudentFavorite = () => {
     <div className="flex min-h-full w-full flex-col gap-6">
       <PageTitle title="Empresas Favoritas" />
 
-      <div className="flex flex-1 flex-col gap-4">
-        <span className="text-sm text-(--grey-400)">
-          {favorites.length}{' '}
-          {favorites.length === 1 ? 'empresa favorita' : 'empresas favoritas'}
-        </span>
+      <div className="flex flex-1 flex-col gap-3">
         <div className="flex flex-1 flex-col justify-center">
           {favorites.length === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-4">
               <Star
                 width={48}
                 height={48}
-                className="text-(--grey-500)"
+                className="text-(--grey-800)"
                 strokeWidth={1}
               />
-              <p className="text-(--grey-400)">
+              <p className="text-(--grey-500)">
                 Nenhuma empresa favorita encontrada.
               </p>
             </div>

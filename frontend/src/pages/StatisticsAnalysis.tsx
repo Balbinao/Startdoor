@@ -99,7 +99,7 @@ export const StatisticsAnalysis = () => {
   }, []);
 
   const modalMessage = (
-    <div className="flex flex-col gap-12 text-(--grey-200)">
+    <div className="flex flex-col gap-12 leading-8 text-(--grey-200)">
       <div className="flex flex-col gap-3">
         <h1 className="text-lg font-medium">Critérios avaliados</h1>
         <p>

@@ -10,7 +10,6 @@ import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
   ROUTES_CONST,
-  USER_ROLES_CONST,
   userLoginFields,
 } from '@constants';
 import { useAuth } from '@hooks/useAuth';
@@ -47,15 +46,17 @@ export const UserLoginForm = () => {
 
   const onSubmit = async (data: UserLoginFormData) => {
     try {
-      const { id, tipo } = await modalLoadingAuto(
-        () => login(data),
-        MESSAGES_LOADING.LOGIN,
-      );
-      if (tipo === USER_ROLES_CONST.ESTUDANTE) {
-        navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(id));
-      } else if (tipo === USER_ROLES_CONST.EMPRESA) {
-        navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(id));
-      }
+      // const { id, tipo } = await modalLoadingAuto(
+      //   () => login(data),
+      //   MESSAGES_LOADING.LOGIN,
+      // );
+      // if (tipo === USER_ROLES_CONST.ESTUDANTE) {
+      //   navigate(ROUTES_CONST.STUDENT.PROFILE_BY_ID(id));
+      // } else if (tipo === USER_ROLES_CONST.EMPRESA) {
+      //   navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(id));
+      // }
+      await modalLoadingAuto(() => login(data), MESSAGES_LOADING.LOGIN);
+      navigate(ROUTES_CONST.HOME);
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : MESSAGES_RESPONSE.ERROR.SERVER;
