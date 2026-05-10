@@ -49,30 +49,29 @@ export const StatisticsAnalysis = () => {
       value => value !== 0 && value !== undefined && value !== null,
     );
 
+  const firstCompanyHasValidMedias =
+    firstCompany?.medias &&
+    Object.values(firstCompany.medias).every(
+      value => value !== 0 && value !== undefined && value !== null,
+    );
+
+  const secondCompanyHasValidMedias =
+    secondCompany?.medias &&
+    Object.values(secondCompany.medias).every(
+      value => value !== 0 && value !== undefined && value !== null,
+    );
+
   useEffect(() => {
-    const fetchCompanies = async () => {
+    const fetchInitialData = async () => {
       try {
         setIsLoading(true);
+
         await modalLoadingAuto(() => getCompanies(), MESSAGES_LOADING.GET);
+
         await modalLoadingAuto(
           () => getConditionalScore(Number(userId)),
           MESSAGES_LOADING.GET,
         );
-
-        if (canLoadStrongWeakPoints && firstCompany) {
-          const strongWeakPoints = await modalLoadingAuto(
-            () => getStrongWeakPoints(firstCompany.id),
-            MESSAGES_LOADING.GET,
-          );
-          setFirstCompanyStrongWeakPoints(strongWeakPoints);
-        }
-        if (canLoadStrongWeakPoints && secondCompany) {
-          const strongWeakPoints = await modalLoadingAuto(
-            () => getStrongWeakPoints(secondCompany.id),
-            MESSAGES_LOADING.GET,
-          );
-          setSecondCompanyStrongWeakPoints(strongWeakPoints);
-        }
       } catch (error) {
         await modalMessageError(error);
       } finally {
@@ -80,8 +79,50 @@ export const StatisticsAnalysis = () => {
       }
     };
 
-    fetchCompanies();
+    fetchInitialData();
   }, []);
+
+  useEffect(() => {
+    const fetchStrongWeakPoints = async () => {
+      try {
+        if (
+          canLoadStrongWeakPoints &&
+          firstCompany &&
+          firstCompanyHasValidMedias
+        ) {
+          const strongWeakPoints = await modalLoadingAuto(
+            () => getStrongWeakPoints(firstCompany.id),
+            MESSAGES_LOADING.GET,
+          );
+
+          setFirstCompanyStrongWeakPoints(strongWeakPoints);
+        }
+
+        if (
+          canLoadStrongWeakPoints &&
+          secondCompany &&
+          secondCompanyHasValidMedias
+        ) {
+          const strongWeakPoints = await modalLoadingAuto(
+            () => getStrongWeakPoints(secondCompany.id),
+            MESSAGES_LOADING.GET,
+          );
+
+          setSecondCompanyStrongWeakPoints(strongWeakPoints);
+        }
+      } catch (error) {
+        await modalMessageError(error);
+      }
+    };
+
+    fetchStrongWeakPoints();
+  }, [
+    canLoadStrongWeakPoints,
+    firstCompany,
+    firstCompanyHasValidMedias,
+    secondCompany,
+    secondCompanyHasValidMedias,
+  ]);
 
   const modalMessage = (
     <div className="flex flex-col gap-12 leading-8 text-(--grey-200)">
@@ -166,11 +207,12 @@ export const StatisticsAnalysis = () => {
   const handleSelectCompany = async (
     value: string | number,
     setCompany: (company: ICompany | null) => void,
-    storeCompany: (company: ICompany) => void,
+    storeCompany: (company: ICompany | null) => void,
     setStrongWeakPoints: (strongWeakPoints: IStrongWeakPoint | null) => void,
   ) => {
     if (!value) {
       setCompany(null);
+      storeCompany(null);
       setStrongWeakPoints(null);
       return;
     }
@@ -180,15 +222,25 @@ export const StatisticsAnalysis = () => {
         () => getCompany(Number(value)),
         MESSAGES_LOADING.GET,
       );
+
       setCompany(company);
       storeCompany(company);
 
-      if (canLoadStrongWeakPoints) {
+      const companyHasValidMedias =
+        company.medias &&
+        Object.values(company.medias).every(
+          value => value !== 0 && value !== undefined && value !== null,
+        );
+
+      if (canLoadStrongWeakPoints && companyHasValidMedias) {
         const strongWeakPoints = await modalLoadingAuto(
           () => getStrongWeakPoints(company.id),
           MESSAGES_LOADING.GET,
         );
+
         setStrongWeakPoints(strongWeakPoints);
+      } else {
+        setStrongWeakPoints(null);
       }
     } catch (error) {
       await modalMessageError(error);
@@ -251,31 +303,65 @@ export const StatisticsAnalysis = () => {
         <div className="flex flex-col gap-6">
           <TitleDivisor title="Pontos Fortes e Fracos" />
           <div className="flex flex-wrap justify-center gap-2">
-            {!canLoadStrongWeakPoints && (
-              <div className="w-96 text-center text-sm font-normal text-(--grey-500)">
-                <span>
-                  Para visualizar esta estatística, por favor defina todas as
-                  notas condicionais em seu perfil...
-                </span>
-              </div>
-            )}
+            <div
+              className={`flex flex-1 flex-wrap gap-2 ${
+                firstCompany && secondCompany
+                  ? 'justify-center lg:justify-between'
+                  : 'justify-center'
+              }`}
+            >
+              {!canLoadStrongWeakPoints && (
+                <div className="flex flex-1 justify-center">
+                  <span className="block w-96 text-center text-sm font-normal text-(--grey-500)">
+                    Para visualizar esta estatística, por favor defina todas as
+                    notas condicionais em seu perfil...
+                  </span>
+                </div>
+              )}
+              {firstCompany && canLoadStrongWeakPoints && (
+                <div className="flex flex-col items-center gap-3">
+                  <h3 className="text-xl font-medium text-(--grey-300)">
+                    {firstCompany.nomeFantasia}
+                  </h3>
+                  {!firstCompanyHasValidMedias && (
+                    <div className="w-82 text-center text-sm font-normal text-(--grey-500)">
+                      <span>
+                        Esta empresa não possui informações suficientes para
+                        gerar os pontos fortes e fracos...
+                      </span>
+                    </div>
+                  )}
 
-            {firstCompanyStrongWeakPoints && firstCompany && (
-              <div className="flex flex-col items-center gap-3">
-                <h3 className="text-xl font-medium text-(--grey-300)">
-                  {firstCompany.nomeFantasia}
-                </h3>
-                <StrongWeakPointTable item={firstCompanyStrongWeakPoints} />
-              </div>
-            )}
-            {secondCompanyStrongWeakPoints && secondCompany && (
-              <div className="flex flex-col items-center gap-3">
-                <h3 className="text-xl font-medium text-(--grey-300)">
-                  {secondCompany.nomeFantasia}
-                </h3>
-                <StrongWeakPointTable item={secondCompanyStrongWeakPoints} />
-              </div>
-            )}
+                  {firstCompanyStrongWeakPoints &&
+                    firstCompanyHasValidMedias && (
+                      <StrongWeakPointTable
+                        item={firstCompanyStrongWeakPoints}
+                      />
+                    )}
+                </div>
+              )}
+              {secondCompany && canLoadStrongWeakPoints && (
+                <div className="flex flex-col items-center gap-3">
+                  <h3 className="text-xl font-medium text-(--grey-300)">
+                    {secondCompany.nomeFantasia}
+                  </h3>
+                  {!secondCompanyHasValidMedias && (
+                    <div className="w-82 text-center text-sm font-normal text-(--grey-500)">
+                      <span>
+                        Esta empresa não possui informações suficientes para
+                        gerar os pontos fortes e fracos...
+                      </span>
+                    </div>
+                  )}
+                  {secondCompanyStrongWeakPoints &&
+                    secondCompanyHasValidMedias && (
+                      <StrongWeakPointTable
+                        item={secondCompanyStrongWeakPoints}
+                      />
+                    )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
