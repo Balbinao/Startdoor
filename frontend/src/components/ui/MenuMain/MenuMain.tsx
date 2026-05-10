@@ -33,16 +33,16 @@ export const MenuMain = () => {
       >
         <Search width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
-
-      <NavLink
-        to={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION}
-        className={({ isActive }) =>
-          `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
-        }
-      >
-        <Compass width={ICON_SIZE} height={ICON_SIZE} />
-      </NavLink>
-
+      {!(userRole === USER_ROLES_CONST.EMPRESA) && (
+        <NavLink
+          to={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION}
+          className={({ isActive }) =>
+            `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
+          }
+        >
+          <Compass width={ICON_SIZE} height={ICON_SIZE} />
+        </NavLink>
+      )}
       <NavLink
         to={homePath}
         className={({ isActive }) =>
@@ -51,22 +51,22 @@ export const MenuMain = () => {
       >
         <Home width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
-
-      <NavLink
-        to={ROUTES_CONST.STATISTICS.STATISTICS_ANALYSIS}
-        className={({ isActive }) =>
-          `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
-        }
-      >
-        {({ isActive }) => (
-          <Graph
-            width={ICON_SIZE}
-            height={ICON_SIZE}
-            className={isActive ? 'text-green-50' : ''}
-          />
-        )}
-      </NavLink>
-
+      {!(userRole === USER_ROLES_CONST.EMPRESA) && (
+        <NavLink
+          to={ROUTES_CONST.STATISTICS.STATISTICS_ANALYSIS}
+          className={({ isActive }) =>
+            `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
+          }
+        >
+          {({ isActive }) => (
+            <Graph
+              width={ICON_SIZE}
+              height={ICON_SIZE}
+              className={isActive ? 'text-green-50' : ''}
+            />
+          )}
+        </NavLink>
+      )}
       <NavLink
         to={profilePath}
         className={`${isProfileActive ? 'rounded-full bg-(--grey-700)' : ''} p-2.5`}
@@ -77,7 +77,6 @@ export const MenuMain = () => {
           className={`${isProfileActive ? 'text-green-50' : ''}`}
         />
       </NavLink>
-
       {/* <NavLink
         to={profilePath}
         style={({ isActive }) => ({

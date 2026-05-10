@@ -3,7 +3,7 @@ import { ButtonSquare } from '@components/ui/ButtonSquare';
 import { CompanyCard } from '@components/ui/CompanyCard';
 import { PageTitle } from '@components/ui/PageTitle';
 import { ReviewCard } from '@components/ui/ReviewCard';
-import { MESSAGES_LOADING, ROUTES_CONST } from '@constants';
+import { MESSAGES_LOADING, ROUTES_CONST, USER_ROLES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 export const Home = () => {
   const navigate = useNavigate();
 
-  const { getUserId } = useAuth();
+  const { getUserId, getUserRole } = useAuth();
   const { getFavorites, toggleFavorite } = useStudentFavorite();
 
   const modalLoadingAuto = useModalLoadingAuto();
@@ -28,10 +28,13 @@ export const Home = () => {
   const [favorites, setFavorites] = useState<{ id: number }[]>([]);
 
   const id = getUserId();
+  const isCompany = getUserRole() === USER_ROLES_CONST.EMPRESA;
 
   useEffect(() => {
     const fetchInitial = async () => {
       try {
+        if (isCompany) return;
+
         const favorites = await modalLoadingAuto(
           () => getFavorites(),
           MESSAGES_LOADING.GET,

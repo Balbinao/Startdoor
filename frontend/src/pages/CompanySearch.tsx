@@ -8,7 +8,12 @@ import { FormField } from '@components/layout/FormField/FormField';
 import { CompanyCard } from '@components/ui/CompanyCard';
 import { PageTitle } from '@components/ui/PageTitle';
 import { Spinner } from '@components/ui/Spinner/Spinner';
-import { DROPDOWN_VALUES_CONST, MESSAGES_LOADING } from '@constants';
+import {
+  DROPDOWN_VALUES_CONST,
+  MESSAGES_LOADING,
+  USER_ROLES_CONST,
+} from '@constants';
+import { useAuth } from '@hooks/useAuth';
 import { useCompanySearch } from '@hooks/useCompanySearch';
 import { useDebounce } from '@hooks/useDebounce';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
@@ -56,6 +61,8 @@ export const CompanySearch = () => {
   const { storedFilters, getCompaniesSearch } = useCompanySearch();
   const { getFavorites, toggleFavorite } = useStudentFavorite();
 
+  const { getUserRole } = useAuth();
+
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError } = useModalMessageDefault();
 
@@ -78,6 +85,8 @@ export const CompanySearch = () => {
 
   const [favorites, setFavorites] = useState<{ id: number }[]>([]);
 
+  const isCompany = getUserRole() === USER_ROLES_CONST.EMPRESA;
+
   useEffect(() => {
     const fetchInitial = async () => {
       try {
@@ -85,12 +94,14 @@ export const CompanySearch = () => {
           () => getCompaniesSearch(filters),
           MESSAGES_LOADING.GET,
         );
-        const favorites = await modalLoadingAuto(
-          () => getFavorites(),
-          MESSAGES_LOADING.GET,
-        );
+        if (!isCompany) {
+          const favorites = await modalLoadingAuto(
+            () => getFavorites(),
+            MESSAGES_LOADING.GET,
+          );
+          setFavorites(favorites.map(item => ({ id: item.id })));
+        }
         setSearchedCompanies(response.content);
-        setFavorites(favorites.map(item => ({ id: item.id })));
       } catch (error) {
         setIsError(true);
         await modalMessageError(error);
