@@ -1,250 +1,325 @@
-import { Search, FilterSelect, FilterCompetence, StarFilled } from '@assets/icons';
-import { CompanyCard } from '@components/ui/CompanyCard';
+import {
+  FilterCompetence,
+  FilterSelect,
+  Search,
+  StarFilled,
+} from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
+import { CompanyCard } from '@components/ui/CompanyCard';
+import { PageTitle } from '@components/ui/PageTitle';
 import { Spinner } from '@components/ui/Spinner/Spinner';
-import { DROPDOWN_VALUES_CONST } from '@constants';
+import { DROPDOWN_VALUES_CONST, MESSAGES_LOADING } from '@constants';
 import { useCompanySearch } from '@hooks/useCompanySearch';
-import { useStudentFavorite } from '@hooks/useStudentFavorite';
-import { useEffect, useState } from 'react';
-import { observer } from 'mobx-react-lite';
-import { COMPETENCIAS_LABELS } from '@stores/CompanySearchStore';
 import { useDebounce } from '@hooks/useDebounce';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
-import { useInView } from 'react-intersection-observer';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useStudentFavorite } from '@hooks/useStudentFavorite';
+import {
+  type ICompanySearchFilters,
+  type ICompanySearchItem,
+} from '@models/companySearchData.types';
+import { useEffect, useState } from 'react';
 
-const SELECT_WIDTH = 'w-36';
 const ICON = 18;
-const SELECT_STYLE = 'h-11 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)]';
-const DEBOUNCE_DELAY = 300;
 
-const CompanyCardList = observer(() => {
-  const { filteredCompanies, isLoading, hasMore, loadMoreCompanies } = useCompanySearch();
-  const { isFavorite, toggleFavorite, loadFavorites } = useStudentFavorite();
-  const { ref, inView } = useInView({ threshold: 0});
-  const [initialized, setInitialized] = useState(false);
+const COMPETENCIES_LABELS = {
+  ambiente: 'Ambiente',
+  aprendizado: 'Aprendizado',
+  beneficios: 'Benefícios',
+  cultura: 'Cultura',
+  efetivacao: 'Efetivação',
+  entrevista: 'Entrevista',
+  feedback: 'Feedback',
+  infra: 'Infraestrutura',
+  integracao: 'Integração',
+  remuneracao: 'Remuneração',
+  rotina: 'Rotina',
+  lideranca: 'Liderança',
+};
+
+const competenciasFilters = [
+  'ambiente',
+  'aprendizado',
+  'beneficios',
+  'cultura',
+  'efetivacao',
+  'entrevista',
+  'feedback',
+  'infra',
+  'integracao',
+  'remuneracao',
+  'rotina',
+  'lideranca',
+] as const;
+
+export const CompanySearch = () => {
+  const { storedFilters, getCompaniesSearch } = useCompanySearch();
+  const { getFavorites, toggleFavorite } = useStudentFavorite();
+
+  const modalLoadingAuto = useModalLoadingAuto();
+  const { modalMessageError } = useModalMessageDefault();
+
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [searchingLoading, setSearchingLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const [searchedCompanies, setSearchedCompanies] = useState<
+    ICompanySearchItem[]
+  >([]);
+  const [filters, setFilters] = useState<ICompanySearchFilters>(storedFilters);
+  const [showCompetenciesFilters, setShowCompetenciesFilters] = useState(false);
+  const [nomeInput, setNomeInput] = useState(filters.nome || '');
+  const debouncedNome = useDebounce(nomeInput, 400);
+
+  const [favorites, setFavorites] = useState<{ id: number }[]>([]);
 
   useEffect(() => {
-    if (!initialized && filteredCompanies.length > 0) {
-      console.log(loadFavorites())
-      loadFavorites();
-      setInitialized(true);
-    }
-  }, [initialized, filteredCompanies.length]);
+    const fetchInitial = async () => {
+      try {
+        const response = await modalLoadingAuto(
+          () => getCompaniesSearch(filters),
+          MESSAGES_LOADING.GET,
+        );
+        const favorites = await modalLoadingAuto(
+          () => getFavorites(),
+          MESSAGES_LOADING.GET,
+        );
+        setSearchedCompanies(response.content);
+        setFavorites(favorites.map(item => ({ id: item.id })));
+      } catch (error) {
+        setIsError(true);
+        await modalMessageError(error);
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+
+    fetchInitial();
+  }, []);
 
   useEffect(() => {
-    if (inView && hasMore && !isLoading) {
-      loadMoreCompanies();
+    if (initialLoading) return;
+    const fetchReactive = async () => {
+      try {
+        setSearchingLoading(true);
+        const response = await getCompaniesSearch(filters);
+        setSearchedCompanies(response.content);
+      } catch (error) {
+        await modalMessageError(error);
+      } finally {
+        setSearchingLoading(false);
+      }
+    };
+
+    fetchReactive();
+  }, [filters]);
+
+  useEffect(() => {
+    setFilters(prev => ({
+      ...prev,
+      nome: debouncedNome || undefined,
+    }));
+  }, [debouncedNome]);
+
+  const handleFilterCompetenceScore =
+    (key: keyof ICompanySearchFilters) => (value: string | number) => {
+      setFilters(prev => ({
+        ...prev,
+        [key]: value === '' ? undefined : Number(value),
+      }));
+    };
+
+  const handleToggleFavorite = async (companyId: number) => {
+    try {
+      await modalLoadingAuto(
+        () => toggleFavorite(companyId),
+        MESSAGES_LOADING.UPDATE,
+      );
+      const favorites = await modalLoadingAuto(
+        () => getFavorites(),
+        MESSAGES_LOADING.GET,
+      );
+      setFavorites(favorites);
+    } catch (error) {
+      await modalMessageError(error);
     }
-  }, [inView, hasMore, isLoading]);
+  };
+
+  if (initialLoading) return <></>;
+  if (isError) return <></>;
 
   return (
-    <>
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-(--grey-400)">
-          {filteredCompanies.length}{' '}
-          {filteredCompanies.length === 1 ? 'empresa encontrada' : 'empresas encontradas'}
-        </span>
-      </div>
-
-      <div className="min-h-[200px] flex flex-col justify-center">
-
-        {filteredCompanies.length === 0 && !isLoading ? (
-          <div className="flex flex-col items-center justify-center gap-4">
-            <Search width={48} height={48} className="text-(--grey-500)" strokeWidth={1} />
-            <p className="text-(--grey-400)">
-              Nenhuma empresa encontrada com os filtros aplicados.
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="flex flex-col gap-4">
-              {filteredCompanies.map(company => (
-                <CompanyCard
-                  key={company.id}
-                  item={company}
-                  isFavorite={isFavorite(company.id)}
-                  onFavoriteClick={() => toggleFavorite(company)}
-                />
-              ))}
-            </div>
-            <div ref={ref} className="flex items-center justify-center ">
-              {isLoading && hasMore && (
-                <div className="flex items-center gap-2 text-(--grey-400)">
-                  <Spinner />
-                </div>
-              )}
-            </div>
-          </>
-        )}
-      </div>
-    </>
-  );
-});
-
-export const CompanySearch = observer(() => {
-  const {
-    filters,
-    getCompanies,
-    setSearchText,
-    setNotaGeralRange,
-    setTamanhoEmpresa,
-    setReceitaAnual,
-    setCompetencia,
-    competenciasFilters,
-    filteredCompanies,
-    isLoading,
-    resetFilters
-   } = useCompanySearch();
-
-   const [showCompetencias, setShowCompetencias] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-
-   const debouncedSearchText = useDebounce(searchInput, DEBOUNCE_DELAY);
-   const { modalMessageError } = useModalMessageDefault();
-   
-   useEffect(() => {
-   resetFilters();
- }, []);
-
-  useEffect(() => {
-    setSearchText(debouncedSearchText);
-  }, [debouncedSearchText]);
-
-   useEffect(() => {
-     const fetch = async () => {
-       try {
-         await getCompanies();
-         if (isFirstLoad) {
-           setIsFirstLoad(false);
-         }
-       } catch (error) {
-         await modalMessageError(error);
-       }
-     };
-     fetch();
-   }, [filters.searchText, filters.notaGeralMin, filters.tamanhoEmpresa, filters.receitaAnual, filters.ambiente, filters.aprendizado, filters.beneficios, filters.cultura, filters.efetivacao, filters.entrevista, filters.feedback, filters.infraestrutura, filters.integracao, filters.remuneracao, filters.rotina, filters.lideranca, isFirstLoad]);
-
-  const handleNotaChange = (value: string | number) => {
-    const nota = Number(value);
-    if (value === '' || nota === 0) {
-      setNotaGeralRange(0);
-    } else {
-      setNotaGeralRange(nota);
-    }
-  };
-
-  const handleCompetenciaChange = (key: string) => (value: string | number) => {
-    setCompetencia(key, Number(value));
-  };
-
-  const handleTamanhoChange = (value: string | number) => {
-    setTamanhoEmpresa(String(value));
-  };
-
-  const handleReceitaChange = (value: string | number) => {
-    setReceitaAnual(String(value));
-  };
-
-  // if (isFirstLoad && isLoading && filteredCompanies.length === 0) {
-  //   return (
-  //     <div className="flex w-full flex-col gap-6">
-  //       <div className="flex w-full mb-4 h-20 rounded-xl items-center justify-center bg-(--grey-1100)">
-  //         <h1 className="text-2xl font-semibold text-(--grey-300)">Pesquisar Empresas</h1>
-  //       </div>
-  //       <div className="flex items-center justify-center py-20">
-  //         <span className="text-(--grey-300)">Carregando...</span>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  return (
-    <div className="flex w-full flex-col gap-6">
-      <div className="flex w-full mb-4 h-20 rounded-xl items-center justify-center bg-(--grey-1100)">
-        <h1 className="text-2xl font-semibold text-(--grey-300)">Pesquisar Empresas</h1>
-      </div>
+    <div className="flex min-h-full w-full flex-col gap-6">
+      <PageTitle title="Pesquisar Empresas" />
 
       <div className="flex gap-3">
-        <div className="relative flex-1">
-          <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">
-            <Search width={22} height={22} className="text-(--grey-400)" strokeWidth={1.5} />
-          </div>
-          <input
+        <div className="flex-1">
+          <FormField
             type="text"
-            placeholder="Buscar empresas..."
-            value={searchInput}
-            onChange={e => setSearchInput(e.target.value)}
-            className="h-12 w-full rounded-xl border border-(--grey-900) bg-(--grey-1100) pl-12 pr-4 text-base focus:ring-1 focus:ring-(--purple-400) focus:outline-none"
+            name="search"
+            classNames={{
+              input: 'p-6',
+            }}
+            value={nomeInput}
+            onChange={setNomeInput}
+            placeholder="Pesquise o nome da empresa..."
+            iconLeft={
+              <Search
+                width={22}
+                height={22}
+                className="text-(--grey-400)"
+                strokeWidth={1.5}
+              />
+            }
           />
         </div>
 
         <button
-          onClick={() => setShowCompetencias(!showCompetencias)}
-          className="flex h-12 w-12 items-center justify-center rounded-xl border bg-(--grey-900) border-(--grey-600) text-(--grey-100)"
+          onClick={() => setShowCompetenciesFilters(prev => !prev)}
+          className="flex h-12 w-12 items-center justify-center rounded-xl border border-(--grey-600) bg-(--grey-900) text-(--grey-100)"
         >
-          <FilterCompetence width={22} height={22} className={showCompetencias ? 'fill-red-50' : 'fill-none'} />
+          <FilterCompetence
+            width={22}
+            height={22}
+            className={showCompetenciesFilters ? 'fill-zinc-300' : 'fill-none'}
+          />
         </button>
       </div>
 
       <div className="flex flex-wrap justify-center gap-4">
-        <div className="flex-1 min-w-[160px] max-w-[220px]">
+        <div className="max-w-55 min-w-40 flex-1">
           <FormField
             type="select"
             name="nota"
             options={[...DROPDOWN_VALUES_CONST.NOTA]}
-            value={filters.notaGeralMax || ''}
-            onChange={handleNotaChange}
-            className={`${SELECT_STYLE} w-full`}
-            iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+            value={filters.nota || ''}
+            onChange={(value: string | number) =>
+              setFilters(prev => ({
+                ...prev,
+                ['nota']: value === '' ? undefined : Number(value),
+              }))
+            }
+            iconLeft={
+              <FilterSelect
+                width={ICON}
+                height={ICON}
+                className="text-(--yellow-100)"
+              />
+            }
           />
         </div>
-
-        <div className="flex-1 min-w-[160px] max-w-[220px]">
+        <div className="max-w-55 min-w-40 flex-1">
           <FormField
             type="select"
             name="receitaAnual"
             options={[...DROPDOWN_VALUES_CONST.RECEITA_ANUAL]}
-            value={filters.receitaAnual || ''}
-            onChange={handleReceitaChange}
-            className={`${SELECT_STYLE} w-full`}
-            iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+            value={filters.receita || ''}
+            onChange={(value: string | number) =>
+              setFilters(prev => ({
+                ...prev,
+                ['receita']: value === '' ? undefined : String(value),
+              }))
+            }
+            iconLeft={
+              <FilterSelect
+                width={ICON}
+                height={ICON}
+                className="text-(--yellow-100)"
+              />
+            }
           />
         </div>
-
-        <div className="flex-1 min-w-[160px] max-w-[220px]">
+        <div className="max-w-55 min-w-40 flex-1">
           <FormField
             type="select"
             name="tamanhoEmpresa"
             options={[...DROPDOWN_VALUES_CONST.TAMANHO_EMPRESA]}
-            value={filters.tamanhoEmpresa || ''}
-            onChange={handleTamanhoChange}
-            className={`${SELECT_STYLE} w-full`}
-            iconLeft={<FilterSelect width={ICON} height={ICON} className="text-(--yellow-100)" />}
+            value={filters.tamanho || ''}
+            onChange={(value: string | number) =>
+              setFilters(prev => ({
+                ...prev,
+                ['tamanho']: value === '' ? undefined : String(value),
+              }))
+            }
+            iconLeft={
+              <FilterSelect
+                width={ICON}
+                height={ICON}
+                className="text-(--yellow-100)"
+              />
+            }
           />
         </div>
       </div>
 
-      {showCompetencias && (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 justify-items-center">
+      {showCompetenciesFilters && (
+        <div className="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3 md:grid-cols-4">
           {competenciasFilters.map(key => (
-            <div key={key} className={SELECT_WIDTH}>
+            <div key={key} className="w-36">
               <FormField
                 type="select"
                 name={key}
-                label={COMPETENCIAS_LABELS[key]}
-                options={[...DROPDOWN_VALUES_CONST.NOTA]}
-                value={filters[key as keyof typeof filters] || ''}
-                onChange={handleCompetenciaChange(key)}
-                className="h-12 border-[var(--grey-600)] bg-[var(--grey-900)] text-[var(--grey-100)]"
-                iconLeft={<StarFilled width={ICON} height={ICON} className="text-(--yellow-100)" />}
+                label={COMPETENCIES_LABELS[key]}
+                options={DROPDOWN_VALUES_CONST.NOTA.map(option => ({
+                  ...option,
+                }))}
+                value={filters[key] || ''}
+                onChange={handleFilterCompetenceScore(key)}
+                iconLeft={
+                  <StarFilled
+                    width={ICON}
+                    height={ICON}
+                    className="text-(--yellow-100)"
+                  />
+                }
               />
             </div>
           ))}
         </div>
       )}
 
-      <CompanyCardList />
+      <div className="flex flex-1 flex-col gap-4">
+        <span className="text-sm text-(--grey-400)">
+          {searchedCompanies.length}{' '}
+          {searchedCompanies.length === 1
+            ? 'empresa encontrada'
+            : 'empresas encontradas'}
+        </span>
+        {!searchingLoading && (
+          <div className="flex flex-1 flex-col justify-center">
+            {searchedCompanies.length === 0 ? (
+              <div className="flex flex-1 flex-col items-center justify-center gap-4">
+                <Search
+                  width={48}
+                  height={48}
+                  className="text-(--grey-500)"
+                  strokeWidth={1}
+                />
+                <p className="text-(--grey-400)">
+                  Nenhuma empresa encontrada com os filtros aplicados.
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-1 flex-col gap-4">
+                {searchedCompanies.map(company => (
+                  <CompanyCard
+                    key={company.id}
+                    item={company}
+                    isFavorite={favorites.some(item => item.id === company.id)}
+                    onToggleFavorite={handleToggleFavorite}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {searchingLoading && (
+          <div className="flex flex-1 items-center justify-center">
+            <Spinner />
+          </div>
+        )}
+      </div>
     </div>
   );
-});
+};

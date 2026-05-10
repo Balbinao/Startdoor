@@ -30,6 +30,9 @@ type IBaseField<T extends FieldValues> = {
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  classNames?: {
+    input?: string;
+  };
 };
 
 export type ITextField<T extends FieldValues> = IBaseField<T> & {

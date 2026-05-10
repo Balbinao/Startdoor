@@ -213,13 +213,13 @@ export const StatisticsAnalysis = () => {
             name="firstCompany"
             options={companiesOptions}
             value={firstCompany?.id}
-            onChange={value =>
+            onChange={(value: string | number) => {
               handleSelectCompany(
                 value,
                 setFirstCompany,
                 companyStore.setStatisticsFirstCompany,
-              )
-            }
+              );
+            }}
             iconLeft={<Filter className="text-(--grey-300)" width={20} />}
           />
         </div>
@@ -230,13 +230,13 @@ export const StatisticsAnalysis = () => {
             name="secondCompany"
             options={companiesOptions}
             value={secondCompany?.id}
-            onChange={value =>
+            onChange={(value: string | number) => {
               handleSelectCompany(
                 value,
                 setSecondCompany,
                 companyStore.setStatisticsSecondCompany,
-              )
-            }
+              );
+            }}
             iconLeft={<Filter className="text-(--grey-300)" width={20} />}
           />
         </div>

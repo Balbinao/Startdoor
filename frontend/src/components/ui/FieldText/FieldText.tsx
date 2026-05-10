@@ -24,6 +24,7 @@ export const FieldText = <TFormValues extends FieldValues>({
   disabled,
   readOnly,
   required,
+  classNames,
   maxLength,
   mask,
   iconLeft,
@@ -34,6 +35,7 @@ export const FieldText = <TFormValues extends FieldValues>({
   value,
   onChange,
 }: Props<TFormValues>) => {
+  const [internalValue, setInternalValue] = useState(value ?? '');
   const [showPassword, setShowPassword] = useState(false);
 
   const inputId = `text-${name}-${useId()}`;
@@ -79,6 +81,7 @@ export const FieldText = <TFormValues extends FieldValues>({
       placeholder={placeholder}
       disabled={disabled}
       readOnly={readOnly}
+      classNames={classNames}
       maxLength={maxLength}
       onChange={e => {
         let val = e.target.value;
@@ -93,6 +96,9 @@ export const FieldText = <TFormValues extends FieldValues>({
         val = raw.slice(0, max);
 
         handleChange?.(val);
+        if (!form) {
+          setInternalValue(raw);
+        }
         onChange?.(val);
       }}
       iconLeft={
@@ -136,6 +142,8 @@ export const FieldText = <TFormValues extends FieldValues>({
     );
   }
 
+  const finalValue = value !== undefined ? value : internalValue;
+
   return (
     <FormFieldWrapper
       name={name}
@@ -143,7 +151,7 @@ export const FieldText = <TFormValues extends FieldValues>({
       label={label}
       required={required}
     >
-      {render(value ?? '', onChange)}
+      {render(finalValue)}
     </FormFieldWrapper>
   );
 };

@@ -19,9 +19,9 @@ import {
   companyRegistrationSchema,
   type CompanyRegistrationFormData,
 } from '@schemas/companyRegistrationSchema';
+import { isValidCNPJ } from '@utils/validation';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { isValidCNPJ } from '@utils/validation';
 
 export const CompanyRegistrationForm = () => {
   const navigate = useNavigate();
@@ -109,7 +109,7 @@ export const CompanyRegistrationForm = () => {
                 placeholder="00.000.000/0000-00"
                 mask="cnpj"
                 required={true}
-                onChange={value => {
+                onChange={(value: string) => {
                   if (value.length >= 11) {
                     if (!isValidCNPJ(value)) {
                       form.setError('cnpj', {

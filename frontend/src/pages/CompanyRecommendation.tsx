@@ -1,8 +1,42 @@
 import { CompanyRecommendationCard } from '@components/ui/CompanyRecommendationCard';
 import { PageTitle } from '@components/ui/PageTitle';
+import { MESSAGES_LOADING } from '@constants';
+import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
+import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
+import { useStudentFavorite } from '@hooks/useStudentFavorite';
 import type { ICompanyRecommendation } from '@models/statisticsRecommendation.types';
+import { useEffect, useState } from 'react';
 
 export const CompanyRecommendation = () => {
+  const { getFavorites, toggleFavorite } = useStudentFavorite();
+
+  const modalLoadingAuto = useModalLoadingAuto();
+  const { modalMessageError } = useModalMessageDefault();
+
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  const [favorites, setFavorites] = useState<{ id: number }[]>([]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const favorites = await modalLoadingAuto(
+          () => getFavorites(),
+          MESSAGES_LOADING.GET,
+        );
+        setFavorites(favorites.map(item => ({ id: item.id })));
+      } catch (error) {
+        setIsError(true);
+        await modalMessageError(error);
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
+
   const companyRecommendationsMock: ICompanyRecommendation[] = [
     {
       id: 1,
@@ -43,6 +77,22 @@ export const CompanyRecommendation = () => {
       porcentagemCompatibilidade: 95,
     },
   ];
+
+  const handleToggleFavorite = async (companyId: number) => {
+    try {
+      await modalLoadingAuto(
+        () => toggleFavorite(companyId),
+        MESSAGES_LOADING.UPDATE,
+      );
+      const favorites = await modalLoadingAuto(
+        () => getFavorites(),
+        MESSAGES_LOADING.GET,
+      );
+      setFavorites(favorites);
+    } catch (error) {
+      await modalMessageError(error);
+    }
+  };
 
   const modalMessage = (
     <div className="flex flex-col gap-12 text-(--grey-200)">
@@ -99,6 +149,10 @@ export const CompanyRecommendation = () => {
       </div>
     </div>
   );
+
+  if (initialLoading) return <></>;
+  if (isError) return <></>;
+
   return (
     <div className="flex min-h-full flex-1 flex-col gap-22">
       <PageTitle title="Recomendação de Empresas" modalMessage={modalMessage} />
@@ -106,7 +160,12 @@ export const CompanyRecommendation = () => {
       <div className="flex flex-col gap-8">
         {companyRecommendationsMock.map(item => {
           return (
-            <CompanyRecommendationCard key={item.id} recommendation={item} />
+            <CompanyRecommendationCard
+              key={item.id}
+              recommendation={item}
+              isFavorite={favorites.some(favorite => favorite.id === item.id)}
+              onToggleFavorite={handleToggleFavorite}
+            />
           );
         })}
       </div>

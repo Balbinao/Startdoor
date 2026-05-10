@@ -109,7 +109,7 @@ export const StudentRegistrationForm = () => {
                 mask="cpf"
                 placeholder="000.000.000-00"
                 required={true}
-                onChange={value => {
+                onChange={(value: string) => {
                   if (value.length >= 11) {
                     if (!isValidCPF(value)) {
                       form.setError('cpf', {
