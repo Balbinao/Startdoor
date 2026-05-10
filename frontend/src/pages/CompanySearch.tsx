@@ -18,7 +18,7 @@ import {
   type ICompanySearchFilters,
   type ICompanySearchItem,
 } from '@models/companySearchData.types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const ICON = 18;
 
@@ -71,6 +71,11 @@ export const CompanySearch = () => {
   const [nomeInput, setNomeInput] = useState(filters.nome || '');
   const debouncedNome = useDebounce(nomeInput, 400);
 
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+
   const [favorites, setFavorites] = useState<{ id: number }[]>([]);
 
   useEffect(() => {
@@ -98,11 +103,12 @@ export const CompanySearch = () => {
   }, []);
 
   useEffect(() => {
-    if (initialLoading) return;
     const fetchReactive = async () => {
       try {
         setSearchingLoading(true);
-        const response = await getCompaniesSearch(filters);
+        setPage(0);
+
+        const response = await fetchCompanies(0, false);
         setSearchedCompanies(response.content);
       } catch (error) {
         await modalMessageError(error);
@@ -111,7 +117,7 @@ export const CompanySearch = () => {
       }
     };
 
-    fetchReactive();
+    if (!initialLoading) fetchReactive();
   }, [filters]);
 
   useEffect(() => {
@@ -120,6 +126,68 @@ export const CompanySearch = () => {
       nome: debouncedNome || undefined,
     }));
   }, [debouncedNome]);
+
+  useEffect(() => {
+    if (initialLoading) return;
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        const target = entries[0];
+
+        console.log('📍 Observer triggered:', {
+          isIntersecting: target?.isIntersecting,
+          page,
+          totalPages,
+        });
+
+        if (!target?.isIntersecting) return;
+        if (searchingLoading || isFetchingMore) return;
+        if (page >= totalPages - 1) return;
+
+        loadMore();
+      },
+      {
+        root: null,
+        rootMargin: '200px',
+        threshold: 0,
+      },
+    );
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [initialLoading, page, totalPages, searchingLoading, isFetchingMore]);
+
+  const fetchCompanies = async (nextPage: number, append = false) => {
+    const response = await getCompaniesSearch({
+      ...filters,
+      page: nextPage,
+    });
+
+    setTotalPages(response.totalPages);
+
+    setSearchedCompanies(prev =>
+      append ? [...prev, ...response.content] : response.content,
+    );
+
+    return response;
+  };
+
+  const loadMore = async () => {
+    if (page >= totalPages - 1) return;
+    try {
+      setIsFetchingMore(true);
+      const nextPage = page + 1;
+      await fetchCompanies(nextPage, true);
+      setPage(nextPage);
+    } catch (error) {
+      await modalMessageError(error);
+    } finally {
+      setIsFetchingMore(false);
+    }
+  };
 
   const handleFilterCompetenceScore =
     (key: keyof ICompanySearchFilters) => (value: string | number) => {
@@ -285,7 +353,7 @@ export const CompanySearch = () => {
             ? 'empresa encontrada'
             : 'empresas encontradas'}
         </span>
-        {!searchingLoading && (
+        {!searchingLoading && !isFetchingMore && (
           <div className="flex flex-1 flex-col justify-center">
             {searchedCompanies.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-4">
@@ -314,7 +382,9 @@ export const CompanySearch = () => {
           </div>
         )}
 
-        {searchingLoading && (
+        <div ref={sentinelRef} className="h-10" />
+
+        {(searchingLoading || isFetchingMore) && (
           <div className="flex flex-1 items-center justify-center">
             <Spinner />
           </div>
