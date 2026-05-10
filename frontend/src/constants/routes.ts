@@ -4,13 +4,12 @@ export const ROUTES_CONST = {
   HOME: '/home',
   SEARCH: '/pesquisar',
 
-  RECOMMENDATION: {
+  STATISTICS_RECOMMENDATION: {
     COMPANY_RECOMMENDATION: `/recomendacao`,
-    COMPANY_RECOMMENDATION_ANALYSIS: `/recomendacao/analise`,
-  },
-
-  STATISTICS: {
-    STATISTICS_ANALYSIS: '/estatistica',
+    COMPANY_RECOMMENDATION_ANALYSIS_URL: `/recomendacao/analise/:studentId/empresa/:companyId`,
+    COMPANY_RECOMMENDATION_ANALYSIS: (studentId: number, companyId: number) =>
+      `/recomendacao/analise/${studentId}/empresa/${companyId}`,
+    COMPANY_STATISTIC_ANALYSIS: '/estatistica',
   },
 
   STUDENT: {

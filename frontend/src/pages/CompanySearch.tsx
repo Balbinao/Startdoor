@@ -147,11 +147,11 @@ export const CompanySearch = () => {
       entries => {
         const target = entries[0];
 
-        console.log('📍 Observer triggered:', {
-          isIntersecting: target?.isIntersecting,
-          page,
-          totalPages,
-        });
+        // console.log('📍 Observer triggered:', {
+        //   isIntersecting: target?.isIntersecting,
+        //   page,
+        //   totalPages,
+        // });
 
         if (!target?.isIntersecting) return;
         if (searchingLoading || isFetchingMore) return;

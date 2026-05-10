@@ -15,7 +15,7 @@ export const API_CONST = {
     BY_ID_PASSWORD: (id: number) => `/estudantes/${id}/senha`,
     BY_ID_PICTURE: (id: number) => `/estudantes/${id}/foto`,
     BY_ID_FAVORITE: (id: number) => `/favoritos/${id}`,
-    FAVORITES:'/favoritos'
+    FAVORITES: '/favoritos',
   },
   CONDITIONAL_SCORE: {
     BASE: '/estudantes/notas-condi',
@@ -32,6 +32,12 @@ export const API_CONST = {
     BY_ID_SECTORS_BY_ID: (id: number, idSector: number) =>
       `/empresas/${id}/setores/${idSector}`,
     BY_ID_NOTAS: (id: number) => `/empresas/${id}/notas`,
+  },
+  RECOMMENDATION: {
+    COMPANY_RECOMMENDATION: `/api/matches/recomendacoes`,
+    COMPANY_RECOMMENDATION_ANALYSIS: `/recomendacoes/ia/gerar`,
+    COMPANY_STATISTIC_STRONG_WEAK_POINT: (id: number) =>
+      `/api/matches/empresa/${id}`,
   },
   EXPERIENCE: {
     ACADEMIC_BY_ID: (id: number) => `/experiencias-academicas/${id}`,

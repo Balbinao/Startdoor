@@ -26,7 +26,7 @@ export class CompanyStore {
     return this.company;
   }
 
-  setStatisticsFirstCompany = (company: ICompany) => {
+  setStatisticsFirstCompany = (company: ICompany | null) => {
     this.statisticsFirstCompany = company;
   };
 
@@ -34,7 +34,7 @@ export class CompanyStore {
     return this.statisticsFirstCompany;
   }
 
-  setStatisticsSecondCompany = (company: ICompany) => {
+  setStatisticsSecondCompany = (company: ICompany | null) => {
     this.statisticsSecondCompany = company;
   };
 

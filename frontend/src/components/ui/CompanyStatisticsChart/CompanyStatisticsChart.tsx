@@ -94,16 +94,6 @@ const createDataset = (
   tension: 0.3,
 });
 
-// const extractValues = (
-//   source: Partial<ScoreShape> | null,
-// ): (number | null)[] => {
-//   if (!source) return [];
-//   return DATA_KEYS.map(key => {
-//     const value = source[key] ?? 0;
-//     return value === 0 ? null : value;
-//   });
-// };
-
 const extractValues = (source: Partial<ScoreShape> | null): number[] => {
   if (!source) return [];
   return DATA_KEYS.map(key => source[key] ?? 0);
@@ -175,6 +165,13 @@ export const CompanyStatisticsChart = ({
 
   const sources = [
     {
+      key: 'third' as const,
+      label: 'Desejado',
+      data: extractValues(studentConditionalScore),
+      color: COLORS.third,
+      visible: visibility.third,
+    },
+    {
       key: 'first' as const,
       label: firstCompany?.nomeFantasia,
       data: extractValues(mapCompanyMedias(firstCompany?.medias)),
@@ -187,13 +184,6 @@ export const CompanyStatisticsChart = ({
       data: extractValues(mapCompanyMedias(secondCompany?.medias)),
       color: COLORS.second,
       visible: visibility.second,
-    },
-    {
-      key: 'third' as const,
-      label: 'Desejado',
-      data: extractValues(studentConditionalScore),
-      color: COLORS.third,
-      visible: visibility.third,
     },
   ];
 

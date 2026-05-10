@@ -42,7 +42,6 @@ export const CommentCardEdit = ({ item, onEdit }: Props) => {
 
   const onSubmit = async (data: CommentData) => {
     try {
-      console.log('aaa');
       if (!urlReviewId) {
         throw new Error(MESSAGES_RESPONSE.WARNING.REVIEW_ID_NOT_FOUND);
       }

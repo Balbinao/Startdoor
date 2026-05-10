@@ -37,7 +37,6 @@ export const normalizeStudentData = (
   studentData: IStudent,
   notaCondiData: IConditionalScore,
 ): StudentProfileUpdateData => {
-  console.log(notaCondiData);
   return {
     nome: studentData.nome ?? '',
     user: studentData.user ?? '',

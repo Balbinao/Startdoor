@@ -63,12 +63,17 @@ function App() {
             />
 
             <Route
-              path={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION}
+              path={
+                ROUTES_CONST.STATISTICS_RECOMMENDATION.COMPANY_RECOMMENDATION
+              }
               element={<CompanyRecommendation />}
             />
 
             <Route
-              path={ROUTES_CONST.RECOMMENDATION.COMPANY_RECOMMENDATION_ANALYSIS}
+              path={
+                ROUTES_CONST.STATISTICS_RECOMMENDATION
+                  .COMPANY_RECOMMENDATION_ANALYSIS_URL
+              }
               element={<CompanyRecommendationAnalysis />}
             />
 
@@ -95,7 +100,10 @@ function App() {
             />
 
             <Route
-              path={ROUTES_CONST.STATISTICS.STATISTICS_ANALYSIS}
+              path={
+                ROUTES_CONST.STATISTICS_RECOMMENDATION
+                  .COMPANY_STATISTIC_ANALYSIS
+              }
               element={<StatisticsAnalysis />}
             />
 
