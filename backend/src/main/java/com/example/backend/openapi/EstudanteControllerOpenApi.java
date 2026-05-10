@@ -37,11 +37,13 @@ public interface EstudanteControllerOpenApi {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Erro de validação ou e-mail já cadastrado",
+                    description = "Erro de validação ou dados já cadastrados",
                     content = @Content(
-                            examples = @ExampleObject(
-                                    value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"E-mail já cadastrado\"}"
-                            )
+                            examples = {
+                                    @ExampleObject(name = "Email duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"E-mail já cadastrado no sistema\"}"),
+                                    @ExampleObject(name = "CPF duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"CPF já cadastrado\"}"),
+                                    @ExampleObject(name = "Username duplicado", value = "{\"timestamp\":\"2026-03-16T12:00:00\",\"status\":400,\"message\":\"Username já em uso\"}")
+                            }
                     )
             )
     })
@@ -55,14 +57,25 @@ public interface EstudanteControllerOpenApi {
                     content = @Content(schema = @Schema(implementation = Estudante.class))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    description = "Acesso negado — apenas ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<List<EstudanteResponseDTO>> listar();
@@ -80,14 +93,25 @@ public interface EstudanteControllerOpenApi {
                     content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com o ID: 1\"}"))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas próprio estudante ou ADMIN",
-                    content = @Content
+                    description = "Acesso negado — apenas próprio estudante ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<EstudanteResponseDTO> buscar(Long id);
@@ -110,14 +134,25 @@ public interface EstudanteControllerOpenApi {
                     content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":400,\"message\":\"Erro de validação\"}"))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas próprio estudante ou ADMIN",
-                    content = @Content
+                    description = "Acesso negado — apenas próprio estudante ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> atualizar(Long id, AtualizarEstudanteDTO data);
@@ -135,14 +170,25 @@ public interface EstudanteControllerOpenApi {
                     content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com o ID: 1\"}"))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas próprio estudante ou ADMIN",
-                    content = @Content
+                    description = "Acesso negado — apenas próprio estudante ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2024-01-01T00:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> deletar(Long id);
@@ -165,14 +211,25 @@ public interface EstudanteControllerOpenApi {
                     content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com o ID: 1\"}"))
             ),
             @ApiResponse(
-                    responseCode = "401",
-                    description = "Token JWT ausente ou inválido",
-                    content = @Content
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
             ),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Acesso negado - apenas o próprio estudante ou ADMIN pode alterar a senha",
-                    content = @Content
+                    description = "Acesso negado — apenas o próprio estudante ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-03-16T10:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> alterarSenha(Long id, AlterarSenhaDTO data);
@@ -183,7 +240,16 @@ public interface EstudanteControllerOpenApi {
             @ApiResponse(responseCode = "200", description = "Foto atualizada com sucesso",
                     content = @Content(schema = @Schema(implementation = EstudanteResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Arquivo inválido (deve ser imagem)"),
-            @ApiResponse(responseCode = "404", description = "Estudante não encontrado")
+            @ApiResponse(responseCode = "404", description = "Estudante não encontrado"),
+            @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "403", description = "Acesso negado — apenas próprio estudante ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
+            @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<EstudanteResponseDTO> uploadFoto(
             @PathVariable Long id,
@@ -196,7 +262,16 @@ public interface EstudanteControllerOpenApi {
     @Operation(summary = "Remover foto de perfil")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Foto removida com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Estudante não encontrado")
+            @ApiResponse(responseCode = "404", description = "Estudante não encontrado"),
+            @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "403", description = "Acesso negado — apenas próprio estudante ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
+            @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-05-09T12:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<Void> removerFoto(Long id);
 }

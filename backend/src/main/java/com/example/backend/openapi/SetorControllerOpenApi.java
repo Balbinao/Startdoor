@@ -59,7 +59,12 @@ public interface SetorControllerOpenApi {
             @ApiResponse(
                     responseCode = "403",
                     description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno do servidor",
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T12:00:00\",\"status\":500,\"message\":\"Erro interno no servidor\"}"))
             )
     })
     ResponseEntity<?> cadastrar(SetorDTO data);
@@ -84,7 +89,12 @@ public interface SetorControllerOpenApi {
             @ApiResponse(
                     responseCode = "403",
                     description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno do servidor",
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T12:00:00\",\"status\":500,\"message\":\"Erro interno no servidor\"}"))
             )
     })
     ResponseEntity<?> atualizar(Long id, AtualizarSetorDTO data);
@@ -104,7 +114,12 @@ public interface SetorControllerOpenApi {
             @ApiResponse(
                     responseCode = "403",
                     description = "Acesso negado - apenas ADMIN",
-                    content = @Content
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T12:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno do servidor",
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T12:00:00\",\"status\":500,\"message\":\"Erro interno no servidor\"}"))
             )
     })
     ResponseEntity<?> deletar(Long id);

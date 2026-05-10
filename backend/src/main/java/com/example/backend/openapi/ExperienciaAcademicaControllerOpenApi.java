@@ -34,7 +34,21 @@ public interface ExperienciaAcademicaControllerOpenApi  {
             @ApiResponse(
                     responseCode = "404",
                     description = "Estudante não encontrado",
-                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com o ID: 1\"}"))
+                    content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":404,\"message\":\"Estudante não encontrado com ID: 1\"}"))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
             )
     })
     ResponseEntity<?> adicionar(Long estudanteId, ExperienciaAcademicaDTO data);
@@ -46,14 +60,43 @@ public interface ExperienciaAcademicaControllerOpenApi  {
                     description = "Lista retornada com sucesso",
                     content = @Content(schema = @Schema(implementation = ExperienciaAcademica.class))
             ),
-            @ApiResponse(responseCode = "404", description = "Estudante não encontrado")
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Estudante não encontrado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":404,\"message\":\"Estudante não encontrado.\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"
+                    ))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}"
+                    ))
+            )
     })
     ResponseEntity<List<ExpAcademicaResponseDTO>> listarPorEstudante(Long estudanteId);
 
     @Operation(summary = "Buscar experiência acadêmica por ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Encontrada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Experiência não encontrada")
+            @ApiResponse(responseCode = "200", description = "Encontrada com sucesso",
+                    content = @Content(schema = @Schema(implementation = ExpAcademicaResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Experiência não encontrada",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":404,\"message\":\"Experiência acadêmica não encontrada.\"}"))),
+            @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<ExpAcademicaResponseDTO> buscar(Long id);
 
@@ -64,16 +107,36 @@ public interface ExperienciaAcademicaControllerOpenApi  {
                     description = "Atualizada com sucesso",
                     content = @Content(examples = @ExampleObject(value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":200,\"message\":\"Experiência acadêmica atualizada com sucesso!\"}"))
             ),
-            @ApiResponse(responseCode = "403", description = "Acesso negado - apenas dono ou ADMIN"),
-            @ApiResponse(responseCode = "404", description = "Experiência não encontrada")
+            @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "403", description = "Acesso negado — apenas dono ou ADMIN",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
+            @ApiResponse(responseCode = "404", description = "Experiência não encontrada",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":404,\"message\":\"Experiência acadêmica não encontrada.\"}"))),
+            @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<?> atualizar(Long id, ExperienciaAcademicaDTO data);
 
     @Operation(summary = "Remover experiência acadêmica")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Removida com sucesso"),
-            @ApiResponse(responseCode = "403", description = "Acesso negado"),
-            @ApiResponse(responseCode = "404", description = "Experiência não encontrada")
+            @ApiResponse(responseCode = "403", description = "Token JWT ausente, inválido ou expirado",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":403,\"message\":\"Acesso negado: token ausente ou inválido\"}"))),
+            @ApiResponse(responseCode = "403", description = "Acesso negado — sem permissão",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":403,\"message\":\"Acesso negado: você não tem permissão para acessar este recurso\"}"))),
+            @ApiResponse(responseCode = "404", description = "Experiência não encontrada",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":404,\"message\":\"Experiência acadêmica não encontrada.\"}"))),
+            @ApiResponse(responseCode = "500", description = "Erro interno inesperado no servidor",
+                    content = @Content(examples = @ExampleObject(
+                            value = "{\"timestamp\":\"2026-04-03T10:00:00\",\"status\":500,\"message\":\"Ocorreu um erro interno no servidor.\"}")))
     })
     ResponseEntity<?> remover(Long id);
 }
