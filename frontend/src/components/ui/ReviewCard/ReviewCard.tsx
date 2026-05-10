@@ -48,7 +48,7 @@ export const ReviewCard = ({ item, source }: Props) => {
   }, [item.textoAvaliacao]);
 
   return (
-    <div className="relative flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1000) p-3">
+    <div className="relative flex w-full flex-col gap-3 rounded-md border border-(--grey-800) bg-(--grey-1100) p-3">
       <div className="flex items-start gap-3">
         <UserProfilePicture
           userId={source === 'ESTUDANTE' ? item.empresaId : item.estudanteId}

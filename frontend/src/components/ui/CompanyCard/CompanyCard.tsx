@@ -30,7 +30,7 @@ export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
   return (
     <div
       onClick={handleCardClick}
-      className="flex w-full cursor-pointer flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1000) p-4 transition-colors hover:border-(--grey-600) hover:bg-(--grey-900)"
+      className="flex w-full cursor-pointer flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1100) p-4 transition-colors hover:border-(--grey-600) hover:bg-(--grey-1000)"
     >
       <div className="flex items-start justify-between">
         <div className="flex justify-center gap-3">
@@ -45,12 +45,12 @@ export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
           )}
 
           <div className="flex flex-col gap-3">
-            <h3 className="text-sm font-semibold text-(--grey-100)">
+            <h3 className="font-semibold text-(--grey-100)">
               {item.nomeFantasia}
             </h3>
 
             {item.estadoSede && (
-              <span className="text-xs text-(--grey-400)">
+              <span className="text-sm text-(--grey-400)">
                 {item.estadoSede}
               </span>
             )}
@@ -59,16 +59,19 @@ export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
 
         <div className="flex flex-col gap-3">
           {!isCompany && (
-            <button onClick={handleFavoriteClick} className="self-end">
+            <button
+              onClick={handleFavoriteClick}
+              className="cursor-pointer self-end p-1"
+            >
               <Star
-                width={16}
-                height={16}
+                width={20}
+                height={20}
                 className={`text-(--yellow-100) ${isFavorite ? 'fill-yellow-500' : ''}`}
               />
             </button>
           )}
           {item.paisOrigem && item.estadoSede && (
-            <div className="text-xs text-(--grey-400)">
+            <div className="text-sm text-(--grey-400)">
               {item.paisOrigem + ', ' + item.estadoSede}
             </div>
           )}
@@ -76,13 +79,11 @@ export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
       </div>
 
       {item.biografia && (
-        <p className="text-xs leading-relaxed text-(--grey-200)">
-          {item.biografia}
-        </p>
+        <p className="leading-8 line-clamp-4 text-(--grey-200)">{item.biografia}</p>
       )}
 
       {item.mediaGeral !== undefined && item.mediaGeral > 0 && (
-        <div className="flex w-fit items-center gap-2 rounded-lg bg-(--grey-900) px-3 py-1.5">
+        <div className="flex w-fit items-center gap-2 rounded-lg border border-(--grey-800) bg-(--grey-900) px-3 py-2">
           <StarFilled width={16} height={16} className="text-(--yellow-100)" />
           <span className="font-semibold text-(--grey-100)">
             {item.mediaGeral.toFixed(1)}

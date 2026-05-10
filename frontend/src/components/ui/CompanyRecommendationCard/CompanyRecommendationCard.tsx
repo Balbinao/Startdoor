@@ -21,7 +21,7 @@ export const CompanyRecommendationCard = ({
   };
 
   return (
-    <div className="flex w-full flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1000) p-4">
+    <div className="flex w-full flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1100) p-4">
       <div className="flex items-start justify-between">
         <div className="flex gap-3">
           {recommendation.fotoUrl ? (
@@ -52,10 +52,13 @@ export const CompanyRecommendationCard = ({
         </div>
 
         <div className="flex flex-col items-end gap-3">
-          <button onClick={handleFavoriteClick} className="self-end">
+          <button
+            onClick={handleFavoriteClick}
+            className="cursor-pointer self-end p-1"
+          >
             <Star
-              width={16}
-              height={16}
+              width={20}
+              height={20}
               className={`text-(--yellow-100) ${
                 isFavorite ? 'fill-yellow-500' : ''
               }`}

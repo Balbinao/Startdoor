@@ -346,8 +346,8 @@ export const CompanySearch = () => {
         </div>
       )}
 
-      <div className="flex flex-1 flex-col gap-4">
-        <span className="text-sm text-(--grey-400)">
+      <div className="flex flex-1 flex-col gap-3">
+        <span className="text-(--grey-400)">
           {searchedCompanies.length}{' '}
           {searchedCompanies.length === 1
             ? 'empresa encontrada'
@@ -360,15 +360,15 @@ export const CompanySearch = () => {
                 <Search
                   width={48}
                   height={48}
-                  className="text-(--grey-500)"
+                  className="text-(--grey-800)"
                   strokeWidth={1}
                 />
-                <p className="text-(--grey-400)">
+                <p className="text-(--grey-500)">
                   Nenhuma empresa encontrada com os filtros aplicados.
                 </p>
               </div>
             ) : (
-              <div className="flex flex-1 flex-col gap-4">
+              <div className="flex flex-1 flex-col gap-6">
                 {searchedCompanies.map(company => (
                   <CompanyCard
                     key={company.id}

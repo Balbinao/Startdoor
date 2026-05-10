@@ -43,7 +43,12 @@ export const MenuMain = () => {
         <Compass width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
 
-      <NavLink to={homePath} className={`p-2.5`}>
+      <NavLink
+        to={homePath}
+        className={({ isActive }) =>
+          `p-2.5 ${isActive ? 'rounded-full bg-(--grey-700)' : ''}`
+        }
+      >
         <Home width={ICON_SIZE} height={ICON_SIZE} />
       </NavLink>
 
