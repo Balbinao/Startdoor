@@ -5,7 +5,7 @@ import { useAuth } from '@hooks/useAuth';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentFavorite } from '@hooks/useStudentFavorite';
-import type { ICompanyRecommendation } from '@models/statisticsRecommendation.types';
+import type { ICompanyRecommendation } from '@models/statisticRecommendation.types';
 import { useEffect, useState } from 'react';
 
 export const CompanyRecommendation = () => {

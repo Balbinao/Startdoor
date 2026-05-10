@@ -1,11 +1,11 @@
-interface IStrongWeakPointItem {
-  titulo: string;
-  porcentagem: number;
-  estudanteNota: number;
-  empresaNota: number;
+export interface IStrongWeakPointItem {
+  competencia: string;
+  percentual: number;
+  notaEmpresa: number;
+  notaEstudante: number;
 }
 
-export interface IStrongWeakPointTable {
+export interface IStrongWeakPoint {
   pontosFortes: IStrongWeakPointItem[];
   pontosFracos: IStrongWeakPointItem[];
 }

@@ -49,7 +49,6 @@ export const FieldText = <TFormValues extends FieldValues>({
   };
 
   const clean = (val: string) => {
-    console.log(val.replace(/\D/g, ''));
     return val.replace(/\D/g, '');
   };
 

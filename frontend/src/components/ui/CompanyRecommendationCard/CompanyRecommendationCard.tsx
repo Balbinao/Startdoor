@@ -2,7 +2,7 @@ import { GeminiLogo, Star, StarFilled } from '@assets/icons';
 import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
 import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
-import type { ICompanyRecommendation } from '@models/statisticsRecommendation.types';
+import type { ICompanyRecommendation } from '@models/statisticRecommendation.types';
 import { formatDateWithAge } from '@utils/formatData';
 import { Link } from 'react-router-dom';
 

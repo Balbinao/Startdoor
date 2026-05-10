@@ -1,47 +1,49 @@
-import type { IStrongWeakPointTable } from '@models/statisticsRecommendation.types';
+import type {
+  IStrongWeakPoint,
+  IStrongWeakPointItem,
+} from '@models/statisticRecommendation.types';
 
 interface Props {
-  item: IStrongWeakPointTable;
+  item: IStrongWeakPoint;
 }
 
-type PointItem = {
-  titulo: string;
-  porcentagem: number;
-  estudanteNota: number;
-  empresaNota: number;
-};
-
 interface PointListProps {
-  title?: string;
-  items: PointItem[];
+  title: string;
+  items: IStrongWeakPointItem[];
   valueColor: string;
 }
 
 const PointList = ({ title, items, valueColor }: PointListProps) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-6">
-      {title && <h2 className={`${valueColor} w-fit font-bold`}>{title}</h2>}
+    <div className="flex flex-col items-center gap-6">
+      <h2 className={`${valueColor} w-fit font-bold`}>{title}</h2>
 
-      {items.map(point => (
-        <div key={point.titulo} className="flex flex-col items-center gap-1.5">
+      {items.map((point, index) => (
+        <div key={index} className="flex flex-col items-center gap-1.5">
           <span className="text-lg font-semibold text-(--grey-100)">
-            {point.titulo}
+            {point.competencia}
           </span>
 
           <span className={`text-lg font-bold ${valueColor}`}>
-            {point.porcentagem}%
+            {point.percentual}%
           </span>
 
           <div className="flex flex-col items-center text-sm">
             <span className="font-medium text-(--grey-300)">
-              Você: {point.estudanteNota}
+              Você: {point.notaEstudante}
             </span>
             <span className="font-medium text-(--grey-300)">
-              Empresa: {point.empresaNota}
+              Empresa: {point.notaEmpresa}
             </span>
           </div>
         </div>
       ))}
+
+      {items.length === 0 && (
+        <div className="flex flex-1 items-center justify-center pb-12 font-medium text-(--grey-500)">
+          Sem dados...
+        </div>
+      )}
     </div>
   );
 };
