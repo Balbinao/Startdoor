@@ -1,14 +1,15 @@
-import { PencilFilled } from '@assets/icons';
+import { Building, PencilFilled } from '@assets/icons';
 import { ButtonSquare } from '@components/ui/ButtonSquare';
 import { CompanyCard } from '@components/ui/CompanyCard';
 import { PageTitle } from '@components/ui/PageTitle';
 import { ReviewCard } from '@components/ui/ReviewCard';
 import { MESSAGES_LOADING, ROUTES_CONST, USER_ROLES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
+import { useCompany } from '@hooks/useCompany';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useStudentFavorite } from '@hooks/useStudentFavorite';
-import type { ICompanySearchItem } from '@models/companySearchData.types';
+import type { ICompany } from '@models/companyData.types';
 import type { IReview } from '@models/review.types';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +18,7 @@ export const Home = () => {
   const navigate = useNavigate();
 
   const { getUserId, getUserRole } = useAuth();
+  const { getCompanies } = useCompany();
   const { getFavorites, toggleFavorite } = useStudentFavorite();
 
   const modalLoadingAuto = useModalLoadingAuto();
@@ -25,6 +27,7 @@ export const Home = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
+  const [companies, setCompanies] = useState<ICompany[]>([]);
   const [favorites, setFavorites] = useState<{ id: number }[]>([]);
 
   const id = getUserId();
@@ -33,13 +36,24 @@ export const Home = () => {
   useEffect(() => {
     const fetchInitial = async () => {
       try {
-        if (isCompany) return;
-
-        const favorites = await modalLoadingAuto(
-          () => getFavorites(),
+        const companies = await modalLoadingAuto(
+          () => getCompanies(),
           MESSAGES_LOADING.GET,
         );
-        setFavorites(favorites.map(item => ({ id: item.id })));
+        const topCompanies = companies
+          .sort(
+            (a, b) => (b.medias?.mediaGeral ?? 0) - (a.medias?.mediaGeral ?? 0),
+          )
+          .slice(0, 4);
+        setCompanies(topCompanies);
+
+        if (!isCompany) {
+          const favorites = await modalLoadingAuto(
+            () => getFavorites(),
+            MESSAGES_LOADING.GET,
+          );
+          setFavorites(favorites.map(item => ({ id: item.id })));
+        }
       } catch (error) {
         setIsError(true);
         await modalMessageError(error);
@@ -212,69 +226,6 @@ export const Home = () => {
     },
   ];
 
-  const mock__bestCompanies: ICompanySearchItem[] = [
-    {
-      id: 1,
-      nomeFantasia: 'TechNova Solutions',
-      paisOrigem: 'Brasil',
-      estadoSede: 'SP',
-      fotoUrl: 'https://picsum.photos/200/200?random=1',
-      biografia:
-        'Empresa focada em soluções de software corporativo e inovação digital.',
-      areaAtuacao: 'Tecnologia',
-      tamanhoEmpresa: 'Média',
-      mediaGeral: 4.7,
-    },
-    {
-      id: 2,
-      nomeFantasia: 'GreenFields Agro',
-      paisOrigem: 'Brasil',
-      estadoSede: 'MG',
-      fotoUrl: 'https://picsum.photos/200/200?random=2',
-      biografia:
-        'Atuação no setor agrícola com foco em sustentabilidade e exportação.',
-      areaAtuacao: 'Agronegócio',
-      tamanhoEmpresa: 'Grande',
-      mediaGeral: 4.3,
-    },
-    {
-      id: 3,
-      nomeFantasia: 'InovaBank',
-      paisOrigem: 'Brasil',
-      estadoSede: 'RJ',
-      fotoUrl: 'https://picsum.photos/200/200?random=3',
-      biografia:
-        'Fintech especializada em pagamentos digitais e crédito pessoal.',
-      areaAtuacao: 'Financeiro',
-      tamanhoEmpresa: 'Grande',
-      mediaGeral: 4.8,
-    },
-    {
-      id: 4,
-      nomeFantasia: 'HealthPlus Care',
-      paisOrigem: 'Brasil',
-      estadoSede: 'PR',
-      fotoUrl: 'https://picsum.photos/200/200?random=4',
-      biografia:
-        'Empresa de saúde com foco em telemedicina e gestão hospitalar.',
-      areaAtuacao: 'Saúde',
-      tamanhoEmpresa: 'Média',
-      mediaGeral: 4.5,
-    },
-    {
-      id: 5,
-      nomeFantasia: 'EduSmart',
-      paisOrigem: 'Brasil',
-      estadoSede: 'RS',
-      fotoUrl: 'https://picsum.photos/200/200?random=5',
-      biografia:
-        'Plataforma educacional voltada para ensino remoto e inteligência adaptativa.',
-      areaAtuacao: 'Educação',
-      tamanhoEmpresa: 'Startup',
-      mediaGeral: 4.6,
-    },
-  ];
-
   if (initialLoading) return <></>;
   if (isError) return <></>;
 
@@ -312,7 +263,7 @@ export const Home = () => {
       <div className="flex flex-col gap-5">
         <h2 className="text-2xl font-normal text-white">Melhores empresas</h2>
         <div className="flex flex-1 flex-col gap-6">
-          {mock__bestCompanies.map(company => (
+          {companies.map(company => (
             <CompanyCard
               key={company.id}
               item={company}
@@ -320,6 +271,20 @@ export const Home = () => {
               onToggleFavorite={handleToggleFavorite}
             />
           ))}
+
+          {companies.length === 0 && (
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 py-10">
+              <Building
+                width={48}
+                height={48}
+                className="text-(--grey-800)"
+                strokeWidth={1}
+              />
+              <p className="text-(--grey-500)">
+                Nenhuma empresa com nota média encontrada.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
