@@ -2,11 +2,12 @@ import { Star, StarFilled } from '@assets/icons';
 import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
 import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
+import type { ICompany } from '@models/companyData.types';
 import type { ICompanySearchItem } from '@models/companySearchData.types';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  item: ICompanySearchItem;
+  item: ICompanySearchItem | ICompany;
   isFavorite?: boolean;
   onToggleFavorite?: (id: number) => void;
 }
@@ -17,6 +18,8 @@ export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
   const { getUserRole } = useAuth();
 
   const isCompany = getUserRole() === USER_ROLES_CONST.EMPRESA;
+  const mediaGeral =
+    'mediaGeral' in item ? item.mediaGeral : item.medias?.mediaGeral;
 
   const handleCardClick = () => {
     navigate(ROUTES_CONST.COMPANY.PROFILE_BY_ID(item.id));
@@ -79,14 +82,16 @@ export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
       </div>
 
       {item.biografia && (
-        <p className="leading-8 line-clamp-4 text-(--grey-200)">{item.biografia}</p>
+        <p className="line-clamp-4 leading-8 text-(--grey-200)">
+          {item.biografia}
+        </p>
       )}
 
-      {item.mediaGeral !== undefined && item.mediaGeral > 0 && (
+      {mediaGeral !== undefined && mediaGeral > 0 && (
         <div className="flex w-fit items-center gap-2 rounded-lg border border-(--grey-800) bg-(--grey-900) px-3 py-2">
           <StarFilled width={16} height={16} className="text-(--yellow-100)" />
           <span className="font-semibold text-(--grey-100)">
-            {item.mediaGeral.toFixed(1)}
+            {mediaGeral.toFixed(1)}
           </span>
         </div>
       )}
