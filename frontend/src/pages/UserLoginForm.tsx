@@ -12,21 +12,19 @@ import { useAuth } from '@hooks/useAuth';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 
 import {
-  forgotPasswordCodeSchema,
-  forgotPasswordEmailSchema,
-  forgotPasswordResetSchema,
+  userLoginForgotPasswordSchema,
+  userLoginResetPasswordSchema,
   userLoginSchema,
-  type ForgotPasswordCodeFormData,
-  type ForgotPasswordEmailFormData,
-  type ForgotPasswordResetFormData,
+  type UserLoginForgotPasswordFormData,
   type UserLoginFormData,
+  type UserLoginResetPasswordFormData,
 } from '@schemas/userLoginSchema';
 
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-type RecoveryStep = 'email' | 'code' | 'newPassword';
+type RecoveryStep = 'email' | 'codaAndNewPassword';
 
 export const UserLoginForm = () => {
   const navigate = useNavigate();
@@ -34,7 +32,8 @@ export const UserLoginForm = () => {
   const modalLoadingAuto = useModalLoadingAuto();
   const { modalMessageError, modalMessageSafe } = useModalMessageDefault();
 
-  const { login, clearFullLocalStorage } = useAuth();
+  const { login, forgotPassword, resetPassword, clearFullLocalStorage } =
+    useAuth();
 
   const [isRecoveringPassword, setIsRecoveringPassword] = useState(false);
   const [recoveryStep, setRecoveryStep] = useState<RecoveryStep>('email');
@@ -52,24 +51,18 @@ export const UserLoginForm = () => {
     },
   });
 
-  const emailForm = useForm<ForgotPasswordEmailFormData>({
-    resolver: zodResolver(forgotPasswordEmailSchema),
+  const forgotPasswordForm = useForm<UserLoginForgotPasswordFormData>({
+    resolver: zodResolver(userLoginForgotPasswordSchema),
     defaultValues: {
       email: '',
     },
   });
 
-  const codeForm = useForm<ForgotPasswordCodeFormData>({
-    resolver: zodResolver(forgotPasswordCodeSchema),
+  const resetPasswordForm = useForm<UserLoginResetPasswordFormData>({
+    resolver: zodResolver(userLoginResetPasswordSchema),
     defaultValues: {
-      code: '',
-    },
-  });
-
-  const resetPasswordForm = useForm<ForgotPasswordResetFormData>({
-    resolver: zodResolver(forgotPasswordResetSchema),
-    defaultValues: {
-      senha: '',
+      codigo: '',
+      novaSenha: '',
     },
   });
 
@@ -87,35 +80,56 @@ export const UserLoginForm = () => {
     }
   };
 
-  const onSubmitEmail = async (data: ForgotPasswordEmailFormData) => {
-    setRecoveryEmail(data.email);
-    setRecoveryStep('code');
-  };
-
-  const onSubmitCode = async (data: ForgotPasswordCodeFormData) => {
-    console.log(data);
-    setRecoveryStep('newPassword');
-  };
-
-  const onSubmitNewPassword = async (data: ForgotPasswordResetFormData) => {
+  const onSubmitForgotPassword = async (
+    data: UserLoginForgotPasswordFormData,
+  ) => {
     try {
-      console.log(data);
-      console.log(recoveryEmail);
+      setRecoveryEmail(data.email);
 
-      // await modalLoadingAuto(
-      //   () => updateUserPasswordByEmail(recoveryEmail, data.senha.trim()),
-      //   MESSAGES_LOADING.UPDATE,
-      // );
+      const response = await modalLoadingAuto(
+        () => forgotPassword({ email: data.email }),
+        MESSAGES_LOADING.GET,
+      );
+
+      const message =
+        response?.message ?? MESSAGES_RESPONSE.SUCCESS.RESET_CODE_SENT;
+
+      await modalMessageSafe({
+        type: 'success',
+        message: message,
+        shouldBlockProcess: false,
+      });
+
+      setRecoveryStep('codaAndNewPassword');
+    } catch (error: unknown) {
+      await modalMessageError(error);
+    }
+  };
+
+  const onSubmitResetPassword = async (
+    data: UserLoginResetPasswordFormData,
+  ) => {
+    try {
+      const response = await modalLoadingAuto(
+        () =>
+          resetPassword({
+            email: recoveryEmail,
+            codigo: data.codigo,
+            novaSenha: data.novaSenha,
+          }),
+        MESSAGES_LOADING.UPDATE,
+      );
+
+      const message = response?.message ?? MESSAGES_RESPONSE.SUCCESS.UPDATE;
 
       setIsRecoveringPassword(false);
       setRecoveryStep('email');
-      emailForm.reset();
-      codeForm.reset();
+      forgotPasswordForm.reset();
       resetPasswordForm.reset();
 
       await modalMessageSafe({
         type: 'success',
-        message: MESSAGES_RESPONSE.SUCCESS.UPDATE,
+        message: message,
         shouldBlockProcess: false,
       });
     } catch (error: unknown) {
@@ -207,14 +221,16 @@ export const UserLoginForm = () => {
 
         {isRecoveringPassword && (
           <div>
-            <FormWrapper form={emailForm}>
+            <FormWrapper form={forgotPasswordForm}>
               <form
-                onSubmit={emailForm.handleSubmit(onSubmitEmail)}
+                onSubmit={forgotPasswordForm.handleSubmit(
+                  onSubmitForgotPassword,
+                )}
                 className="flex flex-col"
               >
                 <div className="mb-6">
                   <FormField
-                    form={emailForm}
+                    form={forgotPasswordForm}
                     type="email"
                     name="email"
                     label="Email"
@@ -230,7 +246,7 @@ export const UserLoginForm = () => {
                       type="submit"
                       text="Avançar"
                       submittingText="Enviando..."
-                      isSubmitting={emailForm.formState.isSubmitting}
+                      isSubmitting={forgotPasswordForm.formState.isSubmitting}
                     />
                   </div>
                 )}
@@ -238,61 +254,41 @@ export const UserLoginForm = () => {
             </FormWrapper>
 
             {recoveryStep !== 'email' && (
-              <FormWrapper form={codeForm}>
-                <form
-                  onSubmit={codeForm.handleSubmit(onSubmitCode)}
-                  className="flex flex-col"
-                >
-                  <div className="mb-6">
-                    <FormField
-                      form={codeForm}
-                      type="text"
-                      name="code"
-                      label="Código"
-                      placeholder="Digite o código"
-                      readOnly={recoveryStep !== 'code'}
-                      required
-                    />
-                  </div>
-
-                  {recoveryStep === 'code' && (
-                    <div className="mt-4">
-                      <ButtonPill
-                        type="submit"
-                        text="Avançar"
-                        submittingText="Validando..."
-                        isSubmitting={codeForm.formState.isSubmitting}
-                      />
-                    </div>
-                  )}
-                </form>
-              </FormWrapper>
-            )}
-
-            {recoveryStep !== 'email' && recoveryStep !== 'code' && (
               <FormWrapper form={resetPasswordForm}>
                 <form
-                  onSubmit={resetPasswordForm.handleSubmit(onSubmitNewPassword)}
+                  onSubmit={resetPasswordForm.handleSubmit(
+                    onSubmitResetPassword,
+                  )}
                   className="flex flex-col"
                 >
                   <div className="mb-6">
                     <FormField
                       form={resetPasswordForm}
-                      type="password"
-                      name="senha"
-                      label="Nova senha"
-                      placeholder="Digite sua nova senha"
-                      readOnly={recoveryStep !== 'newPassword'}
+                      type="text"
+                      name="codigo"
+                      label="Código"
+                      placeholder="Digite o código..."
                       required
                     />
                   </div>
 
-                  {recoveryStep === 'newPassword' && (
+                  <div className="mb-6">
+                    <FormField
+                      form={resetPasswordForm}
+                      type="text"
+                      name="novaSenha"
+                      label="Nova Senha"
+                      placeholder="Informe sua nova senha..."
+                      required
+                    />
+                  </div>
+
+                  {recoveryStep === 'codaAndNewPassword' && (
                     <div className="mt-4">
                       <ButtonPill
                         type="submit"
-                        text="Redefinir senha"
-                        submittingText="Salvando..."
+                        text="Avançar"
+                        submittingText="Validando..."
                         isSubmitting={resetPasswordForm.formState.isSubmitting}
                       />
                     </div>

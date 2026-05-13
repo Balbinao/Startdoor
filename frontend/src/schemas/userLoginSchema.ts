@@ -10,28 +10,21 @@ export const userLoginSchema = z.object({
 
 export type UserLoginFormData = z.infer<typeof userLoginSchema>;
 
-export const forgotPasswordEmailSchema = z.object({
+export const userLoginForgotPasswordSchema = z.object({
   email: z.email({
     message: 'Email inválido',
   }),
 });
 
-export type ForgotPasswordEmailFormData = z.infer<
-  typeof forgotPasswordEmailSchema
+export type UserLoginForgotPasswordFormData = z.infer<
+  typeof userLoginForgotPasswordSchema
 >;
 
-export const forgotPasswordCodeSchema = z.object({
-  code: z.string(),
+export const userLoginResetPasswordSchema = z.object({
+  codigo: z.string().min(6, 'Código precisa ter 6 caracteres'),
+  novaSenha: z.string().min(6, 'Senha precisa ter pelo menos 6 caracteres'),
 });
 
-export type ForgotPasswordCodeFormData = z.infer<
-  typeof forgotPasswordCodeSchema
->;
-
-export const forgotPasswordResetSchema = z.object({
-  senha: z.string().min(6, 'Senha precisa ter pelo menos 6 caracteres'),
-});
-
-export type ForgotPasswordResetFormData = z.infer<
-  typeof forgotPasswordResetSchema
+export type UserLoginResetPasswordFormData = z.infer<
+  typeof userLoginResetPasswordSchema
 >;

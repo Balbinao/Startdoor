@@ -4,6 +4,7 @@ export const MESSAGES_RESPONSE = {
     REGISTRATION: 'Cadastro efetuado com sucesso!',
     UPDATE: 'Dados atualizados com sucesso!',
     DELETE: 'Dados deletados com sucesso!',
+    RESET_CODE_SENT: 'Um código de recuperação foi enviado para seu email!',
   },
   WARNING: {
     USER_ID_NOT_FOUND: 'Nenhum userId encontrado!',

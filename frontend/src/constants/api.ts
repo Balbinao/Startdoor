@@ -4,6 +4,8 @@ export const API_CONST = {
   },
   AUTH: {
     LOGIN_URL: '/auth/login',
+    FORGOT_PASSWORD: '/auth/forgot-password',
+    RESET_PASSWORD: '/auth/reset-password',
   },
   SECTOR: {
     BASE: '/setores',
