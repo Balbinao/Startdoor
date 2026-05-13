@@ -1,6 +1,10 @@
 import { ROUTES_CONST, STORAGEKEYS_CONST } from '@constants';
 import { useStore } from '@contexts/store/useStore';
-import type { IUserLogin } from '@models/registrationLogin.types';
+import type {
+  IUserLogin,
+  IUserLoginForgotPassword,
+  IUserLoginResetPassword,
+} from '@models/registrationLogin.types';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 
@@ -16,6 +20,26 @@ export const useAuth = () => {
         throw new Error('Resposta inválida do Servidor ao efetuar login!');
       }
       authStore.login(response);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const forgotPassword = async (data: IUserLoginForgotPassword) => {
+    try {
+      const response = await authService.forgotPassword(data);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const resetPassword = async (data: IUserLoginResetPassword) => {
+    try {
+      const response = await authService.resetPassword(data);
       return response;
     } catch (error) {
       console.error(error);
@@ -59,5 +83,7 @@ export const useAuth = () => {
     getUserRole,
     clearFullLocalStorage,
     logout,
+    forgotPassword,
+    resetPassword,
   };
 };

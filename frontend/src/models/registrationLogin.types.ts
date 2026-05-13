@@ -26,3 +26,13 @@ export interface IUserLoginResponse {
   id: number;
   tipo: string;
 }
+
+export interface IUserLoginForgotPassword {
+  email: string;
+}
+
+export interface IUserLoginResetPassword {
+  email: string;
+  codigo: string;
+  novaSenha: string;
+}
