@@ -89,6 +89,12 @@ export type IDoubleRangeField<T extends FieldValues> = IBaseField<T> & {
   unitType?: string;
 };
 
+export type IRatingField<T extends FieldValues> = IBaseField<T> & {
+  type: 'rating';
+  value?: number;
+  maxStars?: number;
+};
+
 export type FieldConfig<T extends FieldValues> =
   | ITextField<T>
   | ITextareaField<T>
@@ -96,4 +102,5 @@ export type FieldConfig<T extends FieldValues> =
   | ISelectField<T>
   | ICheckboxField<T>
   | IInputDate<T>
-  | IDoubleRangeField<T>;
+  | IDoubleRangeField<T>
+  | IRatingField<T>;

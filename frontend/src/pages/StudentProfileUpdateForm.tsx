@@ -93,18 +93,18 @@ export const StudentProfileUpdateForm = () => {
       estadoAtuacao: '',
       setorInteresse: '',
       habilidadesPrincipais: '',
-      ambiente: '',
-      aprendizado: '',
-      beneficios: '',
-      cultura: '',
-      efetivacao: '',
-      entrevista: '',
-      feedback: '',
-      infraestrutura: '',
-      integracao: '',
-      remuneracao: '',
-      rotina: '',
-      lideranca: '',
+      ambiente: 0,
+      aprendizado: 0,
+      beneficios: 0,
+      cultura: 0,
+      efetivacao: 0,
+      entrevista: 0,
+      feedback: 0,
+      infraestrutura: 0,
+      integracao: 0,
+      remuneracao: 0,
+      rotina: 0,
+      lideranca: 0,
       linkSite: '',
       linkLinkedin: '',
     },
@@ -113,6 +113,7 @@ export const StudentProfileUpdateForm = () => {
   const {
     handleSubmit,
     reset,
+    setValue,
     setError,
     formState: { isSubmitting },
   } = form;
@@ -158,6 +159,18 @@ export const StudentProfileUpdateForm = () => {
 
     fetch();
   }, []);
+
+  const handleSetAllScore = (value: string | number) => {
+    const numericValue = Number(value);
+
+    studentConditionalScoreUpdateFields.forEach(field => {
+      setValue(field.name, numericValue, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+    });
+  };
 
   const onSubmit = async (data: StudentProfileUpdateData) => {
     try {
@@ -360,10 +373,24 @@ export const StudentProfileUpdateForm = () => {
               />
             </div>
 
-            <div className="grid max-w-md grid-cols-3 gap-6 self-center">
-              {studentConditionalScoreUpdateFields.map(field => (
-                <FormField form={form} key={field.name} {...field} />
-              ))}
+            <div className="flex flex-col items-center justify-center gap-8">
+              <div className="flex w-full max-w-65">
+                <FormField
+                  type="select"
+                  name={'SetAllScore'}
+                  label="Predefinir Notas"
+                  options={DROPDOWN_VALUES_CONST.NOTA.map(option => ({
+                    ...option,
+                  }))}
+                  onChange={handleSetAllScore}
+                />
+              </div>
+
+              <div className="flex w-full max-w-65 flex-col gap-6">
+                {studentConditionalScoreUpdateFields.map(field => (
+                  <FormField form={form} key={field.name} {...field} />
+                ))}
+              </div>
             </div>
           </div>
 

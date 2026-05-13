@@ -1,4 +1,3 @@
-import { StarFilled } from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
 import { FormWrapper } from '@components/layout/FormWrapper';
 import { ButtonPill } from '@components/ui/ButtonPill';
@@ -84,6 +83,7 @@ export const ReviewForm = () => {
   const {
     handleSubmit,
     reset,
+    setValue,
     setError,
     formState: { isSubmitting },
   } = form;
@@ -123,6 +123,17 @@ export const ReviewForm = () => {
 
     fetch();
   }, []);
+
+  const handleSetAllScore = (value: string | number) => {
+    const numericValue = Number(value);
+    reviewScoreFields.forEach(([name]) => {
+      setValue(name, numericValue, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+    });
+  };
 
   const onSubmit = async (data: ReviewData) => {
     try {
@@ -308,25 +319,32 @@ export const ReviewForm = () => {
             />
           </div>
 
-          <div className="grid w-full max-w-md grid-cols-3 gap-5 self-center">
-            {reviewScoreFields.map(([name, label]) => (
+          <div className="flex flex-col items-center gap-8">
+            <div className="flex w-full max-w-65">
               <FormField
-                key={name}
-                form={form}
                 type="select"
-                name={name}
-                label={label}
-                required={true}
-                options={DROPDOWN_VALUES_CONST.NOTA}
-                iconLeft={
-                  <StarFilled
-                    className="text-(--yellow-100)"
-                    width={18}
-                    height={18}
-                  />
-                }
+                name={'setAllScore'}
+                label="Predefinir Notas"
+                options={DROPDOWN_VALUES_CONST.NOTA.map(option => ({
+                  ...option,
+                }))}
+                onChange={handleSetAllScore}
               />
-            ))}
+            </div>
+
+            <div className="flex w-full max-w-65 flex-col gap-6">
+              {reviewScoreFields.map(([name, label]) => (
+                <FormField
+                  key={name}
+                  form={form}
+                  type="rating"
+                  name={name}
+                  label={label}
+                  required={true}
+                  maxStars={5}
+                />
+              ))}
+            </div>
           </div>
 
           <FormErrorMessage />

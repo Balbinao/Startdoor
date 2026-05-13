@@ -2,6 +2,7 @@ import { FieldCheckbox } from '@components/ui/FieldCheckbox';
 import { FieldDate } from '@components/ui/FieldDate/FieldDate';
 import { FieldDoubleRange } from '@components/ui/FieldDoubleRange';
 import { FieldRadio } from '@components/ui/FieldRadio';
+import { FieldRating } from '@components/ui/FieldRating';
 import { FieldSelect } from '@components/ui/FieldSelect';
 import { FieldText } from '@components/ui/FieldText';
 import { FieldTextarea } from '@components/ui/FieldTextarea/FieldTextarea';
@@ -23,6 +24,10 @@ type FieldOnChange =
   | {
       type: 'doubleRange';
       onChange?: (value: RangeValue) => void;
+    }
+  | {
+      type: 'rating';
+      onChange?: (value: number) => void;
     };
 
 type Props<TFormValues extends FieldValues> = FieldConfig<TFormValues> & {
@@ -59,6 +64,9 @@ export const FormField = <TFormValues extends FieldValues>(
 
     case 'doubleRange':
       return <FieldDoubleRange<TFormValues> {...field} form={form} />;
+
+    case 'rating':
+      return <FieldRating<TFormValues> {...field} form={form} />;
 
     default:
       return null;

@@ -1,103 +1,78 @@
 import type { FieldConfig } from '@models/input.types';
 import type { StudentProfileUpdateData } from '@schemas/studentProfileUpdateSchema';
-import { DROPDOWN_VALUES_CONST } from './dropdownValues';
 
 export const studentConditionalScoreUpdateFields: FieldConfig<StudentProfileUpdateData>[] =
   [
     {
-      type: 'select',
+      type: 'rating',
       name: 'ambiente',
       label: 'Ambiente',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'aprendizado',
       label: 'Aprendizado',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'beneficios',
       label: 'Benefícios',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'cultura',
       label: 'Cultura',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'efetivacao',
       label: 'Efetivação',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'entrevista',
       label: 'Entrevista',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'feedback',
       label: 'Feedback',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'infraestrutura',
       label: 'Infraestrutura',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'integracao',
       label: 'Integração',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'remuneracao',
       label: 'Remuneração',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'rotina',
       label: 'Rotina',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
     {
-      type: 'select',
+      type: 'rating',
       name: 'lideranca',
       label: 'Liderança',
-      options: DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-        ...option,
-      })),
+      maxStars: 5,
     },
   ] as const;
