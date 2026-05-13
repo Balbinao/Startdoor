@@ -8,6 +8,8 @@ import com.example.backend.repository.AdminRepository;
 import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
 import com.example.backend.repository.RecuperacaoSenhaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 @Service
 public class RecuperacaoSenhaService {
 
+    private static final Logger log = LoggerFactory.getLogger(RecuperacaoSenhaService.class);
     private static final int CODIGO_EXPIRACAO_MINUTOS = 15;
     private static final SecureRandom RANDOM = new SecureRandom();
 
@@ -64,7 +67,13 @@ public class RecuperacaoSenhaService {
         entity.setUtilizado(false);
         recuperacaoSenhaRepository.save(entity);
 
-        emailService.enviarCodigoRecuperacao(email, codigo);
+        log.info("Código de recuperação para {}: {}", email, codigo);
+
+        try {
+            emailService.enviarCodigoRecuperacao(email, codigo);
+        } catch (Exception e) {
+            log.error("Falha ao enviar email para {}: {}", email, e.getMessage());
+        }
     }
 
     @Transactional

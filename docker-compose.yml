@@ -27,7 +27,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - GEMINI_API_KEY=sua-chave-aqui
-      - RESEND_API_KEY=sua-chave-aqui
+      - GMAIL_EMAIL=seu-email-aqui
+      - GMAIL_APP_PASSWORD=sua-senha-aqui
     volumes:
       - fotos_volume:/app/fotos
 
