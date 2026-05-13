@@ -107,6 +107,8 @@ public class OpenAPIConfig {
                                 | DELETE | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
                                 | GET | /admin/ | ADMIN |
                                 | POST | /auth/login | Público |
+                                | POST | /auth/forgot-password | Público |
+                                | POST | /auth/reset-password | Público |
                                 | POST | /favoritos/{empresaId} | Autenticado |
                                 | GET | /favoritos | Autenticado |
                                 | POST | /recomendacoes/ia/gerar | Próprio estudante ou ADMIN |
