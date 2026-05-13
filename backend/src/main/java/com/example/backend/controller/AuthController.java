@@ -2,8 +2,10 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.CadastroEmpresaDTO;
 import com.example.backend.dto.CadastroEstudanteDTO;
+import com.example.backend.dto.ForgotPasswordRequestDTO;
 import com.example.backend.dto.LoginDTO;
 import com.example.backend.dto.LoginResponseDTO;
+import com.example.backend.dto.ResetPasswordDTO;
 import com.example.backend.model.Admin;
 import com.example.backend.model.Empresa;
 import com.example.backend.model.Estudante;
@@ -12,6 +14,7 @@ import com.example.backend.repository.AdminRepository;
 import com.example.backend.repository.EmpresaRepository;
 import com.example.backend.repository.EstudanteRepository;
 import com.example.backend.security.TokenService;
+import com.example.backend.service.RecuperacaoSenhaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -45,18 +48,52 @@ public class AuthController implements AuthControllerOpenApi  {
     private final EmpresaRepository empresaRepository;
     private final AdminRepository adminRepository;
     private final TokenService tokenService;
+    private final RecuperacaoSenhaService recuperacaoSenhaService;
 
     public AuthController(
             AuthenticationManager authenticationManager,
             EstudanteRepository estudanteRepository,
             EmpresaRepository empresaRepository,
             AdminRepository adminRepository,
-            TokenService tokenService) {
+            TokenService tokenService,
+            RecuperacaoSenhaService recuperacaoSenhaService) {
         this.authenticationManager = authenticationManager;
         this.estudanteRepository = estudanteRepository;
         this.empresaRepository = empresaRepository;
         this.adminRepository = adminRepository;
         this.tokenService = tokenService;
+        this.recuperacaoSenhaService = recuperacaoSenhaService;
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody @Valid ForgotPasswordRequestDTO data) {
+        recuperacaoSenhaService.solicitarRecuperacao(data.email());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now().toString());
+        response.put("status", 200);
+        response.put("message", "Se o email existir no sistema, um código de recuperação será enviado.");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPasswordDTO data) {
+        try {
+            recuperacaoSenhaService.resetarSenha(data.email(), data.codigo(), data.novaSenha());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("timestamp", LocalDateTime.now().toString());
+            response.put("status", 200);
+            response.put("message", "Senha redefinida com sucesso.");
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("timestamp", LocalDateTime.now().toString());
+            error.put("status", 400);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
     }
 
     @PostMapping("/login")
