@@ -1,10 +1,7 @@
 import { StarFilled } from '@assets/icons';
 import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
 import type { IReview } from '@models/review.types';
-import {
-  formatDDMMMYYYY,
-  formatToTwoDecimalsAsNumber,
-} from '@utils/formatData';
+import { formatDDMMMYYYY } from '@utils/formatData';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SupportButton } from '../SupportButton';
@@ -80,7 +77,10 @@ export const ReviewCard = ({ item, source }: Props) => {
             <span>{item.tituloCargo}</span>
             <span className="text-(--grey-400)">•</span>
             <span className="flex items-center gap-1.5">
-              {formatToTwoDecimalsAsNumber(meanReviewScore)}
+              {new Intl.NumberFormat('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(meanReviewScore)}
               <StarFilled
                 width={15}
                 height={15}

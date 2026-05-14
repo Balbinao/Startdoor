@@ -551,22 +551,25 @@ export const UserBanner = ({ type, id }: Props) => {
             <span>{profileName}</span>
             {type === USER_ROLES_CONST.EMPRESA && !showUpdateView && (
               <span
-                className="flex cursor-pointer items-center justify-center gap-2 text-zinc-500"
+                className="flex cursor-pointer items-center justify-center gap-2 text-lg text-zinc-500"
                 onClick={() => setShowCompanyScores(prev => !prev)}
               >
                 {company?.medias?.mediaGeral && (
                   <span className="font-normal">
-                    {company.medias.mediaGeral}
+                    {new Intl.NumberFormat('pt-BR', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }).format(company.medias.mediaGeral)}
                   </span>
                 )}
                 <StarFilled
-                  width={20}
-                  height={20}
+                  width={18}
+                  height={18}
                   className="text-(--yellow-100) opacity-80"
                 />
                 <ChevronUp
-                  width={26}
-                  height={26}
+                  width={24}
+                  height={24}
                   className={`transition-transform duration-200 ${
                     showCompanyScores ? 'rotate-0' : 'rotate-180'
                   }`}

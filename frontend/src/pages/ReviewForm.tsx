@@ -332,18 +332,20 @@ export const ReviewForm = () => {
               />
             </div>
 
-            <div className="flex w-full max-w-65 flex-col gap-6">
-              {reviewScoreFields.map(([name, label]) => (
-                <FormField
-                  key={name}
-                  form={form}
-                  type="rating"
-                  name={name}
-                  label={label}
-                  required={true}
-                  maxStars={5}
-                />
-              ))}
+            <div className="flex justify-center">
+              <div className="grid grid-cols-[230px] gap-8 sm:grid-cols-[230px_230px]">
+                {reviewScoreFields.map(([name, label]) => (
+                  <FormField
+                    key={name}
+                    form={form}
+                    type="rating"
+                    name={name}
+                    label={label}
+                    required={true}
+                    maxStars={5}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 

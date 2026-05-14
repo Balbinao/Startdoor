@@ -39,9 +39,31 @@ export const UserLoginForm = () => {
   const [recoveryStep, setRecoveryStep] = useState<RecoveryStep>('email');
   const [recoveryEmail, setRecoveryEmail] = useState('');
 
+  const [timeLeft, setTimeLeft] = useState(0);
+
   useEffect(() => {
     clearFullLocalStorage();
   }, []);
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft(prev => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(
+      remainingSeconds,
+    ).padStart(2, '0')}`;
+  };
+
+  const isCodeExpired = recoveryStep === 'codaAndNewPassword' && timeLeft <= 0;
 
   const loginForm = useForm<UserLoginFormData>({
     resolver: zodResolver(userLoginSchema),
@@ -101,6 +123,7 @@ export const UserLoginForm = () => {
       });
 
       setRecoveryStep('codaAndNewPassword');
+      setTimeLeft(15 * 60);
     } catch (error: unknown) {
       await modalMessageError(error);
     }
@@ -110,6 +133,15 @@ export const UserLoginForm = () => {
     data: UserLoginResetPasswordFormData,
   ) => {
     try {
+      if (isCodeExpired) {
+        await modalMessageSafe({
+          type: 'error',
+          message: 'O código expirou. Solicite um novo código.',
+          shouldBlockProcess: true,
+        });
+        return;
+      }
+
       const response = await modalLoadingAuto(
         () =>
           resetPassword({
@@ -124,6 +156,7 @@ export const UserLoginForm = () => {
 
       setIsRecoveringPassword(false);
       setRecoveryStep('email');
+      setTimeLeft(0);
       forgotPasswordForm.reset();
       resetPasswordForm.reset();
 
@@ -270,6 +303,21 @@ export const UserLoginForm = () => {
                       placeholder="Digite o código..."
                       required
                     />
+
+                    <div className="mt-2 text-sm text-(--grey-300)">
+                      {isCodeExpired ? (
+                        <span className="text-red-400">
+                          Código expirado. Solicite um novo código.
+                        </span>
+                      ) : (
+                        <span>
+                          O código expira em{' '}
+                          <span className="font-semibold text-(--purple-300)">
+                            {formatTime(timeLeft)}
+                          </span>
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="mb-6">
@@ -287,9 +335,14 @@ export const UserLoginForm = () => {
                     <div className="mt-4">
                       <ButtonPill
                         type="submit"
-                        text="Avançar"
-                        submittingText="Validando..."
-                        isSubmitting={resetPasswordForm.formState.isSubmitting}
+                        text={isCodeExpired ? 'Código expirado' : 'Avançar'}
+                        submittingText={
+                          isCodeExpired ? 'Código expirado' : 'Validando...'
+                        }
+                        isSubmitting={
+                          isCodeExpired ||
+                          resetPasswordForm.formState.isSubmitting
+                        }
                       />
                     </div>
                   )}
