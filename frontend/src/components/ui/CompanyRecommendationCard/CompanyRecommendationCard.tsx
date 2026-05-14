@@ -83,16 +83,18 @@ export const CompanyRecommendationCard = ({
 
       <div className="flex items-center justify-between">
         <div className="flex gap-4">
-          {(recommendation.mediaGeral ?? 0) > 0 && (
+          {recommendation.mediaGeral && recommendation.mediaGeral > 0 && (
             <div className="flex w-fit items-center gap-2 rounded-lg border border-(--grey-800) bg-(--grey-900) px-3 py-2">
               <StarFilled
                 width={16}
                 height={16}
                 className="text-(--yellow-100)"
               />
-
               <span className="font-semibold text-(--grey-100)">
-                {recommendation.mediaGeral?.toFixed(1)}
+                {new Intl.NumberFormat('pt-BR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(recommendation.mediaGeral)}
               </span>
             </div>
           )}

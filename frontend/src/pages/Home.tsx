@@ -233,23 +233,25 @@ export const Home = () => {
     <div className="flex min-h-full w-full flex-col gap-16">
       <PageTitle title="Home" />
 
-      <div className="flex flex-col gap-4">
-        <h1 className="text-5xl font-bold text-(--purple-300)">
-          Conte como é trabalhar na sua empresa
-        </h1>
-        <span className="text-lg text-(--grey-300)">
-          Sua experiência pode ajudar milhares de profissionais.
-        </span>
+      {!isCompany && (
+        <div className="flex flex-col gap-4">
+          <h1 className="text-5xl font-bold text-(--purple-300)">
+            Conte como é trabalhar na sua empresa
+          </h1>
+          <span className="text-lg text-(--grey-300)">
+            Sua experiência pode ajudar milhares de profissionais.
+          </span>
 
-        <ButtonSquare
-          text="Compartilhar Experiência"
-          iconLeft={<PencilFilled />}
-          onClick={() => {
-            if (!id) return;
-            navigate(ROUTES_CONST.REVIEW.REVIEW_CREATE(Number(id)));
-          }}
-        />
-      </div>
+          <ButtonSquare
+            text="Compartilhar Experiência"
+            iconLeft={<PencilFilled />}
+            onClick={() => {
+              if (!id) return;
+              navigate(ROUTES_CONST.REVIEW.REVIEW_CREATE(Number(id)));
+            }}
+          />
+        </div>
+      )}
 
       <div className="flex flex-col gap-5">
         <h2 className="text-2xl font-normal text-white">Avaliações recentes</h2>

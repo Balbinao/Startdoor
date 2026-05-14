@@ -191,7 +191,7 @@ export const CompanyProfile = () => {
                     <>
                       R$ {searchedCompany.salarios.minimo} — R${' '}
                       {searchedCompany.salarios.maximo}
-                      <span style={{ opacity: 0.5 }}>
+                      <span style={{ color: '#737378' }}>
                         {' '}
                         (média de R$ {searchedCompany.salarios.media})
                       </span>
@@ -216,7 +216,7 @@ export const CompanyProfile = () => {
           </div>
         </div>
       )}
-      <div className="flex w-full flex-col gap-8 mt-12">
+      <div className="mt-12 flex w-full flex-col gap-8">
         <div className="flex items-center gap-8">
           <span className="text-lg font-semibold whitespace-nowrap">
             {reviewCards.length}{' '}

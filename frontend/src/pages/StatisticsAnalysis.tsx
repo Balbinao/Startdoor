@@ -312,7 +312,7 @@ export const StatisticsAnalysis = () => {
             >
               {!canLoadStrongWeakPoints && (
                 <div className="flex flex-1 justify-center">
-                  <span className="block w-96 text-center text-sm font-normal text-(--grey-500)">
+                  <span className="mt-12 block w-96 text-center font-normal text-(--grey-500)">
                     Para visualizar esta estatística, por favor defina todas as
                     notas condicionais em seu perfil...
                   </span>

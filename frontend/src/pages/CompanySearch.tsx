@@ -1,9 +1,4 @@
-import {
-  FilterCompetence,
-  FilterSelect,
-  Search,
-  StarFilled,
-} from '@assets/icons';
+import { FilterCompetence, FilterSelect, Search } from '@assets/icons';
 import { FormField } from '@components/layout/FormField/FormField';
 import { CompanyCard } from '@components/ui/CompanyCard';
 import { PageTitle } from '@components/ui/PageTitle';
@@ -332,28 +327,21 @@ export const CompanySearch = () => {
       </div>
 
       {showCompetenciesFilters && (
-        <div className="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3 md:grid-cols-4">
-          {competenciasFilters.map(key => (
-            <div key={key} className="w-36">
-              <FormField
-                type="select"
-                name={key}
-                label={COMPETENCIES_LABELS[key]}
-                options={DROPDOWN_VALUES_CONST.NOTA.map(option => ({
-                  ...option,
-                }))}
-                value={filters[key] || ''}
-                onChange={handleFilterCompetenceScore(key)}
-                iconLeft={
-                  <StarFilled
-                    width={ICON}
-                    height={ICON}
-                    className="text-(--yellow-100)"
-                  />
-                }
-              />
-            </div>
-          ))}
+        <div className="flex justify-center">
+          <div className="grid grid-cols-[230px] gap-8 sm:grid-cols-[230px_230px]">
+            {competenciasFilters.map(key => (
+              <div key={key}>
+                <FormField
+                  type="rating"
+                  name={key}
+                  label={COMPETENCIES_LABELS[key]}
+                  value={filters[key]}
+                  maxStars={5}
+                  onChange={handleFilterCompetenceScore(key)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

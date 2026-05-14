@@ -25,9 +25,12 @@ export const CompanyStatisticsCard = ({ company }: Props) => {
         <div className="flex flex-1 flex-col gap-1">
           <div className="flex justify-between">
             <span className="text-lg font-bold">{company.nomeFantasia}</span>
-            {(company.medias?.mediaGeral ?? 0) > 0 && (
+            {company.medias?.mediaGeral && company.medias.mediaGeral > 0 && (
               <div className="flex items-center gap-2 font-semibold text-(--yellow-100)">
-                <span>{company.medias?.mediaGeral}</span>
+                {new Intl.NumberFormat('pt-BR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(company.medias.mediaGeral)}
                 <StarFilled width={16} height={16} />
               </div>
             )}

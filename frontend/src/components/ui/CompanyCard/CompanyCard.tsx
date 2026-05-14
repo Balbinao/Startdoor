@@ -91,7 +91,10 @@ export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
         <div className="flex w-fit items-center gap-2 rounded-lg border border-(--grey-800) bg-(--grey-900) px-3 py-2">
           <StarFilled width={16} height={16} className="text-(--yellow-100)" />
           <span className="font-semibold text-(--grey-100)">
-            {mediaGeral.toFixed(1)}
+            {new Intl.NumberFormat('pt-BR', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(mediaGeral)}
           </span>
         </div>
       )}

@@ -386,10 +386,12 @@ export const StudentProfileUpdateForm = () => {
                 />
               </div>
 
-              <div className="flex w-full max-w-65 flex-col gap-6">
-                {studentConditionalScoreUpdateFields.map(field => (
-                  <FormField form={form} key={field.name} {...field} />
-                ))}
+              <div className="flex justify-center">
+                <div className="grid grid-cols-[230px] gap-8 sm:grid-cols-[230px_230px]">
+                  {studentConditionalScoreUpdateFields.map(field => (
+                    <FormField form={form} key={field.name} {...field} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
