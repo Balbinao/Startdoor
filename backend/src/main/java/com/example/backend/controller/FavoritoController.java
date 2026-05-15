@@ -5,6 +5,7 @@ import com.example.backend.model.Estudante;
 import com.example.backend.openapi.FavoritoControllerOpenApi;
 import com.example.backend.service.FavoritoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class FavoritoController implements FavoritoControllerOpenApi {
 
     @Override
     @PostMapping("/{empresaId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ESTUDANTE')")
     public ResponseEntity<Boolean> alternarFavorito(
             @AuthenticationPrincipal Estudante estudanteLogado,
             @PathVariable Long empresaId) {
@@ -30,6 +32,7 @@ public class FavoritoController implements FavoritoControllerOpenApi {
 
     @Override
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ESTUDANTE')")
     public ResponseEntity<List<EmpresaResumoDTO>> listarMeusFavoritos(
             @AuthenticationPrincipal Estudante estudanteLogado) {
         return ResponseEntity.ok(favoritoService.listarFavoritos(estudanteLogado.getId()));

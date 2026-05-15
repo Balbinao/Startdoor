@@ -6,6 +6,7 @@ import com.example.backend.model.Estudante;
 import com.example.backend.openapi.MatchControllerOpenApi;
 import com.example.backend.service.MatchService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class MatchController implements MatchControllerOpenApi {
 
     @Override
     @GetMapping("/empresa/{empresaId}")
+    @PreAuthorize("hasAuthority('ADMIN') or @estudanteSecurity.isOwner(#estudanteLogado.id)")
     public ResponseEntity<PontosFortesFracosResponseDTO> getMatch(
             @AuthenticationPrincipal Estudante estudanteLogado,
             @PathVariable Long empresaId) {
@@ -33,6 +35,7 @@ public class MatchController implements MatchControllerOpenApi {
 
     @Override
     @GetMapping("/recomendacoes")
+    @PreAuthorize("hasAuthority('ADMIN') or @estudanteSecurity.isOwner(#estudanteLogado.id)")
     public ResponseEntity<List<RecomendacaoResponseDTO>> getRecomendacoes(
             @AuthenticationPrincipal Estudante estudanteLogado) {
 
