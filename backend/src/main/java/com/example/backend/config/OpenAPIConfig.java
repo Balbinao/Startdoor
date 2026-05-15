@@ -105,12 +105,14 @@ public class OpenAPIConfig {
                                 | POST | /avaliacoes/{id}/comentarios-empresa | EMPRESA, ADMIN |
                                 | PUT | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
                                 | DELETE | /avaliacoes/comentarios-empresa/{id} | ADMIN ou EMPRESA (dona) |
+                                | GET |/api/matches/empresa/{empresaId} | ESTUDANTE ou ADMIN |
+                                | GET | /api/matches/recomendacoes | ESTUDANTE ou ADMIN |
                                 | GET | /admin/ | ADMIN |
                                 | POST | /auth/login | Público |
                                 | POST | /auth/forgot-password | Público |
                                 | POST | /auth/reset-password | Público |
-                                | POST | /favoritos/{empresaId} | Autenticado |
-                                | GET | /favoritos | Autenticado |
+                                | POST | /favoritos/{empresaId} | ESTUDANTE ou ADMIN |
+                                | GET | /favoritos | ESTUDANTE ou ADMIN |
                                 | POST | /recomendacoes/ia/gerar | Próprio estudante ou ADMIN |
 
 
