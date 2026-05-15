@@ -134,22 +134,36 @@ public class MatchService {
     }
 
     private double calcularPorcentagemAfinidade(EstudanteNotaCondi condi, EmpresaMedia media) {
-        double somaDiferencas = 0;
-        somaDiferencas += Math.max(0, condi.getAmbiente() - media.getMediaAmbiente().doubleValue());
-        somaDiferencas += Math.max(0, condi.getAprendizado() - media.getMediaAprendizado().doubleValue());
-        somaDiferencas += Math.max(0, condi.getBeneficios() - media.getMediaBeneficios().doubleValue());
-        somaDiferencas += Math.max(0, condi.getCultura() - media.getMediaCultura().doubleValue());
-        somaDiferencas += Math.max(0, condi.getEfetivacao() - media.getMediaEfetivacao().doubleValue());
-        somaDiferencas += Math.max(0, condi.getEntrevista() - media.getMediaEntrevista().doubleValue());
-        somaDiferencas += Math.max(0, condi.getFeedback() - media.getMediaFeedback().doubleValue());
-        somaDiferencas += Math.max(0, condi.getInfraestrutura() - media.getMediaInfraestrutura().doubleValue());
-        somaDiferencas += Math.max(0, condi.getIntegracao() - media.getMediaIntegracao().doubleValue());
-        somaDiferencas += Math.max(0, condi.getRemuneracao() - media.getMediaRemuneracao().doubleValue());
-        somaDiferencas += Math.max(0, condi.getRotina() - media.getMediaRotina().doubleValue());
-        somaDiferencas += Math.max(0, condi.getLideranca() - media.getMediaLideranca().doubleValue());
+        double somaErrosPonderados = 0;
+        double somaPesosMaximos = 0;
 
-        double erroMaximoPossivel = 12 * 4.0;
-        double afinidade = ((erroMaximoPossivel - somaDiferencas) / erroMaximoPossivel) * 100;
+        double[][] categorias = {
+                {(double) condi.getAmbiente(), media.getMediaAmbiente().doubleValue()},
+                {(double) condi.getAprendizado(), media.getMediaAprendizado().doubleValue()},
+                {(double) condi.getBeneficios(), media.getMediaBeneficios().doubleValue()},
+                {(double) condi.getCultura(), media.getMediaCultura().doubleValue()},
+                {(double) condi.getEfetivacao(), media.getMediaEfetivacao().doubleValue()},
+                {(double) condi.getEntrevista(), media.getMediaEntrevista().doubleValue()},
+                {(double) condi.getFeedback(), media.getMediaFeedback().doubleValue()},
+                {(double) condi.getInfraestrutura(), media.getMediaInfraestrutura().doubleValue()},
+                {(double) condi.getIntegracao(), media.getMediaIntegracao().doubleValue()},
+                {(double) condi.getRemuneracao(), media.getMediaRemuneracao().doubleValue()},
+                {(double) condi.getRotina(), media.getMediaRotina().doubleValue()},
+                {(double) condi.getLideranca(), media.getMediaLideranca().doubleValue()}
+        };
+
+        for (double[] par : categorias) {
+            double notaEstudante = par[0];
+            double notaEmpresa = par[1];
+            if (notaEstudante > 0) {
+                double erro = Math.max(0, notaEstudante - notaEmpresa);
+                somaErrosPonderados += (erro * notaEstudante);
+                somaPesosMaximos += (4.0 * notaEstudante);
+            }
+        }
+
+        if (somaPesosMaximos == 0) return 0;
+        double afinidade = ((somaPesosMaximos - somaErrosPonderados) / somaPesosMaximos) * 100;
         return Math.max(0, afinidade);
     }
 }
