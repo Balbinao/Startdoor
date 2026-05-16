@@ -23,7 +23,7 @@ public class FavoritoController implements FavoritoControllerOpenApi {
 
     @Override
     @PostMapping("/{empresaId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ESTUDANTE')")
+    @PreAuthorize("hasAuthority('ADMIN') or @estudanteSecurity.isOwner(#estudanteLogado.id)")
     public ResponseEntity<Boolean> alternarFavorito(
             @AuthenticationPrincipal Estudante estudanteLogado,
             @PathVariable Long empresaId) {
@@ -32,7 +32,7 @@ public class FavoritoController implements FavoritoControllerOpenApi {
 
     @Override
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ESTUDANTE')")
+    @PreAuthorize("hasAuthority('ADMIN') or @estudanteSecurity.isOwner(#estudanteLogado.id)")
     public ResponseEntity<List<EmpresaResumoDTO>> listarMeusFavoritos(
             @AuthenticationPrincipal Estudante estudanteLogado) {
         return ResponseEntity.ok(favoritoService.listarFavoritos(estudanteLogado.getId()));
