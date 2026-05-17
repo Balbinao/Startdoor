@@ -310,4 +310,30 @@ public class EmpresaService {
         return new PageImpl<>(paginaSubList, pageable, resultadoFuzzy.size());
     }
 
+    public List<EmpresaTopDTO> buscarTopEmpresas() {
+        return empresaRepository.findTop4ByOrderByEmpresaMediaMediaGeralDesc()
+                .stream()
+                .map(empresa -> {
+                    String urlCompleta = (empresa.getFotoUrl() != null)
+                            ? "http://localhost:8080/fotos/" + empresa.getFotoUrl()
+                            : null;
+
+                    BigDecimal mediaGeral = (empresa.getEmpresaMedia() != null)
+                            ? empresa.getEmpresaMedia().getMediaGeral()
+                            : BigDecimal.ZERO;
+
+                    return new EmpresaTopDTO(
+                            empresa.getId(),
+                            empresa.getNomeFantasia(),
+                            urlCompleta,
+                            empresa.getEstadoSede(),
+                            empresa.getPaisOrigem(),
+                            empresa.getDataFundacao(),
+                            empresa.getBiografia(),
+                            mediaGeral
+                    );
+                })
+                .toList();
+    }
+
 }
