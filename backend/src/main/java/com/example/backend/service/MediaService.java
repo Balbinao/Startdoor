@@ -59,26 +59,53 @@ public class MediaService {
 
             media.setMediaGeral(calcularMediaGeral(media));
 
-            BigDecimal minPiso = avaliacoes.stream()
-                    .map(EstudanteAvaliacao::getSalarioMin)
-                    .min(BigDecimal::compareTo)
-                    .orElse(BigDecimal.ZERO);
+            List<EstudanteAvaliacao> avaliacoesValidas = avaliacoes.stream()
+                    .filter(a -> a.getSalarioMin().compareTo(BigDecimal.valueOf(100)) > 0
+                            && a.getSalarioMax().compareTo(BigDecimal.valueOf(25000)) < 0)
+                    .toList();
 
-            BigDecimal maxTeto = avaliacoes.stream()
-                    .map(EstudanteAvaliacao::getSalarioMax)
-                    .max(BigDecimal::compareTo)
-                    .orElse(BigDecimal.ZERO);
+            List<EstudanteAvaliacao> massaDeCalculo = avaliacoesValidas.isEmpty() ? avaliacoes : avaliacoesValidas;
 
-            double mediaBase = avaliacoes.stream()
-                    .mapToDouble(a -> (a.getSalarioMin().doubleValue() + a.getSalarioMax().doubleValue()) / 2)
-                    .average()
-                    .orElse(0.0);
+            List<Double> salariosMediosOrdenados = massaDeCalculo.stream()
+                    .map(a -> (a.getSalarioMin().doubleValue() + a.getSalarioMax().doubleValue()) / 2.0)
+                    .sorted()
+                    .toList();
 
-            media.setSalarioMinPiso(minPiso);
-            media.setSalarioMaxTeto(maxTeto);
-            media.setSalarioBaseMedio(BigDecimal.valueOf(mediaBase).setScale(2, RoundingMode.HALF_UP));
+            List<Double> salariosMinOrdenados = massaDeCalculo.stream()
+                    .map(a -> a.getSalarioMin().doubleValue())
+                    .sorted()
+                    .toList();
+
+            List<Double> salariosMaxOrdenados = massaDeCalculo.stream()
+                    .map(a -> a.getSalarioMax().doubleValue())
+                    .sorted()
+                    .toList();
+
+            double pisoFaixa = calcularPercentil(salariosMinOrdenados, 0.25);
+            double tetoFaixa = calcularPercentil(salariosMaxOrdenados, 0.75);
+            double salarioMedio = calcularPercentil(salariosMediosOrdenados, 0.50);
+
+            media.setSalarioMinPiso(BigDecimal.valueOf(pisoFaixa).setScale(2, RoundingMode.HALF_UP));
+            media.setSalarioMaxTeto(BigDecimal.valueOf(tetoFaixa).setScale(2, RoundingMode.HALF_UP));
+            media.setSalarioBaseMedio(BigDecimal.valueOf(salarioMedio).setScale(2, RoundingMode.HALF_UP));
         }
+
         empresaRepository.save(empresa);
+    }
+
+    private double calcularPercentil(List<Double> valoresOrdenados, double percentil) {
+        int n = valoresOrdenados.size();
+        if (n == 1) return valoresOrdenados.get(0);
+
+        double indice = percentil * (n - 1);
+        int indiceBaixo = (int) Math.floor(indice);
+        int indiceAlto = (int) Math.ceil(indice);
+
+        if (indiceBaixo == indiceAlto) {
+            return valoresOrdenados.get(indiceBaixo);
+        }
+        double peso = indice - indiceBaixo;
+        return valoresOrdenados.get(indiceBaixo) * (1 - peso) + valoresOrdenados.get(indiceAlto) * peso;
     }
 
     private BigDecimal calcular(List<EstudanteAvaliacao> avaliacoes, ToIntFunction<EstudanteAvaliacao> getter) {
