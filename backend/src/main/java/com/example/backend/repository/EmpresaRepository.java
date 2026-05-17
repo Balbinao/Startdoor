@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface EmpresaRepository extends JpaRepository<Empresa, Long>, JpaSpecificationExecutor<Empresa> {
@@ -13,4 +14,5 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long>, JpaSpec
     UserDetails findByEmail(String email);
     boolean existsByEmail(String email);
     boolean existsByCnpj(String cnpj);
+    List<Empresa> findTop4ByOrderByEmpresaMediaMediaGeralDesc();
 }

@@ -9,4 +9,5 @@ public interface EstudanteAvaliacaoRepository extends JpaRepository<EstudanteAva
     List<EstudanteAvaliacao> findByEmpresaId(Long empresaId);
     List<EstudanteAvaliacao> findByEstudanteId(Long estudanteId);
     boolean existsByEstudanteIdAndEmpresaId(Long estudanteId, Long empresaId);
+    List<EstudanteAvaliacao> findTop4ByOrderByCreatedAtDesc();
 }
