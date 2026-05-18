@@ -21,6 +21,7 @@ export const CompanyStatisticsCard = ({ company }: Props) => {
           size={64}
           src={company.fotoUrl}
           defaultIconType={'company'}
+          bgIconWrapperClassName="bg-(--grey-900)"
         />
         <div className="flex flex-1 flex-col gap-1">
           <div className="flex justify-between">

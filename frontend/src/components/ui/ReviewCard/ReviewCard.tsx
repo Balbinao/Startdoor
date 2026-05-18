@@ -55,7 +55,7 @@ export const ReviewCard = ({ item, source }: Props) => {
           }
           isAnonymous={item.anonima}
           defaultIconType={source === 'ESTUDANTE' ? 'company' : 'student'}
-          bgIconWrapperClassName="bg-(--grey-800)"
+          bgIconWrapperClassName="bg-(--grey-900)"
         />
 
         <div className="flex flex-1 flex-col gap-1">

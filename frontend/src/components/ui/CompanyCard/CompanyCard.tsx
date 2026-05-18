@@ -1,13 +1,13 @@
 import { Star, StarFilled } from '@assets/icons';
-import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
 import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
-import type { ICompany } from '@models/companyData.types';
+import type { ICompany, ICompanyTopRated } from '@models/companyData.types';
 import type { ICompanySearchItem } from '@models/companySearchData.types';
 import { useNavigate } from 'react-router-dom';
+import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
-  item: ICompanySearchItem | ICompany;
+  item: ICompanySearchItem | ICompany | ICompanyTopRated;
   isFavorite?: boolean;
   onToggleFavorite?: (id: number) => void;
 }
@@ -37,15 +37,13 @@ export const CompanyCard = ({ item, isFavorite, onToggleFavorite }: Props) => {
     >
       <div className="flex items-start justify-between">
         <div className="flex justify-center gap-3">
-          {item.fotoUrl ? (
-            <img
-              src={item.fotoUrl}
-              alt="company logo"
-              className="h-14 w-14 rounded-lg object-cover"
-            />
-          ) : (
-            <PhotoCompanyDefault divClassName="h-14 w-14 rounded-lg object-cover bg-(--grey-1200) p-3" />
-          )}
+          <UserProfilePicture
+            userId={item.id}
+            size={64}
+            src={item.fotoUrl}
+            defaultIconType={'company'}
+            bgIconWrapperClassName="bg-(--grey-900)"
+          />
 
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-(--grey-100)">

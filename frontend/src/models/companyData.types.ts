@@ -74,3 +74,14 @@ export interface ICompanySectors {
 export interface ICompanySectorPayload {
   setorId: number;
 }
+
+export interface ICompanyTopRated {
+  id: number;
+  nomeFantasia: string;
+  paisOrigem: string | null;
+  estadoSede: string | null;
+  fotoUrl: string | null;
+  biografia: string | null;
+  dataFundacao?: string | null;
+  mediaGeral: number;
+}

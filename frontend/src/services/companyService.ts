@@ -4,6 +4,7 @@ import type {
   ICompany,
   ICompanySectorPayload,
   ICompanySectors,
+  ICompanyTopRated,
   ICompanyUpdatePayload,
 } from '@models/companyData.types';
 import type { ICompanyRegistration } from '@models/registrationLogin.types';
@@ -68,6 +69,11 @@ export const companyService = {
     const response = await api.delete(
       API_CONST.COMPANY.BY_ID_SECTORS_BY_ID(id, idSector),
     );
+    return response.data;
+  },
+
+  getCompanyTopRated: async (): Promise<ICompanyTopRated[]> => {
+    const response = await api.get(API_CONST.COMPANY.TOP_RATED);
     return response.data;
   },
 };
