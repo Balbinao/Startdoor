@@ -106,6 +106,17 @@ export const useReview = () => {
     }
   };
 
+
+  const getReviewsLatest = async () => {
+    try {
+      const response = await reviewService.getReviewsLatest();
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     reviewCards,
     review,
@@ -115,5 +126,6 @@ export const useReview = () => {
     createReview,
     updateReview,
     deleteReview,
+    getReviewsLatest,
   };
 };

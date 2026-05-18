@@ -2,6 +2,11 @@ import { api } from '@config';
 import { API_CONST } from '@constants';
 import type { IReview, IReviewPayload } from '@models/review.types';
 
+type IReviewLatestApiResponse = Omit<IReview, 'id' | 'estudanteId'> & {
+  idAvaliacao: number;
+  idEstudante: number;
+};
+
 export const reviewService = {
   getReviewCardsStudent: async (id: number): Promise<IReview[]> => {
     const response = await api.get(API_CONST.REVIEW.STUDENT_REVIEW_BY_ID(id));
@@ -34,5 +39,17 @@ export const reviewService = {
   deleteReview: async (id: number) => {
     const response = await api.delete(API_CONST.REVIEW.BY_ID(id));
     return response.data;
+  },
+
+  getReviewsLatest: async (): Promise<IReview[]> => {
+    const response = await api.get<IReviewLatestApiResponse[]>(
+      API_CONST.REVIEW.LATEST,
+    );
+
+    return response.data.map(({ idAvaliacao, idEstudante, ...review }) => ({
+      ...review,
+      id: idAvaliacao,
+      estudanteId: idEstudante,
+    }));
   },
 };

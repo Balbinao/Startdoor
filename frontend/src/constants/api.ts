@@ -34,6 +34,7 @@ export const API_CONST = {
     BY_ID_SECTORS_BY_ID: (id: number, idSector: number) =>
       `/empresas/${id}/setores/${idSector}`,
     BY_ID_NOTAS: (id: number) => `/empresas/${id}/notas`,
+    TOP_RATED: `/home/empresas-top`,
   },
   RECOMMENDATION: {
     COMPANY_RECOMMENDATION: `/api/matches/recomendacoes`,
@@ -53,6 +54,7 @@ export const API_CONST = {
     BY_ID: (id: number) => `/avaliacoes/${id}`,
     STUDENT_REVIEW_BY_ID: (id: number) => `/avaliacoes/estudante/${id}`,
     COMPANY_BY_ID_REVIEW: (id: number) => `/avaliacoes/empresa/${id}`,
+    LATEST: `/home/avaliacoes-recentes`,
   },
   COMMENT: {
     REVIEW_BY_ID_COMMENTS_STUDENT: (id: number) =>

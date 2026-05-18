@@ -164,6 +164,16 @@ export const useCompany = () => {
     }
   };
 
+  const getCompanyTopRated = async () => {
+    try {
+      const response = await companyService.getCompanyTopRated();
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     company,
     companies,
@@ -180,5 +190,6 @@ export const useCompany = () => {
     getCompanySectors,
     createCompanySector,
     deleteCompanySector,
+    getCompanyTopRated,
   };
 };

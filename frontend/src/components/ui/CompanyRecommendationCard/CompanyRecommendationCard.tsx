@@ -1,9 +1,9 @@
 import { GeminiLogo, Star, StarFilled } from '@assets/icons';
-import { PhotoCompanyDefault } from '@components/ui/PhotoCompanyDefault';
 import { ROUTES_CONST, USER_ROLES_CONST } from '@constants';
 import { useAuth } from '@hooks/useAuth';
 import type { ICompanyRecommendation } from '@models/statisticRecommendation.types';
 import { Link } from 'react-router-dom';
+import { UserProfilePicture } from '../UserProfilePicture';
 
 interface Props {
   recommendation: ICompanyRecommendation;
@@ -32,15 +32,13 @@ export const CompanyRecommendationCard = ({
     <div className="flex w-full flex-col gap-4 rounded-xl border border-(--grey-800) bg-(--grey-1100) p-4">
       <div className="flex items-start justify-between">
         <div className="flex gap-3">
-          {recommendation.fotoUrl ? (
-            <img
-              src={recommendation.fotoUrl}
-              alt="company logo"
-              className="h-14 w-14 rounded-lg object-cover"
-            />
-          ) : (
-            <PhotoCompanyDefault divClassName="h-14 w-14 rounded-lg object-cover bg-(--grey-1200) p-3" />
-          )}
+          <UserProfilePicture
+            userId={recommendation.id}
+            size={64}
+            src={recommendation.fotoUrl}
+            defaultIconType={'company'}
+            bgIconWrapperClassName="bg-(--grey-900)"
+          />
 
           <div className="flex flex-col gap-2">
             <h3 className="font-semibold text-(--grey-100)">
