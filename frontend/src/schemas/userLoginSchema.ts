@@ -21,7 +21,7 @@ export type UserLoginForgotPasswordFormData = z.infer<
 >;
 
 export const userLoginResetPasswordSchema = z.object({
-  codigo: z.string().min(6, 'Código precisa ter 6 caracteres'),
+  codigo: z.string().length(6, 'Código precisa ter exatamente 6 dígitos'),
   novaSenha: z.string().min(6, 'Senha precisa ter pelo menos 6 caracteres'),
 });
 
