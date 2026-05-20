@@ -99,10 +99,11 @@ public class EstudanteAvaliacaoService {
         return toResponseDTO(avaliacao);
     }
 
-    @Transactional(readOnly = true)
-    public List<EstudanteAvaliacaoResponseDTO> listarPorEstudante(Long estudanteId) {
+    public List<EstudanteAvaliacaoResponseDTO> listarPorEstudante(Long estudanteId, Long usuarioLogadoId) {
+        boolean isDonoDoPerfil = estudanteId.equals(usuarioLogadoId);
         return avaliacaoRepository.findByEstudanteId(estudanteId)
                 .stream()
+                .filter(avaliacao -> isDonoDoPerfil || !avaliacao.getAnonima())
                 .map(this::toResponseDTO)
                 .toList();
     }

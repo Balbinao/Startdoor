@@ -2,11 +2,13 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.EstudanteAvaliacaoDTO;
 import com.example.backend.dto.EstudanteAvaliacaoResponseDTO;
+import com.example.backend.model.Estudante;
 import com.example.backend.openapi.EstudanteAvaliacaoControllerOpenApi;
 import com.example.backend.service.EstudanteAvaliacaoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +46,11 @@ public class EstudanteAvaliacaoController implements EstudanteAvaliacaoControlle
     }
 
     @GetMapping("/estudante/{estudanteId}")
-    public ResponseEntity<List<EstudanteAvaliacaoResponseDTO>> listarPorEstudante(@PathVariable Long estudanteId) {
-        return ResponseEntity.ok(service.listarPorEstudante(estudanteId));
+    public ResponseEntity<List<EstudanteAvaliacaoResponseDTO>> listarPorEstudante(
+            @PathVariable Long estudanteId,
+            @AuthenticationPrincipal Estudante estudanteLogado) {
+        Long usuarioLogadoId = (estudanteLogado != null) ? estudanteLogado.getId() : null;
+        return ResponseEntity.ok(service.listarPorEstudante(estudanteId, usuarioLogadoId));
     }
 
     @PutMapping("/{id}")
