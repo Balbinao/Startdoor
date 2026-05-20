@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -110,6 +111,19 @@ public class Empresa implements UserDetails {
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<EmpresaAvaliacaoComent> comentarios;
+
+    @ManyToMany(mappedBy = "empresasFavoritas")
+    @JsonIgnore
+    private List<Estudante> estudantesQueFavoritaram = new ArrayList<>();
+
+    @PreRemove
+    private void removerVinculoDeFavoritos() {
+        if (estudantesQueFavoritaram != null) {
+            for (Estudante estudante : estudantesQueFavoritaram) {
+                estudante.getEmpresasFavoritas().remove(this);
+            }
+        }
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

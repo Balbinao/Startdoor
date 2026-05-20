@@ -2,7 +2,9 @@ package com.example.backend.openapi;
 
 import com.example.backend.dto.AvaliacaoRecenteDTO;
 import com.example.backend.dto.EmpresaTopDTO;
+import com.example.backend.model.Estudante;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
 
@@ -27,7 +30,9 @@ public interface HomeControllerOpenApi {
                     )
             )
     })
-    ResponseEntity<List<AvaliacaoRecenteDTO>> getAvaliacoesRecentes();
+    ResponseEntity<List<AvaliacaoRecenteDTO>> getAvaliacoesRecentes(
+            @Parameter(hidden = true) @AuthenticationPrincipal Estudante estudanteLogado
+    );
 
     @Operation(summary = "Busca as 4 empresas mais bem avaliadas do sistema")
     @ApiResponses(value = {

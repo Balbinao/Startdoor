@@ -2,6 +2,7 @@ package com.example.backend.openapi;
 
 import com.example.backend.dto.EstudanteAvaliacaoDTO;
 import com.example.backend.dto.EstudanteAvaliacaoResponseDTO;
+import com.example.backend.model.Estudante;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,7 +80,8 @@ public interface EstudanteAvaliacaoControllerOpenApi {
     })
     @GetMapping("/estudante/{estudanteId}")
     ResponseEntity<List<EstudanteAvaliacaoResponseDTO>> listarPorEstudante(
-            @Parameter(description = "ID do estudante", example = "1") @PathVariable Long estudanteId);
+            @Parameter(description = "ID do estudante", example = "1") @PathVariable Long estudanteId,
+            @Parameter(hidden = true) @AuthenticationPrincipal Estudante estudanteLogado);
 
     @Operation(summary = "Atualizar avaliação", description = "Atualiza uma avaliação existente")
     @ApiResponses(value = {

@@ -53,7 +53,7 @@ public class EstudanteController implements EstudanteControllerOpenApi {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or @estudanteSecurity.isOwner(#id)")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<EstudanteResponseDTO> buscar(@PathVariable Long id) {
        return ResponseEntity.ok(estudanteService.buscarPorId(id));
     }

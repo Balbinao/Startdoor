@@ -19,19 +19,18 @@ public class AvaliacaoRecenteService {
         this.estudanteAvaliacaoRepository = repository;
     }
 
-    @Transactional(readOnly = true)
-    public List<AvaliacaoRecenteDTO> buscarRecentes() {
-        // Mantive o findTop4 que você já estava usando
+    public List<AvaliacaoRecenteDTO> buscarRecentes(Long usuarioLogadoId) {
         return estudanteAvaliacaoRepository.findTop4ByOrderByCreatedAtDesc()
                 .stream()
-                .map(this::mapToDTO)
+                .map(a -> mapToDTO(a, usuarioLogadoId)) // Passamos o ID logado para o mapeador
                 .toList();
     }
 
-    private AvaliacaoRecenteDTO mapToDTO(EstudanteAvaliacao a) {
-        Long idEstudante = a.getAnonima() ? null : a.getEstudante().getId();
-        String nome = a.getAnonima() ? "Anônimo" : a.getEstudante().getNome();
+    private AvaliacaoRecenteDTO mapToDTO(EstudanteAvaliacao a, Long usuarioLogadoId) {
+        boolean isDono = usuarioLogadoId != null && usuarioLogadoId.equals(a.getEstudante().getId());
+        Long idEstudante = (a.getAnonima() && !isDono) ? null : a.getEstudante().getId();
 
+        String nome = a.getAnonima() ? "Anônimo" : a.getEstudante().getNome();
         String urlCompleta = (!a.getAnonima() && a.getEstudante().getFotoUrl() != null)
                 ? "http://localhost:8080/fotos/" + a.getEstudante().getFotoUrl()
                 : null;
