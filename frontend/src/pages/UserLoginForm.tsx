@@ -157,6 +157,7 @@ export const UserLoginForm = () => {
       setIsRecoveringPassword(false);
       setRecoveryStep('email');
       setTimeLeft(0);
+      loginForm.reset();
       forgotPasswordForm.reset();
       resetPasswordForm.reset();
 
@@ -301,6 +302,7 @@ export const UserLoginForm = () => {
                       name="codigo"
                       label="Código"
                       placeholder="Digite o código..."
+                      maxLength={6}
                       required
                     />
 
@@ -323,7 +325,7 @@ export const UserLoginForm = () => {
                   <div className="mb-6">
                     <FormField
                       form={resetPasswordForm}
-                      type="text"
+                      type="password"
                       name="novaSenha"
                       label="Nova Senha"
                       placeholder="Informe sua nova senha..."
