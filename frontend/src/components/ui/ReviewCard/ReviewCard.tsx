@@ -51,7 +51,9 @@ export const ReviewCard = ({ item, source }: Props) => {
           userId={source === 'ESTUDANTE' ? item.empresaId : item.estudanteId}
           size={64}
           src={
-            source === 'ESTUDANTE' ? item.fotoUrlEmpresa : item.fotoUrlEstudante
+            source === 'ESTUDANTE'
+              ? item.fotoUrlEmpresa
+              : (item.fotoUrlEstudante ?? item.fotoEstudante)
           }
           isAnonymous={item.anonima}
           defaultIconType={source === 'ESTUDANTE' ? 'company' : 'student'}
