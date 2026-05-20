@@ -19,7 +19,9 @@ import {
   MESSAGES_LOADING,
   MESSAGES_RESPONSE,
   ROUTES_CONST,
+  USER_ROLES_CONST,
 } from '@constants';
+import { useAuth } from '@hooks/useAuth';
 import { useCompany } from '@hooks/useCompany';
 import { useExperience } from '@hooks/useExperience';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
@@ -54,6 +56,13 @@ export const StudentProfile = () => {
   const { reviewCards, getReviewCardsStudent } = useReview();
   const { getCompanies } = useCompany();
   const { getStudent } = useStudent();
+  const { getUserId, getUserRole } = useAuth();
+
+  const userId = getUserId();
+  const userRole = getUserRole();
+
+  const isOwner =
+    Number(urlUserId) === userId && userRole === USER_ROLES_CONST.ESTUDANTE;
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
@@ -242,7 +251,7 @@ export const StudentProfile = () => {
         </div>
       )}
 
-      <div className="flex w-full flex-col gap-8 mt-12">
+      <div className="mt-12 flex w-full flex-col gap-8">
         <div className="flex items-center gap-8">
           <span className="text-lg font-semibold whitespace-nowrap">
             {reviewCards.length}{' '}
@@ -301,15 +310,17 @@ export const StudentProfile = () => {
           </div>
         </div>
 
-        <ButtonSquare
-          text="CRAR NOVA AVALIAÇÃO"
-          iconLeft={<Plus />}
-          className="w-full"
-          onClick={() => {
-            if (!urlUserId) return;
-            navigate(ROUTES_CONST.REVIEW.REVIEW_CREATE(Number(urlUserId)));
-          }}
-        />
+        {isOwner && (
+          <ButtonSquare
+            text="CRAR NOVA AVALIAÇÃO"
+            iconLeft={<Plus />}
+            className="w-full"
+            onClick={() => {
+              if (!urlUserId) return;
+              navigate(ROUTES_CONST.REVIEW.REVIEW_CREATE(Number(urlUserId)));
+            }}
+          />
+        )}
 
         <div className="flex flex-col gap-6">
           {reviewCards.map(item => (

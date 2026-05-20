@@ -5,6 +5,7 @@ export interface IReview {
   estudanteId: number;
   nomeEstudante: string | null;
   fotoUrlEstudante: string | null;
+  fotoEstudante: string | null;
   userEstudante: string | null;
   empresaId: number;
   fotoUrlEmpresa: string | null;
