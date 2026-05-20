@@ -2,10 +2,12 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.AvaliacaoRecenteDTO;
 import com.example.backend.dto.EmpresaTopDTO;
+import com.example.backend.model.Estudante;
 import com.example.backend.openapi.HomeControllerOpenApi;
 import com.example.backend.service.AvaliacaoRecenteService;
 import com.example.backend.service.EmpresaService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +28,10 @@ public class HomeController implements HomeControllerOpenApi {
 
     @Override
     @GetMapping("/avaliacoes-recentes")
-    public ResponseEntity<List<AvaliacaoRecenteDTO>> getAvaliacoesRecentes() {
-        List<AvaliacaoRecenteDTO> recentes = avaliacaoRecenteService.buscarRecentes();
+    public ResponseEntity<List<AvaliacaoRecenteDTO>> getAvaliacoesRecentes(
+            @AuthenticationPrincipal Estudante estudanteLogado) {
+        Long usuarioLogadoId = (estudanteLogado != null) ? estudanteLogado.getId() : null;
+        List<AvaliacaoRecenteDTO> recentes = avaliacaoRecenteService.buscarRecentes(usuarioLogadoId);
         return ResponseEntity.ok(recentes);
     }
 
