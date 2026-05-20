@@ -175,9 +175,9 @@ export const CompanyProfile = () => {
               />
             )}
 
-            {searchedCompany?.salarios?.minimo &&
-              searchedCompany?.salarios?.maximo &&
-              searchedCompany?.salarios?.media && (
+            {searchedCompany?.salarios?.minimo != null &&
+              searchedCompany?.salarios?.maximo != null &&
+              searchedCompany?.salarios?.media != null && (
                 <UserAttribute
                   icon={
                     <Coin
