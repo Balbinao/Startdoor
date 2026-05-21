@@ -125,6 +125,10 @@ public class Empresa implements UserDetails {
         }
     }
 
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<EmpresaSetor> empresaSetores = new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_EMPRESA"));
