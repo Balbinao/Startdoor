@@ -81,11 +81,14 @@ public class MatchService {
                 .filter(e -> e.getEmpresaMedia() != null && e.getEmpresaMedia().getMediaGeral() != null
                         && e.getEmpresaMedia().getMediaGeral().compareTo(BigDecimal.ZERO) > 0)
                 .map(empresa -> {
+                    String urlCompleta = (empresa.getFotoUrl() != null)
+                            ? "http://localhost:8080/fotos/" + empresa.getFotoUrl()
+                            : null;
                     double afinidade = calcularPorcentagemAfinidade(condi, empresa.getEmpresaMedia());
                     return new RecomendacaoResponseDTO(
                             empresa.getId(),
                             empresa.getNomeFantasia(),
-                            empresa.getFotoUrl(),
+                            urlCompleta,
                             empresa.getBiografia(),
                             empresa.getEstadoSede(),
                             empresa.getPaisOrigem(),
