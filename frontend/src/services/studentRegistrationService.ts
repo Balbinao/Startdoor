@@ -13,11 +13,6 @@ export const studentService = {
     return response.data;
   },
 
-  getStudents: async (): Promise<IStudent[]> => {
-    const response = await api.get(API_CONST.STUDENT.BASE);
-    return response.data;
-  },
-
   studentRegistration: async (data: IStudentRegistration) => {
     const response = await api.post(API_CONST.STUDENT.REGISTRATION, data);
     return response.data;

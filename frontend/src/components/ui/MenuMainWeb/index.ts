@@ -1,0 +1,1 @@
+export { MenuMainWeb } from './MenuMainWeb';

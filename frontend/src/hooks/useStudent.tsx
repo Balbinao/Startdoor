@@ -1,9 +1,7 @@
 import { useStore } from '@contexts/store/useStore';
-import type { IInputOption } from '@models/input.types';
 import type { IStudentRegistration } from '@models/registrationLogin.types';
 import type {
   IConditionalScore,
-  IStudent,
   IStudentUpdatePayload,
 } from '@models/studentData.types';
 import { studentService } from '../services/studentRegistrationService';
@@ -12,57 +10,16 @@ export const useStudent = () => {
   const { studentStore } = useStore();
 
   const student = studentStore.getStudent;
-  const students = studentStore.getStudents;
   const studentsOptions = studentStore.getStudentsOptions;
   const conditinalScore = studentStore.getConditionalScore;
 
-  const getStudent = async (id: number) => {
+  const getStudent = async (id: number, shouldStore: boolean = true) => {
     try {
       const response = await studentService.getStudent(id);
-      studentStore.setStudent(response);
+      if (shouldStore) {
+        studentStore.setStudent(response);
+      }
       return response;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
-
-  const MockStudent: IStudent[] = [
-    {
-      id: 1,
-      nome: 'João Silva',
-      user: 'joaosilva',
-      email: 'joao.silva@email.com',
-      fotoUrl: "urlinvalidateste",
-      biografia:
-        'Desenvolvedor front-end apaixonado por tecnologia, com interesse em criar interfaces modernas e acessíveis.',
-      paisOrigem: 'Brasil', // pode trocar por algum da lista se quiser estritamente dela
-      dataNascimento: '1998-05-12',
-      modeloTrabalho: 'Remoto',
-      estadoAtuacao: 'São Paulo', // pode trocar por um da lista fornecida (ex: 'Bahia', 'Goiás')
-      setorInteresse: 3,
-      habilidadesPrincipais: 'React, TypeScript, Tailwind CSS',
-      linkSite: 'https://joaosilva.dev',
-      linkLinkedin: 'https://linkedin.com/in/joaosilva',
-    },
-  ];
-
-  const getStudents = async () => {
-    try {
-      // const response = await studentService.getStudents();
-      const response = MockStudent;
-      const formatted: IInputOption[] = [
-        { label: 'Selecione...', value: '' },
-        ...response.map(item => ({
-          label: item.nome,
-          value: item.id,
-        })),
-      ];
-
-      studentStore.setStudents(response);
-      studentStore.setStudentsOptions(formatted);
-      return response;
-      // return [];
     } catch (error) {
       console.error(error);
       throw error;
@@ -172,11 +129,9 @@ export const useStudent = () => {
 
   return {
     student,
-    students,
     studentsOptions,
     conditinalScore,
     getStudent,
-    getStudents,
     studentRegistration,
     updateStudent,
     updateStudentPassword,

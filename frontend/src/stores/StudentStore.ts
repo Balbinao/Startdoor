@@ -7,7 +7,6 @@ export class StudentStore {
   root: RootStore;
 
   student: IStudent | null = null;
-  students: IStudent[] = [];
   studentsOptions: IInputOption[] = [];
   conditinalScore: IConditionalScore | null = null;
 
@@ -22,14 +21,6 @@ export class StudentStore {
 
   get getStudent() {
     return this.student;
-  }
-
-  setStudents = (students: IStudent[]) => {
-    this.students = students;
-  };
-
-  get getStudents() {
-    return this.students;
   }
 
   setStudentsOptions = (studentsOptions: IInputOption[]) => {

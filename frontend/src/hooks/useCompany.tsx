@@ -15,10 +15,12 @@ export const useCompany = () => {
   const companiesOptions = companyStore.getCompaniesOptions;
   const companySectors = companyStore.getCompaniesSectors;
 
-  const getCompany = async (id: number) => {
+  const getCompany = async (id: number, shouldStore: boolean = true) => {
     try {
       const response = await companyService.getCompany(id);
-      companyStore.setCompany(response);
+      if (shouldStore) {
+        companyStore.setCompany(response);
+      }
       return response;
     } catch (error) {
       console.error(error);

@@ -13,7 +13,6 @@ import { useComment } from '@hooks/useComment';
 import { useModalMessageDefault } from '@hooks/useMessageModalDefault';
 import { useModalLoadingAuto } from '@hooks/useModalLoadingAuto';
 import { useReview } from '@hooks/useReview';
-import { useStudent } from '@hooks/useStudent';
 import { commentSchema, type CommentData } from '@schemas/commentSchema';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -46,7 +45,6 @@ export const CommentForm = () => {
     createCommentStudent,
     createCommentCompany,
   } = useComment();
-  const { getStudents } = useStudent();
 
   const form = useForm<CommentData>({
     resolver: zodResolver(commentSchema),
@@ -74,7 +72,6 @@ export const CommentForm = () => {
           () => getAllReviewComments(Number(urlReviewId)),
           MESSAGES_LOADING.GET,
         );
-        await modalLoadingAuto(() => getStudents(), MESSAGES_LOADING.GET);
 
         setIsError(false);
       } catch (error: unknown) {
