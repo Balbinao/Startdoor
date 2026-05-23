@@ -320,7 +320,7 @@ export const ReviewForm = () => {
           </div>
 
           <div className="flex flex-col items-center gap-8">
-            <div className="flex w-full max-w-65">
+            <div className="flex w-full">
               <FormField
                 type="select"
                 name={'setAllScore'}
@@ -333,7 +333,7 @@ export const ReviewForm = () => {
             </div>
 
             <div className="flex justify-center">
-              <div className="grid grid-cols-[230px] gap-8 sm:grid-cols-[230px_230px]">
+              <div className="grid grid-cols-[235px] gap-8 sm:grid-cols-[280px_280px]">
                 {reviewScoreFields.map(([name, label]) => (
                   <FormField
                     key={name}

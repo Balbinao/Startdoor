@@ -215,7 +215,7 @@ export const UserLoginForm = () => {
                   <button
                     type="button"
                     onClick={() => setIsRecoveringPassword(true)}
-                    className="w-fit cursor-pointer text-sm font-normal text-(--blue-200) transition-all hover:text-(--blue-100)"
+                    className="w-fit cursor-pointer self-end text-sm font-normal text-(--blue-200) transition-all hover:text-(--blue-100)"
                   >
                     Esqueci minha senha
                   </button>

@@ -328,7 +328,7 @@ export const CompanySearch = () => {
 
       {showCompetenciesFilters && (
         <div className="flex justify-center">
-          <div className="grid grid-cols-[230px] gap-8 sm:grid-cols-[230px_230px]">
+          <div className="grid grid-cols-[235px] gap-8 sm:grid-cols-[280px_280px]">
             {competenciasFilters.map(key => (
               <div key={key}>
                 <FormField
