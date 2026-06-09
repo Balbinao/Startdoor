@@ -17,11 +17,11 @@ INSERT INTO setor (id, nome, created_at) VALUES (8, 'Tecnologia da Informação'
 INSERT INTO setor (id, nome, created_at) VALUES (9, 'Outro', NOW());
 
 -- 3. ESTUDANTES
-INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (1, 'user-gus', 'Gus Balbino', 'guss_dev', 'gus@teste.com', '123', 'https://github.com/balbinogus.png', NOW());
-INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (2, 'user-ana', 'Ana Silva', 'ana_tech', 'ana@teste.com', '123', 'https://ui-avatars.com/api/?name=Ana+Silva', NOW());
-INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (5, 'user-diego', 'Diego Oliveira', 'diego_dev', 'diego@teste.com', '123', 'https://ui-avatars.com/api/?name=Diego+Oliveira', NOW());
-INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (6, 'user-fernanda', 'Fernanda Lima', 'fer_qa', 'fer@teste.com', '123', 'https://ui-avatars.com/api/?name=Fernanda+Lima', NOW());
-INSERT INTO estudante (id, uuid, nome, `user`, email, senha, foto_url, created_at) VALUES (7, 'user-gabriel', 'Gabriel Santos', 'gabs_data', 'gabriel@teste.com', '123', 'https://ui-avatars.com/api/?name=Gabriel+Santos', NOW());
+INSERT INTO estudante (id, uuid, nome, `user`, email, senha, created_at) VALUES (1, 'user-gus', 'Gustavo Silva', 'guss_dev', 'gus@teste.com', '123', NOW());
+INSERT INTO estudante (id, uuid, nome, `user`, email, senha, created_at) VALUES (2, 'user-ana', 'Ana Silva', 'ana_tech', 'ana@teste.com', '123', NOW());
+INSERT INTO estudante (id, uuid, nome, `user`, email, senha, created_at) VALUES (5, 'user-diego', 'Diego Oliveira', 'diego_dev', 'diego@teste.com', '123', NOW());
+INSERT INTO estudante (id, uuid, nome, `user`, email, senha, created_at) VALUES (6, 'user-fernanda', 'Fernanda Lima', 'fer_qa', 'fer@teste.com', '123', NOW());
+INSERT INTO estudante (id, uuid, nome, `user`, email, senha, created_at) VALUES (7, 'user-gabriel', 'Gabriel Santos', 'gabs_data', 'gabriel@teste.com', '123', NOW());
 
 -- 4. MÉDIAS DAS EMPRESAS
 INSERT INTO empresa_media (id, media_ambiente, media_aprendizado, media_beneficios, media_cultura, media_efetivacao, media_entrevista, media_feedback, media_infraestrutura, media_integracao, media_remuneracao, media_rotina, media_lideranca, media_geral, salario_min_piso, salario_max_teto, salario_base_medio, created_at) VALUES (1, 4.50, 5.00, 4.20, 4.80, 4.00, 4.50, 4.30, 4.70, 4.60, 4.10, 4.40, 4.50, 4.47, 3000.00, 7500.00, 5250.00, NOW());
